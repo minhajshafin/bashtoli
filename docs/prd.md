@@ -18,7 +18,7 @@
 - Guest checkout allowed; customer accounts optional but incentivized
 - **Variants (v1):** One sellable SKU per variant combination (e.g. "Red / Large" has its own stock and price). Products with only one option dimension (size OR color) are supported at launch; multi-option products (size AND color) use the full SKU model
 - **Content pages:** Home, About, Contact (phone, WhatsApp link, hours, location/map)
-- **Fulfillment:** Delivery and/or pickup — fee logic and service area to be confirmed with owner (columns reserved in schema from day one)
+- **Fulfillment:** Delivery and pickup both supported. Delivery fee: **৳70 inside Dhaka**, **৳120 outside Dhaka**. Customer selects their delivery zone at checkout. Pickup is free.
 
 ## 3. Customer-Facing Storefront
 
@@ -28,7 +28,7 @@
 - Cart supports multiple items and quantities
 - Checkout: COD form (name, phone, email optional, address, notes, fulfillment type)
   - Pre-filled automatically for logged-in users with saved address
-  - Delivery fee applied based on owner-configured rules (flat fee or zone-based — TBD)
+  - Delivery fee based on zone: ৳70 inside Dhaka, ৳120 outside Dhaka. Customer selects zone at checkout. Pickup is free.
 - Order confirmation page shows human-readable **order number** (e.g. `ORD-20260703-0042`)
 - Order confirmation emailed when email is provided (guest or account)
 - WhatsApp deep link on confirmation page ("Message us about your order")
@@ -36,10 +36,12 @@
 
 ## 4. Customer Accounts
 
-- Sign up / log in (Supabase Auth)
+- Sign up / log in (Supabase Auth); **email verification required** before first login
+- Forgot password / password reset via Supabase Auth email link
 - Save address(es) to skip re-entering checkout form; one address marked as default
 - Wishlist / save-for-later (account-only, not visible to guests)
 - Order history (linked orders by `user_id`)
+- Guest order linking: after signup, orders matching the account's phone/email can be claimed
 
 ## 5. Guest Experience
 
@@ -87,18 +89,23 @@ Split into two delivery slices: **Admin MVP** (early — feeds storefront develo
 
 ```
 pending → confirmed → shipped → out_for_delivery (optional) → delivered
-                ↘ cancelled (restocks items)
+   ↘              ↘
+cancelled       cancelled  (both branches restock items)
 ```
 
+- **Customer cancellation:** only from `pending` status, within **24 hours** of order creation
+- **Admin cancellation:** from any non-final status (`pending`, `confirmed`, `shipped`, `out_for_delivery`)
 - `cancelled` restocks all order items automatically
 - `out_for_delivery` optional — use if owner delivers locally and wants that step
-- Return/refund flow deferred until owner confirms policy (see [Open Items](./open-items.md))
+- No returns or refunds in v1
 
 ## 9. Notifications
 
-- Email via Resend triggered on order creation:
-  - To owner/staff: new order alert
-  - To customer: confirmation (when email provided)
+- **Order creation emails** (via Resend):
+  - To owner/staff (`ADMIN_NOTIFICATION_EMAIL` env var): new order alert with details
+  - To customer: order confirmation (when email provided)
+  - Email failure is fire-and-forget — does not block order creation; errors logged to Sentry
+- **Order status change emails** (Phase 6): customer notified on `confirmed`, `shipped`, and `delivered` transitions (when email on file)
 - Order confirmation page: WhatsApp deep link for customer follow-up
 - **Out of scope for v1 (fast follow-up):** SMS order confirmation via Twilio or local provider
 
