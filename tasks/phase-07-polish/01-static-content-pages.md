@@ -9,7 +9,7 @@ Build Home, About, and Contact pages with business information and branding.
 
 ## Requirements
 
-- Home page at `/` with hero section, featured products, category links
+- Home page at `/` with hero section, featured products (query `products WHERE featured = true AND active = true`, ordered by `sort_order`; fall back to 4 newest active products if none featured), and category links
 - About page at `/about` with business story and branding
 - Contact page at `/contact` with:
   - Phone number

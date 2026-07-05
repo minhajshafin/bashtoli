@@ -28,6 +28,7 @@ Protect all `/admin/*` routes with session-based authentication and role-based a
 
 - Phase 1 complete (all setup tasks)
 - [05-bootstrap-admin.md](../phase-01-setup/05-bootstrap-admin.md)
+- [06-minimal-login-page.md](../phase-01-setup/06-minimal-login-page.md) — `/login` page must exist before this task
 
 ## Files to Modify
 

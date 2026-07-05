@@ -10,21 +10,25 @@ Implement customer authentication with Supabase Auth for sign up, log in, and lo
 ## Requirements
 
 - Sign up page at `/signup` (email + password)
-- Log in page at `/login`
+- Log in page at `/login` — **enhances** the minimal login page from Phase 1 (Task 1-06) with signup link, full styling, and improved UX
 - Log out action (clears session, keeps localStorage guest cart)
+- **Email verification required:** Supabase Auth sends verification email on signup; user must verify before logging in (configured in Supabase Auth settings — enable email confirmations)
 - Auto-create `profiles` row on sign up (via DB trigger from Phase 1)
 - Redirect to previous page or account dashboard after login
 - Link to sign up from login and vice versa
-- Password validation (minimum length, etc.)
+- Password validation (minimum 8 characters)
+- "Forgot password?" link on login page (implemented in Task 5-06)
 
 ## Acceptance Criteria
 
 - [ ] New user can sign up with email and password
+- [ ] Verification email sent after signup; login blocked until email verified
 - [ ] User can log in and see authenticated state in header
 - [ ] User can log out; guest cart in localStorage remains
 - [ ] Profile row created automatically on sign up with role `customer`
 - [ ] Invalid credentials show clear error message
 - [ ] Protected account routes redirect to login when unauthenticated
+- [ ] "Forgot password?" link visible on login page
 
 ## Dependencies
 

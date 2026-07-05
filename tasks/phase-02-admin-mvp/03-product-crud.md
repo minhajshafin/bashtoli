@@ -10,20 +10,24 @@ Build admin product management with create, edit, delete, and active/draft toggl
 ## Requirements
 
 - Product list page at `/admin/products` with active/draft filter
-- Create and edit product form: name, slug, description, category, base_price, active toggle
+- Create and edit product form: name, slug, description, category, base_price, active toggle, featured toggle
 - Product detail/edit page at `/admin/products/[id]`
-- Delete product (with confirmation; cascade or block if variants exist — document choice)
+- Slug auto-generated from name (kebab-case); allow manual override; enforce uniqueness
+- Delete product: **block** if any `order_items` reference the product; otherwise soft-delete by setting `active = false` (hard delete only via admin SQL for cleanup)
 - Clear visual distinction between draft and active products in list
+- Featured products displayed on home page (Phase 7); toggle here sets the `featured` flag
 - Zod validation on all server actions
 
 ## Acceptance Criteria
 
 - [ ] Admin can create a product with all required fields
 - [ ] Admin can toggle product between draft (inactive) and active
+- [ ] Admin can toggle product as featured (shows on home page)
 - [ ] Product list shows status badge (draft/active)
 - [ ] Admin can filter list by active/inactive/all
 - [ ] Admin can edit all product fields
-- [ ] Slug auto-generates from name
+- [ ] Slug auto-generates from name (kebab-case); can be manually overridden; unique constraint enforced
+- [ ] Delete blocked with clear message if product has order history; soft-delete used otherwise
 - [ ] Inactive products do not appear in storefront queries (verified via RLS)
 
 ## Dependencies

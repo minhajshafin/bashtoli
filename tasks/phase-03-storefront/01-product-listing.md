@@ -12,15 +12,21 @@ Build the public product listing page with category filtering for the customer s
 - Product listing page at `/products`
 - Display only active products with active variants
 - Category filter sidebar or tabs (handcrafts, mugs, hats, etc.)
+- Text search by product name (Postgres `ILIKE`; URL param `?q=keyword`)
+- Pagination: 12 products per page, URL-based page param (`?page=2`); show total count and navigation
 - Product card: primary image, name, price (lowest variant price or base_price), category
+- "Sold out" badge on card when all variants have `stock_qty = 0`
 - Responsive grid layout (mobile-first)
-- Empty state when no products match filter
+- Empty state when no products match filter or search
 - Server-side data fetching with Supabase
 
 ## Acceptance Criteria
 
-- [ ] `/products` displays all active products
+- [ ] `/products` displays all active products (paginated, 12 per page)
 - [ ] Clicking a category filters the product list
+- [ ] Search input filters products by name
+- [ ] Pagination controls navigate between pages
+- [ ] Sold-out products show badge but remain visible
 - [ ] Inactive/draft products are not shown
 - [ ] Product cards link to `/products/[slug]`
 - [ ] Layout is responsive on mobile and desktop
@@ -39,7 +45,9 @@ Build the public product listing page with category filtering for the customer s
 | `app/(storefront)/products/page.tsx` | Create |
 | `components/storefront/product-card.tsx` | Create |
 | `components/storefront/category-filter.tsx` | Create |
-| `lib/queries/products.ts` | Create |
+| `lib/queries/products.ts` | Create (paginated + search query) |
+| `components/storefront/search-input.tsx` | Create |
+| `components/storefront/pagination.tsx` | Create |
 
 ## Definition of Done
 

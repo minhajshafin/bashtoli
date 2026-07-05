@@ -15,7 +15,7 @@ Apply final UI polish: consistent styling, loading states, error handling, and e
 - Empty states: empty cart, empty wishlist, no orders, no products
 - Toast notifications for admin actions (product saved, order updated, etc.)
 - Form error display consistent across all forms
-- Owner completes real product catalog during this phase
+- **Basic accessibility (WCAG 2.1 AA):** keyboard navigation for all interactive elements, visible focus states, meaningful alt text on all images, 4.5:1 minimum color contrast ratio
 
 ## Acceptance Criteria
 
@@ -24,7 +24,9 @@ Apply final UI polish: consistent styling, loading states, error handling, and e
 - [ ] Empty states on cart, wishlist, order history, admin lists
 - [ ] Admin toasts confirm successful mutations
 - [ ] Visual consistency across storefront and admin
-- [ ] Owner has entered real product catalog (>10 products)
+- [ ] Keyboard navigation works for all interactive elements
+- [ ] All images have meaningful alt text
+- [ ] Focus states visible on all focusable elements
 
 ## Dependencies
 

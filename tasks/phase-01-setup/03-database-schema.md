@@ -10,11 +10,14 @@ Create all database tables, indexes, and enums defined in the schema documentati
 ## Requirements
 
 - Write SQL migrations for all tables per [Database Schema](../docs/database.md):
-  - `profiles`, `categories`, `products`, `product_images`
-  - `product_options`, `product_option_values`, `product_variants`
-  - `addresses`, `carts`, `cart_items`, `wishlist`
-  - `orders`, `order_items`, `order_status_history`
-- Create enums: `user_role`, `fulfillment_type`, `order_status`
+  - `profiles`, `categories` (with `created_at`), `products`, `product_images`
+  - `product_options`, `product_option_values`, `product_variants` (with `updated_at`)
+  - `addresses`, `carts`, `cart_items`, `wishlist` (with `created_at`)
+  - `orders`, `order_items`, `order_status_history` (required, not optional)
+- Create enums: `user_role`, `fulfillment_type`, `order_status`, `delivery_zone` (`inside_dhaka` | `outside_dhaka`)
+- Add `products.featured boolean DEFAULT false`
+- Add `orders.delivery_zone delivery_zone` (nullable; null = pickup)
+- Document cascade delete behavior in migrations (see [Database §6](../docs/database.md#6-cascade-delete-rules))
 - Create all indexes listed in [Database — Indexes](../docs/database.md#3-indexes)
 - Add trigger to auto-create `profiles` row on `auth.users` insert (default role: `customer`)
 - Add `updated_at` auto-update triggers where applicable
@@ -36,13 +39,14 @@ Create all database tables, indexes, and enums defined in the schema documentati
 
 | File | Action |
 |---|---|
-| `supabase/migrations/001_enums.sql` | Create |
+| `supabase/migrations/001_enums.sql` | Create (include `delivery_zone` enum) |
 | `supabase/migrations/002_profiles.sql` | Create |
-| `supabase/migrations/003_catalog.sql` | Create |
+| `supabase/migrations/003_catalog.sql` | Create (include `products.featured`) |
 | `supabase/migrations/004_cart_wishlist.sql` | Create |
-| `supabase/migrations/005_orders.sql` | Create |
+| `supabase/migrations/005_orders.sql` | Create (include `orders.delivery_zone`) |
 | `supabase/migrations/006_indexes.sql` | Create |
 | `supabase/migrations/007_triggers.sql` | Create |
+| `lib/config/delivery.ts` | Create (delivery zone fee constants) |
 
 ## Definition of Done
 
