@@ -1,8 +1,0 @@
----
-description: Reference this when starting a new phase task to keep agent requests efficient
-alwaysApply: false
----
-- When given a task, implement it fully in one pass (component + logic + basic styling) rather than asking clarifying questions for small ambiguities — make a reasonable assumption and note it in a code comment.
-- Do not refactor unrelated code unless asked.
-- Do not add new dependencies without flagging it first in your response.
-- Keep changes scoped to the files relevant to the current phase task (see project plan phases: Storefront, Accounts, Checkout, Admin Dashboard, Polish, Testing).
