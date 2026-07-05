@@ -139,31 +139,15 @@ Stock decrement uses a DB transaction: `UPDATE ... WHERE stock_qty >= qty`; fail
 ## 7. Order Status State Machine
 
 ```
-                    ┌──────────┐
-                    │ pending  │
-                    └────┬─────┘
-                         │
-              ┌──────────┼──────────┐
-              ▼                     ▼
-        ┌───────────┐         ┌───────────┐
-        │ confirmed │         │ cancelled │ → restock items
-        └─────┬─────┘         └───────────┘
-              │
-              ▼
-        ┌───────────┐
-        │  shipped  │
-        └─────┬─────┘
-              │
-              ▼ (optional)
-   ┌────────────────────┐
-   │ out_for_delivery   │
-   └─────────┬──────────┘
-             │
-             ▼
-        ┌───────────┐
-        │ delivered │
-        └───────────┘
+pending → confirmed → shipped → out_for_delivery (optional) → delivered
+   ↘              ↘
+cancelled       cancelled   → restocks items (both branches)
 ```
+
+Cancellation rules:
+- **Customer:** only from `pending`, within 24 hours of order creation
+- **Admin:** from `pending`, `confirmed`, `shipped`, or `out_for_delivery`
+- `cancelled` always restocks all order items
 
 ## 8. File Storage
 
@@ -175,8 +159,13 @@ Stock decrement uses a DB transaction: `UPDATE ... WHERE stock_qty >= qty`; fail
 
 | Trigger | Recipient | Content |
 |---|---|---|
-| Order created | Owner/staff | New order alert |
+| Order created | Owner/staff (`ADMIN_NOTIFICATION_EMAIL`) | New order alert |
 | Order created | Customer (if email provided) | Order confirmation |
+| Status → `confirmed` | Customer (if email on file) | Order confirmed notification |
+| Status → `shipped` | Customer (if email on file) | Order shipped notification |
+| Status → `delivered` | Customer (if email on file) | Order delivered notification |
+
+**Failure handling:** Email sends are fire-and-forget. A failed Resend call logs the error to Sentry but does not block order creation or status updates.
 
 Dev: Resend test mode or mail catcher.
 
@@ -198,6 +187,7 @@ Dev: Resend test mode or mail catcher.
 ## 12. Observability
 
 - **Sentry** on Next.js for error monitoring (set up before launch)
+- **Vercel Analytics** for page views and Web Vitals (free, built-in, privacy-friendly — no cookie consent required)
 - **Playwright** E2E tests for happy-path checkout (starting Phase 4)
 
 ## 13. Planned Directory Structure
