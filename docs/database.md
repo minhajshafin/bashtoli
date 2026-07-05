@@ -44,6 +44,7 @@ Extends Supabase Auth users with application-specific data.
 | `name` | text | |
 | `slug` | text | Unique |
 | `sort_order` | integer | Display ordering |
+| `created_at` | timestamptz | |
 
 ### products
 
@@ -56,6 +57,7 @@ Extends Supabase Auth users with application-specific data.
 | `category_id` | uuid (FK) | → categories.id |
 | `base_price` | numeric | Reference price; variants may override |
 | `active` | boolean | Draft vs active toggle |
+| `featured` | boolean | Show in home page featured section; default false |
 | `created_at` | timestamptz | |
 | `updated_at` | timestamptz | |
 
@@ -105,6 +107,7 @@ One row per sellable SKU.
 | `price` | numeric | Absolute price for this SKU |
 | `active` | boolean | |
 | `created_at` | timestamptz | |
+| `updated_at` | timestamptz | |
 
 ### addresses
 
@@ -144,6 +147,7 @@ One row per sellable SKU.
 | `id` | uuid (PK) | |
 | `user_id` | uuid (FK) | → profiles.id |
 | `product_id` | uuid (FK) | → products.id |
+| `created_at` | timestamptz | |
 
 **Constraint:** UNIQUE (`user_id`, `product_id`)
 
@@ -160,8 +164,9 @@ One row per sellable SKU.
 | `address` | text | |
 | `notes` | text | |
 | `fulfillment_type` | enum | `delivery` \| `pickup` |
+| `delivery_zone` | enum (nullable) | `inside_dhaka` \| `outside_dhaka`; null when fulfillment is pickup |
 | `subtotal` | numeric | |
-| `delivery_fee` | numeric | Default 0 |
+| `delivery_fee` | numeric | ৳70 inside Dhaka, ৳120 outside Dhaka, 0 for pickup |
 | `total` | numeric | |
 | `status` | enum | See order workflow in [PRD](./prd.md) |
 | `created_at` | timestamptz | |
@@ -181,7 +186,7 @@ Snapshot of purchased items at time of order.
 | `price_at_purchase` | numeric | Price snapshot |
 | `product_name` | text | Name snapshot |
 
-### order_status_history (recommended)
+### order_status_history
 
 | Column | Type | Notes |
 |---|---|---|
@@ -247,7 +252,30 @@ Create upfront:
 
 No reservation holds for v1 — transactional stock decrement at order creation is sufficient at this order volume.
 
-## 6. Order Number Generation
+## 6. Cascade Delete Rules
+
+| Parent deleted | Child behavior |
+|---|---|
+| `products` | Block if referenced in `order_items`; otherwise CASCADE to `product_images`, `product_options`, `product_option_values`, `product_variants` |
+| `product_options` | CASCADE to `product_option_values` |
+| `categories` | SET NULL on `products.category_id` (products remain, just uncategorized) |
+| `orders` | CASCADE to `order_items`, `order_status_history` |
+| `carts` | CASCADE to `cart_items` |
+| `profiles` | CASCADE to `addresses`, `carts`, `wishlist`; SET NULL on `orders.user_id` |
+
+> **Tech debt:** `product_variants.option_values` is JSONB with no FK to `product_option_values`. Application-layer Server Actions must validate JSONB values match existing option values on every variant create/update.
+
+## 7. Delivery Zone Configuration
+
+Delivery fees are hardcoded constants in `lib/config/delivery.ts` — no database settings table needed for v1.
+
+| Zone | Fee (BDT) | `delivery_zone` enum value |
+|---|---|---|
+| Inside Dhaka | 70 | `inside_dhaka` |
+| Outside Dhaka | 120 | `outside_dhaka` |
+| Pickup | 0 (free) | — (use `fulfillment_type = pickup`) |
+
+## 8. Order Number Generation
 
 Format: `ORD-YYYYMMDD-NNNN`
 
@@ -257,6 +285,6 @@ Example: `ORD-20260703-0042`
 - Sequential counter per day
 - Unique constraint + index on `orders.order_number`
 
-## 7. Migrations
+## 9. Migrations
 
 SQL migrations will live in `supabase/migrations/`. Phase 1 creates all tables, indexes, RLS policies, and the first-admin bootstrap script.
