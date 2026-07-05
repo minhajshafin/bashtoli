@@ -1,0 +1,11 @@
+---
+description: Supabase database, auth, and RLS conventions
+globs: lib/supabase/**/*.ts,app/api/**/*.ts
+alwaysApply: false
+---
+- All table access must go through Row Level Security policies — never bypass with service role key in user-facing code paths.
+- Roles (customer/staff/admin) are enforced in RLS policies, not just in the frontend.
+- Stock decrement on order placement must happen in a Postgres function/trigger, not purely in application code, to avoid race conditions.
+- Use Supabase server client in Server Components/route handlers, and the browser client only for client components that need realtime/auth state.
+- Never expose the Supabase service role key to the client bundle.
+- Write migrations as SQL files in /supabase/migrations — don't edit the schema only through the dashboard.

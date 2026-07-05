@@ -1,0 +1,11 @@
+---
+description: Project-wide context for the handcrafts e-commerce site
+alwaysApply: true
+---
+- Project: E-commerce site for a local handcrafts/mugs/hats business.
+- Stack: Next.js (App Router), Supabase (Postgres + Auth + Storage), Tailwind CSS, Resend (email), deployed on Vercel.
+- Payment: COD only — no payment gateway. Do not suggest Stripe/PayPal integration.
+- Guest checkout is allowed (cart via localStorage). Wishlist is account-only.
+- Roles: customer, staff, admin — enforced via Supabase RLS, not just frontend checks.
+- Keep components small and typed (TypeScript). No `any` unless unavoidable.
+- Before writing DB-touching code, check schema in /docs/schema.sql if present.
