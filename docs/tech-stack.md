@@ -17,6 +17,7 @@
 |---|---|---|
 | Resend | Transactional email | Order notifications; test mode in dev |
 | Sentry | Error monitoring | Free tier on Next.js; set up before launch |
+| Vercel Analytics | Page views + Web Vitals | Free, built-in on Vercel; no cookie consent required |
 
 ## Client-Side Storage
 
@@ -29,6 +30,7 @@
 
 | Tool | Purpose |
 |---|---|
+| Vitest | Unit tests for server actions, utilities, and business logic (starting Phase 1) |
 | Playwright | E2E happy-path checkout flow (starting Phase 4) |
 
 ## Development Tools
@@ -48,6 +50,7 @@
 | `RESEND_API_KEY` | Server only | Email sending |
 | `SENTRY_DSN` | Server + Client | Error reporting |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Client | WhatsApp deep links |
+| `ADMIN_NOTIFICATION_EMAIL` | Server only | Recipient for new order alert emails |
 
 ## Key Dependencies (Planned)
 
@@ -57,9 +60,13 @@
   "@supabase/supabase-js": "latest",
   "@supabase/ssr": "latest",
   "zod": "latest",
+  "resend": "latest",
   "tailwindcss": "latest",
+  "@vercel/analytics": "latest",
   "@playwright/test": "latest",
-  "@sentry/nextjs": "latest"
+  "@sentry/nextjs": "latest",
+  "vitest": "latest",
+  "@vitejs/plugin-react": "latest"
 }
 ```
 
