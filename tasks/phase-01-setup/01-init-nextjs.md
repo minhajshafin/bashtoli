@@ -18,11 +18,11 @@ Bootstrap the Next.js application with App Router, TypeScript, Tailwind CSS, and
 
 ## Acceptance Criteria
 
-- [ ] `npm run dev` starts the development server without errors
-- [ ] `npm run build` completes successfully
-- [ ] Tailwind CSS classes render on a placeholder home page
-- [ ] Directory structure matches [Architecture — Planned Directory Structure](../docs/architecture.md#13-planned-directory-structure)
-- [ ] `.env.local.example` documents all planned env vars from [Tech Stack](../docs/tech-stack.md)
+- [x] `npm run dev` starts the development server without errors
+- [x] `npm run build` completes successfully
+- [x] Tailwind CSS classes render on a placeholder home page
+- [x] Directory structure matches [Architecture — Planned Directory Structure](../docs/architecture.md#13-planned-directory-structure)
+- [x] `.env.local.example` documents all planned env vars from [Tech Stack](../docs/tech-stack.md)
 
 ## Dependencies
 
@@ -45,8 +45,9 @@ Bootstrap the Next.js application with App Router, TypeScript, Tailwind CSS, and
 
 ## Definition of Done
 
-- [ ] Next.js app runs locally
-- [ ] Build passes
-- [ ] Folder structure in place
-- [ ] Environment template committed (no secrets)
-- [ ] Root README updated with setup instructions
+- [x] Next.js app runs locally
+- [x] Build passes
+- [x] Folder structure in place
+- [x] Environment template committed (no secrets)
+- [x] Root README updated with setup instructions
+

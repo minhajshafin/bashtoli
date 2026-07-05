@@ -2,7 +2,7 @@
 
 E-commerce platform for a local business selling handcrafted items, mugs, hats, and similar products. Customer-facing storefront plus owner/staff inventory and order management.
 
-**Status:** Planning complete — implementation not started.
+**Status:** Phase 1 (Setup & Schema) in progress. Next.js project initialized.
 
 ## Quick Links
 
