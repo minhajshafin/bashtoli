@@ -1,4 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from './database.types'
 
 /**
  * Creates a Supabase client for use in Browser / Client Components.
@@ -7,7 +8,7 @@ import { createBrowserClient } from '@supabase/ssr'
  * gets a fresh singleton managed by @supabase/ssr.
  */
 export function createClient() {
-  return createBrowserClient(
+  return createBrowserClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
   )
