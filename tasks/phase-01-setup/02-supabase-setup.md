@@ -18,11 +18,11 @@ Create and configure the Supabase project for local development and production, 
 
 ## Acceptance Criteria
 
-- [ ] Supabase project created and credentials stored in `.env.local`
-- [ ] Browser client helper returns authenticated session
-- [ ] Server client helper works in Server Components and Server Actions
-- [ ] Storage bucket `product-images` exists with correct policies
-- [ ] Test upload/download of an image succeeds from server context
+- [x] Supabase project created and credentials stored in `.env.local`
+- [x] Browser client helper returns authenticated session
+- [x] Server client helper works in Server Components and Server Actions
+- [x] Storage bucket `product-images` exists with correct policies
+- [x] Test upload/download of an image succeeds from server context
 
 ## Dependencies
 
@@ -40,7 +40,7 @@ Create and configure the Supabase project for local development and production, 
 
 ## Definition of Done
 
-- [ ] Supabase clients tested in browser and server contexts
-- [ ] Storage bucket configured with RLS policies
-- [ ] No service role key exposed in client-side code
-- [ ] Dev credentials documented in `.env.local.example`
+- [x] Supabase clients tested in browser and server contexts
+- [x] Storage bucket configured with RLS policies
+- [x] No service role key exposed in client-side code
+- [x] Dev credentials documented in `.env.local.example`
