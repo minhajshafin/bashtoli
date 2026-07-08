@@ -49,10 +49,69 @@ vercel.json (if needed)
 ## Supabase Setup
 
 1. Create Supabase project (Phase 1)
-2. Run migrations from `supabase/migrations/`
-3. Configure Storage bucket for product images
-4. Set up RLS policies
-5. Bootstrap first admin user via SQL script
+2. Run migrations from `supabase/migrations/` in order (`001_` → `008_`)
+3. Configure Storage bucket `product-images` (public, 2 MB limit, WebP/JPEG/PNG)
+4. Set up RLS policies (migration `008_rls_policies.sql`)
+5. Bootstrap first admin user — see section below
+
+## Bootstrapping the First Admin User
+
+There is no admin UI until Phase 2. Use this one-time SQL script to promote
+the first user to `admin` immediately after they sign up.
+
+### Step-by-step
+
+1. **Sign up** via the app's login page (or via Supabase Dashboard →
+   Authentication → Add user).
+
+2. **Copy the user UUID** from:
+   `Supabase Dashboard → Authentication → Users → click the user row → copy UUID`
+
+3. **Open the SQL script** at `supabase/scripts/bootstrap-admin.sql`.
+
+4. **Replace `<USER_UUID>`** on line 19 with the real UUID, e.g.:
+   ```sql
+   target_user_id uuid := 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+   ```
+
+5. **Run the script** in:
+   `Supabase Dashboard → SQL Editor → paste → Run`
+
+6. The script prints a `NOTICE` confirming the promotion and then returns
+   a `SELECT` showing all admin profiles for verification.
+
+### Fallback: manual dashboard update
+
+If the SQL Editor is not available, update the role directly:
+
+1. `Supabase Dashboard → Table Editor → profiles`
+2. Find the row by user ID
+3. Click the `role` cell → change value to `admin` → Save
+
+### Dev environment default credentials
+
+A default admin account has been created for the **development** Supabase project:
+
+| Field    | Value                  |
+|----------|------------------------|
+| Email    | `admin@example.com`    |
+| Password | `mypassword123`        |
+| Role     | `admin`                |
+| UUID     | `570f141c-c3c1-45fb-aec5-93a463932bfc` |
+
+> [!CAUTION]
+> **Change these credentials before going to production.**
+> Log in to the Supabase Dashboard → Authentication → Users, select this user,
+> and update the email and password to the real owner's credentials.
+> Alternatively, delete this account and run `bootstrap-admin.sql` with a
+> newly signed-up real account.
+
+### Notes
+
+- The script is **idempotent** — safe to run multiple times on the same user.
+- Running it on an already-admin user produces the same result.
+- **Do not hardcode the UUID** in the repository — always paste it at run time.
+- For production: run the script once, then remove the UUID from your clipboard.
 
 ## Launch Checklist (Phase 8)
 

@@ -16,10 +16,10 @@ Provide a one-time mechanism to create the first admin user so the owner can acc
 
 ## Acceptance Criteria
 
-- [ ] SQL script updates `profiles.role` to `admin` for a given user ID
-- [ ] Script is idempotent (safe to run multiple times on same user)
-- [ ] Documentation explains step-by-step bootstrap process
-- [ ] Test admin user exists in dev environment
+- [x] SQL script updates `profiles.role` to `admin` for a given user ID
+- [x] Script is idempotent (safe to run multiple times on same user)
+- [x] Documentation explains step-by-step bootstrap process
+- [x] Test admin user exists in dev environment
 
 ## Dependencies
 
@@ -35,7 +35,7 @@ Provide a one-time mechanism to create the first admin user so the owner can acc
 
 ## Definition of Done
 
-- [ ] Bootstrap script tested on dev Supabase project
-- [ ] First admin user can authenticate
-- [ ] Process documented for production deployment
-- [ ] No hardcoded credentials in repository
+- [x] Bootstrap script tested on dev Supabase project
+- [x] First admin user can authenticate
+- [x] Process documented for production deployment
+- [x] No hardcoded credentials in repository
