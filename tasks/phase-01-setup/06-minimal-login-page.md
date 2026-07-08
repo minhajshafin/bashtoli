@@ -16,11 +16,11 @@ Create a minimal `/login` page so the admin auth middleware (Phase 2) has a redi
 
 ## Acceptance Criteria
 
-- [ ] `/login` page renders without error
-- [ ] Admin user can log in with email and password
-- [ ] Invalid credentials show an error message
-- [ ] Successful login redirects to `/admin`
-- [ ] Page does not link to sign-up (that is Phase 5)
+- [x] `/login` page renders without error
+- [x] Admin user can log in with email and password
+- [x] Invalid credentials show an error message
+- [x] Successful login redirects to `/admin`
+- [x] Page does not link to sign-up (that is Phase 5)
 
 ## Dependencies
 
@@ -36,6 +36,6 @@ Create a minimal `/login` page so the admin auth middleware (Phase 2) has a redi
 
 ## Definition of Done
 
-- [ ] Admin can log in via `/login` and reach `/admin`
-- [ ] Login errors handled gracefully
-- [ ] No broken redirect when Phase 2 middleware fires
+- [x] Admin can log in via `/login` and reach `/admin`
+- [x] Login errors handled gracefully
+- [x] No broken redirect when Phase 2 middleware fires

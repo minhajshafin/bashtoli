@@ -2,12 +2,12 @@ import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 /**
- * Next.js root middleware.
+ * Next.js root proxy (previously "middleware").
  * Calls updateSession on every matched request to keep Supabase auth
  * tokens refreshed. No redirects here — auth-gating is done inside
  * each layout/page so the logic stays co-located with the route.
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   return await updateSession(request)
 }
 
@@ -19,9 +19,6 @@ export const config = {
      * - _next/image   (image optimisation)
      * - favicon.ico   (favicon)
      * - public assets (png, svg, jpg, …)
-     *
-     * This ensures the session is refreshed on every server-rendered
-     * page, API route, and Server Action.
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
