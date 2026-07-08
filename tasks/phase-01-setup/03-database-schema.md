@@ -24,12 +24,12 @@ Create all database tables, indexes, and enums defined in the schema documentati
 
 ## Acceptance Criteria
 
-- [ ] All tables exist with correct columns and types
-- [ ] Foreign key constraints enforce referential integrity
-- [ ] Indexes created on `orders.order_number`, `orders.status`, `products.category_id`, `products.active`, `product_variants.product_id`
-- [ ] `wishlist` has UNIQUE constraint on (`user_id`, `product_id`)
-- [ ] New auth user automatically gets a `profiles` row with role `customer`
-- [ ] Migrations are idempotent and version-controlled in `supabase/migrations/`
+- [x] All tables exist with correct columns and types
+- [x] Foreign key constraints enforce referential integrity
+- [x] Indexes created on `orders.order_number`, `orders.status`, `products.category_id`, `products.active`, `product_variants.product_id`
+- [x] `wishlist` has UNIQUE constraint on (`user_id`, `product_id`)
+- [x] New auth user automatically gets a `profiles` row with role `customer`
+- [x] Migrations are idempotent and version-controlled in `supabase/migrations/`
 
 ## Dependencies
 
@@ -50,7 +50,7 @@ Create all database tables, indexes, and enums defined in the schema documentati
 
 ## Definition of Done
 
-- [ ] Migrations run cleanly on fresh Supabase project
-- [ ] Schema matches [Database](../docs/database.md) documentation
+- [x] Migrations run cleanly on fresh Supabase project
+- [x] Schema matches [Database](../docs/database.md) documentation
 - [ ] Manual verification: insert test rows into each table
 - [ ] Migration files committed to repository
