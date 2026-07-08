@@ -53,4 +53,4 @@ Create all database tables, indexes, and enums defined in the schema documentati
 - [x] Migrations run cleanly on fresh Supabase project
 - [x] Schema matches [Database](../docs/database.md) documentation
 - [ ] Manual verification: insert test rows into each table
-- [ ] Migration files committed to repository
+- [x] Migration files committed to repository
