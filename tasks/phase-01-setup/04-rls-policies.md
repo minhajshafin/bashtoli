@@ -21,13 +21,13 @@ Implement Row-Level Security policies that enforce role-based access control at 
 
 ## Acceptance Criteria
 
-- [ ] Anonymous user can read active products and categories
-- [ ] Anonymous user cannot read orders, profiles, or other users' carts
-- [ ] Customer can read/update own profile, addresses, cart, wishlist, and orders
-- [ ] Customer cannot access `/admin` data or other users' records
-- [ ] Staff can CRUD products, categories, variants, and read/update all orders
-- [ ] Admin can manage staff roles in addition to staff permissions
-- [ ] Deactivated products are hidden from public SELECT policies
+- [x] Anonymous user can read active products and categories
+- [x] Anonymous user cannot read orders, profiles, or other users' carts
+- [x] Customer can read/update own profile, addresses, cart, wishlist, and orders
+- [x] Customer cannot access `/admin` data or other users' records
+- [x] Staff can CRUD products, categories, variants, and read/update all orders
+- [x] Admin can manage staff roles in addition to staff permissions
+- [x] Deactivated products are hidden from public SELECT policies
 
 ## Dependencies
 
@@ -42,7 +42,7 @@ Implement Row-Level Security policies that enforce role-based access control at 
 
 ## Definition of Done
 
-- [ ] RLS enabled on all tables
-- [ ] Policy tests pass for all four access contexts (anon, customer, staff, admin)
-- [ ] No table accessible without appropriate policy
-- [ ] Policies documented and match [Database](../docs/database.md)
+- [x] RLS enabled on all tables
+- [x] Policy tests pass for all four access contexts (anon, customer, staff, admin)
+- [x] No table accessible without appropriate policy
+- [x] Policies documented and match [Database](../docs/database.md)
