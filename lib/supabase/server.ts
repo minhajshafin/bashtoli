@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import type { Database } from './database.types'
 
@@ -33,6 +34,35 @@ export async function createClient() {
             // user sessions.
           }
         },
+      },
+    },
+  )
+}
+
+/**
+ * Creates a Supabase client that uses the SERVICE ROLE key.
+ * This client BYPASSES Row-Level Security entirely.
+ *
+ * ⚠️  Use ONLY in trusted Server Actions / Route Handlers where you need
+ * to perform operations that must not be gated by RLS, such as:
+ *   - Creating orders (any user, including guests)
+ *   - Restocking inventory on cancellation
+ *   - Admin role management
+ *
+ * NEVER expose this client or the service role key to the browser.
+ */
+export function createAdminClient() {
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
+  }
+
+  return createSupabaseClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
       },
     },
   )
