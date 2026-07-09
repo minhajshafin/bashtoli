@@ -19,10 +19,10 @@ Install and configure Vitest for unit testing server actions, utilities, and bus
 
 ## Acceptance Criteria
 
-- [ ] `npm test` runs Vitest and all tests pass
-- [ ] TypeScript types resolve correctly in test files
-- [ ] Example unit test passes
-- [ ] Test output is clear and readable
+- [x] `npm test` runs Vitest and all tests pass
+- [x] TypeScript types resolve correctly in test files
+- [x] Example unit test passes
+- [x] Test output is clear and readable
 
 ## Dependencies
 
@@ -38,6 +38,6 @@ Install and configure Vitest for unit testing server actions, utilities, and bus
 
 ## Definition of Done
 
-- [ ] Vitest installed and configured
-- [ ] `npm test` exits with code 0
-- [ ] Pattern documented for writing unit tests alongside server actions
+- [x] Vitest installed and configured
+- [x] `npm test` exits with code 0
+- [x] Pattern documented for writing unit tests alongside server actions
