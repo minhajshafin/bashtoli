@@ -1,0 +1,47 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    env:
+      # Placeholder env vars so Next.js build does not fail on missing client variables
+      NEXT_PUBLIC_SUPABASE_URL: https://dummy-ref.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_dummy_key_for_ci
+      SUPABASE_SERVICE_ROLE_KEY: dummy_service_role_key_for_ci
+      RESEND_API_KEY: re_dummy_api_key_for_ci
+      ADMIN_NOTIFICATION_EMAIL: admin@example.com
+      SENTRY_DSN: https://dummy@sentry.io/0
+      NEXT_PUBLIC_WHATSAPP_NUMBER: 8801700000000
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Type Check
+        run: npx tsc --noEmit
+
+      - name: Run Unit Tests
+        run: npm test
+
+      - name: Build Next.js Application
+        run: npm run build

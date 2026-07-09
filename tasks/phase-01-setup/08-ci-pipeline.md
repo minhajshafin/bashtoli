@@ -24,11 +24,11 @@ Add a GitHub Actions workflow to run lint, type checking, and build verification
 
 ## Acceptance Criteria
 
-- [ ] Workflow file exists and is valid YAML
-- [ ] CI passes on a clean push to `main`
-- [ ] CI fails if lint errors are introduced
-- [ ] CI fails if TypeScript errors are introduced
-- [ ] CI fails if build breaks
+- [x] Workflow file exists and is valid YAML
+- [x] CI passes on a clean push to `main`
+- [x] CI fails if lint errors are introduced
+- [x] CI fails if TypeScript errors are introduced
+- [x] CI fails if build breaks
 
 ## Dependencies
 
@@ -43,6 +43,6 @@ Add a GitHub Actions workflow to run lint, type checking, and build verification
 
 ## Definition of Done
 
-- [ ] CI runs automatically on push
-- [ ] All steps pass on clean codebase
-- [ ] CI extended in Phase 4 to include Playwright E2E tests
+- [x] CI runs automatically on push
+- [x] All steps pass on clean codebase
+- [x] CI extended in Phase 4 to include Playwright E2E tests
