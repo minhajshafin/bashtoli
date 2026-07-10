@@ -18,11 +18,11 @@ Protect all `/admin/*` routes with session-based authentication and role-based a
 
 ## Acceptance Criteria
 
-- [ ] Unauthenticated request to `/admin` redirects to `/login`
-- [ ] Customer role cannot access any `/admin/*` route
-- [ ] Staff and admin roles can access admin routes
-- [ ] Session persists across page navigations
-- [ ] Admin layout renders with navigation links (Products, Categories, Orders placeholder)
+- [x] Unauthenticated request to `/admin` redirects to `/login`
+- [x] Customer role cannot access any `/admin/*` route
+- [x] Staff and admin roles can access admin routes
+- [x] Session persists across page navigations
+- [x] Admin layout renders with navigation links (Products, Categories, Orders placeholder)
 
 ## Dependencies
 
@@ -43,7 +43,7 @@ Protect all `/admin/*` routes with session-based authentication and role-based a
 
 ## Definition of Done
 
-- [ ] Role guard tested with customer, staff, and admin accounts
-- [ ] Middleware does not break public storefront routes
-- [ ] Admin shell layout is functional and navigable
-- [ ] No admin routes accessible without proper role
+- [x] Role guard tested with customer, staff, and admin accounts
+- [x] Middleware does not break public storefront routes
+- [x] Admin shell layout is functional and navigable
+- [x] No admin routes accessible without proper role
