@@ -34,3 +34,13 @@ export async function loginAction(
   // Session cookie is now set — redirect to admin dashboard
   redirect('/admin')
 }
+
+/**
+ * Server Action: sign out the current user.
+ * Clears the Supabase session cookie and redirects to /login.
+ */
+export async function logoutAction(): Promise<void> {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+  redirect('/login')
+}
