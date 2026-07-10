@@ -18,13 +18,13 @@ Build admin CRUD for product categories with slug generation and sort ordering.
 
 ## Acceptance Criteria
 
-- [ ] Admin can create a category with name and sort order
-- [ ] Slug auto-generates from name and is editable
-- [ ] Admin can reorder categories via sort_order field
-- [ ] Admin can edit existing category name/slug/sort_order
-- [ ] Delete blocked with message when category has products
-- [ ] Delete succeeds when category has no products
-- [ ] Invalid input rejected with clear error messages
+- [x] Admin can create a category with name and sort order
+- [x] Slug auto-generates from name and is editable
+- [x] Admin can reorder categories via sort_order field
+- [x] Admin can edit existing category name/slug/sort_order
+- [x] Delete blocked with message when category has products
+- [x] Delete succeeds when category has no products
+- [x] Invalid input rejected with clear error messages
 
 ## Dependencies
 
@@ -42,7 +42,7 @@ Build admin CRUD for product categories with slug generation and sort ordering.
 
 ## Definition of Done
 
-- [ ] Full CRUD cycle tested manually
-- [ ] Server-side Zod validation on all mutations
-- [ ] RLS policies allow staff/admin write, block customer
-- [ ] UI follows admin layout conventions
+- [x] Full CRUD cycle tested manually
+- [x] Server-side Zod validation on all mutations
+- [x] RLS policies allow staff/admin write, block customer
+- [x] UI follows admin layout conventions
