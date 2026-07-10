@@ -1,14 +1,17 @@
 import { type NextRequest } from 'next/server'
-import { updateSession } from '@/lib/supabase/middleware'
+import { adminGuard } from '@/lib/supabase/middleware'
 
 /**
- * Next.js root proxy (previously "middleware").
- * Calls updateSession on every matched request to keep Supabase auth
- * tokens refreshed. No redirects here — auth-gating is done inside
- * each layout/page so the logic stays co-located with the route.
+ * Next.js root middleware (file must be named proxy.ts for Next.js 16+).
+ *
+ * Delegates to `adminGuard` which:
+ *  1. Refreshes the Supabase session on every request (token rotation).
+ *  2. Enforces staff/admin-only access on all `/admin/*` routes.
+ *     – Unauthenticated → /login
+ *     – Customer role  → /
  */
 export async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  return await adminGuard(request)
 }
 
 export const config = {
