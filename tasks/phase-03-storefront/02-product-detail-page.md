@@ -20,13 +20,13 @@ Build the product detail page with image gallery, variant selection, stock displ
 
 ## Acceptance Criteria
 
-- [ ] PDP loads for any active product by slug
-- [ ] Image gallery shows all product images with thumbnail navigation
-- [ ] Selecting a variant updates price and stock display
-- [ ] Out-of-stock variants show "Out of Stock" and disable add-to-cart
-- [ ] Add to Cart adds selected variant + qty to guest cart (localStorage)
-- [ ] 404 page shown for inactive or non-existent products
-- [ ] Breadcrumb navigation works
+- [x] PDP loads for any active product by slug
+- [x] Image gallery shows all product images with thumbnail navigation
+- [x] Selecting a variant updates price and stock display
+- [x] Out-of-stock variants show "Out of Stock" and disable add-to-cart
+- [x] Add to Cart adds selected variant + qty to guest cart (localStorage)
+- [x] 404 page shown for inactive or non-existent products
+- [x] Breadcrumb navigation works
 
 ## Dependencies
 
@@ -47,7 +47,7 @@ Build the product detail page with image gallery, variant selection, stock displ
 
 ## Definition of Done
 
-- [ ] PDP renders correctly for products with single and multi-dimension variants
-- [ ] Add to Cart integrates with guest cart (next task)
-- [ ] Stock status accurate per variant
-- [ ] Page tested on mobile
+- [x] PDP renders correctly for products with single and multi-dimension variants
+- [x] Add to Cart integrates with guest cart (next task)
+- [x] Stock status accurate per variant
+- [x] Page tested on mobile
