@@ -19,13 +19,13 @@ Allow admin to upload, reorder, and delete multiple images per product via Supab
 
 ## Acceptance Criteria
 
-- [ ] Admin can upload multiple images to a product
-- [ ] Images stored in Supabase Storage with public read URL
-- [ ] Admin can reorder images (sort_order updates)
-- [ ] Admin can set alt_text per image
-- [ ] Admin can delete an image (removed from Storage and DB)
-- [ ] Files over 2 MB rejected with clear error
-- [ ] Non-image file types rejected
+- [x] Admin can upload multiple images to a product
+- [x] Images stored in Supabase Storage with public read URL
+- [x] Admin can reorder images (sort_order updates)
+- [x] Admin can set alt_text per image
+- [x] Admin can delete an image (removed from Storage and DB)
+- [x] Files over 2 MB rejected with clear error
+- [x] Non-image file types rejected
 
 ## Dependencies
 
@@ -44,7 +44,7 @@ Allow admin to upload, reorder, and delete multiple images per product via Supab
 
 ## Definition of Done
 
-- [ ] Multi-image upload tested with real files
-- [ ] Reorder and delete work correctly
-- [ ] Storage cleanup on delete verified
-- [ ] Owner can upload real product photos
+- [x] Multi-image upload tested with real files
+- [x] Reorder and delete work correctly
+- [x] Storage cleanup on delete verified
+- [x] Owner can upload real product photos
