@@ -6,6 +6,9 @@ import { OptionManager } from '@/components/admin/option-manager'
 import { VariantTable } from '@/components/admin/variant-table'
 import { ImageUploader } from '@/components/admin/image-uploader'
 import { ImageGalleryAdmin } from '@/components/admin/image-gallery-admin'
+import type { Database } from '@/lib/supabase/database.types'
+
+type OptionValueRow = Database['public']['Tables']['product_option_values']['Row']
 
 export const metadata: Metadata = {
   title: 'Edit Product',
@@ -86,7 +89,7 @@ export default async function EditProductPage({ params }: PageProps) {
 
   // Fetch option values separately using option IDs
   const optionIds = (optionsRes.data ?? []).map((opt) => opt.id)
-  let optionValues: any[] = []
+  let optionValues: OptionValueRow[] = []
 
   if (optionIds.length > 0) {
     const { data: valData, error: valError } = await supabase

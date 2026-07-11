@@ -37,6 +37,7 @@ export default function CartPage() {
     }
 
     validateItems()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, cart.length]) // only run when the set of items changes or loaded
 
   if (!isLoaded) {
