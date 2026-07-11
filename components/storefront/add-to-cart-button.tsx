@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 interface AddToCartButtonProps {
   variantId?: string
@@ -11,10 +11,13 @@ interface AddToCartButtonProps {
 export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(1)
 
+  const [prevVariantId, setPrevVariantId] = useState(variantId)
+
   // Reset quantity to 1 when selected variant changes
-  useEffect(() => {
+  if (variantId !== prevVariantId) {
+    setPrevVariantId(variantId)
     setQuantity(1)
-  }, [variantId])
+  }
 
   // Determine button state
   const isNoVariantSelected = stockQty === undefined

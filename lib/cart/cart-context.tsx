@@ -24,33 +24,43 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([])
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [state, setState] = useState<{ cart: CartItem[]; isLoaded: boolean }>({
+    cart: [],
+    isLoaded: false,
+  })
 
   // Load cart from localStorage only after component mounts (browser context)
   useEffect(() => {
-    setCart(getGuestCart())
-    setIsLoaded(true)
+    const timer = setTimeout(() => {
+      setState({
+        cart: getGuestCart(),
+        isLoaded: true,
+      })
+    }, 0)
+    return () => clearTimeout(timer)
   }, [])
+
+  const cart = state.cart
+  const isLoaded = state.isLoaded
 
   const addItem = (item: Omit<CartItem, 'qty'>, qty: number) => {
     const updated = addToGuestCart(item, qty)
-    setCart(updated)
+    setState((prev) => ({ ...prev, cart: updated }))
   }
 
   const updateQty = (variantId: string, qty: number) => {
     const updated = updateGuestCartQty(variantId, qty)
-    setCart(updated)
+    setState((prev) => ({ ...prev, cart: updated }))
   }
 
   const removeItem = (variantId: string) => {
     const updated = removeFromGuestCart(variantId)
-    setCart(updated)
+    setState((prev) => ({ ...prev, cart: updated }))
   }
 
   const clearCart = () => {
     clearGuestCart()
-    setCart([])
+    setState((prev) => ({ ...prev, cart: [] }))
   }
 
   const itemCount = cart.reduce((sum, item) => sum + item.qty, 0)
