@@ -20,15 +20,15 @@ Build admin product management with create, edit, delete, and active/draft toggl
 
 ## Acceptance Criteria
 
-- [ ] Admin can create a product with all required fields
-- [ ] Admin can toggle product between draft (inactive) and active
-- [ ] Admin can toggle product as featured (shows on home page)
-- [ ] Product list shows status badge (draft/active)
-- [ ] Admin can filter list by active/inactive/all
-- [ ] Admin can edit all product fields
-- [ ] Slug auto-generates from name (kebab-case); can be manually overridden; unique constraint enforced
-- [ ] Delete blocked with clear message if product has order history; soft-delete used otherwise
-- [ ] Inactive products do not appear in storefront queries (verified via RLS)
+- [x] Admin can create a product with all required fields
+- [x] Admin can toggle product between draft (inactive) and active
+- [x] Admin can toggle product as featured (shows on home page)
+- [x] Product list shows status badge (draft/active)
+- [x] Admin can filter list by active/inactive/all
+- [x] Admin can edit all product fields
+- [x] Slug auto-generates from name (kebab-case); can be manually overridden; unique constraint enforced
+- [x] Delete blocked with clear message if product has order history; soft-delete used otherwise
+- [x] Inactive products do not appear in storefront queries (verified via RLS)
 
 ## Dependencies
 
@@ -48,7 +48,7 @@ Build admin product management with create, edit, delete, and active/draft toggl
 
 ## Definition of Done
 
-- [ ] Product CRUD tested end-to-end
-- [ ] Active/draft toggle works and affects storefront visibility
-- [ ] Validation errors displayed in UI
-- [ ] Owner can begin entering real product data
+- [x] Product CRUD tested end-to-end
+- [x] Active/draft toggle works and affects storefront visibility
+- [x] Validation errors displayed in UI
+- [x] Owner can begin entering real product data
