@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { ProductForm } from '@/components/admin/product-form'
 import { OptionManager } from '@/components/admin/option-manager'
 import { VariantTable } from '@/components/admin/variant-table'
+import { ImageUploader } from '@/components/admin/image-uploader'
+import { ImageGalleryAdmin } from '@/components/admin/image-gallery-admin'
 
 export const metadata: Metadata = {
   title: 'Edit Product',
@@ -20,8 +22,8 @@ export default async function EditProductPage({ params }: PageProps) {
 
   const supabase = await createClient()
 
-  // Fetch product, categories, options, and variants in parallel
-  const [productRes, categoriesRes, optionsRes, variantsRes] =
+  // Fetch product, categories, options, variants, and images in parallel
+  const [productRes, categoriesRes, optionsRes, variantsRes, imagesRes] =
     await Promise.all([
       supabase.from('products').select('*').eq('id', id).single(),
       supabase
@@ -39,6 +41,11 @@ export default async function EditProductPage({ params }: PageProps) {
         .select('*')
         .eq('product_id', id)
         .order('created_at', { ascending: true }),
+      supabase
+        .from('product_images')
+        .select('*')
+        .eq('product_id', id)
+        .order('sort_order', { ascending: true }),
     ])
 
   if (productRes.error || !productRes.data) {
@@ -65,6 +72,14 @@ export default async function EditProductPage({ params }: PageProps) {
     return (
       <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">
         Failed to load product variants: {variantsRes.error.message}
+      </div>
+    )
+  }
+
+  if (imagesRes.error) {
+    return (
+      <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">
+        Failed to load product images: {imagesRes.error.message}
       </div>
     )
   }
@@ -108,7 +123,7 @@ export default async function EditProductPage({ params }: PageProps) {
       <div className="mx-auto max-w-2xl">
         <h1 className="text-2xl font-bold text-slate-900">Edit Product</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Modify details, manage product option axes, and edit variants.
+          Modify details, manage product option axes, edit variants, and manage image gallery.
         </p>
       </div>
 
@@ -137,6 +152,14 @@ export default async function EditProductPage({ params }: PageProps) {
           productId={id}
           variants={variantsRes.data ?? []}
         />
+      </div>
+
+      <div className="mx-auto max-w-2xl border-t border-slate-200 my-8" />
+
+      {/* Image Gallery management */}
+      <div className="mx-auto max-w-2xl space-y-6">
+        <ImageGalleryAdmin images={imagesRes.data ?? []} />
+        <ImageUploader productId={id} />
       </div>
     </div>
   )
