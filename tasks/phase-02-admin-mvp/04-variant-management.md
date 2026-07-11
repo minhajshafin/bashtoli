@@ -19,13 +19,13 @@ Enable admin to define product options and create sellable SKU variants with per
 
 ## Acceptance Criteria
 
-- [ ] Admin can add option "Size" with values S, M, L to a product
-- [ ] System generates one variant row per option value (single dimension)
-- [ ] Admin can set stock_qty and price per variant
-- [ ] Admin can add second option dimension (e.g. Color) and system generates combined SKUs
-- [ ] Each variant stores option_values as jsonb (e.g. `{"size":"L","color":"Red"}`)
-- [ ] Admin can deactivate individual variants
-- [ ] Variants with zero stock are visually flagged in admin
+- [x] Admin can add option "Size" with values S, M, L to a product
+- [x] System generates one variant row per option value (single dimension)
+- [x] Admin can set stock_qty and price per variant
+- [x] Admin can add second option dimension (e.g. Color) and system generates combined SKUs
+- [x] Each variant stores option_values as jsonb (e.g. `{"size":"L","color":"Red"}`)
+- [x] Admin can deactivate individual variants
+- [x] Variants with zero stock are visually flagged in admin
 
 ## Dependencies
 
@@ -44,7 +44,7 @@ Enable admin to define product options and create sellable SKU variants with per
 
 ## Definition of Done
 
-- [ ] Single-dimension and multi-dimension variants both work
-- [ ] Stock and price editable per variant
-- [ ] Variant data matches [Database — product_variants](../docs/database.md#product_variants)
-- [ ] Owner can configure real product variants
+- [x] Single-dimension and multi-dimension variants both work
+- [x] Stock and price editable per variant
+- [x] Variant data matches [Database — product_variants](../docs/database.md#product_variants)
+- [x] Owner can configure real product variants
