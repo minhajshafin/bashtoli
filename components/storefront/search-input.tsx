@@ -1,18 +1,21 @@
 'use client'
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 export function SearchInput() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [query, setQuery] = useState(searchParams.get('q') || '')
+  const qParam = searchParams.get('q') || ''
+  const [query, setQuery] = useState(qParam)
+  const [prevQParam, setPrevQParam] = useState(qParam)
 
   // Sync state if URL changes externally
-  useEffect(() => {
-    setQuery(searchParams.get('q') || '')
-  }, [searchParams])
+  if (qParam !== prevQParam) {
+    setPrevQParam(qParam)
+    setQuery(qParam)
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()

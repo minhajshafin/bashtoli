@@ -20,12 +20,14 @@ const PRODUCTS_PATH = '/admin/products'
  * Checks if two flat JSON option value records are equivalent.
  * e.g. { Size: 'S', Color: 'Red' } === { Color: 'Red', Size: 'S' }
  */
-function areOptionValuesEqual(v1: any, v2: any): boolean {
-  if (!v1 || !v2) return false
-  const keys1 = Object.keys(v1)
-  const keys2 = Object.keys(v2)
+function areOptionValuesEqual(v1: unknown, v2: unknown): boolean {
+  if (!v1 || !v2 || typeof v1 !== 'object' || typeof v2 !== 'object') return false
+  const o1 = v1 as Record<string, unknown>
+  const o2 = v2 as Record<string, unknown>
+  const keys1 = Object.keys(o1)
+  const keys2 = Object.keys(o2)
   if (keys1.length !== keys2.length) return false
-  return keys1.every((key) => v1[key] === v2[key])
+  return keys1.every((key) => o1[key] === o2[key])
 }
 
 /**
@@ -137,7 +139,7 @@ export async function saveProductOptionsAndValues(
   const combos = generateOptionCombinations(options)
 
   const variantsToKeepIds = new Set<string>()
-  const newVariantsToInsert: any[] = []
+  const newVariantsToInsert: Database['public']['Tables']['product_variants']['Insert'][] = []
 
   // Check which combos already exist, and which are new
   for (const combo of combos) {
