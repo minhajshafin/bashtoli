@@ -5,6 +5,7 @@ import { ImageGallery } from '@/components/storefront/image-gallery'
 import { VariantSelector } from '@/components/storefront/variant-selector'
 import { AddToCartButton } from '@/components/storefront/add-to-cart-button'
 import type { ProductDetailData } from '@/lib/queries/product-detail'
+import { useCart } from '@/lib/cart/cart-context'
 
 interface ProductDetailClientProps {
   detailData: ProductDetailData
@@ -12,6 +13,7 @@ interface ProductDetailClientProps {
 
 export function ProductDetailClient({ detailData }: ProductDetailClientProps) {
   const { product, images, variants, options } = detailData
+  const { addItem } = useCart()
 
   // State to hold user selected options
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
@@ -57,21 +59,27 @@ export function ProductDetailClient({ detailData }: ProductDetailClientProps) {
     return `৳${lowestActivePrice.toLocaleString()} - ৳${highestActivePrice.toLocaleString()}`
   }
 
-  // Handle temporary Add to Cart (will connect to Context/LocalStorage in Task 3)
+  // Handle Add to Cart via CartContext
   const handleAddToCart = (qty: number) => {
     if (!selectedVariant) return
 
-    console.log('Temporary add to cart:', {
-      variant_id: selectedVariant.id,
-      qty,
-      product_id: product.id,
-    })
+    const primaryImage = images?.[0]
+    const imageUrl = primaryImage?.url || null
 
-    alert(`Added ${qty} x "${product.name} ${
-      Object.keys(selectedOptions).length > 0
-        ? `(${Object.values(selectedOptions).join(' / ')})`
-        : ''
-    }" to cart!`)
+    const variantName = Object.keys(selectedOptions).length > 0
+      ? Object.values(selectedOptions).join(' / ')
+      : 'Default'
+
+    addItem({
+      variant_id: selectedVariant.id,
+      product_id: product.id,
+      name: product.name,
+      variant_name: variantName,
+      price: selectedVariant.price,
+      image_url: imageUrl,
+    }, qty)
+
+    alert(`Added ${qty} x "${product.name} (${variantName})" to cart!`)
   }
 
   return (
