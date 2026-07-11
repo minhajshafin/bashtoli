@@ -22,15 +22,15 @@ Build the public product listing page with category filtering for the customer s
 
 ## Acceptance Criteria
 
-- [ ] `/products` displays all active products (paginated, 12 per page)
-- [ ] Clicking a category filters the product list
-- [ ] Search input filters products by name
-- [ ] Pagination controls navigate between pages
-- [ ] Sold-out products show badge but remain visible
-- [ ] Inactive/draft products are not shown
-- [ ] Product cards link to `/products/[slug]`
-- [ ] Layout is responsive on mobile and desktop
-- [ ] Page loads with optimized images via Next.js `<Image>`
+- [x] `/products` displays all active products (paginated, 12 per page)
+- [x] Clicking a category filters the product list
+- [x] Search input filters products by name
+- [x] Pagination controls navigate between pages
+- [x] Sold-out products show badge but remain visible
+- [x] Inactive/draft products are not shown
+- [x] Product cards link to `/products/[slug]`
+- [x] Layout is responsive on mobile and desktop
+- [x] Page loads with optimized images via Next.js `<Image>`
 
 ## Dependencies
 
@@ -51,7 +51,7 @@ Build the public product listing page with category filtering for the customer s
 
 ## Definition of Done
 
-- [ ] Listing page renders real products from admin catalog
-- [ ] Category filtering works correctly
-- [ ] Mobile-responsive layout verified
-- [ ] Only active products visible
+- [x] Listing page renders real products from admin catalog
+- [x] Category filtering works correctly
+- [x] Mobile-responsive layout verified
+- [x] Only active products visible
