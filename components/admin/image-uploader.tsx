@@ -72,8 +72,9 @@ export function ImageUploader({
       if (dbResult.error) {
         throw new Error(dbResult.error)
       }
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred during upload.')
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'An unexpected error occurred during upload.'
+      setError(message)
     } finally {
       setIsUploading(false)
     }

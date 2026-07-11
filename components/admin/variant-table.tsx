@@ -58,7 +58,7 @@ export function VariantTable({
   function handleChange(
     variantId: string,
     field: keyof VariantChange,
-    value: any
+    value: string | number | boolean | null
   ) {
     setSuccess(false)
     const variant = variants.find((v) => v.id === variantId)
