@@ -21,13 +21,13 @@ Implement guest shopping cart persisted in localStorage with cart page UI.
 
 ## Acceptance Criteria
 
-- [ ] Adding item from PDP updates cart and header badge
-- [ ] Cart persists after page reload
-- [ ] User can change quantity and remove items on `/cart`
-- [ ] Subtotal calculates correctly
-- [ ] Deactivated product in cart shows "unavailable" label
-- [ ] Checkout button disabled when cart has unavailable items
-- [ ] Empty cart shows appropriate empty state
+- [x] Adding item from PDP updates cart and header badge
+- [x] Cart persists after page reload
+- [x] User can change quantity and remove items on `/cart`
+- [x] Subtotal calculates correctly
+- [x] Deactivated product in cart shows "unavailable" label
+- [x] Checkout button disabled when cart has unavailable items
+- [x] Empty cart shows appropriate empty state
 
 ## Dependencies
 
@@ -47,7 +47,7 @@ Implement guest shopping cart persisted in localStorage with cart page UI.
 
 ## Definition of Done
 
-- [ ] Guest cart fully functional without login
-- [ ] Cart state consistent across all storefront pages
-- [ ] Unavailable item handling works
-- [ ] Ready for checkout integration (Phase 4)
+- [x] Guest cart fully functional without login
+- [x] Cart state consistent across all storefront pages
+- [x] Unavailable item handling works
+- [x] Ready for checkout integration (Phase 4)

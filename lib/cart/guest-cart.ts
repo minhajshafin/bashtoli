@@ -58,7 +58,7 @@ export function addToGuestCart(item: Omit<CartItem, 'qty'>, qty: number): CartIt
  * Update the quantity of a specific item in the guest cart.
  */
 export function updateGuestCartQty(variantId: string, qty: number): CartItem[] {
-  let cart = getGuestCart()
+  const cart = getGuestCart()
   const item = cart.find((i) => i.variant_id === variantId)
 
   if (item) {

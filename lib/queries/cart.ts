@@ -1,4 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
+import type { Database, Json } from '@/lib/supabase/database.types'
+
+type ProductRow = Database['public']['Tables']['products']['Row']
 
 export interface ValidatedCartItem {
   variant_id: string
@@ -6,7 +9,7 @@ export interface ValidatedCartItem {
   stock_qty: number
   active: boolean
   product_name: string
-  option_values: any
+  option_values: Json
 }
 
 /**
@@ -29,8 +32,12 @@ export async function validateCartItems(variantIds: string[]): Promise<Validated
 
   return (data || []).map((v) => {
     // Safe parent product active status check
-    const productActive = v.products ? (v.products as any).active === true : false
-    const productName = v.products ? (v.products as any).name : 'Unknown Product'
+    const product = Array.isArray(v.products)
+      ? (v.products[0] as ProductRow | undefined)
+      : (v.products as unknown as ProductRow | null)
+    
+    const productActive = product ? product.active === true : false
+    const productName = product ? product.name : 'Unknown Product'
 
     return {
       variant_id: v.id,
