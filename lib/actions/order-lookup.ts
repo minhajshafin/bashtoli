@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { orderLookupSchema } from '@/lib/validations/order-lookup'
 
 export type OrderLookupActionState = {
@@ -11,7 +11,7 @@ export type OrderLookupActionState = {
 
 /**
  * Server Action: Validates user entries and queries matching orders.
- * Returns success or a generic error to prevent order discovery.
+ * Uses createAdminClient to bypass guest RLS policies, returning success or generic error.
  */
 export async function lookupOrder(formData: {
   order_number: string
@@ -26,7 +26,7 @@ export async function lookupOrder(formData: {
     }
   }
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // 2. Query matching order (must match BOTH number and phone)
   const { data: order, error } = await supabase

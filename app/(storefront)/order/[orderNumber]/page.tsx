@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import React from 'react'
@@ -34,10 +34,11 @@ export default async function OrderConfirmationPage({
   const resolvedSearchParams = await searchParams
   const phoneParam = resolvedSearchParams?.phone
 
-  const supabase = await createClient()
+  // Use admin client to bypass guest select RLS policy
+  const adminDb = createAdminClient()
 
   // 1. Fetch order details
-  const { data: order, error: orderError } = await supabase
+  const { data: order, error: orderError } = await adminDb
     .from('orders')
     .select('*')
     .eq('order_number', orderNumber)
@@ -48,10 +49,11 @@ export default async function OrderConfirmationPage({
     notFound()
   }
 
-  // 2. Access control logic: verify owner or phone check
+  // 2. Access control logic: verify owner session or phone check
+  const client = await createClient()
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await client.auth.getUser()
 
   const isOwner = user && order.user_id === user.id
   const isGuestVerified =
@@ -85,7 +87,7 @@ export default async function OrderConfirmationPage({
   }
 
   // 3. Fetch order items (only if access granted)
-  const { data: itemsData, error: itemsError } = await supabase
+  const { data: itemsData, error: itemsError } = await adminDb
     .from('order_items')
     .select('*')
     .eq('order_id', order.id)
@@ -173,7 +175,7 @@ export default async function OrderConfirmationPage({
 
         {/* Order notes if any */}
         {order.notes && (
-          <div className="rounded-2xl bg-zinc-50 border border-zinc-200 p-4 text-xs text-zinc-600 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400">
+          <div className="rounded-2xl bg-zinc-50 border border-zinc-200 p-4 text-xs text-zinc-650 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400">
             <p className="font-bold text-zinc-850 dark:text-zinc-250 mb-0.5">Customer Notes</p>
             <p className="italic">{order.notes}</p>
           </div>

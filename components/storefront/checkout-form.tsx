@@ -104,8 +104,8 @@ export function CheckoutForm() {
       } else if (result.orderNumber) {
         // Clear guest cart in state/localStorage
         clearCart()
-        // Redirect to confirmation page
-        router.push(`/order/${result.orderNumber}`)
+        // Redirect to confirmation page with phone verification parameter
+        router.push(`/order/${result.orderNumber}?phone=${encodeURIComponent(phone)}`)
       }
     } catch (err) {
       console.error('Checkout submission error:', err)
