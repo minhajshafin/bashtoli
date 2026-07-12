@@ -23,13 +23,13 @@ Implement forgot password and reset password flows using Supabase Auth email lin
 
 ## Acceptance Criteria
 
-- [ ] Forgot password form sends reset email via Supabase Auth
-- [ ] Success message shown whether or not the email exists in the system
-- [ ] Reset link in email navigates to `/reset-password`
-- [ ] New password saved successfully via token
-- [ ] Weak or mismatched passwords rejected with clear error
-- [ ] Expired or invalid token shows appropriate error
-- [ ] User redirected to account or login after successful reset
+- [x] Forgot password form sends reset email via Supabase Auth
+- [x] Success message shown whether or not the email exists in the system
+- [x] Reset link in email navigates to `/reset-password`
+- [x] New password saved successfully via token
+- [x] Weak or mismatched passwords rejected with clear error
+- [x] Expired or invalid token shows appropriate error
+- [x] User redirected to account or login after successful reset
 
 ## Dependencies
 
@@ -46,6 +46,6 @@ Implement forgot password and reset password flows using Supabase Auth email lin
 
 ## Definition of Done
 
-- [ ] Full reset flow tested end-to-end
-- [ ] Token expiry handled gracefully
-- [ ] No user enumeration possible via forgot password form
+- [x] Full reset flow tested end-to-end
+- [x] Token expiry handled gracefully
+- [x] No user enumeration possible via forgot password form
