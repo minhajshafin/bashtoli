@@ -4,14 +4,21 @@ import React, { useState } from 'react'
 import { ImageGallery } from '@/components/storefront/image-gallery'
 import { VariantSelector } from '@/components/storefront/variant-selector'
 import { AddToCartButton } from '@/components/storefront/add-to-cart-button'
+import { WishlistButton } from '@/components/storefront/wishlist-button'
 import type { ProductDetailData } from '@/lib/queries/product-detail'
 import { useCart } from '@/lib/cart/cart-context'
 
 interface ProductDetailClientProps {
   detailData: ProductDetailData
+  isLoggedIn: boolean
+  initialIsWishlisted: boolean
 }
 
-export function ProductDetailClient({ detailData }: ProductDetailClientProps) {
+export function ProductDetailClient({
+  detailData,
+  isLoggedIn,
+  initialIsWishlisted,
+}: ProductDetailClientProps) {
   const { product, images, variants, options } = detailData
   const { addItem } = useCart()
 
@@ -138,12 +145,21 @@ export function ProductDetailClient({ detailData }: ProductDetailClientProps) {
         {/* Divider before cart action */}
         {options.length > 0 && <hr className="border-zinc-200 my-6 dark:border-zinc-800" />}
 
-        {/* Qty Picker & Add to Cart */}
-        <AddToCartButton
-          variantId={selectedVariant?.id}
-          stockQty={isSelectionComplete ? selectedVariant?.stock_qty ?? 0 : undefined}
-          onAddToCart={handleAddToCart}
-        />
+        {/* Qty Picker & Add to Cart & Wishlist */}
+        <div className="flex items-end gap-3">
+          <div className="flex-1">
+            <AddToCartButton
+              variantId={selectedVariant?.id}
+              stockQty={isSelectionComplete ? selectedVariant?.stock_qty ?? 0 : undefined}
+              onAddToCart={handleAddToCart}
+            />
+          </div>
+          <WishlistButton
+            productId={product.id}
+            isLoggedIn={isLoggedIn}
+            initialIsWishlisted={initialIsWishlisted}
+          />
+        </div>
       </div>
     </div>
   )

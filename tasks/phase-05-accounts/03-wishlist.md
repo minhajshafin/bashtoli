@@ -18,12 +18,12 @@ Implement account-only wishlist (save for later) functionality.
 
 ## Acceptance Criteria
 
-- [ ] Logged-in user can add product to wishlist from PDP
-- [ ] Wishlist page shows saved products with images and prices
-- [ ] User can remove items from wishlist
-- [ ] Duplicate add handled gracefully (no error)
-- [ ] Guest users do not see wishlist button
-- [ ] `/account/wishlist` redirects to login for unauthenticated users
+- [x] Logged-in user can add product to wishlist from PDP
+- [x] Wishlist page shows saved products with images and prices
+- [x] User can remove items from wishlist
+- [x] Duplicate add handled gracefully (no error)
+- [x] Guest users do not see wishlist button
+- [x] `/account/wishlist` redirects to login for unauthenticated users
 
 ## Dependencies
 
@@ -41,6 +41,6 @@ Implement account-only wishlist (save for later) functionality.
 
 ## Definition of Done
 
-- [ ] Wishlist add/remove tested
-- [ ] Account-only access enforced
-- [ ] UNIQUE constraint prevents duplicates
+- [x] Wishlist add/remove tested
+- [x] Account-only access enforced
+- [x] UNIQUE constraint prevents duplicates
