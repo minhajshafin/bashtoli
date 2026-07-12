@@ -21,14 +21,14 @@ Implement customer authentication with Supabase Auth for sign up, log in, and lo
 
 ## Acceptance Criteria
 
-- [ ] New user can sign up with email and password
-- [ ] Verification email sent after signup; login blocked until email verified
-- [ ] User can log in and see authenticated state in header
-- [ ] User can log out; guest cart in localStorage remains
-- [ ] Profile row created automatically on sign up with role `customer`
-- [ ] Invalid credentials show clear error message
-- [ ] Protected account routes redirect to login when unauthenticated
-- [ ] "Forgot password?" link visible on login page
+- [x] New user can sign up with email and password
+- [x] Verification email sent after signup; login blocked until email verified
+- [x] User can log in and see authenticated state in header
+- [x] User can log out; guest cart in localStorage remains
+- [x] Profile row created automatically on sign up with role `customer`
+- [x] Invalid credentials show clear error message
+- [x] Protected account routes redirect to login when unauthenticated
+- [x] "Forgot password?" link visible on login page
 
 ## Dependencies
 
@@ -48,7 +48,7 @@ Implement customer authentication with Supabase Auth for sign up, log in, and lo
 
 ## Definition of Done
 
-- [ ] Sign up, login, logout cycle tested
-- [ ] Profile auto-creation verified
-- [ ] Guest cart preserved on logout
-- [ ] Auth state reflected in UI
+- [x] Sign up, login, logout cycle tested
+- [x] Profile auto-creation verified
+- [x] Guest cart preserved on logout
+- [x] Auth state reflected in UI

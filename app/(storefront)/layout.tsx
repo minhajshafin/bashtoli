@@ -4,6 +4,7 @@ import React from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { CartProvider } from '@/lib/cart/cart-context'
 import { CartIcon } from '@/components/storefront/cart-icon'
+import { logoutAction } from '@/lib/actions/auth'
 
 export const metadata: Metadata = {
   title: {
@@ -20,21 +21,22 @@ export default async function StorefrontLayout({
 }) {
   const supabase = await createClient()
 
-  // Concurrently fetch auth user to determine if we should render admin panel link
+  // Fetch auth user and profile details
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  let isStaffOrAdmin = false
+  let profile = null
   if (user) {
-    const { data: profile } = await supabase
+    const { data: prof } = await supabase
       .from('profiles')
-      .select('role')
+      .select('*')
       .eq('id', user.id)
       .maybeSingle()
-
-    isStaffOrAdmin = profile?.role === 'staff' || profile?.role === 'admin'
+    profile = prof
   }
+
+  const isStaffOrAdmin = profile?.role === 'staff' || profile?.role === 'admin'
 
   return (
     <CartProvider>
@@ -77,12 +79,28 @@ export default async function StorefrontLayout({
               <CartIcon />
 
               {/* User Login/Account Link */}
-              <Link
-                href="/login"
-                className="text-sm font-bold text-zinc-600 hover:text-amber-600 transition-colors dark:text-zinc-400 dark:hover:text-amber-500"
-              >
-                Account
-              </Link>
+              {profile ? (
+                <div className="flex items-center gap-3">
+                  <span className="hidden sm:inline text-xs font-bold text-zinc-500 dark:text-zinc-400 max-w-[120px] truncate">
+                    {profile.full_name || user?.email}
+                  </span>
+                  <form action={logoutAction} className="inline-block">
+                    <button
+                      type="submit"
+                      className="text-sm font-bold text-zinc-600 hover:text-amber-600 transition-colors dark:text-zinc-400 dark:hover:text-amber-500"
+                    >
+                      Logout
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="text-sm font-bold text-zinc-600 hover:text-amber-600 transition-colors dark:text-zinc-400 dark:hover:text-amber-500"
+                >
+                  Account
+                </Link>
+              )}
             </div>
           </div>
         </header>

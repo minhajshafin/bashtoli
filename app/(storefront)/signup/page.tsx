@@ -3,35 +3,26 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { AuthForm } from '@/components/storefront/auth-form'
 
-interface LoginPageProps {
-  searchParams: Promise<{
-    redirectTo?: string
-  }>
-}
-
 export async function generateMetadata() {
   return {
-    title: 'Sign In | Bashtoli',
-    description: 'Sign in to your Bashtoli account to view orders and manage saved details.',
+    title: 'Create Account | Bashtoli',
+    description: 'Join Bashtoli to track orders and save shipping addresses.',
   }
 }
 
 /**
- * Storefront Login Page.
- * Server component that redirects active auth users immediately and renders the Login Form.
+ * Storefront Signup Page.
+ * Server component that redirects active auth users immediately and renders the Signup Form.
  */
-export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const resolvedSearchParams = await searchParams
-  const redirectTo = resolvedSearchParams?.redirectTo || '/products'
-
+export default async function SignupPage() {
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // If user is already authenticated, redirect them away
+  // If user is already authenticated, redirect them away to products catalog
   if (user) {
-    redirect(redirectTo)
+    redirect('/products')
   }
 
   return (
@@ -39,14 +30,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-            Welcome Back
+            Create Account
           </h1>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Sign in to access your Bashtoli account
+            Join Bashtoli to save addresses and track orders
           </p>
         </div>
 
-        <AuthForm type="login" />
+        <AuthForm type="signup" />
       </div>
     </div>
   )
