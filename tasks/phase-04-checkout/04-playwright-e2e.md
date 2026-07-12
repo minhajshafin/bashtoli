@@ -22,11 +22,11 @@ Write the first Playwright E2E test covering browse → add to cart → COD chec
 
 ## Acceptance Criteria
 
-- [ ] Playwright test passes locally in headless mode
-- [ ] Test covers full guest checkout happy path
-- [ ] Order number visible on confirmation page
-- [ ] Test is repeatable (cleans up or uses isolated data)
-- [ ] `npm run test:e2e` script added to package.json
+- [x] Playwright test passes locally in headless mode
+- [x] Test covers full guest checkout happy path
+- [x] Order number visible on confirmation page
+- [x] Test is repeatable (cleans up or uses isolated data)
+- [x] `npm run test:e2e` script added to package.json
 
 ## Dependencies
 
@@ -45,7 +45,7 @@ Write the first Playwright E2E test covering browse → add to cart → COD chec
 
 ## Definition of Done
 
-- [ ] E2E test passes consistently
-- [ ] Test data seed script documented
-- [ ] Playwright configured for local dev
-- [ ] Test added to pre-launch checklist
+- [x] E2E test passes consistently
+- [x] Test data seed script documented
+- [x] Playwright configured for local dev
+- [x] Test added to pre-launch checklist
