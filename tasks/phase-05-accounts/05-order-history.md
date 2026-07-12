@@ -20,14 +20,14 @@ Allow logged-in customers to view their past orders linked by `user_id`.
 
 ## Acceptance Criteria
 
-- [ ] Logged-in user sees list of their orders
-- [ ] After signup, user is prompted to claim matching guest orders (phone/email match)
-- [ ] Claimed guest orders appear in order history
-- [ ] Order detail shows items, status, totals, and delivery zone/fee
-- [ ] Customer can cancel pending orders within 24 hours; Cancel button hidden after window
-- [ ] Cancellation restocks items and redirects with confirmation
-- [ ] Empty state when user has no orders
-- [ ] Unauthenticated access redirects to login
+- [x] Logged-in user sees list of their orders
+- [x] After signup, user is prompted to claim matching guest orders (phone/email match)
+- [x] Claimed guest orders appear in order history
+- [x] Order detail shows items, status, totals, and delivery zone/fee
+- [x] Customer can cancel pending orders within 24 hours; Cancel button hidden after window
+- [x] Cancellation restocks items and redirects with confirmation
+- [x] Empty state when user has no orders
+- [x] Unauthenticated access redirects to login
 
 ## Dependencies
 
@@ -48,6 +48,6 @@ Allow logged-in customers to view their past orders linked by `user_id`.
 
 ## Definition of Done
 
-- [ ] Order history displays correctly for logged-in users
-- [ ] RLS restricts to own orders only
-- [ ] Account navigation complete (orders, addresses, wishlist)
+- [x] Order history displays correctly for logged-in users
+- [x] RLS restricts to own orders only
+- [x] Account navigation complete (orders, addresses, wishlist)

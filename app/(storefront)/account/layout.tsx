@@ -50,6 +50,18 @@ export default async function AccountLayout({
             </div>
             <nav className="flex flex-row lg:flex-col gap-1.5 overflow-x-auto lg:overflow-x-visible">
               <Link
+                href="/account"
+                className="shrink-0 flex items-center rounded-xl px-4 py-2.5 text-xs font-semibold text-zinc-650 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
+              >
+                Overview
+              </Link>
+              <Link
+                href="/account/orders"
+                className="shrink-0 flex items-center rounded-xl px-4 py-2.5 text-xs font-semibold text-zinc-650 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
+              >
+                Order History
+              </Link>
+              <Link
                 href="/account/addresses"
                 className="shrink-0 flex items-center rounded-xl px-4 py-2.5 text-xs font-semibold text-zinc-650 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
               >

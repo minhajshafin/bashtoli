@@ -5,6 +5,7 @@ import React from 'react'
 import { OrderStatus } from '@/components/storefront/order-status'
 import { OrderLookupForm } from '@/components/storefront/order-lookup-form'
 import { WhatsAppLink } from '@/components/storefront/whatsapp-link'
+import { CancelOrderButton } from '@/components/storefront/cancel-order-button'
 
 interface OrderPageProps {
   params: Promise<{
@@ -22,6 +23,16 @@ export async function generateMetadata({ params }: OrderPageProps) {
     description: 'Track your Bashtoli purchase status and details.',
     robots: { index: false, follow: false },
   }
+}
+
+/**
+ * Checks if a pending order is cancelable (placed within the last 24 hours).
+ * Declared outside the component render block to keep the component pure.
+ */
+function isOrderCancelable(createdAtStr: string, status: string): boolean {
+  if (status !== 'pending') return false
+  const createdAt = new Date(createdAtStr)
+  return createdAt.getTime() > Date.now() - 24 * 60 * 60 * 1000
 }
 
 export default async function OrderConfirmationPage({
@@ -104,6 +115,8 @@ export default async function OrderConfirmationPage({
     hour: '2-digit',
     minute: '2-digit',
   })
+
+  const isPendingAndCancelable = isOrderCancelable(order.created_at, order.status)
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
@@ -228,6 +241,9 @@ export default async function OrderConfirmationPage({
 
       {/* Continue shopping links CTA */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+        {isOwner && isPendingAndCancelable && (
+          <CancelOrderButton orderId={order.id} />
+        )}
         <WhatsAppLink orderNumber={order.order_number} />
         <Link
           href="/products"
