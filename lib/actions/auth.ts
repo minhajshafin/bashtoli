@@ -1,8 +1,14 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
-import { loginSchema, signupSchema } from '@/lib/validations/auth'
+import {
+  loginSchema,
+  signupSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from '@/lib/validations/auth'
 
 export type LoginState = {
   error: string | null
@@ -13,6 +19,18 @@ export type SignupState = {
   error: string | null
   success?: boolean
   fieldErrors?: Partial<Record<'fullName' | 'email' | 'password' | 'confirmPassword', string[]>>
+}
+
+export type ForgotPasswordState = {
+  error: string | null
+  success?: boolean
+  fieldErrors?: Partial<Record<'email', string[]>>
+}
+
+export type ResetPasswordState = {
+  error: string | null
+  success?: boolean
+  fieldErrors?: Partial<Record<'password' | 'confirmPassword', string[]>>
 }
 
 /**
@@ -160,4 +178,93 @@ export async function logoutAction(): Promise<void> {
   const supabase = await createClient()
   await supabase.auth.signOut()
   redirect('/products')
+}
+
+/**
+ * Server Action: Forgot Password.
+ * Triggers reset password link to customer email.
+ * Returns success regardless of user existence to avoid user enumeration.
+ */
+export async function forgotPasswordAction(
+  _prevState: ForgotPasswordState,
+  formData: FormData
+): Promise<ForgotPasswordState> {
+  const email = formData.get('email') as string
+
+  const parsed = forgotPasswordSchema.safeParse({ email })
+  if (!parsed.success) {
+    return {
+      error: 'Please fix the errors below.',
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    }
+  }
+
+  const supabase = await createClient()
+  const headersList = await headers()
+  const host = headersList.get('host')
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+  
+  // Set redirection to auth callback path
+  const redirectTo = `${protocol}://${host}/api/auth/callback?next=/reset-password`
+
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+      redirectTo,
+    })
+
+    if (error) {
+      console.error('resetPasswordForEmail error:', error)
+    }
+  } catch (err) {
+    console.error('Forgot password action unexpected error:', err)
+  }
+
+  return {
+    error: null,
+    success: true,
+  }
+}
+
+/**
+ * Server Action: Reset Password.
+ * Updates user password details in Supabase Auth.
+ */
+export async function resetPasswordAction(
+  _prevState: ResetPasswordState,
+  formData: FormData
+): Promise<ResetPasswordState> {
+  const password = formData.get('password') as string
+  const confirmPassword = formData.get('confirmPassword') as string
+
+  const parsed = resetPasswordSchema.safeParse({ password, confirmPassword })
+  if (!parsed.success) {
+    return {
+      error: 'Please fix the errors below.',
+      fieldErrors: parsed.error.flatten().fieldErrors,
+    }
+  }
+
+  const supabase = await createClient()
+
+  try {
+    const { error } = await supabase.auth.updateUser({
+      password: parsed.data.password,
+    })
+
+    if (error) {
+      return {
+        error: error.message || 'Failed to update your password. Please make sure your reset link is still valid.',
+      }
+    }
+
+    return {
+      error: null,
+      success: true,
+    }
+  } catch (err) {
+    console.error('Reset password action error:', err)
+    return {
+      error: 'An unexpected error occurred while resetting your password.',
+    }
+  }
 }

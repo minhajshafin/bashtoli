@@ -33,3 +33,29 @@ export const signupSchema = z
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   })
+
+/**
+ * Validation schema for forgot password email submission.
+ */
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .email('Please enter a valid email address')
+    .transform((val) => val.trim().toLowerCase()),
+})
+
+/**
+ * Validation schema for setting a new password.
+ */
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters long')
+      .max(72, 'Password is too long'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
