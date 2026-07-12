@@ -25,16 +25,16 @@ Implement Cash on Delivery checkout with stock validation, order creation, and i
 
 ## Acceptance Criteria
 
-- [ ] Guest can complete checkout without an account
-- [ ] Delivery zone selector shown for delivery; hidden for pickup
-- [ ] Correct delivery fee applied based on zone (70 / 120 / 0)
-- [ ] Form validation rejects missing required fields
-- [ ] Order rejected with message when stock insufficient
-- [ ] Concurrent orders for last item: only one succeeds (transaction)
-- [ ] Order number generated in correct format (`ORD-YYYYMMDD-NNNN`)
-- [ ] Stock decremented atomically on order creation
-- [ ] Order confirmation page shows order details and delivery fee
-- [ ] Guest cart cleared after successful checkout
+- [x] Guest can complete checkout without an account
+- [x] Delivery zone selector shown for delivery; hidden for pickup
+- [x] Correct delivery fee applied based on zone (70 / 120 / 0)
+- [x] Form validation rejects missing required fields
+- [x] Order rejected with message when stock insufficient
+- [x] Concurrent orders for last item: only one succeeds (transaction)
+- [x] Order number generated in correct format (`ORD-YYYYMMDD-NNNN`)
+- [x] Stock decremented atomically on order creation
+- [x] Order confirmation page shows order details and delivery fee
+- [x] Guest cart cleared after successful checkout
 
 ## Dependencies
 
@@ -56,7 +56,7 @@ Implement Cash on Delivery checkout with stock validation, order creation, and i
 
 ## Definition of Done
 
-- [ ] End-to-end guest checkout works
-- [ ] Stock decrement verified in database
-- [ ] Order number unique and human-readable
-- [ ] Transaction rollback on failure tested
+- [x] End-to-end guest checkout works
+- [x] Stock decrement verified in database
+- [x] Order number unique and human-readable
+- [x] Transaction rollback on failure tested
