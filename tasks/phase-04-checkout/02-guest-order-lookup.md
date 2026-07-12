@@ -17,11 +17,11 @@ Allow guests to look up order status using order number and phone number without
 
 ## Acceptance Criteria
 
-- [ ] Guest enters order number + phone and sees order status
-- [ ] Mismatched phone returns generic "not found" (no info leak)
-- [ ] Valid lookup shows current order status and item summary
-- [ ] Lookup works without authentication
-- [ ] Invalid order number returns appropriate error
+- [x] Guest enters order number + phone and sees order status
+- [x] Mismatched phone returns generic "not found" (no info leak)
+- [x] Valid lookup shows current order status and item summary
+- [x] Lookup works without authentication
+- [x] Invalid order number returns appropriate error
 
 ## Dependencies
 
@@ -40,6 +40,6 @@ Allow guests to look up order status using order number and phone number without
 
 ## Definition of Done
 
-- [ ] Guest lookup tested with valid and invalid inputs
-- [ ] No sensitive data leaked on failed lookup
-- [ ] Order status reflects current DB state
+- [x] Guest lookup tested with valid and invalid inputs
+- [x] No sensitive data leaked on failed lookup
+- [x] Order status reflects current DB state
