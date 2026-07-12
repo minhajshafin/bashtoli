@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { checkoutSchema } from '@/lib/validations/checkout'
 import { getDeliveryFee } from '@/lib/config/delivery'
 import type { CartItem } from '@/lib/cart/guest-cart'
+import { sendOrderEmails } from '@/lib/email/resend'
 
 
 export type CheckoutActionState = {
@@ -139,6 +140,26 @@ export async function submitCheckout(
     }
     return { error: 'Failed to place order: ' + rpcError.message }
   }
+
+  // 6. Trigger emails asynchronously (fire-and-forget)
+  // We do not await this to keep checkout confirmation redirects fast
+  sendOrderEmails(
+    {
+      order_number: orderNumber as string,
+      customer_name: parsed.data.customer_name,
+      phone: parsed.data.phone,
+      guest_email: parsed.data.guest_email || null,
+      address: parsed.data.address,
+      fulfillment_type: parsed.data.fulfillment_type,
+      delivery_zone: parsed.data.delivery_zone || null,
+      delivery_fee: deliveryFee,
+      subtotal: subtotal,
+      total: total,
+    },
+    itemsParameter
+  ).catch((err) => {
+    console.error('Asynchronous sendOrderEmails failed:', err)
+  })
 
   return {
     error: null,

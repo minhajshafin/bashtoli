@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { OrderStatus } from '@/components/storefront/order-status'
 import { OrderLookupForm } from '@/components/storefront/order-lookup-form'
+import { WhatsAppLink } from '@/components/storefront/whatsapp-link'
 
 interface OrderPageProps {
   params: Promise<{
@@ -225,17 +226,12 @@ export default async function OrderConfirmationPage({
 
       {/* Continue shopping links CTA */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+        <WhatsAppLink orderNumber={order.order_number} />
         <Link
           href="/products"
-          className="w-full sm:w-auto inline-flex h-11 items-center justify-center rounded-xl bg-amber-600 px-6 text-sm font-bold text-white shadow-md shadow-amber-600/10 hover:bg-amber-700 transition-colors"
+          className="w-full sm:w-auto inline-flex h-11 items-center justify-center rounded-xl bg-zinc-900 px-6 text-sm font-bold text-white shadow-md hover:bg-zinc-800 transition-colors dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           Continue Shopping
-        </Link>
-        <Link
-          href="/products"
-          className="w-full sm:w-auto inline-flex h-11 items-center justify-center rounded-xl border border-zinc-200 bg-white px-6 text-sm font-bold text-zinc-700 hover:bg-zinc-50 transition-colors dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900"
-        >
-          Browse Catalog
         </Link>
       </div>
     </div>

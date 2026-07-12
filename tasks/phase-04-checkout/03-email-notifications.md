@@ -22,14 +22,14 @@ Send transactional emails on order creation to owner/staff and customer (when em
 
 ## Acceptance Criteria
 
-- [ ] Owner/staff receives email on new order (to `ADMIN_NOTIFICATION_EMAIL`)
-- [ ] Customer receives confirmation email when email provided at checkout
-- [ ] No email sent when customer leaves email blank
-- [ ] Email contains order number, items, total, and delivery zone/fee
-- [ ] Failed email send does not block order creation; error logged
-- [ ] Dev environment uses Resend test mode
-- [ ] WhatsApp link on confirmation page opens chat with pre-filled message
-- [ ] Resend sender domain verified (Resend dashboard) before production deploy
+- [x] Owner/staff receives email on new order (to `ADMIN_NOTIFICATION_EMAIL`)
+- [x] Customer receives confirmation email when email provided at checkout
+- [x] No email sent when customer leaves email blank
+- [x] Email contains order number, items, total, and delivery zone/fee
+- [x] Failed email send does not block order creation; error logged
+- [x] Dev environment uses Resend test mode
+- [x] WhatsApp link on confirmation page opens chat with pre-filled message
+- [x] Resend sender domain verified (Resend dashboard) before production deploy
 
 ## Dependencies
 
@@ -49,7 +49,7 @@ Send transactional emails on order creation to owner/staff and customer (when em
 
 ## Definition of Done
 
-- [ ] Both email types tested in dev (Resend test mode)
-- [ ] Email failure handled without breaking checkout
-- [ ] WhatsApp link functional with configured number
-- [ ] Email templates readable on mobile
+- [x] Both email types tested in dev (Resend test mode)
+- [x] Email failure handled without breaking checkout
+- [x] WhatsApp link functional with configured number
+- [x] Email templates readable on mobile
