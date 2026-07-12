@@ -19,13 +19,13 @@ Allow logged-in customers to save, manage, and use addresses that pre-fill the c
 
 ## Acceptance Criteria
 
-- [ ] Logged-in user can add an address with label and phone
-- [ ] User can set one address as default
-- [ ] Setting new default unsets previous default
-- [ ] Checkout form pre-fills name, phone, address from default
-- [ ] User can switch to a different saved address at checkout
-- [ ] User can edit and delete addresses
-- [ ] Guest checkout unaffected (no address saving)
+- [x] Logged-in user can add an address with label and phone
+- [x] User can set one address as default
+- [x] Setting new default unsets previous default
+- [x] Checkout form pre-fills name, phone, address from default
+- [x] User can switch to a different saved address at checkout
+- [x] User can edit and delete addresses
+- [x] Guest checkout unaffected (no address saving)
 
 ## Dependencies
 
@@ -45,7 +45,7 @@ Allow logged-in customers to save, manage, and use addresses that pre-fill the c
 
 ## Definition of Done
 
-- [ ] Address CRUD tested
-- [ ] Default address logic works correctly
-- [ ] Checkout pre-fill verified for logged-in users
-- [ ] RLS restricts addresses to own user
+- [x] Address CRUD tested
+- [x] Default address logic works correctly
+- [x] Checkout pre-fill verified for logged-in users
+- [x] RLS restricts addresses to own user

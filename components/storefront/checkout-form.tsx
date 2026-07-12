@@ -8,15 +8,39 @@ import { submitCheckout, type CheckoutActionState } from '@/lib/actions/checkout
 import { checkCartItemsAvailability } from '@/lib/actions/cart'
 import { DELIVERY_FEES } from '@/lib/config/delivery'
 
-export function CheckoutForm() {
+interface SavedAddress {
+  id: string
+  label: string | null
+  full_address: string
+  phone: string | null
+  is_default: boolean
+}
+
+interface CheckoutFormProps {
+  savedAddresses?: SavedAddress[]
+  userEmail?: string | null
+  userFullName?: string | null
+}
+
+export function CheckoutForm({
+  savedAddresses = [],
+  userEmail = null,
+  userFullName = null,
+}: CheckoutFormProps) {
   const router = useRouter()
   const { cart, isLoaded, subtotal, clearCart } = useCart()
 
   // Form Fields State
-  const [customerName, setCustomerName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [guestEmail, setGuestEmail] = useState('')
-  const [address, setAddress] = useState('')
+  const [customerName, setCustomerName] = useState(userFullName || '')
+  const [phone, setPhone] = useState(() => {
+    const defaultAddr = savedAddresses.find((a) => a.is_default)
+    return defaultAddr?.phone || ''
+  })
+  const [guestEmail, setGuestEmail] = useState(userEmail || '')
+  const [address, setAddress] = useState(() => {
+    const defaultAddr = savedAddresses.find((a) => a.is_default)
+    return defaultAddr?.full_address || ''
+  })
   const [notes, setNotes] = useState('')
   const [fulfillmentType, setFulfillmentType] = useState<'delivery' | 'pickup'>('delivery')
   const [deliveryZone, setDeliveryZone] = useState<'inside_dhaka' | 'outside_dhaka' | null>('inside_dhaka')
@@ -40,6 +64,8 @@ export function CheckoutForm() {
 
     checkCart()
   }, [isLoaded, cart])
+
+
 
   if (!isLoaded) {
     return (
@@ -131,6 +157,48 @@ export function CheckoutForm() {
         )}
 
         <div className="space-y-4">
+          {/* Saved Address Selector */}
+          {savedAddresses.length > 0 && (
+            <div className="space-y-2 pb-2 border-b border-zinc-100 dark:border-zinc-800">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                Use Saved Address
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {savedAddresses.map((addr) => {
+                  const isSelected = address === addr.full_address && phone === addr.phone
+                  return (
+                    <button
+                      key={addr.id}
+                      type="button"
+                      onClick={() => {
+                        setPhone(addr.phone || '')
+                        setAddress(addr.full_address)
+                      }}
+                      className={`text-left p-3.5 rounded-2xl border transition-all text-xs space-y-1 ${
+                        isSelected
+                          ? 'border-amber-500 bg-amber-50/5 text-zinc-900 dark:border-amber-500/50 dark:text-zinc-50'
+                          : 'border-zinc-200 bg-white hover:border-zinc-300 text-zinc-650 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-extrabold uppercase text-[10px] tracking-wider text-zinc-850 dark:text-zinc-200">
+                          {addr.label || 'Saved Address'}
+                        </span>
+                        {addr.is_default && (
+                          <span className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500 px-1.5 py-0.5 rounded text-[8px] font-bold">
+                            Default
+                          </span>
+                        )}
+                      </div>
+                      <p className="font-bold text-zinc-900 dark:text-zinc-50">{addr.phone || 'No phone number'}</p>
+                      <p className="truncate text-zinc-500 dark:text-zinc-400 max-w-full">{addr.full_address}</p>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Customer Name */}
           <div>
             <label htmlFor="customer_name" className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 block mb-1">
