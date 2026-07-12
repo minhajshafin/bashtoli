@@ -18,13 +18,13 @@ Merge guest localStorage cart into the user's server-side cart on login, and per
 
 ## Acceptance Criteria
 
-- [ ] Guest adds items, logs in → items appear in account cart
-- [ ] Conflicting quantities: higher qty kept
-- [ ] Deactivated product in guest cart dropped on merge with notification
-- [ ] Logged-in user adds item → saved to DB cart
-- [ ] Cart persists across devices for logged-in user
-- [ ] Logout preserves localStorage guest cart
-- [ ] Cart page works for both guest (localStorage) and logged-in (DB) contexts
+- [x] Guest adds items, logs in → items appear in account cart
+- [x] Conflicting quantities: higher qty kept
+- [x] Deactivated product in guest cart dropped on merge with notification
+- [x] Logged-in user adds item → saved to DB cart
+- [x] Cart persists across devices for logged-in user
+- [x] Logout preserves localStorage guest cart
+- [x] Cart page works for both guest (localStorage) and logged-in (DB) contexts
 
 ## Dependencies
 
@@ -43,7 +43,7 @@ Merge guest localStorage cart into the user's server-side cart on login, and per
 
 ## Definition of Done
 
-- [ ] Merge tested with various scenarios (empty, overlap, deactivated items)
-- [ ] DB cart CRUD works for logged-in users
-- [ ] Guest and logged-in cart paths both functional
-- [ ] No data loss on login/logout cycle
+- [x] Merge tested with various scenarios (empty, overlap, deactivated items)
+- [x] DB cart CRUD works for logged-in users
+- [x] Guest and logged-in cart paths both functional
+- [x] No data loss on login/logout cycle
