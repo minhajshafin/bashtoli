@@ -18,12 +18,12 @@ Ensure all storefront and admin pages are fully responsive and usable on mobile 
 
 ## Acceptance Criteria
 
-- [ ] All storefront pages usable on 375px viewport without horizontal scroll
-- [ ] Mobile navigation menu works (open, navigate, close)
-- [ ] Checkout form fields accessible on mobile keyboard
-- [ ] Admin dashboard usable on tablet
-- [ ] Product image gallery swipeable on mobile
-- [ ] No content clipped or overlapping at any breakpoint
+- [x] All storefront pages usable on 375px viewport without horizontal scroll
+- [x] Mobile navigation menu works (open, navigate, close)
+- [x] Checkout form fields accessible on mobile keyboard
+- [x] Admin dashboard usable on tablet
+- [x] Product image gallery swipeable on mobile
+- [x] No content clipped or overlapping at any breakpoint
 
 ## Dependencies
 
@@ -41,6 +41,6 @@ Ensure all storefront and admin pages are fully responsive and usable on mobile 
 
 ## Definition of Done
 
-- [ ] Mobile audit completed for all pages
-- [ ] Issues found during audit are fixed
-- [ ] Tested on at least one real mobile device or emulator
+- [x] Mobile audit completed for all pages
+- [x] Issues found during audit are fixed
+- [x] Tested on at least one real mobile device or emulator

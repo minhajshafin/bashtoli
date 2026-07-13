@@ -6,6 +6,7 @@ import { CartProvider } from '@/lib/cart/cart-context'
 import { CartIcon } from '@/components/storefront/cart-icon'
 import { logoutAction } from '@/lib/actions/auth'
 import { Footer } from '@/components/storefront/footer'
+import { MobileNav } from '@/components/storefront/mobile-nav'
 
 export const metadata: Metadata = {
   title: {
@@ -114,6 +115,12 @@ export default async function StorefrontLayout({
                   Account
                 </Link>
               )}
+
+              {/* Mobile hamburger navigation drawer */}
+              <MobileNav
+                isLoggedIn={!!user}
+                fullName={profile?.full_name || user?.email || null}
+              />
             </div>
           </div>
         </header>

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { LogoutButton } from './logout-button'
+import { SidebarToggleButton } from './sidebar-toggle-button'
 
 const ROLE_BADGE: Record<string, { label: string; class: string }> = {
   admin: {
@@ -43,8 +44,8 @@ export async function Header() {
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
-      {/* Left — breadcrumb placeholder (individual pages can slot content via Portal in future) */}
-      <div />
+      {/* Left — mobile menu toggle button */}
+      <SidebarToggleButton />
 
       {/* Right — user info + sign-out */}
       <div className="flex items-center gap-3">
