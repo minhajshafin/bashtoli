@@ -20,13 +20,13 @@ Build admin order list and detail views for staff and admin to manage incoming o
 
 ## Acceptance Criteria
 
-- [ ] Admin/staff sees all orders in list view
-- [ ] Status filter works correctly
-- [ ] Search by order number, customer name, or phone returns correct results
-- [ ] Order detail shows complete order information including delivery zone and fee
-- [ ] Guest orders (no user_id) display customer_name and phone
-- [ ] Order items show product name snapshot and price_at_purchase
-- [ ] Customer role cannot access order admin pages
+- [x] Admin/staff sees all orders in list view
+- [x] Status filter works correctly
+- [x] Search by order number, customer name, or phone returns correct results
+- [x] Order detail shows complete order information including delivery zone and fee
+- [x] Guest orders (no user_id) display customer_name and phone
+- [x] Order items show product name snapshot and price_at_purchase
+- [x] Customer role cannot access order admin pages
 
 ## Dependencies
 
@@ -45,6 +45,6 @@ Build admin order list and detail views for staff and admin to manage incoming o
 
 ## Definition of Done
 
-- [ ] Order list and detail pages functional
-- [ ] Filters and sorting work
-- [ ] Staff and admin access verified; customer blocked
+- [x] Order list and detail pages functional
+- [x] Filters and sorting work
+- [x] Staff and admin access verified; customer blocked
