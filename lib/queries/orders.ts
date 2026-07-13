@@ -23,6 +23,13 @@ export type AdminOrderDetail = {
     full_name: string | null
     email: string | null
   } | null
+  history: Array<{
+    id: string
+    status: string
+    changed_at: string
+    changed_by: string | null
+    changed_by_name: string | null
+  }>
 }
 
 /**
@@ -167,10 +174,44 @@ export async function fetchAdminOrderDetail(orderId: string): Promise<AdminOrder
         : null
     }
 
+    // 4. Fetch status transition logs
+    const { data: historyLogs, error: historyError } = await supabase
+      .from('order_status_history')
+      .select('*')
+      .eq('order_id', orderId)
+      .order('changed_at', { ascending: false })
+
+    if (historyError) {
+      console.error('Error fetching admin order status history:', historyError)
+    }
+
+    const staffIds = historyLogs?.map(log => log.changed_by).filter(Boolean) as string[] || []
+    const staffNames = new Map<string, string>()
+
+    if (staffIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', staffIds)
+
+      for (const p of profiles || []) {
+        if (p.full_name) staffNames.set(p.id, p.full_name)
+      }
+    }
+
+    const history = (historyLogs || []).map(log => ({
+      id: log.id,
+      status: log.status,
+      changed_at: log.changed_at,
+      changed_by: log.changed_by,
+      changed_by_name: log.changed_by ? staffNames.get(log.changed_by) || 'Staff Member' : 'System',
+    }))
+
     return {
       order,
       items: items || [],
       profile,
+      history,
     }
   } catch (err) {
     console.error('Error in fetchAdminOrderDetail:', err)

@@ -26,15 +26,15 @@ Implement order status transitions with automatic restocking on cancellation and
 
 ## Acceptance Criteria
 
-- [ ] Admin can move order from pending → confirmed → shipped → delivered
-- [ ] Admin can cancel from pending, confirmed, shipped, or out_for_delivery
-- [ ] Optional out_for_delivery step available
-- [ ] Cancelling order restocks all variant quantities
-- [ ] Status history recorded with user and timestamp
-- [ ] Invalid status transitions rejected with clear error
-- [ ] Guest order lookup reflects updated status
-- [ ] Customer email sent on confirmed, shipped, and delivered transitions (when email on file)
-- [ ] Email failure does not block status update; error logged to Sentry
+- [x] Admin can move order from pending → confirmed → shipped → delivered
+- [x] Admin can cancel from pending, confirmed, shipped, or out_for_delivery
+- [x] Optional out_for_delivery step available
+- [x] Cancelling order restocks all variant quantities
+- [x] Status history recorded with user and timestamp
+- [x] Invalid status transitions rejected with clear error
+- [x] Guest order lookup reflects updated status
+- [x] Customer email sent on confirmed, shipped, and delivered transitions (when email on file)
+- [x] Email failure does not block status update; error logged to Sentry
 
 ## Dependencies
 
@@ -53,8 +53,8 @@ Implement order status transitions with automatic restocking on cancellation and
 
 ## Definition of Done
 
-- [ ] All valid transitions tested (including pending → cancelled)
-- [ ] Cancellation restock verified in database
-- [ ] Status history accurate for all transitions
-- [ ] Invalid transitions blocked
-- [ ] Status-change emails verified in Resend test mode
+- [x] All valid transitions tested (including pending → cancelled)
+- [x] Cancellation restock verified in database
+- [x] Status history accurate for all transitions
+- [x] Invalid transitions blocked
+- [x] Status-change emails verified in Resend test mode

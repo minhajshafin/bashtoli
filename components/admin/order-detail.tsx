@@ -3,6 +3,8 @@
 import React from 'react'
 import Link from 'next/link'
 import type { AdminOrderDetail } from '@/lib/queries/orders'
+import { OrderStatusSelect } from '@/components/admin/order-status-select'
+import { OrderStatusHistory } from '@/components/admin/order-status-history'
 
 interface OrderDetailProps {
   detail: AdminOrderDetail
@@ -107,8 +109,14 @@ export function OrderDetail({ detail }: OrderDetailProps) {
           </div>
         </div>
 
-        {/* Right Column: Customer Info & Fulfillment Options */}
+        {/* Right Column: Status Control, History Log, Customer Info & Fulfillment */}
         <div className="space-y-6">
+          {/* Status Selection Panel */}
+          <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
+
+          {/* Status Transition History Log */}
+          <OrderStatusHistory history={detail.history} />
+
           {/* Customer Metadata Card */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2">
