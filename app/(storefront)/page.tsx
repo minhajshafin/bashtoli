@@ -1,65 +1,67 @@
-import Image from "next/image";
+import React from 'react'
+import Link from 'next/link'
+import { Hero } from '@/components/storefront/hero'
+import { FeaturedProducts } from '@/components/storefront/featured-products'
+import { getStorefrontCategories } from '@/lib/queries/products'
 
-export default function Home() {
+export const metadata = {
+  title: 'Bashtoli | Premium Bamboo & Cane Handicrafts',
+  description: 'Shop organic sustainable handicraft products hand-woven with love in Bangladesh.',
+}
+
+/**
+ * Storefront Homepage Route.
+ * Server component rendering hero banners, categories lists, and featured items.
+ */
+export default async function StorefrontHomePage() {
+  const categories = await getStorefrontCategories()
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+      {/* 1. Hero banner section */}
+      <Hero />
+
+      {/* 2. Categories Quick links navigation */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-xl font-black text-zinc-900 tracking-tight dark:text-white">
+            Browse by Category
+          </h2>
+          <p className="text-xs text-zinc-500 mt-1 dark:text-zinc-400">
+            Explore our curated collections of premium handcrafted goods.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/products?category=${cat.slug}`}
+              className="group flex flex-col justify-between p-5 rounded-2xl border border-zinc-200 bg-white hover:border-amber-500 hover:shadow-xs transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-amber-500"
+            >
+              <div>
+                <h3 className="text-sm font-bold text-zinc-800 group-hover:text-amber-600 transition-colors dark:text-zinc-200 dark:group-hover:text-amber-500">
+                  {cat.name}
+                </h3>
+                <p className="text-[10px] text-zinc-400 mt-1 dark:text-zinc-500">
+                  Natural eco-friendly decor
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-zinc-100 flex justify-between items-center text-xs dark:border-zinc-900">
+                <span className="text-[10px] rounded-md bg-stone-100 px-2 py-0.5 font-bold text-stone-750 dark:bg-zinc-900 dark:text-zinc-450">
+                  {cat.activeProductsCount} Items
+                </span>
+                <span className="text-[11px] font-bold text-amber-600 group-hover:translate-x-0.5 transition-transform dark:text-amber-500">
+                  Explore &rarr;
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
-      </main>
+      </div>
+
+      {/* 3. Featured Products dynamic listing */}
+      <FeaturedProducts />
     </div>
-  );
+  )
 }

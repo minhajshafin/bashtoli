@@ -128,3 +128,54 @@ export async function getStorefrontCategories() {
     }
   })
 }
+
+/**
+ * Fetch active featured products.
+ * Falls back to the 4 newest active products if no products are flagged as featured.
+ */
+export async function getFeaturedProducts(): Promise<ProductWithDetails[]> {
+  const supabase = await createClient()
+
+  // 1. Fetch featured, active products with variants and images
+  const { data: featured, error } = await supabase
+    .from('products')
+    .select(`
+      *,
+      product_variants!inner(*),
+      product_images(*),
+      categories:category_id(*)
+    `)
+    .eq('active', true)
+    .eq('product_variants.active', true)
+    .eq('featured', true)
+    .order('created_at', { ascending: false })
+
+  if (!error && featured && featured.length > 0) {
+    return featured as unknown as ProductWithDetails[]
+  }
+
+  if (error) {
+    console.error('Error fetching featured products:', error)
+  }
+
+  // 2. Fallback: 4 newest active products
+  const { data: newest, error: newestError } = await supabase
+    .from('products')
+    .select(`
+      *,
+      product_variants!inner(*),
+      product_images(*),
+      categories:category_id(*)
+    `)
+    .eq('active', true)
+    .eq('product_variants.active', true)
+    .order('created_at', { ascending: false })
+    .limit(4)
+
+  if (newestError) {
+    console.error('Error fetching featured fallback products:', newestError)
+    return []
+  }
+
+  return (newest as unknown as ProductWithDetails[]) || []
+}

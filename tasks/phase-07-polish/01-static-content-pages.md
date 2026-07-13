@@ -21,12 +21,12 @@ Build Home, About, and Contact pages with business information and branding.
 
 ## Acceptance Criteria
 
-- [ ] Home page displays featured/active products
-- [ ] About page renders with business description
-- [ ] Contact page shows phone, WhatsApp link, hours, and location
-- [ ] Footer present on all storefront pages with nav links
-- [ ] Pages are mobile-responsive
-- [ ] Branding assets integrated when provided (see [Open Items](../docs/open-items.md))
+- [x] Home page displays featured/active products
+- [x] About page renders with business description
+- [x] Contact page shows phone, WhatsApp link, hours, and location
+- [x] Footer present on all storefront pages with nav links
+- [x] Pages are mobile-responsive
+- [x] Branding assets integrated when provided (see [Open Items](../docs/open-items.md))
 
 ## Dependencies
 
@@ -47,7 +47,7 @@ Build Home, About, and Contact pages with business information and branding.
 
 ## Definition of Done
 
-- [ ] All three static pages live and responsive
-- [ ] Footer consistent across storefront
-- [ ] Owner can review and update content
-- [ ] Placeholders documented for pending owner input
+- [x] All three static pages live and responsive
+- [x] Footer consistent across storefront
+- [x] Owner can review and update content
+- [x] Placeholders documented for pending owner input

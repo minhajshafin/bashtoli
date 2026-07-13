@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { CartProvider } from '@/lib/cart/cart-context'
 import { CartIcon } from '@/components/storefront/cart-icon'
 import { logoutAction } from '@/lib/actions/auth'
+import { Footer } from '@/components/storefront/footer'
 
 export const metadata: Metadata = {
   title: {
@@ -47,7 +48,7 @@ export default async function StorefrontLayout({
             {/* Left: Brand name logo */}
             <div className="flex items-center gap-6">
               <Link
-                href="/products"
+                href="/"
                 className="text-xl font-black tracking-tight text-zinc-900 hover:text-amber-600 transition-colors dark:text-white dark:hover:text-amber-500"
               >
                 Bashtoli
@@ -58,7 +59,19 @@ export default async function StorefrontLayout({
                   href="/products"
                   className="hover:text-amber-600 transition-colors dark:hover:text-amber-500"
                 >
-                  Shop Catalog
+                  Catalog
+                </Link>
+                <Link
+                  href="/about"
+                  className="hover:text-amber-600 transition-colors dark:hover:text-amber-500"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="hover:text-amber-600 transition-colors dark:hover:text-amber-500"
+                >
+                  Contact
                 </Link>
               </nav>
             </div>
@@ -111,22 +124,7 @@ export default async function StorefrontLayout({
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-zinc-200 bg-white py-8 dark:border-zinc-800 dark:bg-zinc-950">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-zinc-400 dark:text-zinc-500">
-            <div>
-              <p>&copy; {new Date().getFullYear()} Bashtoli. All rights reserved.</p>
-              <p className="mt-1 text-[10px] text-zinc-400/80">Premium Handicrafts & Sustainable Decor</p>
-            </div>
-            <div className="flex gap-6">
-              <Link href="/products" className="hover:text-zinc-600 dark:hover:text-zinc-300">
-                Catalog
-              </Link>
-              <Link href="/login" className="hover:text-zinc-600 dark:hover:text-zinc-300">
-                Account
-              </Link>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </CartProvider>
   )
