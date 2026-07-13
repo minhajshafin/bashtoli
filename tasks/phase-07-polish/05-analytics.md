@@ -18,11 +18,11 @@ Integrate Vercel Analytics for basic storefront traffic and Web Vitals tracking.
 
 ## Acceptance Criteria
 
-- [ ] `@vercel/analytics` package installed
-- [ ] `<Analytics />` component present in root layout
-- [ ] Vercel Analytics enabled in Vercel project dashboard
-- [ ] Page views visible in Vercel Analytics dashboard after production deploy
-- [ ] No console errors in development (component is a no-op locally)
+- [x] `@vercel/analytics` package installed
+- [x] `<Analytics />` component present in root layout
+- [x] Vercel Analytics enabled in Vercel project dashboard
+- [x] Page views visible in Vercel Analytics dashboard after production deploy
+- [x] No console errors in development (component is a no-op locally)
 
 ## Dependencies
 
@@ -38,6 +38,6 @@ Integrate Vercel Analytics for basic storefront traffic and Web Vitals tracking.
 
 ## Definition of Done
 
-- [ ] Package installed and component added to layout
-- [ ] Vercel Analytics dashboard shows data after first production deploy
-- [ ] No performance regression from adding the component
+- [x] Package installed and component added to layout
+- [x] Vercel Analytics dashboard shows data after first production deploy
+- [x] No performance regression from adding the component
