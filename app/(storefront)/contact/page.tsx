@@ -3,6 +3,17 @@ import React from 'react'
 export const metadata = {
   title: 'Contact Us | Bashtoli',
   description: 'Reach out to our customer support team or visit our local showroom in Dhaka, Bangladesh.',
+  alternates: {
+    canonical: 'https://bashtoli.com/contact',
+  },
+  openGraph: {
+    title: 'Contact Us | Bashtoli',
+    description: 'Reach out to our customer support team or visit our local showroom in Dhaka, Bangladesh.',
+    url: 'https://bashtoli.com/contact',
+    siteName: 'Bashtoli',
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 /**

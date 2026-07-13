@@ -7,6 +7,17 @@ import { getStorefrontCategories } from '@/lib/queries/products'
 export const metadata = {
   title: 'Bashtoli | Premium Bamboo & Cane Handicrafts',
   description: 'Shop organic sustainable handicraft products hand-woven with love in Bangladesh.',
+  alternates: {
+    canonical: 'https://bashtoli.com',
+  },
+  openGraph: {
+    title: 'Bashtoli | Premium Bamboo & Cane Handicrafts',
+    description: 'Shop organic sustainable handicraft products hand-woven with love in Bangladesh.',
+    url: 'https://bashtoli.com',
+    siteName: 'Bashtoli',
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 /**

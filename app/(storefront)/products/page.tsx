@@ -13,8 +13,19 @@ interface ProductsPageProps {
 }
 
 export const metadata = {
-  title: 'Our Products | Bashtoli Storefront',
-  description: 'Browse our collection of hand-crafted items, mugs, hats, and organic handicrafts.',
+  title: 'Organic Handicraft Products | Bashtoli',
+  description: 'Browse our premium collection of sustainable, hand-crafted bamboo and cane items woven in Bangladesh.',
+  alternates: {
+    canonical: 'https://bashtoli.com/products',
+  },
+  openGraph: {
+    title: 'Organic Handicraft Products | Bashtoli',
+    description: 'Browse our premium collection of sustainable, hand-crafted bamboo and cane items woven in Bangladesh.',
+    url: 'https://bashtoli.com/products',
+    siteName: 'Bashtoli',
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {

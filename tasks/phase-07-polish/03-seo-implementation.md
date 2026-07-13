@@ -18,12 +18,12 @@ Implement SEO best practices: dynamic metadata, structured data, sitemap, and ro
 
 ## Acceptance Criteria
 
-- [ ] Product pages have unique title and description in `<head>`
-- [ ] Open Graph tags present (og:title, og:description, og:image)
-- [ ] JSON-LD Product schema validates in Google Rich Results Test
-- [ ] `/sitemap.xml` lists all active products and static pages
-- [ ] `/robots.txt` allows crawling of public pages, disallows `/admin`
-- [ ] Social share preview shows product image and name
+- [x] Product pages have unique title and description in `<head>`
+- [x] Open Graph tags present (og:title, og:description, og:image)
+- [x] JSON-LD Product schema validates in Google Rich Results Test
+- [x] `/sitemap.xml` lists all active products and static pages
+- [x] `/robots.txt` allows crawling of public pages, disallows `/admin`
+- [x] Social share preview shows product image and name
 
 ## Dependencies
 
@@ -45,7 +45,7 @@ Implement SEO best practices: dynamic metadata, structured data, sitemap, and ro
 
 ## Definition of Done
 
-- [ ] All meta tags verified in page source
-- [ ] JSON-LD validates without errors
-- [ ] Sitemap accessible and complete
-- [ ] robots.txt correct
+- [x] All meta tags verified in page source
+- [x] JSON-LD validates without errors
+- [x] Sitemap accessible and complete
+- [x] robots.txt correct

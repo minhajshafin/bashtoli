@@ -4,6 +4,7 @@ import { Breadcrumb } from '@/components/storefront/breadcrumb'
 import { ProductDetailClient } from './product-client'
 import { createClient } from '@/lib/supabase/server'
 import React from 'react'
+import { ProductJsonLd } from '@/components/storefront/json-ld'
 
 interface ProductPageProps {
   params: Promise<{
@@ -16,9 +17,34 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const data = await getProductDetail(resolvedParams.slug)
   if (!data) return { title: 'Product Not Found' }
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bashtoli.com'
+  const primaryImage = data.images?.[0]
+  const imageUrl = primaryImage?.url || `${baseUrl}/og-fallback.png`
+  const title = `${data.product.name} | Bashtoli`
+  const description = data.product.description || 'Premium sustainable organic handicraft.'
+
   return {
-    title: `${data.product.name} | Bashtoli Storefront`,
-    description: data.product.description || 'View details and purchase this premium handcrafted item.',
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/products/${data.product.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/products/${data.product.slug}`,
+      siteName: 'Bashtoli',
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 800,
+          alt: data.product.name,
+        },
+      ],
+      locale: 'en_US',
+      type: 'website',
+    },
   }
 }
 
@@ -55,6 +81,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* JSON-LD Schema Structured Data */}
+      <ProductJsonLd
+        product={data.product}
+        images={data.images}
+        variants={data.variants}
+      />
+
       {/* Breadcrumbs */}
       <Breadcrumb
         category={data.product.categories}

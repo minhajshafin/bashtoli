@@ -3,6 +3,17 @@ import React from 'react'
 export const metadata = {
   title: 'Our Story & Artisans | Bashtoli',
   description: 'Learn about our heritage of hand-weaving bamboo and cane handicraft items in Bangladesh.',
+  alternates: {
+    canonical: 'https://bashtoli.com/about',
+  },
+  openGraph: {
+    title: 'Our Story & Artisans | Bashtoli',
+    description: 'Learn about our heritage of hand-weaving bamboo and cane handicraft items in Bangladesh.',
+    url: 'https://bashtoli.com/about',
+    siteName: 'Bashtoli',
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 /**
