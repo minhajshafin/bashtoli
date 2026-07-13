@@ -19,13 +19,13 @@ Allow admin users to promote customers to staff and manage staff accounts.
 
 ## Acceptance Criteria
 
-- [ ] Admin can view list of staff and admin users
-- [ ] Admin can promote a customer to staff by email
-- [ ] Promoted staff can access admin dashboard
-- [ ] Admin can demote staff back to customer
-- [ ] Demoted user loses admin access immediately
-- [ ] Staff role cannot access `/admin/staff`
-- [ ] Admin cannot demote their own account
+- [x] Admin can view list of staff and admin users
+- [x] Admin can promote a customer to staff by email
+- [x] Promoted staff can access admin dashboard
+- [x] Admin can demote staff back to customer
+- [x] Demoted user loses admin access immediately
+- [x] Staff role cannot access `/admin/staff`
+- [x] Admin cannot demote their own account
 
 ## Dependencies
 
@@ -44,7 +44,7 @@ Allow admin users to promote customers to staff and manage staff accounts.
 
 ## Definition of Done
 
-- [ ] Role promotion/demotion tested
-- [ ] Access control verified (admin only page, staff blocked)
-- [ ] Self-demotion prevented
-- [ ] RLS allows admin role management
+- [x] Role promotion/demotion tested
+- [x] Access control verified (admin only page, staff blocked)
+- [x] Self-demotion prevented
+- [x] RLS allows admin role management
