@@ -20,12 +20,12 @@ Build the admin dashboard home page with key metrics and low-stock indicators.
 
 ## Acceptance Criteria
 
-- [ ] Dashboard shows accurate today's order count
-- [ ] Pending orders count matches filter on orders page
-- [ ] Low-stock count reflects variants at or below threshold
-- [ ] Low-stock list links to product edit page
-- [ ] Metrics update in real-time on page refresh
-- [ ] Dashboard accessible to staff and admin
+- [x] Dashboard shows accurate today's order count
+- [x] Pending orders count matches filter on orders page
+- [x] Low-stock count reflects variants at or below threshold
+- [x] Low-stock list links to product edit page
+- [x] Metrics update in real-time on page refresh
+- [x] Dashboard accessible to staff and admin
 
 ## Dependencies
 
@@ -43,6 +43,6 @@ Build the admin dashboard home page with key metrics and low-stock indicators.
 
 ## Definition of Done
 
-- [ ] Dashboard metrics accurate with test data
-- [ ] Low-stock threshold configurable
-- [ ] Quick links functional
+- [x] Dashboard metrics accurate with test data
+- [x] Low-stock threshold configurable
+- [x] Quick links functional
