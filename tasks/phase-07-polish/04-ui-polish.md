@@ -19,14 +19,14 @@ Apply final UI polish: consistent styling, loading states, error handling, and e
 
 ## Acceptance Criteria
 
-- [ ] All pages have appropriate loading states
-- [ ] 404 page for missing products/routes
-- [ ] Empty states on cart, wishlist, order history, admin lists
-- [ ] Admin toasts confirm successful mutations
-- [ ] Visual consistency across storefront and admin
-- [ ] Keyboard navigation works for all interactive elements
-- [ ] All images have meaningful alt text
-- [ ] Focus states visible on all focusable elements
+- [x] All pages have appropriate loading states
+- [x] 404 page for missing products/routes
+- [x] Empty states on cart, wishlist, order history, admin lists
+- [x] Admin toasts confirm successful mutations
+- [x] Visual consistency across storefront and admin
+- [x] Keyboard navigation works for all interactive elements
+- [x] All images have meaningful alt text
+- [x] Focus states visible on all focusable elements
 
 ## Dependencies
 
@@ -47,7 +47,7 @@ Apply final UI polish: consistent styling, loading states, error handling, and e
 
 ## Definition of Done
 
-- [ ] No page shows blank screen during loading
-- [ ] Error and empty states user-friendly
-- [ ] Owner catalog populated with real products
-- [ ] Visual review completed
+- [x] No page shows blank screen during loading
+- [x] Error and empty states user-friendly
+- [x] Owner catalog populated with real products
+- [x] Visual review completed

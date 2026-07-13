@@ -7,6 +7,7 @@ import { CartIcon } from '@/components/storefront/cart-icon'
 import { logoutAction } from '@/lib/actions/auth'
 import { Footer } from '@/components/storefront/footer'
 import { MobileNav } from '@/components/storefront/mobile-nav'
+import { ToastProvider } from '@/components/ui/toast'
 
 export const metadata: Metadata = {
   title: {
@@ -41,8 +42,9 @@ export default async function StorefrontLayout({
   const isStaffOrAdmin = profile?.role === 'staff' || profile?.role === 'admin'
 
   return (
-    <CartProvider isLoggedIn={!!user}>
-      <div className="flex min-h-screen flex-col bg-stone-50/30 text-zinc-900 font-sans antialiased dark:bg-zinc-950 dark:text-zinc-50">
+    <ToastProvider>
+      <CartProvider isLoggedIn={!!user}>
+        <div className="flex min-h-screen flex-col bg-stone-50/30 text-zinc-900 font-sans antialiased dark:bg-zinc-950 dark:text-zinc-50">
         {/* Sticky Header */}
         <header className="sticky top-0 z-50 w-full border-b border-zinc-200/80 bg-white/80 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/80">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -133,6 +135,7 @@ export default async function StorefrontLayout({
         {/* Footer */}
         <Footer />
       </div>
-    </CartProvider>
+      </CartProvider>
+    </ToastProvider>
   )
 }
