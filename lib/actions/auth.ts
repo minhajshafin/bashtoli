@@ -87,8 +87,8 @@ export async function loginAction(
       .maybeSingle()
 
     // Route logic:
-    // If redirectTo is provided, redirect there (as long as it starts with / to prevent open redirect)
-    if (redirectTo && redirectTo.startsWith('/')) {
+    // Allowlist relative paths only — no protocol-relative URLs (e.g. //evil.com)
+    if (redirectTo && /^\/[^/]/.test(redirectTo)) {
       targetPath = redirectTo
     } else if (profile?.role === 'staff' || profile?.role === 'admin') {
       targetPath = '/admin'

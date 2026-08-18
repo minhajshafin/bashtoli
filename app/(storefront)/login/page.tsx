@@ -22,7 +22,11 @@ export async function generateMetadata() {
  */
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = await searchParams
-  const redirectTo = resolvedSearchParams?.redirectTo || '/products'
+  const rawRedirectTo = resolvedSearchParams?.redirectTo
+  const redirectTo =
+    rawRedirectTo && /^\/[^/]/.test(rawRedirectTo)
+      ? rawRedirectTo
+      : '/products'
 
   const supabase = await createClient()
   const {
