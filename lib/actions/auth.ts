@@ -140,12 +140,20 @@ export async function signupAction(
 
   const supabase = await createClient()
 
+  let appUrl = process.env.NEXT_PUBLIC_APP_URL
+  if (!appUrl) {
+    const headersList = await headers()
+    const host = headersList.get('host')
+    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+    appUrl = host ? `${protocol}://${host}` : 'http://localhost:3000'
+  }
+
   try {
     const { error } = await supabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/login`,
+        emailRedirectTo: `${appUrl}/login`,
         data: {
           full_name: parsed.data.fullName,
         },

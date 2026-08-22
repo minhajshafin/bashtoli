@@ -56,6 +56,19 @@ export async function customerCancelOrderAction(orderId: string): Promise<{ erro
 
     if (updateError) throw updateError
 
+    // 5b. Log cancellation in order_status_history
+    const { error: historyError } = await adminDb
+      .from('order_status_history')
+      .insert({
+        order_id: orderId,
+        status: 'cancelled',
+        changed_by: user.id,
+      })
+
+    if (historyError) {
+      console.error('Failed to log order status history for cancellation:', historyError)
+    }
+
     // 6. Restock items: Increment product_variants stock_qty
     const { data: orderItems, error: itemsError } = await adminDb
       .from('order_items')

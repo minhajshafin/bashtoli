@@ -8,6 +8,7 @@ import {
 } from '@/lib/validations/variant'
 import { generateOptionCombinations } from '@/lib/utils/generate-variants'
 import type { Database } from '@/lib/supabase/database.types'
+import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 
 type OptionInput = {
   name: string
@@ -52,6 +53,12 @@ export async function saveProductOptionsAndValues(
   }
 
   const supabase = await createClient()
+
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   // Get product's base price to use as default price for new variants
   const { data: product, error: productError } = await supabase
@@ -229,6 +236,12 @@ export async function updateVariantsBulk(
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
 
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   // Validate all updates first
   for (const update of updates) {
     const parsed = variantInlineUpdateSchema.safeParse(update)
@@ -272,6 +285,12 @@ export async function toggleVariantActive(
   active: boolean
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
+
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   const { error } = await supabase
     .from('product_variants')

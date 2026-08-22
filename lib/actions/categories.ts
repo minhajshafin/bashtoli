@@ -7,6 +7,7 @@ import {
   updateCategorySchema,
   slugify,
 } from '@/lib/validations/category'
+import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 
 export type CategoryActionState = {
   error: string | null
@@ -47,6 +48,12 @@ export async function createCategory(
   }
 
   const supabase = await createClient()
+
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   const { error } = await supabase.from('categories').insert({
     name: parsed.data.name,
@@ -101,6 +108,12 @@ export async function updateCategory(
 
   const supabase = await createClient()
 
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   const { error } = await supabase
     .from('categories')
     .update({
@@ -148,6 +161,12 @@ export async function deleteCategory(
   }
 
   const supabase = await createClient()
+
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   // Guard: count products in this category
   const { count, error: countError } = await supabase

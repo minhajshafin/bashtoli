@@ -6,6 +6,7 @@ import {
   productImageInsertSchema,
   productImageUpdateSchema,
 } from '@/lib/validations/product-image'
+import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 
 const PRODUCTS_PATH = '/admin/products'
 
@@ -44,6 +45,10 @@ export async function addProductImage(
   altText?: string | null
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
+
+  try { await assertStaffOrAdmin(supabase) } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   // Fetch current max sort_order
   const { data: currentImages, error: fetchErr } = await supabase
@@ -97,6 +102,10 @@ export async function updateProductImageAlt(
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
 
+  try { await assertStaffOrAdmin(supabase) } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   // Fetch current row to preserve sort_order during schema validation
   const { data: current, error: getErr } = await supabase
     .from('product_images')
@@ -143,6 +152,10 @@ export async function deleteProductImage(
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
 
+  try { await assertStaffOrAdmin(supabase) } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   // Get image metadata to retrieve URL and product ID
   const { data: image, error: getErr } = await supabase
     .from('product_images')
@@ -187,6 +200,10 @@ export async function saveProductImageOrder(
   imagesOrder: { id: string; sort_order: number }[]
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
+
+  try { await assertStaffOrAdmin(supabase) } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   let productId = ''
 

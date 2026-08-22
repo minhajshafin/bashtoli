@@ -149,7 +149,7 @@ export async function adminGuard(request: NextRequest) {
   }
 
   // Guest order lookup page
-  const isOrderLookup = pathname === '/order-lookup'
+  const isOrderLookup = pathname === '/order/lookup' || pathname === '/order-lookup'
   if (isOrderLookup) {
     const result = await checkOrderLookupRateLimit(request)
     if (result.limited) {

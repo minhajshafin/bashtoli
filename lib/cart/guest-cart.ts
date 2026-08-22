@@ -9,6 +9,7 @@ export interface CartItem {
 }
 
 const CART_KEY = 'bashtoli_guest_cart'
+const MAX_CART_QTY = 99
 
 /**
  * Retrieve the guest cart from localStorage.
@@ -45,9 +46,9 @@ export function addToGuestCart(item: Omit<CartItem, 'qty'>, qty: number): CartIt
   const existing = cart.find((i) => i.variant_id === item.variant_id)
 
   if (existing) {
-    existing.qty += qty
+    existing.qty = Math.min(existing.qty + qty, MAX_CART_QTY)
   } else {
-    cart.push({ ...item, qty })
+    cart.push({ ...item, qty: Math.min(Math.max(1, qty), MAX_CART_QTY) })
   }
 
   saveGuestCart(cart)
@@ -62,7 +63,7 @@ export function updateGuestCartQty(variantId: string, qty: number): CartItem[] {
   const item = cart.find((i) => i.variant_id === variantId)
 
   if (item) {
-    item.qty = Math.max(1, qty)
+    item.qty = Math.min(Math.max(1, qty), MAX_CART_QTY)
     saveGuestCart(cart)
   }
 

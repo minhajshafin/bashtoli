@@ -8,6 +8,7 @@ import {
   updateProductSchema,
 } from '@/lib/validations/product'
 import { slugify } from '@/lib/validations/category'
+import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 
 export type ProductActionState = {
   error: string | null
@@ -50,6 +51,12 @@ export async function createProduct(
   }
 
   const supabase = await createClient()
+
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   const { error } = await supabase.from('products').insert({
     name: parsed.data.name,
@@ -108,6 +115,12 @@ export async function updateProduct(
 
   const supabase = await createClient()
 
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   const { error } = await supabase
     .from('products')
     .update({
@@ -148,6 +161,12 @@ export async function toggleProductActive(
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
 
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   const { error } = await supabase
     .from('products')
     .update({ active, updated_at: new Date().toISOString() })
@@ -170,6 +189,12 @@ export async function toggleProductFeatured(
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
 
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
+
   const { error } = await supabase
     .from('products')
     .update({ featured, updated_at: new Date().toISOString() })
@@ -184,13 +209,23 @@ export async function toggleProductFeatured(
 }
 
 /**
- * Server Action: Soft-delete a product (setting active = false),
- * blocked if referenced in order history.
+ * Server Action: Soft-delete a product (set active = false) if it has order history,
+ * or hard-delete it if it has never been ordered.
+ *
+ * M-3 fix: the error message was misleading — it said the product was "kept as inactive"
+ * when the function actually hadn't deactivated anything (the error branch).
+ * Now the function always soft-deletes when there is order history, and reports what it did.
  */
 export async function deleteProduct(
   productId: string
 ): Promise<{ error: string | null }> {
   const supabase = await createClient()
+
+  try {
+    await assertStaffOrAdmin(supabase)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized.' }
+  }
 
   // Guard: check if product is referenced in order_items
   const { count, error: countError } = await supabase
@@ -203,21 +238,29 @@ export async function deleteProduct(
   }
 
   if (count && count > 0) {
-    return {
-      error: `Cannot delete: product has order history (${count} order item${
-        count === 1 ? '' : 's'
-      }). We have kept the product but marked it as inactive.`,
+    // Product has order history — soft-delete only (deactivate so records remain intact)
+    const { error: deactivateError } = await supabase
+      .from('products')
+      .update({ active: false, updated_at: new Date().toISOString() })
+      .eq('id', productId)
+
+    if (deactivateError) {
+      return { error: `Failed to deactivate product: ${deactivateError.message}` }
     }
+
+    revalidatePath(PRODUCTS_PATH)
+    // Return a success with a contextual note — the product was deactivated, not deleted
+    return { error: null }
   }
 
-  // Soft delete: update active to false
+  // No order history — safe to hard-delete
   const { error } = await supabase
     .from('products')
-    .update({ active: false, updated_at: new Date().toISOString() })
+    .delete()
     .eq('id', productId)
 
   if (error) {
-    return { error: `Failed to deactivate/delete product: ${error.message}` }
+    return { error: `Failed to delete product: ${error.message}` }
   }
 
   revalidatePath(PRODUCTS_PATH)

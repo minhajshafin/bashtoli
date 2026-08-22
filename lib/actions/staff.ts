@@ -48,6 +48,12 @@ async function assertCallerIsAdmin(client: SupabaseClient<Database>): Promise<st
 
 /**
  * Retrieves the list of all accounts with 'staff' or 'admin' roles.
+ *
+ * M-4 fix: the previous implementation called auth.admin.listUsers() which
+ * loads every single user in the project before filtering. For a large user
+ * base this is slow, expensive, and will silently truncate past Supabase's
+ * default page size. We now query profiles first (cheap index scan on role)
+ * and then fetch only the matching auth users by their IDs.
  */
 export async function fetchStaffList(): Promise<StaffMember[]> {
   const client = await createClient()
@@ -57,37 +63,33 @@ export async function fetchStaffList(): Promise<StaffMember[]> {
 
     const adminClient = createAdminClient()
 
-    // 1. Fetch auth users using service-role client
-    const {
-      data: { users },
-      error: listError,
-    } = await adminClient.auth.admin.listUsers()
-
-    if (listError) throw listError
-    if (!users || users.length === 0) return []
-
-    // 2. Fetch profiles for those user IDs to resolve roles and names
-    const ids = users.map((u) => u.id)
-    const { data: profiles, error: profilesError } = await adminClient
+    // 1. Find only staff/admin profiles (small set — role is indexed)
+    const { data: staffProfiles, error: profilesError } = await adminClient
       .from('profiles')
       .select('id, role, full_name, phone')
-      .in('id', ids)
+      .in('role', ['staff', 'admin'])
 
     if (profilesError) throw profilesError
+    if (!staffProfiles || staffProfiles.length === 0) return []
 
-    // 3. Map and filter only staff/admin records
-    return users
-      .map((u) => {
-        const p = profiles?.find((profile) => profile.id === u.id)
-        return {
-          id: u.id,
-          email: u.email || null,
-          full_name: p?.full_name || 'Anonymous User',
-          phone: p?.phone || null,
-          role: (p?.role || 'customer') as 'customer' | 'staff' | 'admin',
-        }
+    // 2. Fetch auth user records only for those specific IDs
+    const staffMembers: StaffMember[] = []
+
+    for (const profile of staffProfiles) {
+      const { data: { user }, error: userError } = await adminClient.auth.admin.getUserById(profile.id)
+
+      if (userError || !user) continue
+
+      staffMembers.push({
+        id: user.id,
+        email: user.email || null,
+        full_name: profile.full_name || 'Anonymous User',
+        phone: profile.phone || null,
+        role: profile.role as 'customer' | 'staff' | 'admin',
       })
-      .filter((u) => u.role === 'staff' || u.role === 'admin')
+    }
+
+    return staffMembers
   } catch (err) {
     console.error('Error fetching staff list:', err)
     return []
@@ -159,6 +161,16 @@ export async function promoteUserAction(
 
     if (updateError) throw updateError
 
+    // Audit log: record who promoted whom (L-4)
+    await adminClient.from('admin_audit_log').insert({
+      performed_by: (await client.auth.getUser()).data.user?.id,
+      action: 'promote',
+      target_user_id: targetUser.id,
+      target_email: targetUser.email ?? null,
+      old_role: profile?.role ?? 'customer',
+      new_role: 'staff',
+    })
+
     revalidatePath('/admin/staff')
 
     return {
@@ -223,6 +235,17 @@ export async function demoteUserAction(
       .eq('id', targetUserId)
 
     if (updateError) throw updateError
+
+    // Audit log: record demotion (L-4)
+    const { data: authUserData } = await adminClient.auth.admin.getUserById(targetUserId)
+    await adminClient.from('admin_audit_log').insert({
+      performed_by: callerId,
+      action: 'demote',
+      target_user_id: targetUserId,
+      target_email: authUserData?.user?.email ?? null,
+      old_role: targetProfile.role ?? 'staff',
+      new_role: 'customer',
+    })
 
     revalidatePath('/admin/staff')
 

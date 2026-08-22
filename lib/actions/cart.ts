@@ -4,6 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { validateCartItems, type ValidatedCartItem } from '@/lib/queries/cart'
 
+/** Maximum quantity allowed per line item — prevents unreasonably large cart entries. */
+const MAX_CART_QTY = 99
+
 interface CartItem {
   variant_id: string
   product_id: string
@@ -172,9 +175,10 @@ export async function addToDbCartAction(variantId: string, qty: number): Promise
       .maybeSingle()
 
     if (existing) {
+      const newQty = Math.min(existing.qty + qty, MAX_CART_QTY)
       const { error } = await supabase
         .from('cart_items')
-        .update({ qty: existing.qty + qty })
+        .update({ qty: newQty })
         .eq('id', existing.id)
       if (error) throw error
     } else {
@@ -183,7 +187,7 @@ export async function addToDbCartAction(variantId: string, qty: number): Promise
         .insert({
           cart_id: cart.id,
           variant_id: variantId,
-          qty,
+          qty: Math.min(qty, MAX_CART_QTY),
         })
       if (error) throw error
     }
@@ -218,7 +222,7 @@ export async function updateDbCartQtyAction(variantId: string, qty: number): Pro
 
     const { error } = await supabase
       .from('cart_items')
-      .update({ qty: Math.max(1, qty) })
+      .update({ qty: Math.min(Math.max(1, qty), MAX_CART_QTY) })
       .eq('cart_id', cart.id)
       .eq('variant_id', variantId)
 
