@@ -2,9 +2,9 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { checkoutSchema } from '@/lib/validations/checkout'
-import { getDeliveryFee } from '@/lib/config/delivery'
 import type { CartItem } from '@/lib/cart/guest-cart'
 import { sendOrderEmails } from '@/lib/email/resend'
+
 
 
 export type CheckoutActionState = {
@@ -54,8 +54,9 @@ export async function submitCheckout(
     data: { user },
   } = await supabase.auth.getUser()
 
-  // 3. Double-check item details and compute subtotal
-  // We compute subtotal and totals server-side using current DB values for safety
+  // 3. Pre-flight check: verify items are available and build the items payload.
+  // The SQL function will re-verify prices and stock atomically, but this early
+  // check gives users a clear, fast error before hitting the DB transaction.
   const variantIds = cartItems.map((item) => item.variant_id)
   const { data: dbVariants, error: dbError } = await supabase
     .from('product_variants')
@@ -66,8 +67,11 @@ export async function submitCheckout(
     return { error: 'Failed to verify items in your cart. Please try again.' }
   }
 
-  let subtotal = 0
-  const itemsParameter = []
+  // Two separate arrays:
+  //   itemsParameter  — slim payload sent to the SQL RPC (no price; SQL looks it up)
+  //   itemsForEmail   — full snapshot used for the confirmation email
+  const itemsParameter: { variant_id: string; product_id: string; qty: number; product_name: string }[] = []
+  const itemsForEmail: { variant_id: string; product_id: string; qty: number; product_name: string; price_at_purchase: number }[] = []
 
   for (const item of cartItems) {
     const dbVariant = dbVariants.find((v) => v.id === item.variant_id)
@@ -82,10 +86,7 @@ export async function submitCheckout(
       }
     }
 
-    const currentPrice = dbVariant.price
-    subtotal += currentPrice * item.qty
-
-    // Snapshot details for order item insertion
+    // Snapshot product name — prices are looked up by the SQL function from the DB
     const productName = item.variant_name && item.variant_name !== 'Default'
       ? `${item.name} (${item.variant_name})`
       : item.name
@@ -94,27 +95,35 @@ export async function submitCheckout(
       variant_id: item.variant_id,
       product_id: item.product_id,
       qty: item.qty,
-      price_at_purchase: currentPrice,
       product_name: productName,
+    })
+
+    // Include the pre-flight price for the email snapshot (read from DB, not from the client)
+    itemsForEmail.push({
+      variant_id: item.variant_id,
+      product_id: item.product_id,
+      qty: item.qty,
+      product_name: productName,
+      price_at_purchase: dbVariant.price,
     })
   }
 
-  let deliveryFee = 0
-  try {
-    deliveryFee = getDeliveryFee(parsed.data.fulfillment_type, parsed.data.delivery_zone)
-  } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : 'Invalid delivery configuration.'
-    return { error: errorMsg }
+  // 4. Execute place_order SQL transaction.
+  //    All financial totals (subtotal, delivery_fee, total) are computed
+  //    inside the function using live DB prices — NOT passed in by the caller.
+  //    The function returns a JSONB object with the computed financials.
+  interface PlaceOrderResult {
+    order_number: string
+    subtotal: number
+    delivery_fee: number
+    total: number
   }
-
-  const total = subtotal + deliveryFee
 
   interface LooseSupabase {
     rpc(fn: string, args?: unknown): Promise<{ data: unknown; error: { message: string } | null }>
   }
 
-  // 5. Execute place_order SQL transaction
-  const { data: orderNumber, error: rpcError } = await (supabase as unknown as LooseSupabase).rpc('place_order', {
+  const { data: rpcData, error: rpcError } = await (supabase as unknown as LooseSupabase).rpc('place_order', {
     p_user_id: user?.id || null,
     p_customer_name: parsed.data.customer_name,
     p_phone: parsed.data.phone,
@@ -123,46 +132,49 @@ export async function submitCheckout(
     p_notes: parsed.data.notes || null,
     p_fulfillment_type: parsed.data.fulfillment_type,
     p_delivery_zone: parsed.data.delivery_zone || null,
-    p_subtotal: subtotal,
-    p_delivery_fee: deliveryFee,
-    p_total: total,
     p_items: itemsParameter,
   })
 
   if (rpcError) {
     console.error('Checkout place_order RPC error:', rpcError)
-    
-    // Check custom stock error message
+
     if (rpcError.message.includes('INSUFFICIENT_STOCK')) {
       return {
         error: 'One or more items in your cart do not have enough stock. Please adjust quantities and try again.',
       }
     }
-    return { error: 'Failed to place order: ' + rpcError.message }
+    if (rpcError.message.includes('ITEM_INACTIVE')) {
+      return {
+        error: 'One or more items in your cart are no longer available. Please refresh and try again.',
+      }
+    }
+    return { error: 'Failed to place order. Please try again.' }
   }
 
-  // 6. Trigger emails asynchronously (fire-and-forget)
-  // We do not await this to keep checkout confirmation redirects fast
+  const result = rpcData as PlaceOrderResult
+
+  // 5. Trigger emails asynchronously (fire-and-forget).
+  //    Financials come from the authoritative DB result, not local variables.
   sendOrderEmails(
     {
-      order_number: orderNumber as string,
+      order_number: result.order_number,
       customer_name: parsed.data.customer_name,
       phone: parsed.data.phone,
       guest_email: parsed.data.guest_email || null,
       address: parsed.data.address,
       fulfillment_type: parsed.data.fulfillment_type,
       delivery_zone: parsed.data.delivery_zone || null,
-      delivery_fee: deliveryFee,
-      subtotal: subtotal,
-      total: total,
+      delivery_fee: result.delivery_fee,
+      subtotal: result.subtotal,
+      total: result.total,
     },
-    itemsParameter
+    itemsForEmail
   ).catch((err) => {
     console.error('Asynchronous sendOrderEmails failed:', err)
   })
 
   return {
     error: null,
-    orderNumber: orderNumber as string,
+    orderNumber: result.order_number,
   }
 }

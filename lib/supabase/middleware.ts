@@ -1,10 +1,61 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from './database.types'
+import {
+  checkAuthRateLimit,
+  checkOrderLookupRateLimit,
+} from './rate-limit'
 
 type UserRole = Database['public']['Enums']['user_role']
 
 const ADMIN_ALLOWED_ROLES: UserRole[] = ['staff', 'admin']
+
+// ── Security Headers ──────────────────────────────────────────
+// Applied to every response this middleware returns.
+// Adjust the CSP as the app's script/style sources evolve.
+function setSecurityHeaders(res: NextResponse): NextResponse {
+  // Prevent the app from being embedded in an iframe (clickjacking)
+  res.headers.set('X-Frame-Options', 'DENY')
+
+  // Stop browsers from MIME-sniffing the Content-Type
+  res.headers.set('X-Content-Type-Options', 'nosniff')
+
+  // Control how much referrer info is sent on navigation
+  res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+
+  // Enforce HTTPS for 2 years; include subdomains; allow preloading
+  res.headers.set(
+    'Strict-Transport-Security',
+    'max-age=63072000; includeSubDomains; preload',
+  )
+
+  // Disable access to sensitive browser features the app doesn't use
+  res.headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), payment=()',
+  )
+
+  // Content Security Policy — defaults to same-origin; loosened only where needed.
+  // 'unsafe-inline' for styles is required by Tailwind/Next.js inline styles.
+  // Supabase storage and the app's own origin are explicitly allowed for images.
+  const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+  res.headers.set(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Next.js requires unsafe-eval in dev; tighten with nonces in production
+      "style-src 'self' 'unsafe-inline'",
+      `img-src 'self' data: blob: ${supabaseOrigin}`,
+      `connect-src 'self' ${supabaseOrigin} https://vitals.vercel-insights.com`,
+      "font-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join('; '),
+  )
+
+  return res
+}
 
 /**
  * Creates a Supabase client scoped to the middleware context,
@@ -63,14 +114,55 @@ function redirectWithCookies(
  * Main middleware guard.
  *
  * 1. Refreshes the Supabase session on every matched request (token rotation).
- * 2. For `/admin/*` routes, enforces role-based access:
+ * 2. Applies HTTP security headers to every response.
+ * 3. For `/admin/*` routes, enforces role-based access:
  *    - Unauthenticated users → redirect to `/login`
  *    - `customer` role → redirect to `/` (not authorised)
  *    - `staff` / `admin` → allowed through
  *
- * Public storefront routes are passed through untouched (only token refresh).
+ * Public storefront routes are passed through untouched (only token refresh + headers).
  */
 export async function adminGuard(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // ── Rate limiting (H-5) ────────────────────────────────────
+  // Applied before any session logic so rejected requests never
+  // touch the Supabase Auth server.
+
+  // Auth pages: login, signup, forgot-password, reset-password
+  const isAuthPage =
+    pathname === '/login' ||
+    pathname === '/signup' ||
+    pathname === '/forgot-password' ||
+    pathname === '/reset-password'
+
+  if (isAuthPage) {
+    const result = await checkAuthRateLimit(request)
+    if (result.limited) {
+      return setSecurityHeaders(
+        new NextResponse('Too many requests. Please try again in a moment.', {
+          status: 429,
+          headers: { 'Retry-After': String(result.retryAfter) },
+        }),
+      )
+    }
+  }
+
+  // Guest order lookup page
+  const isOrderLookup = pathname === '/order-lookup'
+  if (isOrderLookup) {
+    const result = await checkOrderLookupRateLimit(request)
+    if (result.limited) {
+      return setSecurityHeaders(
+        new NextResponse('Too many requests. Please try again in a moment.', {
+          status: 429,
+          headers: { 'Retry-After': String(result.retryAfter) },
+        }),
+      )
+    }
+  }
+
+  // ── Session refresh ────────────────────────────────────────
   const { supabase, getResponse } = createMiddlewareClient(request)
 
   // IMPORTANT: do NOT write any logic between createServerClient and
@@ -80,11 +172,11 @@ export async function adminGuard(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+  const isAdminRoute = pathname.startsWith('/admin')
 
   if (!isAdminRoute) {
-    // Nothing to enforce — return with refreshed cookies only.
-    return getResponse()
+    // Nothing to enforce — return with refreshed cookies and security headers.
+    return setSecurityHeaders(getResponse())
   }
 
   // --- Admin route protection ---
@@ -93,7 +185,7 @@ export async function adminGuard(request: NextRequest) {
     // Unauthenticated: send to login, preserving the intended destination.
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('next', request.nextUrl.pathname)
-    return redirectWithCookies(loginUrl, getResponse())
+    return setSecurityHeaders(redirectWithCookies(loginUrl, getResponse()))
   }
 
   // Fetch the role from the profiles table.
@@ -109,9 +201,9 @@ export async function adminGuard(request: NextRequest) {
   if (!role || !ADMIN_ALLOWED_ROLES.includes(role)) {
     // Authenticated but not staff/admin (e.g. customer) → home page.
     const homeUrl = new URL('/', request.url)
-    return redirectWithCookies(homeUrl, getResponse())
+    return setSecurityHeaders(redirectWithCookies(homeUrl, getResponse()))
   }
 
-  // Authorised — pass through with refreshed cookies.
-  return getResponse()
+  // Authorised — pass through with refreshed cookies and security headers.
+  return setSecurityHeaders(getResponse())
 }

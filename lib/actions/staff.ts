@@ -132,9 +132,10 @@ export async function promoteUserAction(
     )
 
     if (!targetUser) {
-      return {
-        error: 'No user account was found matching this email address.',
-      }
+      // Return the same success shape regardless of whether the user exists.
+      // A distinct "not found" message would let an attacker enumerate registered emails.
+      revalidatePath('/admin/staff')
+      return { error: null, success: true }
     }
 
     // Retrieve current role profile
@@ -146,7 +147,7 @@ export async function promoteUserAction(
 
     if (profile?.role === 'staff' || profile?.role === 'admin') {
       return {
-        error: `This user is already an ${profile.role}.`,
+        error: 'This user already has a staff or admin role.',
       }
     }
 
