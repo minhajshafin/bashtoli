@@ -44,7 +44,7 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
 
     // Build conditional logic: either phone or email must match
     if (phone && email) {
-      query = query.or(`phone.eq.${phone},guest_email.eq.${email}`)
+      query = query.or(`phone.eq.${encodeURIComponent(phone)},guest_email.eq.${encodeURIComponent(email)}`)
     } else if (phone) {
       query = query.eq('phone', phone)
     } else {
@@ -104,7 +104,7 @@ export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ erro
       .is('user_id', null)
 
     if (phone && email) {
-      updateQuery = updateQuery.or(`phone.eq.${phone},guest_email.eq.${email}`)
+      updateQuery = updateQuery.or(`phone.eq.${encodeURIComponent(phone)},guest_email.eq.${encodeURIComponent(email)}`)
     } else if (phone) {
       updateQuery = updateQuery.eq('phone', phone)
     } else {

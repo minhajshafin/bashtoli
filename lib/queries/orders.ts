@@ -76,10 +76,13 @@ export async function fetchAdminOrders(filters: {
 
     if (filters.search) {
       const searchVal = filters.search.trim()
-      // Matches on order_number, customer_name, or phone number
-      query = query.or(
-        `order_number.ilike.%${searchVal}%,customer_name.ilike.%${searchVal}%,phone.ilike.%${searchVal}%`
-      )
+      if (searchVal) {
+        const sanitized = encodeURIComponent(searchVal)
+        // Matches on order_number, customer_name, or phone number
+        query = query.or(
+          `order_number.ilike.%${sanitized}%,customer_name.ilike.%${sanitized}%,phone.ilike.%${sanitized}%`
+        )
+      }
     }
 
     const { data: orders, error } = await query.order('created_at', { ascending: false })
