@@ -264,6 +264,7 @@ export async function updateVariantsBulk(
         updated_at: new Date().toISOString(),
       })
       .eq('id', update.id)
+      .eq('product_id', productId) // Prevent IDOR — ensure variant belongs to this product (L-NEW-4)
 
     if (error) {
       return {

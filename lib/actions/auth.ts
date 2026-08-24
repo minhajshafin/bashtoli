@@ -208,12 +208,19 @@ export async function forgotPasswordAction(
   }
 
   const supabase = await createClient()
-  const headersList = await headers()
-  const host = headersList.get('host')
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
-  
+
+  // Use NEXT_PUBLIC_APP_URL — do NOT derive the redirect base URL solely from
+  // the Host header, which is client-controlled (Host Header Injection). (L-NEW-2)
+  let appUrl = process.env.NEXT_PUBLIC_APP_URL
+  if (!appUrl) {
+    const headersList = await headers()
+    const host = headersList.get('host')
+    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+    appUrl = host ? `${protocol}://${host}` : 'http://localhost:3000'
+  }
+
   // Set redirection to auth callback path
-  const redirectTo = `${protocol}://${host}/api/auth/callback?next=/reset-password`
+  const redirectTo = `${appUrl}/api/auth/callback?next=/reset-password`
 
   try {
     const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {

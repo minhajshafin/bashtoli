@@ -37,13 +37,20 @@ function setSecurityHeaders(res: NextResponse): NextResponse {
 
   // Content Security Policy — defaults to same-origin; loosened only where needed.
   // 'unsafe-inline' for styles is required by Tailwind/Next.js inline styles.
-  // Supabase storage and the app's own origin are explicitly allowed for images.
+  // 'unsafe-eval' is only included in development (required by Next.js hot-reload / Turbopack).
+  // In production it is omitted to prevent eval-based XSS attacks. (L-NEW-3)
+  // TODO: replace 'unsafe-inline' on script-src with per-request nonces in production
+  //       (Next.js docs: /docs/app/building-your-application/configuring/content-security-policy)
+  const isDev = process.env.NODE_ENV === 'development'
   const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+  const scriptSrc = isDev
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    : "script-src 'self' 'unsafe-inline'"
   res.headers.set(
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Next.js requires unsafe-eval in dev; tighten with nonces in production
+      scriptSrc,
       "style-src 'self' 'unsafe-inline'",
       `img-src 'self' data: blob: ${supabaseOrigin}`,
       `connect-src 'self' ${supabaseOrigin} https://vitals.vercel-insights.com`,

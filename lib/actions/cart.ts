@@ -390,10 +390,12 @@ export async function mergeGuestCartAction(
       const existingDb = existingDbItems.find(
         (d) => d.variant_id === guestItem.variant_id
       )
-      let finalQty = guestItem.qty
+      // Clamp to MAX_CART_QTY — guest qty is client-supplied and must not be trusted raw (M-NEW-1)
+      const safeGuestQty = Math.min(Math.max(1, guestItem.qty), MAX_CART_QTY)
+      let finalQty = safeGuestQty
 
       if (existingDb) {
-        finalQty = Math.max(existingDb.qty, guestItem.qty)
+        finalQty = Math.min(Math.max(existingDb.qty, safeGuestQty), MAX_CART_QTY)
         upserts.push({
           id: existingDb.id,
           cart_id: cart.id,

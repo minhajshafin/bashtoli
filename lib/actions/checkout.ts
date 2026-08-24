@@ -86,10 +86,13 @@ export async function submitCheckout(
       }
     }
 
-    // Snapshot product name — prices are looked up by the SQL function from the DB
+    // Use the authoritative product name from the DB — NOT the client-supplied item.name.
+    // item.name comes from the guest localStorage cart and could contain arbitrary text
+    // (stored XSS risk if rendered without escaping in admin UIs or emails). (M-NEW-2)
+    const dbProductName = product.name
     const productName = item.variant_name && item.variant_name !== 'Default'
-      ? `${item.name} (${item.variant_name})`
-      : item.name
+      ? `${dbProductName} (${item.variant_name})`
+      : dbProductName
 
     itemsParameter.push({
       variant_id: item.variant_id,

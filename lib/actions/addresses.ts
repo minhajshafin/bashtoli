@@ -48,6 +48,19 @@ export async function addAddressAction(
   }
 
   try {
+    // Guard: cap saved addresses per user at 10 to prevent DB bloat (L-NEW-1)
+    const { count, error: countError } = await supabase
+      .from('addresses')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+
+    if (countError) throw countError
+    if ((count ?? 0) >= 10) {
+      return {
+        error: 'You can save up to 10 addresses. Please delete one before adding a new one.',
+      }
+    }
+
     // If setting as default, clear existing default flag for this user
     if (parsed.data.is_default) {
       await supabase

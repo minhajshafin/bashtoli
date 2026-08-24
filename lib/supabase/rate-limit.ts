@@ -23,10 +23,22 @@ import type { NextRequest } from 'next/server'
 // ── Helpers ───────────────────────────────────────────────────
 
 function getClientIp(request: NextRequest): string {
+  // On Vercel (and most CDN/proxy setups), x-real-ip is set by the edge
+  // and cannot be spoofed by the client. Prefer it over x-forwarded-for.
+  const realIp = request.headers.get('x-real-ip')
+  if (realIp) return realIp
+
+  // x-forwarded-for: <client>, <proxy1>, <proxy2>
+  // The LAST entry is injected by the trusted edge — earlier entries are
+  // client-controlled and can be spoofed. (M-NEW-3)
   const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded ? forwarded.split(',')[0].trim() : '127.0.0.1'
-  // Normalise IPv6 loopback so local dev always passes
-  return ip === '::1' ? '127.0.0.1' : ip
+  if (forwarded) {
+    const ips = forwarded.split(',').map((s) => s.trim()).filter(Boolean)
+    const ip = ips[ips.length - 1]
+    return ip === '::1' ? '127.0.0.1' : ip
+  }
+
+  return '127.0.0.1'
 }
 
 function isConfigured(): boolean {
