@@ -10,7 +10,7 @@ interface DashboardStatsProps {
 
 interface StatCardProps {
   label: string
-  value: number
+  value: string | number
   accent: string
   icon: React.ReactNode
   linkHref: string
@@ -24,9 +24,9 @@ function StatCard({ label, value, icon, accent, linkHref, linkText }: StatCardPr
         <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all group-hover:scale-110 ${accent}`}>
           {icon}
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</p>
-          <p className="text-3xl font-black text-slate-900 mt-1">{value.toLocaleString()}</p>
+          <p className="text-3xl font-black text-slate-900 mt-1 truncate">{value}</p>
         </div>
       </div>
       <div className="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
@@ -47,7 +47,22 @@ function StatCard({ label, value, icon, accent, linkHref, linkText }: StatCardPr
 
 export function DashboardStats({ metrics }: DashboardStatsProps) {
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Today's Revenue — most important metric for a retail store */}
+      <StatCard
+        label="Today's Revenue"
+        value={`৳${metrics.todayRevenue.toLocaleString()}`}
+        accent="bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
+            <path d="M10.75 10.818v2.614A3.13 3.13 0 0 0 11.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 0 0-1.138-.432ZM8.33 8.62c.053.055.115.11.184.164.208.208.46.284.615.284.154 0 .406-.076.615-.284.137-.13.23-.297.23-.48 0-.184-.093-.35-.23-.48a.96.96 0 0 0-.184-.165l-.008-.006-.008-.007-.007-.006-.008-.007a.97.97 0 0 0-.498-.167.97.97 0 0 0-.498.167l-.008.007-.007.006-.008.007-.007.006Z" />
+            <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v.463A2.47 2.47 0 0 0 8.125 8c0 .68.26 1.353.866 1.846.502.406 1.145.629 1.759.719v2.204a2.133 2.133 0 0 1-.53-.157.75.75 0 0 0-.72 1.31 3.62 3.62 0 0 0 1.25.393v.435a.75.75 0 0 0 1.5 0v-.463A2.47 2.47 0 0 0 13.25 13c0-.68-.26-1.353-.866-1.846-.502-.406-1.145-.629-1.759-.719V8.23a2.13 2.13 0 0 1 .53.157.75.75 0 0 0 .72-1.31 3.62 3.62 0 0 0-1.25-.393l-.125-.014v-.13Z" clipRule="evenodd" />
+          </svg>
+        }
+        linkHref="/admin/orders"
+        linkText="View orders list"
+      />
+
       {/* Today's Orders */}
       <StatCard
         label="Today's Orders"

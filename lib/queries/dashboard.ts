@@ -4,6 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 export type DashboardMetrics = {
   todayOrderCount: number
+  todayRevenue: number
   pendingOrderCount: number
   lowStockCount: number
 }
@@ -59,6 +60,20 @@ export async function fetchDashboardMetrics(threshold = 5): Promise<DashboardMet
 
     if (todayError) throw todayError
 
+    // 1b. Today's revenue — sum totals of non-cancelled orders placed today
+    const { data: todayOrderTotals, error: revenueError } = await supabase
+      .from('orders')
+      .select('total')
+      .gte('created_at', today.toISOString())
+      .neq('status', 'cancelled')
+
+    if (revenueError) throw revenueError
+
+    const todayRevenue = (todayOrderTotals || []).reduce(
+      (sum, o) => sum + Number(o.total),
+      0,
+    )
+
     // 2. Fetch Pending Order Count
     const { count: pendingOrderCount, error: pendingError } = await supabase
       .from('orders')
@@ -77,6 +92,7 @@ export async function fetchDashboardMetrics(threshold = 5): Promise<DashboardMet
 
     return {
       todayOrderCount: todayOrderCount || 0,
+      todayRevenue,
       pendingOrderCount: pendingOrderCount || 0,
       lowStockCount: lowStockCount || 0,
     }
@@ -84,6 +100,7 @@ export async function fetchDashboardMetrics(threshold = 5): Promise<DashboardMet
     console.error('Error fetching dashboard metrics query:', err)
     return {
       todayOrderCount: 0,
+      todayRevenue: 0,
       pendingOrderCount: 0,
       lowStockCount: 0,
     }
