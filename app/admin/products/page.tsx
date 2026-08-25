@@ -7,21 +7,29 @@ export const metadata: Metadata = {
   title: 'Products',
 }
 
+const PAGE_SIZE = 25
+
 interface PageProps {
   searchParams: Promise<{
     status?: string
+    search?: string
+    page?: string
   }>
 }
 
 export default async function ProductsPage({ searchParams }: PageProps) {
-  const { status = 'all' } = await searchParams
+  const { status = 'all', search = '', page: pageParam = '1' } = await searchParams
+
+  const parsedPage = Math.max(1, parseInt(pageParam, 10) || 1)
+  const offset = (parsedPage - 1) * PAGE_SIZE
 
   const supabase = await createClient()
 
   let query = supabase
     .from('products')
-    .select('*, categories(*)')
+    .select('*, categories(*)', { count: 'exact' })
     .order('created_at', { ascending: false })
+    .range(offset, offset + PAGE_SIZE - 1)
 
   if (status === 'active') {
     query = query.eq('active', true)
@@ -29,7 +37,11 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     query = query.eq('active', false)
   }
 
-  const { data: products = [], error } = await query
+  if (search.trim()) {
+    query = query.ilike('name', `%${search.trim()}%`)
+  }
+
+  const { data: products, count: totalCount, error } = await query
 
   if (error) {
     return (
@@ -39,7 +51,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     )
   }
 
-  // Safe cast since categories is selected as a single joined object
   const typedProducts = (products ?? []).map((product) => ({
     ...product,
     categories: Array.isArray(product.categories)
@@ -47,10 +58,22 @@ export default async function ProductsPage({ searchParams }: PageProps) {
       : product.categories ?? null,
   }))
 
+  const safeTotal = totalCount ?? 0
+  const totalPages = Math.ceil(safeTotal / PAGE_SIZE)
+
+  /** Builds a URL for a given page number, preserving search and status params. */
+  const pageUrl = (p: number) => {
+    const params = new URLSearchParams()
+    if (status && status !== 'all') params.set('status', status)
+    if (search.trim()) params.set('search', search.trim())
+    params.set('page', String(p))
+    return `/admin/products?${params.toString()}`
+  }
+
   const filterTabs = [
-    { label: 'All Products', value: 'all', count: null },
-    { label: 'Published / Active', value: 'active', count: null },
-    { label: 'Drafts / Inactive', value: 'draft', count: null },
+    { label: 'All Products', value: 'all' },
+    { label: 'Published / Active', value: 'active' },
+    { label: 'Drafts / Inactive', value: 'draft' },
   ]
 
   return (
@@ -68,33 +91,77 @@ export default async function ProductsPage({ searchParams }: PageProps) {
           href="/admin/products/new"
           className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 shadow-xs"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="h-4 w-4"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
             <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
           </svg>
           Add Product
         </Link>
       </div>
 
-      {/* Filters bar */}
+      {/* Search bar — plain GET form so it works without JS */}
+      <form
+        method="get"
+        action="/admin/products"
+        className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"
+      >
+        {/* Preserve the active status tab across search submissions */}
+        {status && status !== 'all' && (
+          <input type="hidden" name="status" value={status} />
+        )}
+        {/* Always reset to page 1 on a new search */}
+        <input type="hidden" name="page" value="1" />
+
+        <div className="relative flex-1">
+          <input
+            type="text"
+            name="search"
+            defaultValue={search}
+            placeholder="Search products by name…"
+            className="w-full h-10 pl-9 pr-4 rounded-lg border border-slate-300 bg-white text-sm placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+          />
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Clear button — only shown when a search is active */}
+        {search.trim() && (
+          <Link
+            href={`/admin/products?status=${status}&page=1`}
+            className="h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm text-slate-500 hover:bg-slate-50 flex items-center transition-colors"
+          >
+            Clear
+          </Link>
+        )}
+
+        <button
+          type="submit"
+          className="h-10 px-4 rounded-lg bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition-colors"
+        >
+          Search
+        </button>
+      </form>
+
+      {/* Status filter tabs — preserve the active search term */}
       <div className="flex border-b border-slate-200">
-        <nav className="-mb-px flex gap-6" aria-label="Tabs">
+        <nav className="-mb-px flex gap-6" aria-label="Product status filter">
           {filterTabs.map((tab) => {
-            const isActive =
-              status === tab.value || (tab.value === 'all' && !status)
+            const isActive = status === tab.value || (tab.value === 'all' && !status)
+            const tabSearch = search.trim()
+              ? `&search=${encodeURIComponent(search.trim())}`
+              : ''
             return (
               <Link
                 key={tab.value}
-                href={`/admin/products?status=${tab.value}`}
+                href={`/admin/products?status=${tab.value}${tabSearch}&page=1`}
                 className={`border-b-2 py-4 px-1 text-sm font-medium transition-all ${
                   isActive
                     ? 'border-indigo-600 text-indigo-600'
                     : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'
                 }`}
+                aria-current={isActive ? 'page' : undefined}
               >
                 {tab.label}
               </Link>
@@ -103,8 +170,64 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         </nav>
       </div>
 
-      {/* List */}
+      {/* Product list */}
       <ProductList products={typedProducts} />
+
+      {/* Pagination — only rendered when there are multiple pages */}
+      {totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200 pt-4">
+          <p className="text-sm text-slate-500">
+            Showing{' '}
+            <span className="font-semibold text-slate-700">
+              {offset + 1}–{Math.min(offset + PAGE_SIZE, safeTotal)}
+            </span>{' '}
+            of{' '}
+            <span className="font-semibold text-slate-700">{safeTotal.toLocaleString()}</span>{' '}
+            products
+          </p>
+
+          <div className="flex items-center gap-2">
+            {parsedPage > 1 ? (
+              <Link
+                href={pageUrl(parsedPage - 1)}
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                ← Previous
+              </Link>
+            ) : (
+              <span className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-400 cursor-not-allowed select-none">
+                ← Previous
+              </span>
+            )}
+
+            <span className="text-sm font-medium text-slate-600">
+              Page {parsedPage} of {totalPages}
+            </span>
+
+            {parsedPage < totalPages ? (
+              <Link
+                href={pageUrl(parsedPage + 1)}
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Next →
+              </Link>
+            ) : (
+              <span className="inline-flex h-9 items-center rounded-lg border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-400 cursor-not-allowed select-none">
+                Next →
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Empty state when search returns nothing */}
+      {typedProducts.length === 0 && !error && (
+        <p className="py-4 text-center text-sm text-slate-400">
+          {search.trim()
+            ? `No products matched "${search.trim()}".`
+            : 'No products found for the selected filter.'}
+        </p>
+      )}
     </div>
   )
 }
