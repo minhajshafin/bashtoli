@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { addProductImage } from '@/lib/actions/product-images'
 
@@ -13,6 +14,7 @@ export function ImageUploader({
 }: {
   productId: string
 }) {
+  const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -72,6 +74,9 @@ export function ImageUploader({
       if (dbResult.error) {
         throw new Error(dbResult.error)
       }
+
+      // Refresh the server component tree so the gallery shows the new image (BUG-3)
+      router.refresh()
     } catch (err) {
       const message = err instanceof Error ? err.message : 'An unexpected error occurred during upload.'
       setError(message)

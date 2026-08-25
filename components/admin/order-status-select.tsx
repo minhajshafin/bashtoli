@@ -69,22 +69,22 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
 
     // Confirm cancellations explicitly to prevent accidents
     if (nextStatus === 'cancelled') {
-      const confirm = window.confirm('Are you sure you want to cancel this order? This will restock all inventory items.')
-      if (!confirm) {
-        // Reset select value to current
-        e.target.value = status
-        return
-      }
+      const confirmed = window.confirm('Are you sure you want to cancel this order? This will restock all inventory items.')
+      if (!confirmed) return
     }
+
+    // Optimistically update local state so the select reflects the new value
+    // immediately while the server action is in-flight. (BUG-1)
+    const previousStatus = status
+    setStatus(nextStatus)
 
     startTransition(async () => {
       const result = await updateOrderStatusAction(orderId, nextStatus)
       if (result.error) {
         setError(result.error)
-        e.target.value = status // revert selection UI
+        setStatus(previousStatus) // revert to captured pre-change status
       } else {
         setSuccess(true)
-        setStatus(nextStatus)
         // Automatically clear success banner after 3 seconds
         setTimeout(() => setSuccess(false), 3000)
       }
@@ -114,7 +114,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
           </label>
           <select
             id="order-status-select-input"
-            defaultValue={status}
+            value={status}
             onChange={handleStatusChange}
             disabled={isPending || isFinalState}
             className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none disabled:opacity-60 disabled:cursor-not-allowed"

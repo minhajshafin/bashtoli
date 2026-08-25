@@ -20,6 +20,7 @@ export function ImageGalleryAdmin({
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [successMsg, setSuccessMsg] = useState<string | null>(null)
 
   // Sort local images array to ensure order matches sort_order
   const sortedImages = [...images].sort((a, b) => a.sort_order - b.sort_order)
@@ -41,11 +42,14 @@ export function ImageGalleryAdmin({
 
   async function handleAltSave(imageId: string, altText: string) {
     setError(null)
+    setSuccessMsg(null)
     const res = await updateProductImageAlt(imageId, altText)
     if (res.error) {
       setError(res.error)
     } else {
-      alert('Alt text updated successfully!')
+      // Replace blocking alert() with inline feedback (BUG-4)
+      setSuccessMsg('Alt text saved.')
+      setTimeout(() => setSuccessMsg(null), 3000)
       router.refresh()
     }
   }
@@ -101,6 +105,15 @@ export function ImageGalleryAdmin({
           className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
         >
           {error}
+        </div>
+      )}
+
+      {successMsg && (
+        <div
+          role="status"
+          className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+        >
+          {successMsg}
         </div>
       )}
 

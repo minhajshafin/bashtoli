@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { demoteUserAction, type StaffMember } from '@/lib/actions/staff'
 
 interface StaffListProps {
@@ -9,6 +10,7 @@ interface StaffListProps {
 }
 
 export function StaffList({ staff, currentUserId }: StaffListProps) {
+  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
@@ -26,6 +28,8 @@ export function StaffList({ staff, currentUserId }: StaffListProps) {
         setError(res.error)
       } else {
         setSuccessMessage(`${member.full_name || member.email} has been demoted successfully.`)
+        // Refresh the server component so the demoted member is removed from the table (BUG-2)
+        router.refresh()
         // Auto-clear message
         setTimeout(() => setSuccessMessage(null), 3000)
       }

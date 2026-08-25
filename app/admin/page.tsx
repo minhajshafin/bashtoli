@@ -24,7 +24,9 @@ interface PageProps {
 export default async function AdminPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams
   const thresholdParam = resolvedSearchParams?.threshold
-  const threshold = thresholdParam ? parseInt(thresholdParam, 10) : 5
+  const parsedThreshold = parseInt(thresholdParam ?? '', 10)
+  // Guard against NaN (e.g. ?threshold=abc) and negative values (BUG-5)
+  const threshold = !isNaN(parsedThreshold) && parsedThreshold >= 0 ? parsedThreshold : 5
 
   const supabase = await createClient()
 
