@@ -139,11 +139,11 @@ export function OrderDetail({ detail }: OrderDetailProps) {
               )}
               <div>
                 <p className="text-xs text-slate-400">Linked Profile</p>
-                <div className="font-semibold text-indigo-600 mt-0.5">
+                <div className="font-semibold mt-0.5">
                   {profile ? (
-                    <Link href={`/admin/customers/${profile.id}`} className="hover:underline">
-                      {profile.full_name || 'Linked Profile'}
-                    </Link>
+                    <span className="text-slate-800">
+                      {profile.full_name || 'Linked Account'}
+                    </span>
                   ) : (
                     <span className="text-slate-400 font-normal italic">Guest Order</span>
                   )}

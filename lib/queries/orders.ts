@@ -15,6 +15,14 @@ export type AdminOrderSummary = {
   item_count: number
 }
 
+/** Return type for the paginated order list. */
+export type AdminOrdersResult = {
+  orders: AdminOrderSummary[]
+  totalCount: number
+}
+
+export const ORDERS_PAGE_SIZE = 20
+
 export type AdminOrderDetail = {
   order: Database['public']['Tables']['orders']['Row']
   items: Database['public']['Tables']['order_items']['Row'][]
@@ -34,7 +42,6 @@ export type AdminOrderDetail = {
 
 /**
  * Asserts that the authenticated user is staff or admin.
- * Throws an error or returns false if unauthorized.
  */
 async function verifyAdminAccess(supabase: SupabaseClient<Database>): Promise<boolean> {
   const {
@@ -53,13 +60,16 @@ async function verifyAdminAccess(supabase: SupabaseClient<Database>): Promise<bo
 }
 
 /**
- * Fetches all orders with optional search keyword and status filters.
+ * Fetches a paginated list of orders with optional search and status filters.
  * Sorted by placement date (newest first).
+ * Returns both the current page of orders and the total matching row count for pagination UI.
  */
 export async function fetchAdminOrders(filters: {
   status?: string
   search?: string
-}): Promise<AdminOrderSummary[]> {
+  page?: number
+  pageSize?: number
+}): Promise<AdminOrdersResult> {
   const supabase = await createClient()
   const isAdmin = await verifyAdminAccess(supabase)
 
@@ -67,32 +77,53 @@ export async function fetchAdminOrders(filters: {
     throw new Error('Unauthorized: Admin access required.')
   }
 
+  const { page = 1, pageSize = ORDERS_PAGE_SIZE } = filters
+  const safePage = Math.max(1, page)
+  const offset = (safePage - 1) * pageSize
+
+  // Build the search OR clause once — applied identically to count and data queries.
+  const searchVal = filters.search?.trim() ?? ''
+  const orClause = searchVal
+    ? `order_number.ilike.%${encodeURIComponent(searchVal)}%,customer_name.ilike.%${encodeURIComponent(searchVal)}%,phone.ilike.%${encodeURIComponent(searchVal)}%`
+    : ''
+
   try {
+    // 1. Count total matching rows (needed for pagination controls)
+    let countQuery = supabase
+      .from('orders')
+      .select('*', { count: 'exact', head: true })
+
+    if (filters.status) {
+      countQuery = countQuery.eq(
+        'status',
+        filters.status as Database['public']['Tables']['orders']['Row']['status'],
+      )
+    }
+    if (orClause) countQuery = countQuery.or(orClause)
+
+    const { count, error: countError } = await countQuery
+    if (countError) throw countError
+
+    // 2. Fetch just the current page
     let query = supabase.from('orders').select('*')
 
     if (filters.status) {
-      query = query.eq('status', filters.status as Database['public']['Tables']['orders']['Row']['status'])
+      query = query.eq(
+        'status',
+        filters.status as Database['public']['Tables']['orders']['Row']['status'],
+      )
     }
+    if (orClause) query = query.or(orClause)
 
-    if (filters.search) {
-      const searchVal = filters.search.trim()
-      if (searchVal) {
-        const sanitized = encodeURIComponent(searchVal)
-        // Matches on order_number, customer_name, or phone number
-        query = query.or(
-          `order_number.ilike.%${sanitized}%,customer_name.ilike.%${sanitized}%,phone.ilike.%${sanitized}%`
-        )
-      }
-    }
-
-    const { data: orders, error } = await query.order('created_at', { ascending: false })
+    const { data: orders, error } = await query
+      .order('created_at', { ascending: false })
+      .range(offset, offset + pageSize - 1)
 
     if (error) throw error
-    if (!orders || orders.length === 0) return []
+    if (!orders || orders.length === 0) return { orders: [], totalCount: count ?? 0 }
 
+    // 3. Fetch item qty totals for this page's orders only
     const orderIds = orders.map((o) => o.id)
-
-    // Sequentially retrieve item counts to display purchase quantity summaries safely
     const { data: items, error: itemsError } = await supabase
       .from('order_items')
       .select('order_id, qty')
@@ -106,21 +137,24 @@ export async function fetchAdminOrders(filters: {
       itemsByOrderId.set(item.order_id, current + item.qty)
     }
 
-    return orders.map((o) => ({
-      id: o.id,
-      order_number: o.order_number,
-      customer_name: o.customer_name,
-      phone: o.phone,
-      guest_email: o.guest_email || null,
-      fulfillment_type: o.fulfillment_type,
-      total: Number(o.total),
-      status: o.status,
-      created_at: o.created_at,
-      item_count: itemsByOrderId.get(o.id) || 0,
-    }))
+    return {
+      orders: orders.map((o) => ({
+        id: o.id,
+        order_number: o.order_number,
+        customer_name: o.customer_name,
+        phone: o.phone,
+        guest_email: o.guest_email || null,
+        fulfillment_type: o.fulfillment_type,
+        total: Number(o.total),
+        status: o.status,
+        created_at: o.created_at,
+        item_count: itemsByOrderId.get(o.id) || 0,
+      })),
+      totalCount: count ?? 0,
+    }
   } catch (err) {
     console.error('Error fetching admin orders query:', err)
-    return []
+    return { orders: [], totalCount: 0 }
   }
 }
 
@@ -167,12 +201,11 @@ export async function fetchAdminOrderDetail(orderId: string): Promise<AdminOrder
         .eq('id', order.user_id)
         .maybeSingle()
 
-      // Look up auth email dynamically using admin settings if possible, otherwise rely on guest email
       profile = userProfile
         ? {
             id: userProfile.id,
             full_name: userProfile.full_name,
-            email: order.guest_email || null, // default fallback to order contact email
+            email: order.guest_email || null,
           }
         : null
     }

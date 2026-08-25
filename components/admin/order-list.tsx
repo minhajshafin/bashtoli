@@ -7,6 +7,8 @@ import type { AdminOrderSummary } from '@/lib/queries/orders'
 
 interface OrderListProps {
   orders: AdminOrderSummary[]
+  totalCount: number
+  pageSize: number
 }
 
 const STATUS_OPTIONS = [
@@ -35,34 +37,78 @@ function getStatusBadgeStyle(status: string) {
   }
 }
 
-export function OrderList({ orders }: OrderListProps) {
+/** Generates and downloads a CSV file from the current page of orders. */
+function downloadCSV(orders: AdminOrderSummary[]) {
+  const escapeCell = (v: string | number) =>
+    `"${String(v).replace(/"/g, '""')}"`
+
+  const headers = [
+    'Order #',
+    'Date',
+    'Customer Name',
+    'Phone',
+    'Fulfillment',
+    'Items',
+    'Total (BDT)',
+    'Status',
+  ]
+
+  const rows = orders.map((o) =>
+    [
+      o.order_number,
+      new Date(o.created_at).toLocaleString('en-GB'),
+      o.customer_name,
+      o.phone,
+      o.fulfillment_type,
+      o.item_count,
+      o.total,
+      o.status,
+    ].map(escapeCell).join(','),
+  )
+
+  // UTF-8 BOM ensures Excel renders the Bengali ৳ symbol correctly
+  const csv = '\uFEFF' + [headers.map(escapeCell).join(','), ...rows].join('\n')
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `bashtoli-orders-${new Date().toISOString().split('T')[0]}.csv`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+export function OrderList({ orders, totalCount, pageSize }: OrderListProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [isPending, startTransition] = useTransition()
 
-  // Input states initialized from URL parameters
+  // Input states initialised from URL parameters
   const [searchVal, setSearchVal] = useState(searchParams.get('search') || '')
   const [statusVal, setStatusVal] = useState(searchParams.get('status') || '')
 
-  // Applies search and filter states to URL query params
-  const applyFilters = (newStatus?: string, newSearch?: string) => {
+  // Current page derived from URL
+  const currentPage = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10) || 1)
+  const totalPages = Math.ceil(totalCount / pageSize)
+
+  /** Pushes a new URL with updated query params. */
+  const applyFilters = (overrides: { status?: string; search?: string; page?: number }) => {
     const params = new URLSearchParams(searchParams.toString())
-    
-    const activeStatus = newStatus !== undefined ? newStatus : statusVal
-    const activeSearch = newSearch !== undefined ? newSearch : searchVal
 
-    if (activeStatus) {
-      params.set('status', activeStatus)
-    } else {
-      params.delete('status')
-    }
+    const activeStatus = overrides.status !== undefined ? overrides.status : statusVal
+    const activeSearch = overrides.search !== undefined ? overrides.search : searchVal
+    const activePage = overrides.page !== undefined ? overrides.page : 1
 
-    if (activeSearch) {
-      params.set('search', activeSearch)
-    } else {
-      params.delete('search')
-    }
+    if (activeStatus) params.set('status', activeStatus)
+    else params.delete('status')
+
+    if (activeSearch) params.set('search', activeSearch)
+    else params.delete('search')
+
+    if (activePage > 1) params.set('page', String(activePage))
+    else params.delete('page')
 
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`)
@@ -71,14 +117,21 @@ export function OrderList({ orders }: OrderListProps) {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    applyFilters()
+    applyFilters({ page: 1 })
+  }
+
+  const goToPage = (page: number) => {
+    applyFilters({ page })
   }
 
   return (
     <div className="space-y-6">
-      {/* Search & Filter Header Form */}
-      <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center bg-white p-4 rounded-xl border border-slate-200">
-        {/* Search Term Input */}
+      {/* Search & Filter Header */}
+      <form
+        onSubmit={handleSearchSubmit}
+        className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center bg-white p-4 rounded-xl border border-slate-200"
+      >
+        {/* Search Input */}
         <div className="relative flex-1">
           <input
             type="text"
@@ -87,21 +140,21 @@ export function OrderList({ orders }: OrderListProps) {
             className="w-full h-10 pl-9 pr-4 rounded-lg border border-slate-300 bg-white text-sm placeholder-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
             placeholder="Search by order number, customer name, or phone..."
           />
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true">
             <svg className="h-4 w-4 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           {/* Status Dropdown */}
           <select
             value={statusVal}
             onChange={(e) => {
               const val = e.target.value
               setStatusVal(val)
-              applyFilters(val, undefined)
+              applyFilters({ status: val, page: 1 })
             }}
             className="h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
           >
@@ -112,18 +165,32 @@ export function OrderList({ orders }: OrderListProps) {
             ))}
           </select>
 
-          {/* Search trigger button */}
+          {/* Search button */}
           <button
             type="submit"
             disabled={isPending}
             className="h-10 px-4 rounded-lg bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition-colors disabled:opacity-50"
           >
-            {isPending ? 'Filtering...' : 'Search'}
+            {isPending ? 'Filtering…' : 'Search'}
+          </button>
+
+          {/* CSV Export */}
+          <button
+            type="button"
+            onClick={() => downloadCSV(orders)}
+            disabled={orders.length === 0}
+            title="Export this page as CSV"
+            className="h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1.5"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export CSV
           </button>
         </div>
       </form>
 
-      {/* Orders Table view */}
+      {/* Orders Table */}
       <div className="overflow-hidden bg-white border border-slate-200 rounded-xl shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">
@@ -190,6 +257,40 @@ export function OrderList({ orders }: OrderListProps) {
           </table>
         </div>
       </div>
+
+      {/* Pagination bar */}
+      {totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200 pt-2">
+          <p className="text-sm text-slate-500">
+            Page{' '}
+            <span className="font-semibold text-slate-700">{currentPage}</span>{' '}
+            of{' '}
+            <span className="font-semibold text-slate-700">{totalPages}</span>
+            {' '}·{' '}
+            <span className="font-semibold text-slate-700">{totalCount.toLocaleString()}</span>{' '}
+            total orders
+          </p>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={isPending || currentPage <= 1}
+              className="inline-flex h-9 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              ← Previous
+            </button>
+            <button
+              type="button"
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={isPending || currentPage >= totalPages}
+              className="inline-flex h-9 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

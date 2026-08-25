@@ -1,5 +1,5 @@
 import React from 'react'
-import { fetchAdminOrders } from '@/lib/queries/orders'
+import { fetchAdminOrders, ORDERS_PAGE_SIZE } from '@/lib/queries/orders'
 import { OrderList } from '@/components/admin/order-list'
 
 export const metadata = {
@@ -11,20 +11,21 @@ interface PageProps {
   searchParams: Promise<{
     status?: string
     search?: string
+    page?: string
   }>
 }
 
 /**
  * Admin Orders Dashboard route.
- * Server component loading incoming orders matching optional search keywords and status filters.
+ * Server component loading a paginated page of orders with optional search and status filters.
  */
 export default async function AdminOrdersPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams
   const status = resolvedSearchParams?.status || undefined
   const search = resolvedSearchParams?.search || undefined
+  const page = Math.max(1, parseInt(resolvedSearchParams?.page ?? '1', 10) || 1)
 
-  // Retrieve matching checkouts list
-  const orders = await fetchAdminOrders({ status, search })
+  const { orders, totalCount } = await fetchAdminOrders({ status, search, page })
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -37,8 +38,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {/* Overview Table List */}
-      <OrderList orders={orders} />
+      <OrderList orders={orders} totalCount={totalCount} pageSize={ORDERS_PAGE_SIZE} />
     </div>
   )
 }
