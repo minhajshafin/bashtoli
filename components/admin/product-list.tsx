@@ -12,22 +12,41 @@ import type { Database } from '@/lib/supabase/database.types'
 type ProductRow = Database['public']['Tables']['products']['Row']
 type CategoryRow = Database['public']['Tables']['categories']['Row']
 
-type ProductWithCategory = ProductRow & {
+export type ProductWithCategory = ProductRow & {
   categories: CategoryRow | null
 }
 
-function ActiveToggle({ id, initialActive }: { id: string; initialActive: boolean }) {
-  const [active, setActive] = useState(initialActive)
+/** Common server-action signature shared by toggleProductActive and toggleProductFeatured. */
+type ToggleAction = (id: string, value: boolean) => Promise<{ error?: string | null }>
+
+/**
+ * Generic toggle switch — replaces the old ActiveToggle and FeaturedToggle
+ * components that were 95 % identical (ARCH-2).
+ * Accepts any server action with the standard (id, value) => Promise<{error?}> signature.
+ */
+function ToggleSwitch({
+  id,
+  initial,
+  action,
+  ariaLabel,
+}: {
+  id: string
+  initial: boolean
+  action: ToggleAction
+  ariaLabel?: string
+}) {
+  const [value, setValue] = useState(initial)
   const [isPending, setIsPending] = useState(false)
 
   async function handleToggle() {
     setIsPending(true)
-    const nextVal = !active
-    setActive(nextVal)
-    const res = await toggleProductActive(id, nextVal)
+    const prevVal = value
+    const nextVal = !value
+    setValue(nextVal) // optimistic update
+    const res = await action(id, nextVal)
     if (res.error) {
       alert(res.error)
-      setActive(active) // rollback
+      setValue(prevVal) // rollback
     }
     setIsPending(false)
   }
@@ -35,51 +54,19 @@ function ActiveToggle({ id, initialActive }: { id: string; initialActive: boolea
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={value}
+      aria-label={ariaLabel}
       onClick={handleToggle}
       disabled={isPending}
-      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 ${
-        active ? 'bg-indigo-600' : 'bg-slate-200'
+      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+        value ? 'bg-indigo-600' : 'bg-slate-200'
       }`}
     >
       <span
         aria-hidden="true"
         className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-          active ? 'translate-x-5' : 'translate-x-0'
-        }`}
-      />
-    </button>
-  )
-}
-
-function FeaturedToggle({ id, initialFeatured }: { id: string; initialFeatured: boolean }) {
-  const [featured, setFeatured] = useState(initialFeatured)
-  const [isPending, setIsPending] = useState(false)
-
-  async function handleToggle() {
-    setIsPending(true)
-    const nextVal = !featured
-    setFeatured(nextVal)
-    const res = await toggleProductFeatured(id, nextVal)
-    if (res.error) {
-      alert(res.error)
-      setFeatured(featured) // rollback
-    }
-    setIsPending(false)
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={handleToggle}
-      disabled={isPending}
-      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 ${
-        featured ? 'bg-indigo-600' : 'bg-slate-200'
-      }`}
-    >
-      <span
-        aria-hidden="true"
-        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-          featured ? 'translate-x-5' : 'translate-x-0'
+          value ? 'translate-x-5' : 'translate-x-0'
         }`}
       />
     </button>
@@ -91,7 +78,11 @@ function DeleteButton({ id, name }: { id: string; name: string }) {
   const [error, setError] = useState<string | null>(null)
 
   async function handleDelete() {
-    if (!window.confirm(`Are you sure you want to delete product "${name}"?\nIf it has order history, it will be blocked. Otherwise, it will be soft-deleted.`)) {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete product "${name}"?\nIf it has order history, it will be blocked. Otherwise, it will be soft-deleted.`,
+      )
+    ) {
       return
     }
     setIsPending(true)
@@ -123,11 +114,7 @@ function DeleteButton({ id, name }: { id: string; name: string }) {
   )
 }
 
-export function ProductList({
-  products,
-}: {
-  products: ProductWithCategory[]
-}) {
+export function ProductList({ products }: { products: ProductWithCategory[] }) {
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center shadow-sm">
@@ -178,98 +165,100 @@ export function ProductList({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
-            {products.map((product) => {
-              return (
-                <tr key={product.id} className="hover:bg-slate-50 transition-colors">
-                  {/* Thumbnail & Name */}
-                  <td className="px-6 py-4 font-medium text-slate-900">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 border border-slate-200">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          className="h-5 w-5 text-slate-400"
-                        >
-                          <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                          <circle cx="9" cy="9" r="2" />
-                          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                        </svg>
-                      </div>
-                      <div className="min-w-0">
-                        <p className="truncate font-semibold text-slate-900">
-                          {product.name}
-                        </p>
-                        <p className="truncate font-mono text-xs text-slate-400">
-                          /{product.slug}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Category */}
-                  <td className="px-6 py-4">
-                    {product.categories ? (
-                      <span className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
-                        {product.categories.name}
-                      </span>
-                    ) : (
-                      <span className="text-slate-400 italic text-xs">
-                        Uncategorised
-                      </span>
-                    )}
-                  </td>
-
-                  {/* Base Price */}
-                  <td className="px-6 py-4 text-right font-medium text-slate-900">
-                    ৳{product.base_price.toFixed(2)}
-                  </td>
-
-                  {/* Published Toggle */}
-                  <td className="px-6 py-4 text-center">
-                    <div className="flex items-center justify-center">
-                      <ActiveToggle id={product.id} initialActive={product.active} />
-                    </div>
-                  </td>
-
-                  {/* Featured Toggle */}
-                  <td className="px-6 py-4 text-center">
-                    <div className="flex items-center justify-center">
-                      <FeaturedToggle id={product.id} initialFeatured={product.featured} />
-                    </div>
-                  </td>
-
-                  {/* Status Badge */}
-                  <td className="px-6 py-4 text-center">
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                        product.active
-                          ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/10'
-                          : 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-500/10'
-                      }`}
-                    >
-                      {product.active ? 'Active' : 'Draft'}
-                    </span>
-                  </td>
-
-                  {/* Actions */}
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-3">
-                      <Link
-                        id={`edit-product-${product.id}`}
-                        href={`/admin/products/${product.id}`}
-                        className="rounded-md px-2.5 py-1 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50"
+            {products.map((product) => (
+              <tr key={product.id} className="hover:bg-slate-50 transition-colors">
+                {/* Thumbnail & Name */}
+                <td className="px-6 py-4 font-medium text-slate-900">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 border border-slate-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="h-5 w-5 text-slate-400"
                       >
-                        Edit
-                      </Link>
-                      <DeleteButton id={product.id} name={product.name} />
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                        <circle cx="9" cy="9" r="2" />
+                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                      </svg>
                     </div>
-                  </td>
-                </tr>
-              )
-            })}
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold text-slate-900">{product.name}</p>
+                      <p className="truncate font-mono text-xs text-slate-400">/{product.slug}</p>
+                    </div>
+                  </div>
+                </td>
+
+                {/* Category */}
+                <td className="px-6 py-4">
+                  {product.categories ? (
+                    <span className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+                      {product.categories.name}
+                    </span>
+                  ) : (
+                    <span className="text-slate-400 italic text-xs">Uncategorised</span>
+                  )}
+                </td>
+
+                {/* Base Price */}
+                <td className="px-6 py-4 text-right font-medium text-slate-900">
+                  ৳{product.base_price.toFixed(2)}
+                </td>
+
+                {/* Published toggle — uses shared ToggleSwitch */}
+                <td className="px-6 py-4 text-center">
+                  <div className="flex items-center justify-center">
+                    <ToggleSwitch
+                      id={product.id}
+                      initial={product.active}
+                      action={toggleProductActive}
+                      ariaLabel={`Toggle ${product.name} published`}
+                    />
+                  </div>
+                </td>
+
+                {/* Featured toggle — uses shared ToggleSwitch */}
+                <td className="px-6 py-4 text-center">
+                  <div className="flex items-center justify-center">
+                    <ToggleSwitch
+                      id={product.id}
+                      initial={product.featured}
+                      action={toggleProductFeatured}
+                      ariaLabel={`Toggle ${product.name} featured`}
+                    />
+                  </div>
+                </td>
+
+                {/* Status Badge */}
+                <td className="px-6 py-4 text-center">
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                      product.active
+                        ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/10'
+                        : 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-500/10'
+                    }`}
+                  >
+                    {product.active ? 'Active' : 'Draft'}
+                  </span>
+                </td>
+
+                {/* Actions */}
+                <td className="px-6 py-4 text-right">
+                  <div className="flex items-center justify-end gap-3">
+                    <Link
+                      id={`edit-product-${product.id}`}
+                      href={`/admin/products/${product.id}`}
+                      className="rounded-md px-2.5 py-1 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteButton id={product.id} name={product.name} />
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

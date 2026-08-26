@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getServerProfile } from '@/lib/supabase/get-server-profile'
 import { LogoutButton } from './logout-button'
 import { SidebarToggleButton } from './sidebar-toggle-button'
 
@@ -19,26 +19,14 @@ const ROLE_BADGE: Record<string, { label: string; class: string }> = {
 
 /**
  * Admin top header — server component.
- * Fetches the current user's name and role, then renders the header bar.
- * Sign-out is delegated to the <LogoutButton> client component.
+ * Profile is loaded via the shared getServerProfile() helper (React cache),
+ * so when admin/page.tsx also calls getServerProfile() in the same request,
+ * only one DB round-trip is made (ARCH-3).
  */
 export async function Header() {
-  const supabase = await createClient()
+  const profile = await getServerProfile()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Profile might not exist in edge cases; degrade gracefully.
-  const { data: profile } = user
-    ? await supabase
-        .from('profiles')
-        .select('full_name, role')
-        .eq('id', user.id)
-        .single()
-    : { data: null }
-
-  const displayName = profile?.full_name ?? user?.email ?? 'Unknown user'
+  const displayName = profile?.full_name ?? profile?.email ?? 'Unknown user'
   const role = profile?.role ?? 'customer'
   const badge = ROLE_BADGE[role] ?? ROLE_BADGE.customer
 
@@ -50,9 +38,7 @@ export async function Header() {
       {/* Right — user info + sign-out */}
       <div className="flex items-center gap-3">
         {/* Role badge */}
-        <span
-          className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${badge.class}`}
-        >
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${badge.class}`}>
           {badge.label}
         </span>
 

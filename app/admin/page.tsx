@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { getServerProfile } from '@/lib/supabase/get-server-profile'
 import { fetchDashboardMetrics, fetchLowStockList } from '@/lib/queries/dashboard'
 import { DashboardStats } from '@/components/admin/dashboard-stats'
 import { LowStockList } from '@/components/admin/low-stock-list'
@@ -18,36 +18,23 @@ interface PageProps {
 
 /**
  * Admin Dashboard homepage.
- * Server component loading welcome profiles, sales/pending order count metrics,
- * and low-stock variant lists.
+ * Profile is loaded via the shared getServerProfile() helper (React cache),
+ * so Header + this page share one DB round-trip (ARCH-3).
  */
 export default async function AdminPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams
   const thresholdParam = resolvedSearchParams?.threshold
   const parsedThreshold = parseInt(thresholdParam ?? '', 10)
-  // Guard against NaN (e.g. ?threshold=abc) and negative values (BUG-5)
+  // Guard against NaN (e.g. ?threshold=abc) and negative values
   const threshold = !isNaN(parsedThreshold) && parsedThreshold >= 0 ? parsedThreshold : 5
 
-  const supabase = await createClient()
-
-  // 1. Retrieve user profile greeting details
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  const { data: profile } = user
-    ? await supabase
-        .from('profiles')
-        .select('full_name, role')
-        .eq('id', user.id)
-        .single()
-    : { data: null }
-
+  // Profile fetch — deduplicated with Header via React cache()
+  const profile = await getServerProfile()
   const greeting = profile?.full_name
     ? `Welcome back, ${profile.full_name.split(' ')[0]}!`
     : 'Welcome back!'
 
-  // 2. Fetch live metrics and stock levels
+  // Fetch live metrics and stock levels
   const metrics = await fetchDashboardMetrics(threshold)
   const lowStockItems = await fetchLowStockList(threshold)
 
@@ -63,7 +50,10 @@ export default async function AdminPage({ searchParams }: PageProps) {
         </div>
 
         {/* Threshold quick adjuster form */}
-        <form method="get" className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs">
+        <form
+          method="get"
+          className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs"
+        >
           <label htmlFor="threshold" className="text-xs font-semibold text-slate-500 whitespace-nowrap">
             Low Stock Threshold:
           </label>

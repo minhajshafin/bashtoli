@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import {
+  fetchAdminProducts,
+  ADMIN_PRODUCTS_PAGE_SIZE,
+  type AdminProductListItem,
+} from '@/lib/queries/admin-products'
 import { ProductList } from '@/components/admin/product-list'
 
 export const metadata: Metadata = {
   title: 'Products',
 }
-
-const PAGE_SIZE = 25
 
 interface PageProps {
   searchParams: Promise<{
@@ -21,45 +23,26 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const { status = 'all', search = '', page: pageParam = '1' } = await searchParams
 
   const parsedPage = Math.max(1, parseInt(pageParam, 10) || 1)
-  const offset = (parsedPage - 1) * PAGE_SIZE
 
-  const supabase = await createClient()
+  let products: AdminProductListItem[] = []
+  let totalCount = 0
 
-  let query = supabase
-    .from('products')
-    .select('*, categories(*)', { count: 'exact' })
-    .order('created_at', { ascending: false })
-    .range(offset, offset + PAGE_SIZE - 1)
-
-  if (status === 'active') {
-    query = query.eq('active', true)
-  } else if (status === 'draft' || status === 'inactive') {
-    query = query.eq('active', false)
-  }
-
-  if (search.trim()) {
-    query = query.ilike('name', `%${search.trim()}%`)
-  }
-
-  const { data: products, count: totalCount, error } = await query
-
-  if (error) {
+  try {
+    const result = await fetchAdminProducts({ status, search, page: parsedPage })
+    products = result.products
+    totalCount = result.totalCount
+  } catch (err) {
     return (
       <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">
-        Failed to load products: {error.message}
+        Failed to load products:{' '}
+        {err instanceof Error ? err.message : 'Unknown error'}
       </div>
     )
   }
 
-  const typedProducts = (products ?? []).map((product) => ({
-    ...product,
-    categories: Array.isArray(product.categories)
-      ? product.categories[0] ?? null
-      : product.categories ?? null,
-  }))
-
-  const safeTotal = totalCount ?? 0
-  const totalPages = Math.ceil(safeTotal / PAGE_SIZE)
+  const safeTotal = totalCount
+  const totalPages = Math.ceil(safeTotal / ADMIN_PRODUCTS_PAGE_SIZE)
+  const offset = (parsedPage - 1) * ADMIN_PRODUCTS_PAGE_SIZE
 
   /** Builds a URL for a given page number, preserving search and status params. */
   const pageUrl = (p: number) => {
@@ -104,11 +87,9 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         action="/admin/products"
         className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3"
       >
-        {/* Preserve the active status tab across search submissions */}
         {status && status !== 'all' && (
           <input type="hidden" name="status" value={status} />
         )}
-        {/* Always reset to page 1 on a new search */}
         <input type="hidden" name="page" value="1" />
 
         <div className="relative flex-1">
@@ -126,7 +107,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-        {/* Clear button — only shown when a search is active */}
         {search.trim() && (
           <Link
             href={`/admin/products?status=${status}&page=1`}
@@ -144,7 +124,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         </button>
       </form>
 
-      {/* Status filter tabs — preserve the active search term */}
+      {/* Status filter tabs */}
       <div className="flex border-b border-slate-200">
         <nav className="-mb-px flex gap-6" aria-label="Product status filter">
           {filterTabs.map((tab) => {
@@ -171,15 +151,24 @@ export default async function ProductsPage({ searchParams }: PageProps) {
       </div>
 
       {/* Product list */}
-      <ProductList products={typedProducts} />
+      <ProductList products={products} />
 
-      {/* Pagination — only rendered when there are multiple pages */}
+      {/* Empty state */}
+      {products.length === 0 && (
+        <p className="py-4 text-center text-sm text-slate-400">
+          {search.trim()
+            ? `No products matched "${search.trim()}".`
+            : 'No products found for the selected filter.'}
+        </p>
+      )}
+
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200 pt-4">
           <p className="text-sm text-slate-500">
             Showing{' '}
             <span className="font-semibold text-slate-700">
-              {offset + 1}–{Math.min(offset + PAGE_SIZE, safeTotal)}
+              {offset + 1}–{Math.min(offset + ADMIN_PRODUCTS_PAGE_SIZE, safeTotal)}
             </span>{' '}
             of{' '}
             <span className="font-semibold text-slate-700">{safeTotal.toLocaleString()}</span>{' '}
@@ -190,7 +179,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             {parsedPage > 1 ? (
               <Link
                 href={pageUrl(parsedPage - 1)}
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                className="inline-flex h-9 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 ← Previous
               </Link>
@@ -207,7 +196,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             {parsedPage < totalPages ? (
               <Link
                 href={pageUrl(parsedPage + 1)}
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                className="inline-flex h-9 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 Next →
               </Link>
@@ -218,15 +207,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             )}
           </div>
         </div>
-      )}
-
-      {/* Empty state when search returns nothing */}
-      {typedProducts.length === 0 && !error && (
-        <p className="py-4 text-center text-sm text-slate-400">
-          {search.trim()
-            ? `No products matched "${search.trim()}".`
-            : 'No products found for the selected filter.'}
-        </p>
       )}
     </div>
   )

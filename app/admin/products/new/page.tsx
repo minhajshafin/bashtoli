@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { fetchAdminCategories } from '@/lib/queries/admin-products'
 import { ProductForm } from '@/components/admin/product-form'
 
 export const metadata: Metadata = {
@@ -7,18 +7,15 @@ export const metadata: Metadata = {
 }
 
 export default async function NewProductPage() {
-  const supabase = await createClient()
+  let categories: Awaited<ReturnType<typeof fetchAdminCategories>> = []
 
-  const { data: categories = [], error } = await supabase
-    .from('categories')
-    .select('*')
-    .order('sort_order', { ascending: true })
-    .order('name', { ascending: true })
-
-  if (error) {
+  try {
+    categories = await fetchAdminCategories()
+  } catch (err) {
     return (
       <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700">
-        Failed to load categories: {error.message}
+        Failed to load categories:{' '}
+        {err instanceof Error ? err.message : 'Unknown error'}
       </div>
     )
   }
@@ -32,7 +29,7 @@ export default async function NewProductPage() {
         </p>
       </div>
 
-      <ProductForm mode="create" categories={categories ?? []} />
+      <ProductForm mode="create" categories={categories} />
     </div>
   )
 }
