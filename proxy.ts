@@ -2,18 +2,19 @@ import type { NextRequest } from 'next/server'
 import { adminGuard } from '@/lib/supabase/middleware'
 
 /**
- * Next.js root middleware.
+ * Next.js 16 root middleware (proxy.ts).
+ *
+ * NOTE: Next.js 16 uses "proxy.ts" as the middleware file convention.
+ * Do NOT rename this file to "middleware.ts" — that convention is deprecated
+ * in Next.js 16 and will cause a build warning.
  *
  * Delegates to `adminGuard` for:
  * - Supabase session refresh (token rotation on every request)
  * - HTTP security headers on every response
  * - Rate limiting on auth + order-lookup pages
  * - Role-based access control on /admin/* routes
- *
- * IMPORTANT: This file MUST be named `middleware.ts` (not proxy.ts or anything else)
- * for Next.js to pick it up as the edge middleware.
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   return await adminGuard(request)
 }
 
