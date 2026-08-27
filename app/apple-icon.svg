@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="appleBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142B1E"/>
+      <stop offset="100%" stop-color="#09160E"/>
+    </linearGradient>
+    <linearGradient id="appleNib" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF5DE"/>
+      <stop offset="40%" stop-color="#E8BC7A"/>
+      <stop offset="100%" stop-color="#C98B43"/>
+    </linearGradient>
+    <linearGradient id="appleTerra" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C9411D"/>
+      <stop offset="100%" stop-color="#F26E46"/>
+    </linearGradient>
+    <linearGradient id="appleGreen" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E6B44"/>
+      <stop offset="100%" stop-color="#4EBA7E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Container -->
+  <rect width="180" height="180" rx="40" fill="url(#appleBg)"/>
+  <rect x="3" y="3" width="174" height="174" rx="37" fill="none" stroke="#254B35" stroke-width="3"/>
+
+  <!-- Left Bamboo Leaf (Jamdani Forest) -->
+  <path d="M70 110 C45 107 31 87 28 62 C48 68 64 84 70 99 Z" fill="url(#appleGreen)"/>
+
+  <!-- Right Bamboo Leaf (Terracotta Crimson) -->
+  <path d="M101 90 C124 81 143 62 152 34 C135 48 110 62 98 76 Z" fill="url(#appleTerra)"/>
+
+  <!-- Top Sprout Accent Leaf -->
+  <path d="M90 34 C96 20 110 14 124 12 C113 24 101 31 90 34 Z" fill="#E8BC7A" opacity="0.9"/>
+
+  <!-- Bamboo Fountain Pen Nib (Main Silhouette) -->
+  <path d="M90 25
+           L110 70
+           C115 81 113 96 104 101
+           L104 132
+           C108 134 108 139 104 142
+           L104 149
+           C104 152 101 155 98 155
+           L82 155
+           C79 155 76 152 76 149
+           L76 142
+           C72 139 72 134 76 132
+           L76 101
+           C67 96 65 81 70 70
+           Z"
+        fill="url(#appleNib)"/>
+
+  <!-- Bamboo Node Joint Ring on Pen Barrel -->
+  <line x1="71" y1="138" x2="109" y2="138" stroke="#7A4B1A" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Nib Slit and Breather Hole (Craft / Ink Identity) -->
+  <circle cx="90" cy="74" r="6" fill="#09160E"/>
+  <line x1="90" y1="25" x2="90" y2="68" stroke="#09160E" stroke-width="4.5" stroke-linecap="round"/>
+</svg>

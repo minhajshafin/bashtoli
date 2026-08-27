@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142B1E"/>
+      <stop offset="100%" stop-color="#09160E"/>
+    </linearGradient>
+    <linearGradient id="nibGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF5DE"/>
+      <stop offset="40%" stop-color="#E8BC7A"/>
+      <stop offset="100%" stop-color="#C98B43"/>
+    </linearGradient>
+    <linearGradient id="terraGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C9411D"/>
+      <stop offset="100%" stop-color="#F26E46"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E6B44"/>
+      <stop offset="100%" stop-color="#4EBA7E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Container -->
+  <rect width="32" height="32" rx="7.5" fill="url(#bgGrad)"/>
+  <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.75" fill="none" stroke="#254B35" stroke-width="0.75"/>
+
+  <!-- Left Bamboo Leaf (Jamdani Forest) -->
+  <path d="M12.5 19.5 C8 19 5.5 15.5 5 11 C8.5 12 11.5 15 12.5 17.5 Z" fill="url(#greenGrad)"/>
+
+  <!-- Right Bamboo Leaf (Terracotta Crimson) -->
+  <path d="M18 16 C22 14.5 25.5 11 27 6 C24 8.5 19.5 11 17.5 13.5 Z" fill="url(#terraGrad)"/>
+
+  <!-- Top Sprout Accent Leaf -->
+  <path d="M16 6 C17 3.5 19.5 2.5 22 2.2 C20 4.2 18 5.5 16 6 Z" fill="#E8BC7A" opacity="0.9"/>
+
+  <!-- Bamboo Fountain Pen Nib (Main Silhouette) -->
+  <path d="M16 4.5
+           L19.5 12.5
+           C20.5 14.5 20 17 18.5 18
+           L18.5 23.5
+           C19.2 23.8 19.2 24.8 18.5 25.2
+           L18.5 26.5
+           C18.5 27 18 27.5 17.5 27.5
+           L14.5 27.5
+           C14 27.5 13.5 27 13.5 26.5
+           L13.5 25.2
+           C12.8 24.8 12.8 23.8 13.5 23.5
+           L13.5 18
+           C12 17 11.5 14.5 12.5 12.5
+           Z"
+        fill="url(#nibGrad)"/>
+
+  <!-- Bamboo Node Joint Ring on Pen Barrel -->
+  <line x1="12.5" y1="24.5" x2="19.5" y2="24.5" stroke="#7A4B1A" stroke-width="0.9" stroke-linecap="round"/>
+
+  <!-- Nib Slit and Breather Hole (Craft / Ink Identity) -->
+  <circle cx="16" cy="13.2" r="1.1" fill="#09160E"/>
+  <line x1="16" y1="4.5" x2="16" y2="12.1" stroke="#09160E" stroke-width="0.85" stroke-linecap="round"/>
+</svg>
