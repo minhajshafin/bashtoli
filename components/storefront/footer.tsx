@@ -13,14 +13,14 @@ export function Footer() {
           {/* Brand Info Column */}
           <div className="space-y-4 md:col-span-1">
             <Link href="/" className="text-lg font-black tracking-tight text-zinc-900 dark:text-white hover:text-amber-600 transition-colors">
-              Bashtoli
+              Bashtoli Stationery
             </Link>
             <p className="text-xs leading-relaxed text-zinc-500">
-              Premium sustainable home decor and organic handicrafts hand-woven in Bangladesh. Bringing nature directly to your living spaces.
+              Your friendly neighbourhood stationery shop. Pens, pencils, notebooks, pouches and more — everything you need to write, create, and stay organised.
             </p>
             <div className="pt-2">
               <a
-                href="https://wa.me/8801700000000"
+                href="https://wa.me/8801825414737"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 text-sm font-bold text-white shadow-md shadow-emerald-600/10 hover:bg-emerald-700 transition-all hover:scale-[1.02] active:scale-[0.98]"
@@ -36,12 +36,12 @@ export function Footer() {
           {/* Shop Column */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              Shop Collections
+              Shop
             </h3>
             <ul className="space-y-2 text-xs font-semibold">
               <li>
                 <Link href="/products" className="hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
-                  Catalog Browse
+                  Browse All Products
                 </Link>
               </li>
               <li>
@@ -65,17 +65,17 @@ export function Footer() {
             <ul className="space-y-2 text-xs font-semibold">
               <li>
                 <Link href="/about" className="hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
-                  Our Artisans & Story
+                  About Us
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
-                  Contact Details
+                  Contact &amp; Directions
                 </Link>
               </li>
               <li>
                 <Link href="/order/lookup" className="hover:text-amber-600 dark:hover:text-amber-500 transition-colors">
-                  Track Guest Order
+                  Track My Order
                 </Link>
               </li>
             </ul>
@@ -84,15 +84,15 @@ export function Footer() {
           {/* Contact Details Column */}
           <div className="space-y-3 text-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              Business Hours
+              Visit Us
             </h3>
             <div className="space-y-2 text-zinc-550 leading-relaxed font-semibold">
-              <p>Mon - Sat: 9:00 AM - 8:00 PM</p>
-              <p>Sunday: Closed</p>
+              <p>Open 7 Days a Week</p>
+              <p>7:00 AM – 11:00 PM</p>
               <hr className="border-zinc-100 dark:border-zinc-900" />
-              <p className="font-bold text-zinc-800 dark:text-zinc-300">Bashtoli Office</p>
-              <p className="text-zinc-500 font-normal">House 45, Road 11, Banani, Dhaka</p>
-              <p className="font-bold text-zinc-800 dark:text-zinc-300">Hotline: +880 1700-000000</p>
+              <p className="font-bold text-zinc-800 dark:text-zinc-300">Bashtoli Stationery</p>
+              <p className="text-zinc-500 font-normal">Address — Shajadpur, Bashtola, Gulshan-1212</p>
+              <p className="font-bold text-zinc-800 dark:text-zinc-300">Hotline: +880 1825-414737</p>
             </div>
           </div>
         </div>
@@ -100,8 +100,8 @@ export function Footer() {
         {/* Bottom copyright segment */}
         <div className="mt-12 pt-8 border-t border-zinc-150 dark:border-zinc-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-zinc-450 dark:text-zinc-500">
           <div>
-            <p>&copy; {currentYear} Bashtoli. All rights reserved.</p>
-            <p className="mt-0.5 text-[9px] text-zinc-400/70">Eco-Friendly Handcrafted Bamboo & Cane Decor</p>
+            <p>&copy; {currentYear} Bashtoli Stationery. All rights reserved.</p>
+            <p className="mt-0.5 text-[9px] text-zinc-400/70">Pens · Pencils · Notebooks · Pouches · Accessories</p>
           </div>
           <div className="flex gap-4">
             <span className="cursor-default">Dhaka, Bangladesh</span>

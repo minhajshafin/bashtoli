@@ -72,7 +72,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
             {/* Header / Brand in Menu */}
             <div className="flex items-center justify-between border-b border-zinc-100 pb-4 dark:border-zinc-900">
               <span className="text-lg font-black tracking-tight text-zinc-900 dark:text-white">
-                Bashtoli
+                Bashtoli Stationery
               </span>
               <button
                 id="storefront-mobile-nav-close"

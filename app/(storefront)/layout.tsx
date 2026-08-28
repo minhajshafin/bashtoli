@@ -11,10 +11,10 @@ import { ToastProvider } from '@/components/ui/toast'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Bashtoli',
-    default: 'Bashtoli | Premium Handicrafts',
+    template: '%s | Bashtoli Stationery',
+    default: 'Bashtoli Stationery | Your Neighborhood Stationery Shop',
   },
-  description: 'Authentic organic handicraft products made in Bangladesh.',
+  description: 'Pens, pencils, paper, pouches & more — everything you need to write, create, and organise. Visit Bashtoli Stationery today.',
 }
 
 export default async function StorefrontLayout({

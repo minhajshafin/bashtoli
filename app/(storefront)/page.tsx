@@ -5,16 +5,16 @@ import { FeaturedProducts } from '@/components/storefront/featured-products'
 import { getStorefrontCategories } from '@/lib/queries/products'
 
 export const metadata = {
-  title: 'Bashtoli | Premium Bamboo & Cane Handicrafts',
-  description: 'Shop organic sustainable handicraft products hand-woven with love in Bangladesh.',
+  title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
+  description: 'Pens, pencils, notebooks, pouches, key rings & more. Shop everything you need at Bashtoli Stationery, Dhaka.',
   alternates: {
     canonical: 'https://bashtoli.com',
   },
   openGraph: {
-    title: 'Bashtoli | Premium Bamboo & Cane Handicrafts',
-    description: 'Shop organic sustainable handicraft products hand-woven with love in Bangladesh.',
+    title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
+    description: 'Pens, pencils, notebooks, pouches, key rings & more. Shop everything you need at Bashtoli Stationery, Dhaka.',
     url: 'https://bashtoli.com',
-    siteName: 'Bashtoli',
+    siteName: 'Bashtoli Stationery',
     locale: 'en_US',
     type: 'website',
   },
@@ -55,7 +55,7 @@ export default async function StorefrontHomePage() {
                   {cat.name}
                 </h3>
                 <p className="text-[10px] text-zinc-400 mt-1 dark:text-zinc-500">
-                  Natural eco-friendly decor
+                  Explore our stationery range
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-zinc-100 flex justify-between items-center text-xs dark:border-zinc-900">
