@@ -56,6 +56,12 @@ export default async function AccountLayout({
                 Overview
               </Link>
               <Link
+                href="/account/profile"
+                className="shrink-0 flex items-center rounded-xl px-4 py-2.5 text-xs font-semibold text-zinc-650 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
+              >
+                Profile Settings
+              </Link>
+              <Link
                 href="/account/orders"
                 className="shrink-0 flex items-center rounded-xl px-4 py-2.5 text-xs font-semibold text-zinc-650 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
               >

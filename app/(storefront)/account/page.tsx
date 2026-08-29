@@ -47,7 +47,25 @@ export default async function AccountPage() {
       </div>
 
       {/* Portal features grid cards layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Profile Settings Card */}
+        <Link
+          href="/account/profile"
+          className="group p-6 rounded-3xl border border-zinc-200 bg-white hover:border-zinc-300 shadow-xs hover:scale-[1.01] active:scale-[0.99] transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-500 mb-4 group-hover:scale-105 transition-transform">
+            <svg className="h-5 w-5 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <h2 className="text-sm font-black text-zinc-900 dark:text-zinc-50 group-hover:text-emerald-600 transition-colors">
+            Profile Settings
+          </h2>
+          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Manage your personal info, contact phone, default address, and password.
+          </p>
+        </Link>
+
         {/* Orders Card */}
         <Link
           href="/account/orders"
