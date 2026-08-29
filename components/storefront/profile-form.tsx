@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useTransition, useState } from 'react'
-import { updateProfileAction, updatePasswordAction } from '@/lib/actions/profile'
+import { useRouter } from 'next/navigation'
+import { updateProfileAction, updatePasswordAction, deleteAccountAction } from '@/lib/actions/profile'
 import { useToast } from '@/components/ui/toast'
 
 interface ProfileFormProps {
@@ -16,14 +17,21 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ profile, email }: ProfileFormProps) {
+  const router = useRouter()
   const { toast } = useToast()
 
   // UX State: View vs Edit mode for Personal Information
   const [isEditingPersonal, setIsEditingPersonal] = useState(false)
 
+  // Danger Zone Modal State
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deleteConfirmation, setDeleteConfirmation] = useState('')
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+
   // Transitions for smooth state handling
   const [isProfilePending, startProfileTransition] = useTransition()
   const [isPasswordPending, startPasswordTransition] = useTransition()
+  const [isDeletePending, startDeleteTransition] = useTransition()
 
   // Form State
   const [profileState, setProfileState] = useState<{
@@ -62,6 +70,23 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
       if (res.success) {
         toast('Password updated successfully!', 'success')
         passwordFormRef.current?.reset()
+      }
+    })
+  }
+
+  const handleDeleteSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setDeleteError(null)
+    const formData = new FormData()
+    formData.append('confirmation', deleteConfirmation)
+
+    startDeleteTransition(async () => {
+      const res = await deleteAccountAction({ error: null }, formData)
+      if (res.error) {
+        setDeleteError(res.error)
+      } else if (res.success) {
+        toast('Your account has been deleted successfully.', 'info')
+        router.push('/')
       }
     })
   }
@@ -386,6 +411,134 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
           </div>
         </div>
       </div>
+
+      {/* Danger Zone Section */}
+      <div className="rounded-3xl border border-rose-200 bg-rose-50/30 p-6 sm:p-8 dark:border-rose-900/40 dark:bg-rose-950/10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-base font-black text-rose-800 dark:text-rose-400 tracking-tight flex items-center gap-2">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Danger Zone
+            </h2>
+            <p className="text-xs text-rose-700/80 dark:text-rose-400/80 mt-1 max-w-xl">
+              Permanently delete your account and all associated personal data from the database. Past completed and in-progress orders are preserved securely in the store records.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setDeleteConfirmation('')
+              setDeleteError(null)
+              setIsDeleteModalOpen(true)
+            }}
+            className="shrink-0 inline-flex h-10 items-center justify-center rounded-xl bg-rose-600 px-4 text-xs font-bold text-white shadow-sm hover:bg-rose-700 active:scale-[0.98] transition-all"
+          >
+            Delete Account
+          </button>
+        </div>
+      </div>
+
+      {/* Delete Account Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+            onClick={() => !isDeletePending && setIsDeleteModalOpen(false)}
+          />
+
+          {/* Modal Card */}
+          <div className="relative w-full max-w-lg rounded-3xl border border-zinc-200 bg-white p-6 sm:p-8 shadow-2xl dark:border-zinc-800 dark:bg-zinc-950 animate-fade-in z-10 space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </div>
+              <div className="space-y-1 min-w-0">
+                <h3 className="text-lg font-black text-zinc-900 dark:text-zinc-50">
+                  Delete Account Permanently?
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  This action is permanent and cannot be reversed.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3 rounded-2xl bg-zinc-50 p-4 text-xs text-zinc-650 dark:bg-zinc-900/50 dark:text-zinc-400 border border-zinc-100 dark:border-zinc-800">
+              <p className="font-bold text-zinc-900 dark:text-zinc-200">
+                What will happen:
+              </p>
+              <ul className="list-disc pl-4 space-y-1.5 text-[11px] leading-relaxed">
+                <li>Your login credentials, profile data, and saved addresses will be deleted from the database.</li>
+                <li>Your cart and wishlist items will be removed.</li>
+                <li>Your completed and pending orders will remain securely stored in store order records for bookkeeping and fulfillment (unlinked from your deleted profile).</li>
+              </ul>
+            </div>
+
+            {deleteError && (
+              <div
+                role="alert"
+                className="flex items-start gap-2 rounded-2xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 dark:bg-rose-950/20 dark:border-rose-900/50 dark:text-rose-400"
+              >
+                <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>{deleteError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleDeleteSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="deleteConfirmation" className="block text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                  Type <span className="font-mono font-black text-rose-600 dark:text-rose-400 select-all">DELETE</span> to confirm:
+                </label>
+                <input
+                  id="deleteConfirmation"
+                  type="text"
+                  value={deleteConfirmation}
+                  onChange={(e) => setDeleteConfirmation(e.target.value)}
+                  disabled={isDeletePending}
+                  placeholder="DELETE"
+                  className="block w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-mono font-bold text-zinc-900 placeholder-zinc-400 focus:border-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500/10 transition-all dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder-zinc-600"
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDeleteModalOpen(false)
+                    setDeleteConfirmation('')
+                    setDeleteError(null)
+                  }}
+                  disabled={isDeletePending}
+                  className="inline-flex h-11 items-center justify-center rounded-xl border border-zinc-200 bg-white px-5 text-xs font-bold text-zinc-700 hover:bg-zinc-50 active:scale-[0.98] transition-all disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-850"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={deleteConfirmation !== 'DELETE' || isDeletePending}
+                  className="inline-flex h-11 items-center justify-center rounded-xl bg-rose-600 px-6 text-xs font-bold text-white shadow-md hover:bg-rose-700 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-rose-600"
+                >
+                  {isDeletePending ? (
+                    <div className="flex items-center gap-2">
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      <span>Deleting Account...</span>
+                    </div>
+                  ) : (
+                    'Permanently Delete Account'
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { profileSchema, passwordChangeSchema } from '@/lib/validations/profile'
 
 export type ProfileUpdateState = {
@@ -14,6 +14,11 @@ export type PasswordChangeState = {
   error: string | null
   success?: boolean
   fieldErrors?: Partial<Record<'newPassword' | 'confirmPassword', string[]>>
+}
+
+export type DeleteAccountState = {
+  error: string | null
+  success?: boolean
 }
 
 /**
@@ -193,3 +198,77 @@ export async function updatePasswordAction(
     }
   }
 }
+
+/**
+ * Server Action: Permanently and safely delete user account.
+ * Removes user from auth.users (cascades to profiles, addresses, carts, wishlist),
+ * while foreign key ON DELETE SET NULL keeps past/completed orders intact.
+ */
+export async function deleteAccountAction(
+  _prevState: DeleteAccountState,
+  formData: FormData
+): Promise<DeleteAccountState> {
+  const confirmation = (formData.get('confirmation') as string || '').trim()
+
+  if (confirmation !== 'DELETE') {
+    return { error: 'Please type DELETE exactly to confirm account deletion.' }
+  }
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: 'You must be logged in to delete your account.' }
+  }
+
+  try {
+    // 1. Check if user is an admin. If so, prevent deletion if they are the sole admin.
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (profile?.role === 'admin') {
+      const { count } = await supabase
+        .from('profiles')
+        .select('id', { count: 'exact', head: true })
+        .eq('role', 'admin')
+
+      if ((count ?? 0) <= 1) {
+        return {
+          error: 'Cannot delete the sole administrator account on the system. Please promote another administrator first.',
+        }
+      }
+    }
+
+    // 2. Delete user using Supabase Admin Client
+    const adminClient = createAdminClient()
+    const { error: deleteError } = await adminClient.auth.admin.deleteUser(user.id)
+
+    if (deleteError) {
+      console.error('Delete user admin error:', deleteError)
+      return {
+        error: deleteError.message || 'Failed to delete account. Please try again.',
+      }
+    }
+
+    // 3. Sign out session & clear cookies
+    await supabase.auth.signOut()
+  } catch (err) {
+    console.error('Delete account action unexpected error:', err)
+    return {
+      error: 'An unexpected error occurred while deleting your account. Please try again.',
+    }
+  }
+
+  revalidatePath('/', 'layout')
+
+  return {
+    error: null,
+    success: true,
+  }
+}
+
