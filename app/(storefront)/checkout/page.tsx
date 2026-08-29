@@ -22,6 +22,8 @@ export default async function CheckoutPage() {
 
   let savedAddresses: Database['public']['Tables']['addresses']['Row'][] = []
   let userFullName: string | null = null
+  let userPhone: string | null = null
+  let userAddress: string | null = null
 
   if (user) {
     // 1. Fetch saved addresses
@@ -33,14 +35,18 @@ export default async function CheckoutPage() {
 
     savedAddresses = addressData || []
 
-    // 2. Fetch profile details (full name)
+    // 2. Fetch profile details (full name, phone)
     const { data: profile } = await supabase
       .from('profiles')
-      .select('full_name')
+      .select('full_name, phone')
       .eq('id', user.id)
       .maybeSingle()
 
-    userFullName = profile?.full_name || null
+    const defaultAddress = savedAddresses.find((a) => a.is_default) || savedAddresses[0]
+
+    userFullName = profile?.full_name || (user.user_metadata?.full_name as string) || null
+    userPhone = profile?.phone || defaultAddress?.phone || null
+    userAddress = defaultAddress?.full_address || null
   }
 
   return (
@@ -60,6 +66,8 @@ export default async function CheckoutPage() {
         savedAddresses={savedAddresses}
         userEmail={user?.email || null}
         userFullName={userFullName}
+        userPhone={userPhone}
+        userAddress={userAddress}
       />
     </div>
   )

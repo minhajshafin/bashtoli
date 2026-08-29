@@ -20,12 +20,16 @@ interface CheckoutFormProps {
   savedAddresses?: SavedAddress[]
   userEmail?: string | null
   userFullName?: string | null
+  userPhone?: string | null
+  userAddress?: string | null
 }
 
 export function CheckoutForm({
   savedAddresses = [],
   userEmail = null,
   userFullName = null,
+  userPhone = null,
+  userAddress = null,
 }: CheckoutFormProps) {
   const router = useRouter()
   const { cart, isLoaded, subtotal, clearCart } = useCart()
@@ -33,13 +37,13 @@ export function CheckoutForm({
   // Form Fields State
   const [customerName, setCustomerName] = useState(userFullName || '')
   const [phone, setPhone] = useState(() => {
-    const defaultAddr = savedAddresses.find((a) => a.is_default)
-    return defaultAddr?.phone || ''
+    const defaultAddr = savedAddresses.find((a) => a.is_default) || savedAddresses[0]
+    return defaultAddr?.phone || userPhone || ''
   })
   const [guestEmail, setGuestEmail] = useState(userEmail || '')
   const [address, setAddress] = useState(() => {
-    const defaultAddr = savedAddresses.find((a) => a.is_default)
-    return defaultAddr?.full_address || ''
+    const defaultAddr = savedAddresses.find((a) => a.is_default) || savedAddresses[0]
+    return defaultAddr?.full_address || userAddress || ''
   })
   const [notes, setNotes] = useState('')
   const [fulfillmentType, setFulfillmentType] = useState<'delivery' | 'pickup'>('delivery')
