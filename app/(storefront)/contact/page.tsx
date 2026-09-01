@@ -112,18 +112,17 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Interactive OSM Map iframe */}
+          {/* Interactive Google Map iframe */}
           <div className="rounded-2xl overflow-hidden border border-forest-200">
             <iframe
-              title="Bashtoli Store — Shajadpur, Gulshan, Dhaka"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=90.3917%2C23.7249%2C90.4017%2C23.7329&layer=mapnik&marker=23.7289%2C90.3967"
-              style={{
-                width: '100%',
-                height: '180px',
-                border: 'none',
-                display: 'block',
-              }}
+              title="Bashtoli Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d852.1068079492925!2d90.42298250636408!3d23.79462584364245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c78c486ded25%3A0x63964f79a60c5a7!2z4Kas4Ka-4KaB4Ka24Kak4Kay4KeAIOCmleCmruCnjeCmquCmv-CmieCmn-CmvuCmsCAtIEJhc2h0b2xpIENvbXB1dGVy!5e0!3m2!1sen!2sbd!4v1788283104370!5m2!1sen!2sbd"
+              width="100%"
+              height="200"
+              style={{ border: 0, display: 'block' }}
+              allowFullScreen={false}
               loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
         </div>

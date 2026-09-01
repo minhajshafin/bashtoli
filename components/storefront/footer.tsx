@@ -133,20 +133,18 @@ export function Footer() {
           </h4>
           <div style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid #243d2e' }}>
             <iframe
-              title="Bashtoli Store — Shajadpur, Gulshan, Dhaka"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=90.3917%2C23.7249%2C90.4017%2C23.7329&layer=mapnik&marker=23.7289%2C90.3967"
-              style={{
-                width: '100%',
-                height: '180px',
-                border: 'none',
-                display: 'block',
-                filter: 'sepia(0.4) saturate(0.7) brightness(0.85)',
-              }}
+              title="Bashtoli Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d852.1068079492925!2d90.42298250636408!3d23.79462584364245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c78c486ded25%3A0x63964f79a60c5a7!2z4Kas4Ka-4KaB4Ka24Kak4Kay4KeAIOCmleCmruCnjeCmquCmv-CmieCmn-CmvuCmsCAtIEJhc2h0b2xpIENvbXB1dGVy!5e0!3m2!1sen!2sbd!4v1788283104370!5m2!1sen!2sbd"
+              width="100%"
+              height="180"
+              style={{ border: 0, display: 'block' }}
+              allowFullScreen={false}
               loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
           <a
-            href="https://www.openstreetmap.org/?mlat=23.7289&mlon=90.3967#map=17/23.7289/90.3967"
+            href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-forest-500 mt-2 inline-block hover:text-forest-400 transition-colors"
