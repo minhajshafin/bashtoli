@@ -43,7 +43,7 @@ export default function CartPage() {
   if (!isLoaded) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-500 border-t-transparent" />
       </div>
     )
   }
@@ -70,8 +70,8 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-200 dark:border-zinc-800">
-        <h1 className="text-3xl font-extrabold text-zinc-900 tracking-tight dark:text-zinc-50">
+      <div className="flex items-center justify-between mb-8 pb-4 border-b border-forest-200">
+        <h1 className="text-3xl font-extrabold text-forest-900 tracking-tight">
           Shopping Cart
         </h1>
         {cart.length > 0 && (
@@ -81,7 +81,7 @@ export default function CartPage() {
                 clearCart()
               }
             }}
-            className="text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-rose-600 transition-colors"
+            className="text-xs font-bold uppercase tracking-wider text-forest-400 hover:text-rose-600 transition-colors"
           >
             Clear Cart
           </button>
@@ -93,7 +93,7 @@ export default function CartPage() {
           {/* Cart items list */}
           <div className="lg:col-span-2 space-y-4">
             {isValidating && Object.keys(dbStatuses).length === 0 && (
-              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700 animate-pulse">
+              <div className="rounded-2xl border border-gold-300 bg-gold-300/20 p-4 text-sm text-forest-700 animate-pulse">
                 Validating inventory and prices...
               </div>
             )}
@@ -120,8 +120,8 @@ export default function CartPage() {
         </div>
       ) : (
         /* Empty Cart View */
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-zinc-200 bg-white py-20 px-4 text-center dark:border-zinc-800 dark:bg-zinc-950">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-stone-100 text-zinc-400 dark:bg-zinc-900 dark:text-zinc-500">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-forest-200 bg-cream-50 py-20 px-4 text-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-forest-100 text-forest-400">
             <svg
               className="h-8 w-8 stroke-[1.5]"
               fill="none"
@@ -135,15 +135,15 @@ export default function CartPage() {
               />
             </svg>
           </div>
-          <h2 className="mt-4 text-lg font-bold text-zinc-900 dark:text-zinc-50">
+          <h2 className="mt-4 text-lg font-bold text-forest-900">
             Your cart is empty
           </h2>
-          <p className="mt-2 text-sm text-zinc-500 max-w-sm dark:text-zinc-400">
+          <p className="mt-2 text-sm text-forest-600 max-w-sm">
             Looks like you haven&apos;t added anything to your cart yet. Head back to the store to explore our beautiful handcrafted items.
           </p>
           <Link
             href="/products"
-            className="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-amber-600 px-6 text-sm font-bold text-white shadow-md shadow-amber-600/10 hover:bg-amber-700 transition-colors"
+            className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-gold-500 px-6 text-sm font-bold text-forest-800 hover:bg-gold-400 transition-colors"
           >
             Continue Shopping
           </Link>

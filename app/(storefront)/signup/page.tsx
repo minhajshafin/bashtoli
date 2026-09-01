@@ -29,10 +29,13 @@ export default async function SignupPage() {
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1
+            className="text-3xl font-extrabold tracking-tight text-forest-900"
+            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+          >
             Create Account
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-forest-600">
             Join Bashtoli to save addresses and track orders
           </p>
         </div>
@@ -42,3 +45,4 @@ export default async function SignupPage() {
     </div>
   )
 }
+

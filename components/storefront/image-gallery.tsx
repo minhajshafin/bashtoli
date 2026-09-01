@@ -46,8 +46,8 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
 
   if (images.length === 0) {
     return (
-      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-zinc-50 border border-zinc-200 flex items-center justify-center dark:bg-zinc-900 dark:border-zinc-800">
-        <div className="flex flex-col items-center justify-center text-zinc-400">
+      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-cream-100 border border-forest-200 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center text-forest-400">
           <svg
             className="h-16 w-16 stroke-[1.2]"
             fill="none"
@@ -75,7 +75,7 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        className="relative aspect-square w-full overflow-hidden rounded-3xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950"
+        className="relative aspect-square w-full overflow-hidden rounded-3xl border border-forest-200 bg-cream-100"
       >
         <Image
           src={activeImage.url}
@@ -89,7 +89,7 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
 
       {/* Thumbnails Row */}
       {images.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-800">
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
           {images.map((img, idx) => {
             const isActive = idx === activeIdx
             return (
@@ -98,8 +98,8 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
                 onClick={() => setActiveIdx(idx)}
                 className={`relative h-20 w-20 flex-none overflow-hidden rounded-2xl border transition-all duration-200 ${
                   isActive
-                    ? 'border-amber-600 ring-2 ring-amber-600/20 scale-95 opacity-100'
-                    : 'border-zinc-200 opacity-60 hover:opacity-100 dark:border-zinc-800'
+                    ? 'border-gold-500 ring-2 ring-gold-500/20 scale-95 opacity-100'
+                    : 'border-forest-200 opacity-60 hover:opacity-100'
                 }`}
                 aria-label={`View image ${idx + 1}`}
               >
@@ -118,3 +118,4 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
     </div>
   )
 }
+

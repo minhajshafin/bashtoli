@@ -51,47 +51,99 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const activeCategory = categories.find((cat) => cat.slug === activeCategorySlug)
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Page Header / Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-stone-100 to-amber-50/50 p-6 sm:p-10 mb-8 dark:from-zinc-900/60 dark:to-zinc-900/10 dark:border dark:border-zinc-800">
-        <div className="relative z-10 max-w-2xl">
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-500">
-            Handcrafted Collections
-          </span>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
-            {activeCategory ? activeCategory.name : 'All Collections'}
-          </h1>
-          <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Explore our curated range of authentic, premium-quality products. Lovingly made, ethically sourced, and designed to bring warm natural accents to your home.
-          </p>
+    <div className="relative min-h-screen bg-cream-50 overflow-hidden">
+      {/* Botanical corner accents */}
+      <svg
+        viewBox="0 0 320 320"
+        fill="none"
+        className="absolute top-16 right-0 w-64 h-64 md:w-72 md:h-72 pointer-events-none"
+        style={{ opacity: 0.16 }}
+        aria-hidden="true"
+      >
+        <path d="M300 10 Q260 70 200 110 Q150 145 170 210 Q185 250 230 270" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
+        <path d="M200 90 Q182 65 158 82 Q148 100 168 112 Q188 124 200 90Z" fill="#c9a96e" opacity="0.7" />
+        <path d="M240 55 Q222 30 198 47 Q188 65 208 77 Q228 89 240 55Z" fill="#c9a96e" opacity="0.5" />
+        <path d="M275 25 Q257 5 233 22 Q223 38 243 47 Q263 56 275 25Z" fill="#c9a96e" opacity="0.4" />
+        <path d="M310 45 Q320 95 308 145 Q296 185 268 205" stroke="#c9a96e" strokeWidth="1" fill="none" opacity="0.5" />
+        <path d="M280 115 Q260 92 245 110 Q240 127 255 133 Q270 139 280 115Z" fill="#c9a96e" opacity="0.4" />
+        <path d="M265 160 Q245 137 230 155 Q225 172 240 178 Q255 184 265 160Z" fill="#c9a96e" opacity="0.3" />
+      </svg>
+      <svg
+        viewBox="0 0 280 280"
+        fill="none"
+        className="absolute bottom-20 left-0 w-56 h-56 md:w-60 md:h-60 pointer-events-none"
+        style={{ opacity: 0.12 }}
+        aria-hidden="true"
+      >
+        <path d="M20 260 Q60 215 80 155 Q100 95 55 45" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
+        <path d="M75 120 Q95 95 80 70 Q62 63 57 80 Q52 97 75 120Z" fill="#c9a96e" opacity="0.6" />
+        <path d="M55 165 Q78 140 62 115 Q44 108 39 125 Q34 142 55 165Z" fill="#c9a96e" opacity="0.5" />
+        <path d="M36 205 Q59 180 43 155 Q25 148 20 165 Q15 182 36 205Z" fill="#c9a96e" opacity="0.4" />
+      </svg>
+
+      {/* Page Header Banner */}
+      <div className="bg-forest-800 px-5 md:px-8 py-10 md:py-14">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-5">
+          <div>
+            <h1
+              style={{
+                fontFamily: "'Fraunces', Georgia, serif",
+                fontSize: 'clamp(1.9rem, 4vw, 3rem)',
+                color: '#f5ede0',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                lineHeight: 1.1,
+              }}
+            >
+              {activeCategory ? activeCategory.name : 'All Products'}
+            </h1>
+            <p
+              style={{
+                color: '#a8c4b0',
+                fontSize: '0.85rem',
+                marginTop: '6px',
+                fontFamily: "'Source Sans 3', system-ui, sans-serif",
+              }}
+            >
+              {totalCount} items across all categories
+            </p>
+          </div>
+          <div className="w-full md:w-72">
+            <SearchInput />
+          </div>
         </div>
-        {/* Subtle decorative mesh background */}
-        <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none hidden md:block" />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar Filter - Desktop only */}
-        <aside className="w-full md:w-64 shrink-0">
-          <div className="sticky top-20 bg-white border border-zinc-200 rounded-2xl p-5 dark:bg-zinc-950 dark:border-zinc-800">
+      {/* Main Catalog Content */}
+      <div className="max-w-7xl mx-auto px-5 md:px-8 py-10">
+        {/* Mobile Categories pills */}
+        <div className="md:hidden mb-6">
+          <CategoryFilter
+            categories={categories}
+            activeCategorySlug={activeCategorySlug}
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+          {/* Sidebar Filter - Desktop only */}
+          <aside className="hidden md:block w-56 shrink-0 sticky top-20">
             <CategoryFilter
               categories={categories}
               activeCategorySlug={activeCategorySlug}
             />
-          </div>
-        </aside>
+          </aside>
 
-        {/* Product Grid Area */}
-        <div className="flex-1">
-          {/* Controls Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-6 border-b border-zinc-100 dark:border-zinc-800">
-            <div className="order-2 sm:order-1">
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+          {/* Product Grid Area */}
+          <main className="flex-1 min-w-0">
+            {/* Controls / Result info */}
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-forest-200">
+              <p className="text-xs font-medium text-forest-600">
                 Showing{' '}
-                <span className="font-semibold text-zinc-900 dark:text-zinc-200">
+                <span className="font-semibold text-forest-900">
                   {products.length}
                 </span>{' '}
                 of{' '}
-                <span className="font-semibold text-zinc-900 dark:text-zinc-200">
+                <span className="font-semibold text-forest-900">
                   {totalCount}
                 </span>{' '}
                 products
@@ -99,7 +151,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   <>
                     {' '}
                     for &ldquo;
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-200">
+                    <span className="font-semibold text-forest-900">
                       {searchQuery}
                     </span>
                     &rdquo;
@@ -107,58 +159,53 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 )}
               </p>
             </div>
-            <div className="order-1 sm:order-2 w-full sm:w-auto">
-              <SearchInput />
-            </div>
-          </div>
 
-          {/* Mobile Categories pills - shown only on mobile */}
-          <div className="md:hidden mb-6">
-            <CategoryFilter
-              categories={categories}
-              activeCategorySlug={activeCategorySlug}
-            />
-          </div>
+            {/* Grid view */}
+            {products.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
 
-          {/* Grid view */}
-          {products.length > 0 ? (
-            <>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-
-              {/* Pagination controls */}
-              <Pagination currentPage={currentPage} totalPages={totalPages} />
-            </>
-          ) : (
-            /* Empty State Container */
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-200 bg-white py-16 px-4 text-center dark:border-zinc-800 dark:bg-zinc-950">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-500">
-                <svg
-                  className="h-8 w-8 stroke-[1.5]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                {/* Pagination controls */}
+                <div className="mt-12">
+                  <Pagination currentPage={currentPage} totalPages={totalPages} />
+                </div>
+              </>
+            ) : (
+              /* Empty State Container */
+              <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-forest-200 bg-cream-100 py-20 px-4 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-forest-100 text-forest-500 mb-4">
+                  <svg
+                    className="h-8 w-8 stroke-[1.5]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </div>
+                <h3
+                  className="text-xl font-bold text-forest-900"
+                  style={{ fontFamily: "'Fraunces', Georgia, serif" }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
+                  Nothing here yet
+                </h3>
+                <p className="mt-2 text-sm text-forest-600 max-w-sm">
+                  We couldn&apos;t find any active products matching your filters or search terms. Try clearing search or selecting a different category.
+                </p>
               </div>
-              <h3 className="mt-4 text-base font-bold text-zinc-900 dark:text-zinc-50">
-                No products found
-              </h3>
-              <p className="mt-2 text-sm text-zinc-500 max-w-sm dark:text-zinc-400">
-                We couldn&apos;t find any active products matching your filters or search terms. Try clearing search or selecting a different category.
-              </p>
-            </div>
-          )}
+            )}
+          </main>
         </div>
       </div>
     </div>
   )
 }
+

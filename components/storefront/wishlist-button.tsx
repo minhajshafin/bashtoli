@@ -44,8 +44,8 @@ export function WishlistButton({
       disabled={isPending}
       className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 ${
         isWishlisted
-          ? 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900/50 dark:bg-rose-950/20 dark:text-rose-500 shadow-sm'
-          : 'border-zinc-200 bg-white text-zinc-400 hover:border-zinc-300 hover:text-zinc-650 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-500 dark:hover:text-zinc-300'
+          ? 'border-rose-300 bg-rose-50 text-rose-600 shadow-sm'
+          : 'border-forest-200 bg-white text-forest-400 hover:border-gold-500 hover:text-gold-500'
       }`}
       title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
     >
@@ -63,3 +63,4 @@ export function WishlistButton({
     </button>
   )
 }
+

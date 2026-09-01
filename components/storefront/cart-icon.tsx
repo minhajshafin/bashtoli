@@ -10,25 +10,29 @@ export function CartIcon() {
   return (
     <Link
       href="/cart"
-      className="relative flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 border border-zinc-200 text-zinc-600 hover:text-zinc-900 transition-all hover:bg-zinc-100/50 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-850 dark:hover:text-zinc-100"
+      className="relative flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full"
       aria-label="View Cart"
     >
       <svg
-        className="h-5 w-5 stroke-[2]"
+        className="h-5 w-5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        strokeWidth={1.5}
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+          d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z"
         />
       </svg>
 
       {/* Cart quantity badge */}
       {isLoaded && itemCount > 0 && (
-        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-[10px] font-black text-white shadow-sm ring-2 ring-white animate-fade-in dark:ring-zinc-950">
+        <span
+          className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-forest-800 shadow-sm animate-fade-in"
+          style={{ backgroundColor: '#c9a96e' }}
+        >
           {itemCount}
         </span>
       )}

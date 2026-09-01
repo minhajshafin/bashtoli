@@ -11,18 +11,18 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ category, productName }: BreadcrumbProps) {
   return (
-    <nav className="flex items-center space-x-2 text-xs md:text-sm font-medium text-zinc-500 dark:text-zinc-400 py-4 mb-2">
+    <nav className="flex items-center space-x-2 text-xs md:text-sm font-medium text-forest-600 py-4 mb-2">
       {/* Home */}
       <Link
         href="/products"
-        className="hover:text-amber-600 transition-colors"
+        className="hover:text-gold-500 transition-colors"
       >
         Shop
       </Link>
 
       {/* Separator */}
       <svg
-        className="h-4 w-4 shrink-0 text-zinc-300 dark:text-zinc-600"
+        className="h-4 w-4 shrink-0 text-forest-300"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -36,13 +36,13 @@ export function Breadcrumb({ category, productName }: BreadcrumbProps) {
         <>
           <Link
             href={`/products?category=${category.slug}`}
-            className="hover:text-amber-600 transition-colors whitespace-nowrap"
+            className="hover:text-gold-500 transition-colors whitespace-nowrap"
           >
             {category.name}
           </Link>
           {/* Separator */}
           <svg
-            className="h-4 w-4 shrink-0 text-zinc-300 dark:text-zinc-600"
+            className="h-4 w-4 shrink-0 text-forest-300"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -54,9 +54,10 @@ export function Breadcrumb({ category, productName }: BreadcrumbProps) {
       ) : null}
 
       {/* Current Product */}
-      <span className="text-zinc-900 font-semibold truncate dark:text-zinc-50" aria-current="page">
+      <span className="text-forest-900 font-semibold truncate" aria-current="page">
         {productName}
       </span>
     </nav>
   )
 }
+

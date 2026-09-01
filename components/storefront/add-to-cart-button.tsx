@@ -47,12 +47,12 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-4">
         {/* Quantity Picker (only enabled if a variant is selected and in stock) */}
-        <div className="flex items-center h-12 rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="flex items-center h-12 rounded-xl border border-forest-200 bg-white">
           <button
             type="button"
             onClick={handleDecrement}
             disabled={isButtonDisabled || quantity <= 1}
-            className="flex w-10 h-full items-center justify-center text-zinc-500 hover:text-zinc-900 disabled:opacity-30 dark:hover:text-zinc-100"
+            className="flex w-10 h-full items-center justify-center text-forest-400 hover:text-forest-700 disabled:opacity-30"
             aria-label="Decrease quantity"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -60,7 +60,7 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
             </svg>
           </button>
           
-          <span className="w-12 text-center text-sm font-bold text-zinc-900 select-none dark:text-zinc-50">
+          <span className="w-12 text-center text-sm font-bold text-forest-900 select-none">
             {isOutOfStock ? 0 : quantity}
           </span>
 
@@ -68,7 +68,7 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
             type="button"
             onClick={handleIncrement}
             disabled={isButtonDisabled || (stockQty !== undefined && quantity >= stockQty)}
-            className="flex w-10 h-full items-center justify-center text-zinc-500 hover:text-zinc-900 disabled:opacity-30 dark:hover:text-zinc-100"
+            className="flex w-10 h-full items-center justify-center text-forest-400 hover:text-forest-700 disabled:opacity-30"
             aria-label="Increase quantity"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -83,9 +83,9 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
             {isOutOfStock ? (
               <span className="text-rose-600 uppercase tracking-wider">Out of Stock</span>
             ) : stockQty !== undefined && stockQty <= 3 ? (
-              <span className="text-amber-600">Only {stockQty} items left!</span>
+              <span className="text-gold-600 font-bold">Only {stockQty} items left!</span>
             ) : (
-              <span className="text-emerald-600">In Stock ({stockQty} available)</span>
+              <span className="text-forest-500">In Stock ({stockQty} available)</span>
             )}
           </div>
         )}
@@ -96,10 +96,10 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
         type="button"
         disabled={isButtonDisabled}
         onClick={() => onAddToCart(quantity)}
-        className={`w-full h-12 rounded-xl text-sm font-bold tracking-wide uppercase transition-all duration-300 ${
+        className={`w-full h-12 rounded-full text-sm font-bold tracking-wide uppercase transition-all duration-300 ${
           isButtonDisabled
-            ? 'bg-zinc-100 border border-zinc-200 text-zinc-400 cursor-not-allowed dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-600'
-            : 'bg-amber-600 text-white shadow-md shadow-amber-600/10 hover:bg-amber-700 hover:shadow-lg'
+            ? 'bg-forest-100 border border-forest-200 text-forest-400 cursor-not-allowed'
+            : 'bg-gold-500 text-forest-800 shadow-md shadow-gold-500/20 hover:bg-gold-400 hover:shadow-lg'
         }`}
       >
         {buttonText}
@@ -107,3 +107,4 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
     </div>
   )
 }
+

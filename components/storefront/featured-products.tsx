@@ -1,42 +1,51 @@
 import React from 'react'
 import Link from 'next/link'
 import { getFeaturedProducts } from '@/lib/queries/products'
-import { ProductCard } from '@/components/storefront/product-card'
+import { ProductCarousel } from '@/components/storefront/product-carousel'
 
-/**
- * FeaturedProducts server component.
- * Retrieves featured store items (falling back to new ones) and renders the grid.
- */
 export async function FeaturedProducts() {
   const products = await getFeaturedProducts()
 
   if (products.length === 0) return null
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-baseline border-b border-zinc-100 pb-4 dark:border-zinc-900">
-        <div>
-          <h2 className="text-xl font-black text-zinc-900 tracking-tight dark:text-white">
-            Featured Products
-          </h2>
-          <p className="text-xs text-zinc-500 mt-1 dark:text-zinc-400">
-            Artisanal organic handicrafts handpicked just for you.
-          </p>
+    <section className="py-20 px-5 md:px-8 bg-cream-50">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+          <div>
+            <p
+              className="text-[11px] uppercase tracking-[0.28em] mb-3"
+              style={{ color: '#c9a96e' }}
+            >
+              Featured
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Fraunces', Georgia, serif",
+                fontSize: 'clamp(1.9rem, 4vw, 3rem)',
+                color: '#1a3326',
+                fontWeight: 400,
+                fontStyle: 'italic',
+                lineHeight: 1.1,
+              }}
+            >
+              Finest Goods,<br />Thoughtfully Chosen
+            </h2>
+          </div>
+          <Link
+            id="featured-view-all-link"
+            href="/products"
+            className="self-start md:self-auto inline-flex items-center gap-2 text-sm font-semibold px-6 py-2.5 rounded-full bg-forest-800 border border-forest-700 text-gold-400 hover:bg-gold-500 hover:text-forest-800 hover:border-gold-500 transition-all"
+          >
+            View all products
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
         </div>
-        <Link
-          id="featured-view-all-link"
-          href="/products"
-          className="text-xs font-bold text-amber-600 hover:text-amber-700 hover:underline dark:text-amber-500 dark:hover:text-amber-400"
-        >
-          View All Products &rarr;
-        </Link>
-      </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        <ProductCarousel products={products} />
       </div>
-    </div>
+    </section>
   )
 }

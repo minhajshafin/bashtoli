@@ -91,23 +91,26 @@ export default async function WishlistPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight">
+        <h1
+          className="text-2xl font-black text-forest-900 tracking-tight"
+          style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+        >
           My Wishlist
         </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+        <p className="text-xs text-forest-600 mt-1">
           Items you have saved to purchase or review later.
         </p>
       </div>
 
       {wishlistProducts.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-zinc-200 rounded-3xl dark:border-zinc-800">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50 text-zinc-400 dark:bg-zinc-900 dark:text-zinc-650 mb-3">
+        <div className="text-center py-16 border-2 border-dashed border-forest-200 rounded-3xl bg-cream-100">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-forest-100 text-forest-400 mb-3">
             <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>
-          <p className="text-sm font-semibold text-zinc-400">Your wishlist is currently empty.</p>
-          <p className="text-xs text-zinc-405 mt-1">Explore our catalog and click the heart icon to save products.</p>
+          <p className="text-sm font-semibold text-forest-800">Your wishlist is currently empty.</p>
+          <p className="text-xs text-forest-500 mt-1">Explore our catalog and click the heart icon to save products.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -119,3 +122,4 @@ export default async function WishlistPage() {
     </div>
   )
 }
+
