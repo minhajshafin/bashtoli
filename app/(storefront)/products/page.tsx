@@ -128,9 +128,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           />
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-10 items-start">
           {/* Sidebar Filter - Desktop only */}
-          <aside className="hidden md:block w-56 shrink-0 sticky top-20 self-start">
+          <aside className="hidden md:block w-64 shrink-0 sticky top-24 self-start">
             <CategoryFilter
               categories={categories}
               activeCategorySlug={activeCategorySlug}
