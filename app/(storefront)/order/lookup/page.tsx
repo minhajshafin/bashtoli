@@ -8,24 +8,38 @@ export const metadata = {
 
 export default function OrderLookupPage() {
   return (
-    <div className="mx-auto max-w-md px-4 py-20 sm:px-6">
-      <div className="bg-white border border-zinc-200 rounded-3xl p-6 sm:p-8 shadow-sm dark:bg-zinc-950 dark:border-zinc-800 space-y-6">
-        {/* Page title */}
-        <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-950/20 dark:text-amber-500 mb-3">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+    <div className="relative min-h-[calc(100dvh-4rem)] flex items-center justify-center bg-cream-50 px-4 py-16 overflow-hidden">
+      {/* Botanical corner decorations */}
+      <svg
+        viewBox="0 0 320 320"
+        fill="none"
+        className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 pointer-events-none opacity-20"
+        aria-hidden="true"
+      >
+        <path d="M300 10 Q260 70 200 110 Q150 145 170 210 Q185 250 230 270" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
+        <path d="M200 90 Q182 65 158 82 Q148 100 168 112 Q188 124 200 90Z" fill="#c9a96e" opacity="0.7" />
+        <path d="M240 55 Q222 30 198 47 Q188 65 208 77 Q228 89 240 55Z" fill="#c9a96e" opacity="0.5" />
+      </svg>
+
+      <div className="relative z-10 w-full max-w-md bg-cream-100 border border-forest-200 rounded-3xl p-8 sm:p-10 shadow-sm space-y-6 text-center animate-fade-in">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-forest-800 text-gold-400 mb-2 shadow-sm">
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+
+        <div>
+          <h1
+            className="text-2xl sm:text-3xl font-light text-forest-900"
+            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+          >
             Track Your Order
           </h1>
-          <p className="mt-1.5 text-xs text-zinc-400 dark:text-zinc-500 max-w-xs mx-auto leading-normal">
-            Enter your order identifier and phone number to review status, subtotal, and delivery items.
+          <p className="mt-2 text-xs sm:text-sm text-forest-600 leading-relaxed max-w-xs mx-auto font-light">
+            Enter your order reference number and phone number to review real-time status and delivery updates.
           </p>
         </div>
 
-        {/* Tracking Form */}
         <OrderLookupForm />
       </div>
     </div>
