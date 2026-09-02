@@ -44,17 +44,18 @@ function setSecurityHeaders(res: NextResponse): NextResponse {
   const isDev = process.env.NODE_ENV === 'development'
   const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
   const scriptSrc = isDev
-    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
-    : "script-src 'self' 'unsafe-inline'"
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com"
+    : "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com"
   res.headers.set(
     'Content-Security-Policy',
     [
       "default-src 'self'",
       scriptSrc,
-      "style-src 'self' 'unsafe-inline'",
-      `img-src 'self' data: blob: ${supabaseOrigin}`,
-      `connect-src 'self' ${supabaseOrigin} https://vitals.vercel-insights.com`,
-      "font-src 'self'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      `img-src 'self' data: blob: ${supabaseOrigin} https://images.unsplash.com https://*.unsplash.com`,
+      `connect-src 'self' ${supabaseOrigin} https://vitals.vercel-insights.com https://va.vercel-scripts.com`,
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "frame-src 'self' https://www.google.com https://maps.google.com https://www.openstreetmap.org",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

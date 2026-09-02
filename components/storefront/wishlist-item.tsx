@@ -36,10 +36,10 @@ export function WishlistItem({ product }: WishlistItemProps) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-xs hover:border-zinc-300 transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
+      className="group relative flex flex-col overflow-hidden rounded-3xl border border-forest-200 bg-cream-50 shadow-xs hover:border-gold-500 transition-all"
     >
       {/* Product Image container */}
-      <div className="relative aspect-square w-full overflow-hidden bg-zinc-50 dark:bg-zinc-900">
+      <div className="relative aspect-square w-full overflow-hidden bg-cream-100">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
@@ -49,7 +49,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
             className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-zinc-400 dark:text-zinc-650">
+          <div className="flex h-full w-full items-center justify-center text-forest-400">
             No Image
           </div>
         )}
@@ -59,7 +59,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
           type="button"
           onClick={handleRemove}
           disabled={isPending}
-          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 backdrop-blur-xs text-zinc-500 hover:text-rose-600 shadow-xs hover:scale-105 active:scale-95 transition-all dark:bg-zinc-900/90 dark:text-zinc-400 dark:hover:text-rose-500"
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 backdrop-blur-xs text-forest-500 hover:text-rose-600 shadow-xs hover:scale-105 active:scale-95 transition-all"
           title="Remove from Wishlist"
         >
           {isPending ? (
@@ -80,18 +80,22 @@ export function WishlistItem({ product }: WishlistItemProps) {
       <div className="p-4 flex flex-col justify-between flex-1">
         <div>
           {product.categoryName && (
-            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-500">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-gold-600">
               {product.categoryName}
             </span>
           )}
-          <h3 className="mt-1 text-sm font-bold text-zinc-900 dark:text-zinc-50 truncate group-hover:text-amber-600 transition-colors">
+          <h3
+            className="mt-1 text-sm font-bold text-forest-900 truncate group-hover:text-gold-600 transition-colors"
+            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+          >
             {product.name}
           </h3>
         </div>
-        <p className="mt-2 text-sm font-black text-zinc-900 dark:text-zinc-50">
+        <p className="mt-2 text-sm font-bold text-forest-900">
           ৳{product.base_price.toLocaleString()}
         </p>
       </div>
     </Link>
   )
 }
+

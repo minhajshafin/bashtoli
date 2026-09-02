@@ -192,6 +192,7 @@ export async function addToDbCartAction(variantId: string, qty: number): Promise
       if (error) throw error
     }
 
+    revalidatePath('/bag')
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
@@ -228,6 +229,7 @@ export async function updateDbCartQtyAction(variantId: string, qty: number): Pro
 
     if (error) throw error
 
+    revalidatePath('/bag')
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
@@ -264,6 +266,7 @@ export async function removeFromDbCartAction(variantId: string): Promise<{ error
 
     if (error) throw error
 
+    revalidatePath('/bag')
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
@@ -299,6 +302,7 @@ export async function clearDbCartAction(): Promise<{ error: string | null }> {
 
     if (error) throw error
 
+    revalidatePath('/bag')
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
@@ -417,6 +421,7 @@ export async function mergeGuestCartAction(
       if (error) throw error
     }
 
+    revalidatePath('/bag')
     revalidatePath('/cart')
     return { error: null, success: true, notifications }
   } catch (err) {

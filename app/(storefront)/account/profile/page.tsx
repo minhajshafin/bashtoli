@@ -50,11 +50,17 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight">
+      <div className="border-b border-forest-200 pb-5">
+        <p className="text-[11px] uppercase tracking-[0.25em] text-gold-500 font-bold mb-1">
+          Preferences
+        </p>
+        <h1
+          className="text-2xl sm:text-3xl text-forest-900 font-normal tracking-tight"
+          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+        >
           Profile Settings
         </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+        <p className="text-xs text-forest-600 mt-1 font-light">
           Manage your account information, default checkout details, and password.
         </p>
       </div>

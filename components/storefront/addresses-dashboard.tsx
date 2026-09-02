@@ -22,12 +22,18 @@ export function AddressesDashboard({ initialAddresses }: AddressesDashboardProps
   return (
     <div className="space-y-6">
       {/* Header card with Add Button */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-forest-200 pb-5">
         <div>
-          <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold-500 mb-1">
+            Shipping Book
+          </p>
+          <h1
+            className="text-2xl sm:text-3xl font-normal text-forest-900 tracking-tight"
+            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+          >
             Saved Addresses
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-forest-600 mt-1 font-light">
             Manage your default and backup shipping options for faster checkout.
           </p>
         </div>
@@ -35,7 +41,7 @@ export function AddressesDashboard({ initialAddresses }: AddressesDashboardProps
         {!showAddForm && (
           <button
             onClick={() => setShowAddForm(true)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-amber-600 px-4 text-xs font-bold text-white shadow-md shadow-amber-600/10 hover:bg-amber-700 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-gold-500 px-5 text-xs sm:text-sm font-bold text-forest-900 shadow-md shadow-gold-500/20 hover:bg-gold-400 transition-all cursor-pointer"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />

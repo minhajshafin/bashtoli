@@ -17,7 +17,7 @@ export function SearchInput() {
     setQuery(qParam)
   }
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault()
     const params = new URLSearchParams(searchParams.toString())
     if (query.trim()) {

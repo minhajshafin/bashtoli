@@ -1,40 +1,80 @@
 'use client'
 
 import React, { useState, useTransition } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { addToWishlistAction, removeFromWishlistAction } from '@/lib/actions/wishlist'
 
 interface WishlistButtonProps {
   productId: string
-  isLoggedIn: boolean
-  initialIsWishlisted: boolean
+  isLoggedIn?: boolean
+  initialIsWishlisted?: boolean
+  variant?: 'card' | 'detail'
 }
 
 /**
  * Wishlist Toggle Button.
- * Heart button that optimistically toggles wishlist membership, visible only to logged-in users.
+ * Accessible, optimistic heart toggle for cards and product detail views.
  */
 export function WishlistButton({
   productId,
-  isLoggedIn,
-  initialIsWishlisted,
+  isLoggedIn = false,
+  initialIsWishlisted = false,
+  variant = 'detail',
 }: WishlistButtonProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [isWishlisted, setIsWishlisted] = useState(initialIsWishlisted)
   const [isPending, startTransition] = useTransition()
 
-  if (!isLoggedIn) return null
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
 
-  const handleToggle = () => {
+    if (!isLoggedIn) {
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`)
+      return
+    }
+
     const nextState = !isWishlisted
-    setIsWishlisted(nextState) // optimistic UI update
+    setIsWishlisted(nextState)
 
     startTransition(async () => {
       const action = nextState ? addToWishlistAction : removeFromWishlistAction
       const res = await action(productId)
       if (res.error) {
-        alert(res.error)
-        setIsWishlisted(!nextState) // rollback
+        setIsWishlisted(!nextState) // rollback on error
       }
     })
+  }
+
+  if (variant === 'card') {
+    return (
+      <button
+        type="button"
+        onClick={handleToggle}
+        disabled={isPending}
+        className="group/wishlist flex h-9 w-9 items-center justify-center rounded-full bg-forest-900/70 backdrop-blur-xs text-cream-100 hover:bg-forest-900 hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer"
+        aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+        title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
+      >
+        <svg
+          className={`h-4.5 w-4.5 transition-colors ${
+            isWishlisted
+              ? 'fill-rose-500 text-rose-500'
+              : 'fill-none stroke-cream-100 group-hover/wishlist:stroke-gold-400'
+          }`}
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+          />
+        </svg>
+      </button>
+    )
   }
 
   return (
@@ -42,22 +82,24 @@ export function WishlistButton({
       type="button"
       onClick={handleToggle}
       disabled={isPending}
-      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 ${
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer shadow-xs ${
         isWishlisted
-          ? 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900/50 dark:bg-rose-950/20 dark:text-rose-500 shadow-sm'
-          : 'border-zinc-200 bg-white text-zinc-400 hover:border-zinc-300 hover:text-zinc-650 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-500 dark:hover:text-zinc-300'
+          ? 'border-rose-300 bg-rose-50 text-rose-600 shadow-sm'
+          : 'border-forest-200 bg-cream-100 text-forest-500 hover:border-gold-500 hover:text-gold-600'
       }`}
+      aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
       title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
     >
       <svg
-        className={`h-5 w-5 ${isWishlisted ? 'fill-current' : 'fill-none stroke-current'}`}
+        className={`h-5 w-5 transition-transform ${isWishlisted ? 'fill-rose-600 scale-110' : 'fill-none stroke-current'}`}
         viewBox="0 0 24 24"
         strokeWidth="2"
+        stroke="currentColor"
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
         />
       </svg>
     </button>

@@ -34,7 +34,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-all hover:bg-zinc-50 hover:text-zinc-900 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
+        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-200 bg-cream-50 text-forest-600 transition-all hover:bg-cream-200 hover:text-forest-900 disabled:pointer-events-none disabled:opacity-50"
         aria-label="Previous page"
       >
         <svg
@@ -59,8 +59,8 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
               aria-current={isActive ? 'page' : undefined}
               className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-medium transition-all ${
                 isActive
-                  ? 'bg-amber-600 text-white shadow-md shadow-amber-600/10 hover:bg-amber-700'
-                  : 'border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200'
+                  ? 'bg-gold-500 text-forest-800 shadow-md shadow-gold-500/20 font-bold'
+                  : 'border border-forest-200 bg-cream-50 text-forest-600 hover:bg-cream-200 hover:text-forest-900'
               }`}
             >
               {page}
@@ -73,7 +73,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-white text-zinc-600 transition-all hover:bg-zinc-50 hover:text-zinc-900 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-200"
+        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-200 bg-cream-50 text-forest-600 transition-all hover:bg-cream-200 hover:text-forest-900 disabled:pointer-events-none disabled:opacity-50"
         aria-label="Next page"
       >
         <svg
@@ -89,3 +89,4 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
     </nav>
   )
 }
+

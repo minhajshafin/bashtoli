@@ -10,17 +10,19 @@ export type ProductWithDetails = Database['public']['Tables']['products']['Row']
 interface GetStorefrontProductsParams {
   categorySlug?: string
   search?: string
+  sort?: 'featured' | 'price-asc' | 'price-desc' | 'new'
   page?: number
   limit?: number
 }
 
 /**
  * Fetch active products that have at least one active variant.
- * Supports filtering by category slug, name text search (ILIKE), and pagination.
+ * Supports filtering by category slug, name text search (ILIKE), sorting, and pagination.
  */
 export async function getStorefrontProducts({
   categorySlug,
   search,
+  sort = 'new',
   page = 1,
   limit = 12,
 }: GetStorefrontProductsParams): Promise<{
@@ -66,8 +68,18 @@ export async function getStorefrontProducts({
   }
 
   // 3. Sorting & Pagination
+  if (sort === 'price-asc') {
+    query = query.order('base_price', { ascending: true })
+  } else if (sort === 'price-desc') {
+    query = query.order('base_price', { ascending: false })
+  } else if (sort === 'featured') {
+    query = query.order('featured', { ascending: false }).order('created_at', { ascending: false })
+  } else {
+    // 'new' — newest first (default)
+    query = query.order('created_at', { ascending: false })
+  }
+
   query = query
-    .order('created_at', { ascending: false })
     .order('sort_order', { referencedTable: 'product_images', ascending: true })
     .range(offset, offset + limit - 1)
 

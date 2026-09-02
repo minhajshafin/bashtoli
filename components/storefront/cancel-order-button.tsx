@@ -8,8 +8,7 @@ interface CancelOrderButtonProps {
 }
 
 /**
- * Cancel Order Button.
- * Prompts user for confirmation and triggers order cancellation Server Action.
+ * Cancel Order Button with theme-aligned styling.
  */
 export function CancelOrderButton({ orderId }: CancelOrderButtonProps) {
   const [isPending, startTransition] = useTransition()
@@ -35,11 +34,11 @@ export function CancelOrderButton({ orderId }: CancelOrderButtonProps) {
       type="button"
       onClick={handleCancel}
       disabled={isPending}
-      className="w-full sm:w-auto inline-flex h-11 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-6 text-sm font-bold text-rose-600 shadow-sm hover:bg-rose-100/50 hover:text-rose-700 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 transition-all dark:border-rose-950 dark:bg-rose-950/20 dark:text-rose-450 dark:hover:bg-rose-950/40"
+      className="inline-flex h-12 items-center justify-center rounded-full border border-rose-200 bg-rose-50/80 px-6 text-sm font-semibold text-rose-700 shadow-xs hover:bg-rose-100 hover:text-rose-800 disabled:opacity-50 transition-all cursor-pointer"
     >
       {isPending ? (
         <span className="flex items-center gap-2">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-rose-500 border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-rose-600 border-t-transparent" />
           Cancelling...
         </span>
       ) : (

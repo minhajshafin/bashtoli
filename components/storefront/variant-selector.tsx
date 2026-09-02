@@ -23,15 +23,11 @@ export function VariantSelector({
   if (options.length === 0) return null
 
   // Function to determine if selecting a value would result in a combination with zero stock or no active variant
-  // This is a nice premium UX enhancement!
   const isCombinationUnavailable = (optionName: string, val: string) => {
-    // Check if there exists ANY active variant that has this value for this option
-    // AND satisfies the other currently selected options
     const hypothetical = { ...selectedOptions, [optionName]: val }
     
     const matchingVariant = variants.find((variant) => {
       const optVals = (variant.option_values || {}) as Record<string, string>
-      // Compare only the keys that have been selected in the hypothetical combination
       return Object.entries(hypothetical).every(([key, value]) => optVals[key] === value)
     })
 
@@ -43,7 +39,7 @@ export function VariantSelector({
       {options.map((opt) => {
         return (
           <div key={opt.id} className="flex flex-col gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-gold-500">
               {opt.name}
             </span>
             <div className="flex flex-wrap gap-2">
@@ -58,10 +54,10 @@ export function VariantSelector({
                     onClick={() => onChange(opt.name, val.value)}
                     className={`rounded-xl px-4 py-2 text-sm font-semibold transition-all border ${
                       isSelected
-                        ? 'bg-zinc-900 border-zinc-900 text-white shadow-sm dark:bg-zinc-50 dark:border-zinc-50 dark:text-zinc-900'
+                        ? 'bg-forest-800 border-forest-800 text-cream-100 shadow-sm'
                         : isUnavailable
-                        ? 'bg-zinc-50/50 border-zinc-200/60 text-zinc-300 line-through dark:bg-zinc-900/30 dark:border-zinc-800/50 dark:text-zinc-600'
-                        : 'bg-white border-zinc-200 text-zinc-700 hover:border-zinc-300 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-700'
+                        ? 'bg-forest-100/50 border-forest-200/60 text-forest-300 line-through'
+                        : 'bg-white border-forest-200 text-forest-800 hover:border-gold-500'
                     }`}
                   >
                     {val.value}
@@ -75,3 +71,4 @@ export function VariantSelector({
     </div>
   )
 }
+

@@ -50,13 +50,16 @@ export default async function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 min-h-[calc(100dvh-4rem)]">
       {/* Title Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1
+          className="text-3xl font-extrabold tracking-tight text-forest-900"
+          style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+        >
           Checkout
         </h1>
-        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-2 text-sm text-forest-600">
           Confirm your order details and delivery address below.
         </p>
       </div>
@@ -72,3 +75,4 @@ export default async function CheckoutPage() {
     </div>
   )
 }
+

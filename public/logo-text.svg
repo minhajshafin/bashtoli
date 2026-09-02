@@ -6,30 +6,30 @@
 	.st0{fill:url(#SVGID_1_);}
 	.st1{fill:url(#SVGID_00000053519233095409072660000016505794612233786542_);}
 	.st2{fill:url(#SVGID_00000160169427397034712740000006658337792235738779_);}
-	.st3{fill:#122014;}
-	.st4{fill:#D0A16C;}
-	.st5{fill:#132A18;}
-	.st6{fill:#41674A;}
+	.st3{fill:#f5ede0;}
+	.st4{fill:#c9a96e;}
+	.st5{fill:#e2c99a;}
+	.st6{fill:#a8c4b0;}
 </style>
 <g>
 	<g>
 		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="439.4336" y1="431.8025" x2="1463.7942" y2="410.0977">
-			<stop  offset="0" style="stop-color:#1E4724"/>
-			<stop  offset="1" style="stop-color:#231F20"/>
+			<stop  offset="0" style="stop-color:#faf6ef"/>
+			<stop  offset="1" style="stop-color:#f5ede0"/>
 		</linearGradient>
 		<path class="st0" d="M631.69,379.76c-0.04-9.04,1.38-8.42,6.74,3.22c5.36,11.64,14.09,34.31-6.74,66.01
 			c-20.83,31.71-52.08,40.89-92.05,40.89c-39.98,0-73.52-19.76-88.22-40.89c-14.7-21.14-14.7-57.9-6.43-69.84
 			c8.27-11.95,9.19-11.03,7.35,7.81c-1.84,18.84,29.38,63.41,89.82,63.41S631.84,411.62,631.69,379.76z"/>
 		
 			<linearGradient id="SVGID_00000018226402458914028230000005228417177590247563_" gradientUnits="userSpaceOnUse" x1="508.5342" y1="393.0978" x2="785.687" y2="374.9448">
-			<stop  offset="0" style="stop-color:#1E4724"/>
-			<stop  offset="1" style="stop-color:#231F20"/>
+			<stop  offset="0" style="stop-color:#c9a96e"/>
+			<stop  offset="1" style="stop-color:#e2c99a"/>
 		</linearGradient>
 		<circle style="fill:url(#SVGID_00000018226402458914028230000005228417177590247563_);" cx="542.62" cy="390.87" r="34.23"/>
 		
 			<linearGradient id="SVGID_00000151546086787292859690000013219234371666227637_" gradientUnits="userSpaceOnUse" x1="99.8138" y1="629.8788" x2="1770.7975" y2="629.8788">
-			<stop  offset="0" style="stop-color:#1E4724"/>
-			<stop  offset="1" style="stop-color:#231F20"/>
+			<stop  offset="0" style="stop-color:#faf6ef"/>
+			<stop  offset="1" style="stop-color:#f5ede0"/>
 		</linearGradient>
 		<path style="fill:url(#SVGID_00000151546086787292859690000013219234371666227637_);" d="M1707.21,411.77
 			c38.6,0,33.08,31.25,33.08,31.25c-5.51,57.9-74.44,64.33-87.3,63.41c-12.87-0.92-50.54,0-50.54,0l-2.45,22.97l-9.5,1.23

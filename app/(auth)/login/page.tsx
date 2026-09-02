@@ -13,13 +13,12 @@ export async function generateMetadata() {
   return {
     title: 'Sign In | Bashtoli',
     description: 'Sign in to your Bashtoli account to view orders and manage saved details.',
+    alternates: {
+      canonical: 'https://bashtoli.com/login',
+    },
   }
 }
 
-/**
- * Storefront Login Page.
- * Server component that redirects active auth users immediately and renders the Login Form.
- */
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = await searchParams
   const rawRedirectTo = resolvedSearchParams?.redirectTo
@@ -38,20 +37,5 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     redirect(redirectTo)
   }
 
-  return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center">
-          <h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-            Welcome Back
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Sign in to access your Bashtoli account
-          </p>
-        </div>
-
-        <AuthForm type="login" />
-      </div>
-    </div>
-  )
+  return <AuthForm type="login" />
 }

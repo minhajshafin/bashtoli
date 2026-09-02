@@ -1,8 +1,10 @@
 import React from 'react'
-import Link from 'next/link'
 import { Hero } from '@/components/storefront/hero'
 import { FeaturedProducts } from '@/components/storefront/featured-products'
-import { getStorefrontCategories } from '@/lib/queries/products'
+import { CategoryGrid } from '@/components/storefront/category-grid'
+import { AboutSection } from '@/components/storefront/about-section'
+import { MarqueeBand } from '@/components/storefront/marquee-band'
+import { SuggestAnItem } from '@/components/storefront/suggest-an-item'
 
 export const metadata = {
   title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
@@ -22,57 +24,57 @@ export const metadata = {
 
 /**
  * Storefront Homepage Route.
- * Server component rendering hero banners, categories lists, and featured items.
+ * Full-bleed layout — sections own their own backgrounds and padding.
  */
 export default async function StorefrontHomePage() {
-  const categories = await getStorefrontCategories()
-
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
-      {/* 1. Hero banner section */}
+    <div>
+      {/* 1. Hero */}
       <Hero />
 
-      {/* 2. Categories Quick links navigation */}
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-black text-zinc-900 tracking-tight dark:text-white">
-            Browse by Category
-          </h2>
-          <p className="text-xs text-zinc-500 mt-1 dark:text-zinc-400">
-            Explore our curated collections of premium handcrafted goods.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/products?category=${cat.slug}`}
-              className="group flex flex-col justify-between p-5 rounded-2xl border border-zinc-200 bg-white hover:border-amber-500 hover:shadow-xs transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-amber-500"
-            >
-              <div>
-                <h3 className="text-sm font-bold text-zinc-800 group-hover:text-amber-600 transition-colors dark:text-zinc-200 dark:group-hover:text-amber-500">
-                  {cat.name}
-                </h3>
-                <p className="text-[10px] text-zinc-400 mt-1 dark:text-zinc-500">
-                  Explore our stationery range
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-zinc-100 flex justify-between items-center text-xs dark:border-zinc-900">
-                <span className="text-[10px] rounded-md bg-stone-100 px-2 py-0.5 font-bold text-stone-750 dark:bg-zinc-900 dark:text-zinc-450">
-                  {cat.activeProductsCount} Items
-                </span>
-                <span className="text-[11px] font-bold text-amber-600 group-hover:translate-x-0.5 transition-transform dark:text-amber-500">
-                  Explore &rarr;
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+      {/* Wave: hero (forest-800) → featured products (cream-50) */}
+      <div className="bg-forest-800" style={{ marginBottom: '-1px' }}>
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ width: '100%', height: '72px', display: 'block' }}>
+          <path d="M0,20 C160,20 280,72 480,72 C680,72 760,0 960,0 C1160,0 1280,56 1440,44 L1440,72 L0,72 Z" fill="#faf6ef" />
+        </svg>
       </div>
 
-      {/* 3. Featured Products dynamic listing */}
+      {/* 2. Featured Products */}
       <FeaturedProducts />
+
+      {/* Wave: cream-50 → categories (forest-800) */}
+      <div className="bg-forest-800">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ width: '100%', height: '72px', display: 'block' }}>
+          <path d="M0,72 Q200,0 440,40 Q680,72 900,20 Q1140,0 1440,50 L1440,0 L0,0 Z" fill="#faf6ef" />
+        </svg>
+      </div>
+
+      {/* 3. Categories */}
+      <CategoryGrid />
+
+      {/* Wave: categories (forest-800) → about (cream-100) */}
+      <div className="bg-forest-800">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ width: '100%', height: '72px', display: 'block' }}>
+          <path d="M0,0 Q360,72 720,32 Q1080,0 1440,56 L1440,72 L0,72 Z" fill="#f5ede0" />
+        </svg>
+      </div>
+
+      {/* 4. About */}
+      <AboutSection />
+
+      {/* 5. Marquee */}
+      <MarqueeBand />
+
+      {/* Wave: marquee (gold-500) → suggest (forest-900) */}
+      <div className="bg-forest-900">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ width: '100%', height: '72px', display: 'block' }}>
+          <path d="M0,72 Q360,0 720,44 Q1080,72 1440,16 L1440,0 L0,0 Z" fill="#c9a96e" />
+        </svg>
+      </div>
+
+      {/* 6. Suggest an item */}
+      <SuggestAnItem />
     </div>
   )
 }
+

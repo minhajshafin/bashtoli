@@ -26,8 +26,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
   const [state, formAction, isPendingAction] = useActionState(actionFn, { error: null })
   const isPending = isPendingAction || isPendingTransition
 
-  // On form submit, we run inside a transition to await callbacks cleanly
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     startTransition(async () => {
@@ -43,16 +42,17 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
   }, [state.success, onClose])
 
   return (
-    <div className="bg-zinc-50 border border-zinc-200 rounded-3xl p-6 dark:bg-zinc-900/50 dark:border-zinc-800 animate-fade-in">
-      <div className="flex justify-between items-center mb-5">
-        <h3 className="text-sm font-black uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+    <div className="bg-cream-100 border border-forest-200 rounded-2xl p-6 animate-fade-in">
+      <div className="flex justify-between items-center mb-5 pb-3 border-b border-forest-200/60">
+        <h3 className="text-sm sm:text-base font-bold text-forest-900">
           {isEditing ? 'Edit Saved Address' : 'Add New Address'}
         </h3>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+            className="text-forest-400 hover:text-forest-600 transition-colors cursor-pointer"
+            aria-label="Close form"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -65,7 +65,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
         {state.error && (
           <div
             role="alert"
-            className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-xs font-semibold text-red-700 dark:bg-red-950/20 dark:border-red-900/50 dark:text-red-400"
+            className="flex items-start gap-2 rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-xs font-semibold text-rose-700"
           >
             <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -76,7 +76,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
 
         {/* Address Label */}
         <div className="space-y-1.5">
-          <label htmlFor="label" className="block text-xs font-bold uppercase tracking-wider text-zinc-400">
+          <label htmlFor="label" className="block text-xs font-bold uppercase tracking-wider text-forest-500">
             Address Label
           </label>
           <input
@@ -86,37 +86,37 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.label || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-zinc-250 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/10 transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder-zinc-650"
-            placeholder="e.g. Home, Office, Work"
+            className="block w-full rounded-xl border border-forest-200 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-900 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+            placeholder="e.g. Home, Office, Studio"
           />
           {state.fieldErrors?.label && (
-            <p className="text-[11px] font-bold text-red-500 mt-1">{state.fieldErrors.label[0]}</p>
+            <p className="text-xs font-bold text-rose-600 mt-1">{state.fieldErrors.label[0]}</p>
           )}
         </div>
 
         {/* Contact Phone Number */}
         <div className="space-y-1.5">
-          <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-zinc-400">
+          <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-forest-500">
             Contact Phone Number
           </label>
           <input
             id="phone"
             name="phone"
-            type="text"
+            type="tel"
             required
             defaultValue={address?.phone || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-zinc-250 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/10 transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder-zinc-650"
+            className="block w-full rounded-xl border border-forest-200 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-900 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
             placeholder="e.g. 01712345678"
           />
           {state.fieldErrors?.phone && (
-            <p className="text-[11px] font-bold text-red-500 mt-1">{state.fieldErrors.phone[0]}</p>
+            <p className="text-xs font-bold text-rose-600 mt-1">{state.fieldErrors.phone[0]}</p>
           )}
         </div>
 
         {/* Full Address details */}
         <div className="space-y-1.5">
-          <label htmlFor="full_address" className="block text-xs font-bold uppercase tracking-wider text-zinc-400">
+          <label htmlFor="full_address" className="block text-xs font-bold uppercase tracking-wider text-forest-500">
             Full Shipping Address
           </label>
           <textarea
@@ -126,11 +126,11 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.full_address || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-zinc-250 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/10 transition-all dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder-zinc-650"
-            placeholder="House, Flat, Road, Area name, District"
+            className="block w-full rounded-xl border border-forest-200 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-900 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+            placeholder="House, Flat, Road, Area name, City / District"
           />
           {state.fieldErrors?.full_address && (
-            <p className="text-[11px] font-bold text-red-500 mt-1">{state.fieldErrors.full_address[0]}</p>
+            <p className="text-xs font-bold text-rose-600 mt-1">{state.fieldErrors.full_address[0]}</p>
           )}
         </div>
 
@@ -143,21 +143,21 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             value="true"
             defaultChecked={address?.is_default || false}
             disabled={isPending}
-            className="h-4 w-4 rounded border-zinc-300 text-amber-600 focus:ring-amber-500 dark:border-zinc-800 dark:bg-zinc-900"
+            className="h-4 w-4 rounded border-forest-300 text-gold-500 focus:ring-gold-500 accent-forest-800"
           />
-          <label htmlFor="is_default" className="text-xs font-bold text-zinc-650 dark:text-zinc-400 select-none">
+          <label htmlFor="is_default" className="text-xs sm:text-sm font-medium text-forest-700 select-none">
             Set as default shipping address
           </label>
         </div>
 
         {/* Buttons footer */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-800/80">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-forest-200/60">
           {onClose && (
             <button
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="inline-flex h-10 items-center justify-center rounded-xl border border-zinc-200 bg-white px-4 text-xs font-bold text-zinc-700 hover:bg-zinc-50 transition-colors disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-forest-200 bg-cream-50 px-5 text-xs sm:text-sm font-semibold text-forest-700 hover:bg-cream-200/80 transition-colors disabled:opacity-50 cursor-pointer"
             >
               Cancel
             </button>
@@ -165,14 +165,17 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="inline-flex h-10 items-center justify-center rounded-xl bg-zinc-900 px-5 text-xs font-bold text-white shadow-md hover:bg-zinc-850 transition-all disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="inline-flex h-10 items-center justify-center rounded-full bg-forest-800 px-6 text-xs sm:text-sm font-bold text-cream-100 shadow-md hover:bg-gold-500 hover:text-forest-900 transition-all disabled:opacity-60 cursor-pointer"
           >
             {isPending ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-50 border-t-zinc-400 dark:border-zinc-900 dark:border-t-zinc-500" />
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-cream-100 border-t-gold-400" />
+                <span>Saving...</span>
+              </div>
             ) : isEditing ? (
               'Save Changes'
             ) : (
-              'Add Address'
+              'Save Address'
             )}
           </button>
         </div>

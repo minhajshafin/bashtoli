@@ -44,9 +44,9 @@ export function AddressList({ addresses }: AddressListProps) {
 
   if (addresses.length === 0) {
     return (
-      <div className="text-center py-12 border-2 border-dashed border-zinc-200 rounded-3xl dark:border-zinc-800">
-        <p className="text-sm font-semibold text-zinc-400">No saved addresses yet.</p>
-        <p className="text-xs text-zinc-405 mt-1">Add an address to speed up checkout.</p>
+      <div className="text-center py-14 border-2 border-dashed border-forest-200 bg-cream-100/50 rounded-3xl">
+        <p className="text-sm font-semibold text-forest-900">No saved addresses yet.</p>
+        <p className="text-xs sm:text-sm text-forest-500 mt-1">Add an address above to speed up checkout.</p>
       </div>
     )
   }
@@ -70,40 +70,40 @@ export function AddressList({ addresses }: AddressListProps) {
         return (
           <div
             key={address.id}
-            className={`relative flex flex-col justify-between rounded-3xl border p-5 shadow-xs transition-all dark:bg-zinc-950 ${
+            className={`relative flex flex-col justify-between rounded-2xl border p-5 transition-all ${
               address.is_default
-                ? 'border-amber-500/50 bg-amber-50/5 dark:border-amber-500/30'
-                : 'border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:hover:border-zinc-700'
+                ? 'border-gold-500/60 bg-cream-100 shadow-sm'
+                : 'border-forest-200 bg-cream-100/70 hover:bg-cream-100 hover:border-forest-300'
             }`}
           >
             {/* Address Details */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-black uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                <span className="text-xs font-bold uppercase tracking-wider text-forest-900">
                   {address.label || 'Saved Address'}
                 </span>
                 {address.is_default && (
-                  <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-950/20 dark:text-amber-500">
+                  <span className="inline-flex items-center rounded-full bg-gold-500 px-2.5 py-0.5 text-[10px] font-bold text-forest-900">
                     Default
                   </span>
                 )}
               </div>
-              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50">{address.phone || 'No phone number'}</p>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-line">
+              <p className="text-sm sm:text-base font-bold text-forest-900">{address.phone || 'No phone number'}</p>
+              <p className="text-xs sm:text-sm text-forest-600 font-light leading-relaxed whitespace-pre-line">
                 {address.full_address}
               </p>
             </div>
 
             {/* Actions list buttons footer */}
-            <div className="mt-5 flex items-center justify-between pt-3.5 border-t border-zinc-100 dark:border-zinc-800/80">
+            <div className="mt-5 flex items-center justify-between pt-3.5 border-t border-forest-200/60">
               <div>
                 {!address.is_default && (
                   <button
                     onClick={() => handleSetDefault(address.id)}
                     disabled={isPending}
-                    className="text-xs font-bold text-amber-600 hover:text-amber-700 dark:text-amber-500 dark:hover:text-amber-400 disabled:opacity-50 transition-colors"
+                    className="text-xs sm:text-sm font-bold text-gold-600 hover:text-gold-500 disabled:opacity-50 transition-colors cursor-pointer"
                   >
-                    Set Default
+                    Set as Default
                   </button>
                 )}
               </div>
@@ -111,14 +111,14 @@ export function AddressList({ addresses }: AddressListProps) {
                 <button
                   onClick={() => setEditingAddressId(address.id)}
                   disabled={isPending}
-                  className="text-xs font-bold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200 disabled:opacity-50 transition-colors"
+                  className="text-xs sm:text-sm font-semibold text-forest-700 hover:text-forest-900 disabled:opacity-50 transition-colors cursor-pointer"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(address.id)}
                   disabled={isPending}
-                  className="text-xs font-bold text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
+                  className="text-xs sm:text-sm font-semibold text-rose-600 hover:text-rose-700 disabled:opacity-50 transition-colors cursor-pointer"
                 >
                   Delete
                 </button>

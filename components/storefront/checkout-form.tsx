@@ -69,12 +69,10 @@ export function CheckoutForm({
     checkCart()
   }, [isLoaded, cart])
 
-
-
   if (!isLoaded) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gold-500 border-t-transparent" />
       </div>
     )
   }
@@ -96,18 +94,18 @@ export function CheckoutForm({
     setDeliveryZone(zone)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     setTopError(null)
     setFieldErrors({})
 
     if (cart.length === 0) {
-      setTopError('Your cart is empty. Please add items before checking out.')
+      setTopError('Your shopping bag is empty. Please add items before checking out.')
       return
     }
 
     if (hasUnavailable) {
-      setTopError('Your cart contains unavailable items. Please return to the cart to adjust.')
+      setTopError('Your shopping bag contains unavailable items. Please return to your bag to adjust.')
       return
     }
 
@@ -148,14 +146,14 @@ export function CheckoutForm({
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
       {/* Left side: Information Form */}
-      <div className="lg:col-span-2 space-y-6 bg-white border border-zinc-200 rounded-3xl p-6 md:p-8 dark:bg-zinc-950 dark:border-zinc-800">
-        <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 border-b border-zinc-100 pb-4 dark:border-zinc-800">
+      <div className="lg:col-span-2 space-y-6 bg-cream-50 border border-forest-200 rounded-3xl p-6 md:p-8">
+        <h2 className="text-xl font-bold tracking-tight text-forest-900 border-b border-forest-200 pb-4">
           Delivery Details
         </h2>
 
         {/* Top-level alert banner */}
         {topError && (
-          <div className="rounded-2xl bg-rose-50 border border-rose-200 p-4 text-sm font-semibold text-rose-700 dark:bg-rose-950/20 dark:text-rose-400 dark:border-rose-900 animate-pulse">
+          <div className="rounded-2xl bg-rose-50 border border-rose-200 p-4 text-sm font-semibold text-rose-700 animate-pulse">
             {topError}
           </div>
         )}
@@ -163,8 +161,8 @@ export function CheckoutForm({
         <div className="space-y-4">
           {/* Saved Address Selector */}
           {savedAddresses.length > 0 && (
-            <div className="space-y-2 pb-2 border-b border-zinc-100 dark:border-zinc-800">
-              <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <div className="space-y-2 pb-2 border-b border-forest-200">
+              <p className="text-xs font-bold uppercase tracking-wider text-gold-500">
                 Use Saved Address
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -180,22 +178,22 @@ export function CheckoutForm({
                       }}
                       className={`text-left p-3.5 rounded-2xl border transition-all text-xs space-y-1 ${
                         isSelected
-                          ? 'border-amber-500 bg-amber-50/5 text-zinc-900 dark:border-amber-500/50 dark:text-zinc-50'
-                          : 'border-zinc-200 bg-white hover:border-zinc-300 text-zinc-650 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-700'
+                          ? 'border-gold-500 bg-gold-300/20 text-forest-900 font-semibold'
+                          : 'border-forest-200 bg-white hover:border-gold-500 text-forest-700'
                       }`}
                     >
                       <div className="flex items-center gap-1.5">
-                        <span className="font-extrabold uppercase text-[10px] tracking-wider text-zinc-850 dark:text-zinc-200">
+                        <span className="font-extrabold uppercase text-[10px] tracking-wider text-forest-800">
                           {addr.label || 'Saved Address'}
                         </span>
                         {addr.is_default && (
-                          <span className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500 px-1.5 py-0.5 rounded text-[8px] font-bold">
+                          <span className="bg-gold-500 text-forest-800 px-1.5 py-0.5 rounded text-[8px] font-bold">
                             Default
                           </span>
                         )}
                       </div>
-                      <p className="font-bold text-zinc-900 dark:text-zinc-50">{addr.phone || 'No phone number'}</p>
-                      <p className="truncate text-zinc-500 dark:text-zinc-400 max-w-full">{addr.full_address}</p>
+                      <p className="font-bold text-forest-900">{addr.phone || 'No phone number'}</p>
+                      <p className="truncate text-forest-600 max-w-full">{addr.full_address}</p>
                     </button>
                   )
                 })}
@@ -205,7 +203,7 @@ export function CheckoutForm({
 
           {/* Customer Name */}
           <div>
-            <label htmlFor="customer_name" className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 block mb-1">
+            <label htmlFor="customer_name" className="text-xs font-bold uppercase tracking-wider text-gold-500 block mb-1">
               Full Name *
             </label>
             <input
@@ -214,7 +212,7 @@ export function CheckoutForm({
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="e.g. Shafi Rahman"
-              className="w-full rounded-xl border border-zinc-200 bg-white py-3 px-4 text-sm text-zinc-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+              className="w-full rounded-xl border border-forest-200 bg-white py-3 px-4 text-sm text-forest-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
               required
             />
             {fieldErrors.customer_name && (
@@ -226,7 +224,7 @@ export function CheckoutForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Phone Number */}
             <div>
-              <label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 block mb-1">
+              <label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-gold-500 block mb-1">
                 Phone Number *
               </label>
               <input
@@ -235,7 +233,7 @@ export function CheckoutForm({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. 01712345678"
-                className="w-full rounded-xl border border-zinc-200 bg-white py-3 px-4 text-sm text-zinc-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+                className="w-full rounded-xl border border-forest-200 bg-white py-3 px-4 text-sm text-forest-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
                 required
               />
               {fieldErrors.phone && (
@@ -245,7 +243,7 @@ export function CheckoutForm({
 
             {/* Email Address */}
             <div>
-              <label htmlFor="guest_email" className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 block mb-1">
+              <label htmlFor="guest_email" className="text-xs font-bold uppercase tracking-wider text-gold-500 block mb-1">
                 Email Address (Optional)
               </label>
               <input
@@ -254,7 +252,7 @@ export function CheckoutForm({
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
                 placeholder="e.g. customer@example.com"
-                className="w-full rounded-xl border border-zinc-200 bg-white py-3 px-4 text-sm text-zinc-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+                className="w-full rounded-xl border border-forest-200 bg-white py-3 px-4 text-sm text-forest-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
               />
               {fieldErrors.guest_email && (
                 <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.guest_email[0]}</p>
@@ -272,7 +270,7 @@ export function CheckoutForm({
 
           {/* Delivery Address */}
           <div>
-            <label htmlFor="address" className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 block mb-1">
+            <label htmlFor="address" className="text-xs font-bold uppercase tracking-wider text-gold-500 block mb-1">
               {fulfillmentType === 'delivery' ? 'Shipping Address *' : 'Billing Address *'}
             </label>
             <textarea
@@ -285,7 +283,7 @@ export function CheckoutForm({
                   : 'Your Billing Address'
               }
               rows={3}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-3 px-4 text-sm text-zinc-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+              className="w-full rounded-xl border border-forest-200 bg-white py-3 px-4 text-sm text-forest-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
               required
             />
             {fieldErrors.address && (
@@ -295,7 +293,7 @@ export function CheckoutForm({
 
           {/* Order Notes */}
           <div>
-            <label htmlFor="notes" className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 block mb-1">
+            <label htmlFor="notes" className="text-xs font-bold uppercase tracking-wider text-gold-500 block mb-1">
               Order Notes (Optional)
             </label>
             <textarea
@@ -304,7 +302,7 @@ export function CheckoutForm({
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. Deliver after 5:00 PM, drop at front desk."
               rows={2}
-              className="w-full rounded-xl border border-zinc-200 bg-white py-3 px-4 text-sm text-zinc-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+              className="w-full rounded-xl border border-forest-200 bg-white py-3 px-4 text-sm text-forest-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
             />
             {fieldErrors.notes && (
               <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.notes[0]}</p>
@@ -314,8 +312,8 @@ export function CheckoutForm({
       </div>
 
       {/* Right side: Sidebar Order Summary Card */}
-      <div className="lg:col-span-1 space-y-6 bg-white border border-zinc-200 rounded-3xl p-6 dark:bg-zinc-950 dark:border-zinc-800">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 border-b border-zinc-100 pb-3 dark:border-zinc-800">
+      <div className="lg:col-span-1 space-y-6 bg-cream-100 border border-forest-200 rounded-3xl p-6">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-gold-500 border-b border-forest-200 pb-3">
           Your Order
         </h2>
 
@@ -324,39 +322,39 @@ export function CheckoutForm({
           {cart.map((item) => (
             <div key={item.variant_id} className="flex justify-between text-xs font-medium">
               <div className="min-w-0 flex-1 pr-2">
-                <p className="text-zinc-800 truncate dark:text-zinc-200">{item.name}</p>
-                <p className="text-[10px] text-zinc-400 truncate">{item.variant_name} x {item.qty}</p>
+                <p className="text-forest-900 truncate font-semibold">{item.name}</p>
+                <p className="text-[10px] text-forest-600 truncate">{item.variant_name} x {item.qty}</p>
               </div>
-              <div className="text-zinc-950 font-bold shrink-0 dark:text-zinc-50">
+              <div className="text-forest-900 font-bold shrink-0">
                 ৳{(item.price * item.qty).toLocaleString()}
               </div>
             </div>
           ))}
         </div>
 
-        <hr className="border-zinc-100 dark:border-zinc-800" />
+        <hr className="border-forest-200" />
 
         {/* Totals computation */}
         <div className="space-y-3.5">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-500">Subtotal</span>
-            <span className="font-semibold text-zinc-950 dark:text-zinc-50">
+            <span className="text-forest-600">Subtotal</span>
+            <span className="font-semibold text-forest-900">
               ৳{subtotal.toLocaleString()}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-500">Shipping Fee</span>
-            <span className="font-semibold text-zinc-950 dark:text-zinc-50">
+            <span className="text-forest-600">Shipping Fee</span>
+            <span className="font-semibold text-forest-900">
               {deliveryFee === 0 ? 'Free' : `৳${deliveryFee.toLocaleString()}`}
             </span>
           </div>
 
-          <hr className="border-zinc-100 dark:border-zinc-800" />
+          <hr className="border-forest-200" />
 
           <div className="flex items-center justify-between">
-            <span className="text-sm font-extrabold text-zinc-900 dark:text-zinc-50">Total</span>
-            <span className="text-lg font-black text-zinc-900 dark:text-zinc-50">
+            <span className="text-sm font-extrabold text-forest-900">Total</span>
+            <span className="text-lg font-black text-forest-900">
               ৳{grandTotal.toLocaleString()}
             </span>
           </div>
@@ -367,15 +365,15 @@ export function CheckoutForm({
           <button
             type="submit"
             disabled={isSubmitting || cart.length === 0 || hasUnavailable}
-            className={`w-full flex h-12 items-center justify-center rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+            className={`w-full flex h-12 items-center justify-center rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
               isSubmitting || cart.length === 0 || hasUnavailable
-                ? 'bg-zinc-100 border border-zinc-200 text-zinc-400 cursor-not-allowed dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-650'
-                : 'bg-amber-600 text-white shadow-md shadow-amber-600/10 hover:bg-amber-700 hover:shadow-lg'
+                ? 'bg-forest-100 border border-forest-200 text-forest-400 cursor-not-allowed'
+                : 'bg-gold-500 text-forest-800 shadow-md shadow-gold-500/20 hover:bg-gold-400 hover:shadow-lg'
             }`}
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-forest-800 border-t-transparent" />
                 Placing Order...
               </span>
             ) : (
@@ -385,10 +383,11 @@ export function CheckoutForm({
         </div>
 
         {/* Small Payment details note */}
-        <p className="text-[10px] text-zinc-400 leading-normal text-center dark:text-zinc-500">
+        <p className="text-[10px] text-forest-400 leading-normal text-center">
           Payment is completed via Cash on Delivery. Please verify your phone number and keep the amount ready upon delivery.
         </p>
       </div>
     </form>
   )
 }
+
