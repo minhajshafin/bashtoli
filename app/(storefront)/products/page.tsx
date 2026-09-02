@@ -1,13 +1,14 @@
 import { getStorefrontProducts, getStorefrontCategories } from '@/lib/queries/products'
 import { ProductCard } from '@/components/storefront/product-card'
 import { CategoryFilter } from '@/components/storefront/category-filter'
-import { SearchInput } from '@/components/storefront/search-input'
+import { SortDropdown } from '@/components/storefront/sort-dropdown'
 import { Pagination } from '@/components/storefront/pagination'
 
 interface ProductsPageProps {
   searchParams: Promise<{
     category?: string
     q?: string
+    sort?: string
     page?: string
   }>
 }
@@ -32,6 +33,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const resolvedSearchParams = await searchParams
   const activeCategorySlug = resolvedSearchParams.category
   const searchQuery = resolvedSearchParams.q
+  const sortParam = resolvedSearchParams.sort
+  const validSorts = ['featured', 'price-asc', 'price-desc', 'new'] as const
+  type SortValue = typeof validSorts[number]
+  const sort: SortValue = (validSorts as readonly string[]).includes(sortParam ?? '') ? sortParam as SortValue : 'new'
   const currentPage = Math.max(1, parseInt(resolvedSearchParams.page || '1', 10))
 
   const limit = 12
@@ -41,6 +46,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     getStorefrontProducts({
       categorySlug: activeCategorySlug,
       search: searchQuery,
+      sort,
       page: currentPage,
       limit,
     }),
@@ -51,7 +57,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const activeCategory = categories.find((cat) => cat.slug === activeCategorySlug)
 
   return (
-    <div className="relative min-h-screen bg-cream-50 overflow-hidden">
+    <div className="relative min-h-screen bg-cream-50">
       {/* Botanical corner accents */}
       <svg
         viewBox="0 0 320 320"
@@ -108,9 +114,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               {totalCount} items across all categories
             </p>
           </div>
-          <div className="w-full md:w-72">
-            <SearchInput />
-          </div>
+          <SortDropdown />
         </div>
       </div>
 
@@ -126,7 +130,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         <div className="flex flex-col md:flex-row gap-8 items-start">
           {/* Sidebar Filter - Desktop only */}
-          <aside className="hidden md:block w-56 shrink-0 sticky top-20">
+          <aside className="hidden md:block w-56 shrink-0 sticky top-20 self-start">
             <CategoryFilter
               categories={categories}
               activeCategorySlug={activeCategorySlug}
