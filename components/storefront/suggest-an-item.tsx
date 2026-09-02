@@ -7,7 +7,7 @@ export function SuggestAnItem() {
   const [suggestion, setSuggestion] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (suggestion.trim()) setSubmitted(true)
   }

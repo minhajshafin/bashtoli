@@ -41,7 +41,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
   const isHome = pathname === '/'
   const isShop = pathname.startsWith('/products')
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       router.push(`/products?q=${encodeURIComponent(searchQuery.trim())}`)
@@ -94,9 +94,18 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
               type="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products\u2026"
-              className="w-full pl-9 pr-4 py-2 text-sm outline-none rounded-full bg-forest-700 text-forest-300 placeholder:text-forest-500 border border-forest-600 focus:border-gold-500 transition-colors"
+              placeholder="Search products..."
+              className="w-full pl-9 pr-14 py-2 text-sm rounded-full bg-forest-700 text-cream-100 placeholder:text-forest-400 border border-forest-600 focus:border-gold-500 focus:outline-none focus:ring-0 transition-colors"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-forest-400 hover:text-gold-400 transition-colors cursor-pointer select-none"
+              >
+                Clear
+              </button>
+            )}
           </div>
         </form>
 
@@ -126,7 +135,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             </button>
 
             {accountOpen && (
-              <div className="absolute top-[calc(100%+8px)] right-0 bg-forest-800 border border-forest-700 rounded-2xl p-1.5 shadow-2xl min-w-[160px] z-50">
+              <div className="absolute top-[calc(100%+8px)] right-0 bg-forest-800 border border-forest-700 rounded-2xl p-1.5 shadow-2xl min-w-40 z-50">
                 {isLoggedIn ? (
                   <>
                     <div className="px-4 py-2.5 border-b border-forest-700 mb-1">
