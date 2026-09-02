@@ -46,7 +46,7 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
       {hasUnavailableItems && (
         <div className="mt-4 rounded-xl bg-rose-50 p-3 text-xs text-rose-700">
           <p className="font-semibold">Checkout Unavailable</p>
-          <p className="mt-0.5">Please remove any unavailable items from your cart before proceeding.</p>
+          <p className="mt-0.5">Please remove any unavailable items from your shopping bag before proceeding.</p>
         </div>
       )}
 

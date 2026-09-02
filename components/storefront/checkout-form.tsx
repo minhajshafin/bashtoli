@@ -100,12 +100,12 @@ export function CheckoutForm({
     setFieldErrors({})
 
     if (cart.length === 0) {
-      setTopError('Your cart is empty. Please add items before checking out.')
+      setTopError('Your shopping bag is empty. Please add items before checking out.')
       return
     }
 
     if (hasUnavailable) {
-      setTopError('Your cart contains unavailable items. Please return to the cart to adjust.')
+      setTopError('Your shopping bag contains unavailable items. Please return to your bag to adjust.')
       return
     }
 

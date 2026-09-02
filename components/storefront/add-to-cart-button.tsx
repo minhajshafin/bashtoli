@@ -24,7 +24,7 @@ export function AddToCartButton({ variantId, stockQty, onAddToCart }: AddToCartB
   const isOutOfStock = stockQty !== undefined && stockQty <= 0
   const isButtonDisabled = isNoVariantSelected || isOutOfStock
 
-  let buttonText = 'Add to Cart'
+  let buttonText = 'Add to Bag'
   if (isNoVariantSelected) {
     buttonText = 'Select Options'
   } else if (isOutOfStock) {

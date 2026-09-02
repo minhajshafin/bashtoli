@@ -96,7 +96,7 @@ export function Footer() {
                 { label: 'About Us', href: '/about' },
                 { label: 'Contact', href: '/contact' },
                 { label: 'Track My Order', href: '/order/lookup' },
-                { label: 'Cart', href: '/cart' },
+                { label: 'Shopping Bag', href: '/bag' },
               ]}
             />
           </div>
