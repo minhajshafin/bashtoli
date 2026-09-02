@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { logoutAction } from '@/lib/actions/auth'
 
@@ -37,7 +38,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
       <button
         id="storefront-mobile-nav-toggle"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center p-2 rounded-xl text-gold-400 hover:text-gold-500 transition-colors"
+        className="inline-flex items-center justify-center p-2 rounded-xl text-gold-400 hover:text-gold-500 transition-colors cursor-pointer"
         aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
       >
@@ -59,24 +60,23 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
             className="fixed inset-0 bg-forest-950/70 backdrop-blur-xs"
             aria-hidden="true"
           />
-          {/* Panel */}
-          <div className="relative ml-auto flex h-full w-72 max-w-full flex-col bg-forest-800 p-6 shadow-xl animate-slide-in-right">
+          {/* Panel - Slides from Left */}
+          <div className="relative mr-auto flex h-full w-80 max-w-[85vw] flex-col bg-forest-800 p-6 shadow-2xl animate-slide-in-left overflow-y-auto">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-forest-700 pb-4">
-              <span
-                style={{
-                  fontFamily: "'Fraunces', Georgia, serif",
-                  fontSize: '1.1rem',
-                  color: '#f5ede0',
-                  fontWeight: 500,
-                }}
-              >
-                Bashtoli
-              </span>
+              <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home" className="shrink-0">
+                <Image
+                  src="/logo-text.svg"
+                  alt="Bashtoli Stationery"
+                  width={110}
+                  height={36}
+                  className="h-7 w-auto"
+                />
+              </Link>
               <button
                 id="storefront-mobile-nav-close"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1.5 text-forest-400 hover:text-gold-500 transition-colors"
+                className="rounded-lg p-1.5 text-forest-400 hover:text-gold-500 transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
                 <svg className="h-5 w-5 stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,30 +85,42 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               </button>
             </div>
 
-            {/* Links */}
+            {/* Navigation Links */}
             <nav className="flex-1 py-6 space-y-1 text-sm font-medium text-gold-400">
               <Link
                 href="/"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 transition-all"
+                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
               >
                 Home
               </Link>
               <Link
                 href="/products"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 transition-all"
+                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
               >
-                Shop
+                Shop All Products
               </Link>
               <Link
                 href="/account/wishlist"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 transition-all"
+                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
               >
                 Wishlist
               </Link>
+              <Link
+                href="/cart"
+                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
+              >
+                Shopping Bag
+              </Link>
+              <Link
+                href="/order/lookup"
+                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
+              >
+                Track Order
+              </Link>
             </nav>
 
-            {/* Account */}
-            <div className="border-t border-forest-700 pt-6 space-y-3">
+            {/* Account Footer */}
+            <div className="border-t border-forest-700 pt-5 space-y-3">
               {isLoggedIn ? (
                 <>
                   <div className="px-3">
@@ -126,7 +138,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                   <form action={logoutAction} className="w-full">
                     <button
                       type="submit"
-                      className="w-full text-center py-2.5 rounded-xl bg-rose-900/30 text-xs font-bold text-rose-400 hover:bg-rose-900/50 transition-colors"
+                      className="w-full text-center py-2.5 rounded-xl bg-rose-900/30 text-xs font-bold text-rose-400 hover:bg-rose-900/50 transition-colors cursor-pointer"
                     >
                       Logout
                     </button>
@@ -135,9 +147,9 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               ) : (
                 <Link
                   href="/login"
-                  className="block text-center py-2.5 rounded-xl bg-gold-500 text-xs font-bold text-forest-800 hover:bg-gold-400 transition-colors"
+                  className="block text-center py-3 rounded-full bg-gold-500 text-xs font-bold text-forest-800 hover:bg-gold-400 transition-colors shadow-sm"
                 >
-                  Login / Register
+                  Sign In / Register
                 </Link>
               )}
             </div>
