@@ -6,20 +6,18 @@ import React from 'react'
 export function ProductCardSkeleton() {
   return (
     <div
-      className="overflow-hidden rounded-[20px] bg-cream-100/90 shadow-xs border border-forest-200/40"
+      className="overflow-hidden rounded-2xl sm:rounded-[20px] bg-cream-100/90 shadow-xs border border-forest-200/40"
       aria-hidden="true"
     >
       {/* 4/5 Aspect Ratio Image Shimmer */}
       <div className="relative w-full skeleton-shimmer" style={{ aspectRatio: '4/5' }} />
 
       {/* Info Section */}
-      <div className="p-4 space-y-2.5">
+      <div className="p-3 sm:p-4 space-y-2">
         {/* Title placeholder */}
-        <div className="h-4.5 w-3/4 rounded-md skeleton-shimmer" />
-        {/* Description placeholder */}
-        <div className="h-3 w-1/2 rounded-md skeleton-shimmer opacity-70" />
+        <div className="h-4 w-3/4 rounded-md skeleton-shimmer" />
         {/* Price placeholder */}
-        <div className="h-4 w-1/3 rounded-md skeleton-shimmer pt-1" />
+        <div className="h-4 w-1/3 rounded-md skeleton-shimmer" />
       </div>
     </div>
   )
@@ -30,7 +28,7 @@ export function ProductCardSkeleton() {
  */
 export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: count }).map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}
