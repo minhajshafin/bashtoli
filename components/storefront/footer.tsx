@@ -60,7 +60,7 @@ const socials = [
   },
   {
     label: 'Facebook',
-    href: 'https://facebook.com/bashtoli',
+    href: 'https://www.facebook.com/bashtoli',
     color: 'text-forest-300 hover:text-gold-400 hover:border-gold-400/60',
     icon: <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3.2l.8-4h-4V7a1 1 0 011-1h3z" />,
   },
@@ -73,9 +73,9 @@ export function Footer() {
 
   return (
     <footer className="border-t border-forest-800 bg-forest-950" id="contact">
-      <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 pt-12 pb-6 md:px-10 md:pt-16 md:pb-8">
         {/* Meta */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-14">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-12">
           <div className="sm:col-span-2 md:col-span-3 flex flex-col">
             <Image
               src="/logo-round.svg"
@@ -110,12 +110,20 @@ export function Footer() {
                 Gulshan-1212, Dhaka
               </p>
               <p className="text-[0.95rem] font-light text-forest-400 mt-3">Open 7 days · 7am – 11pm</p>
-              <a
-                href="mailto:hello@bashtoli.com"
-                className="text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 inline-block mt-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
-              >
-                bashtoli@gmail.com
-              </a>
+              <div className="mt-3 space-y-1">
+                <a
+                  href="tel:01320903666"
+                  className="text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm font-medium"
+                >
+                  01320-903666
+                </a>
+                <a
+                  href="mailto:bashtoli.computer@gmail.com"
+                  className="text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                >
+                  bashtoli.computer@gmail.com
+                </a>
+              </div>
 
               <div className="flex items-center gap-3 mt-6">
                 {socials.map(({ label, href, color, icon }) => (
@@ -163,7 +171,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="py-8 border-t border-forest-800 flex flex-col-reverse md:flex-row items-center justify-between gap-6">
+        <div className="pt-8 pb-2 border-t border-forest-800 flex flex-col-reverse md:flex-row items-center justify-between gap-6 mt-10 md:mt-12">
           <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-3 text-center sm:text-left">
             <p className="text-xs font-light text-forest-500">
               &copy; {new Date().getFullYear()} Bashtoli Stationery.

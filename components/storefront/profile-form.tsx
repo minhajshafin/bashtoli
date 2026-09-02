@@ -271,7 +271,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                 )}
               </>
             ) : (
-              <div className="rounded-xl border border-forest-200/80 bg-cream-50/70 px-4 py-2.5 text-sm sm:text-base font-semibold text-forest-900 whitespace-pre-wrap min-h-[44px]">
+              <div className="rounded-xl border border-forest-200/80 bg-cream-50/70 px-4 py-2.5 text-sm sm:text-base font-semibold text-forest-900 whitespace-pre-wrap min-h-11">
                 {profile?.address || <span className="text-forest-400 font-normal italic">No delivery address saved</span>}
               </div>
             )}
