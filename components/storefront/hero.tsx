@@ -169,7 +169,7 @@ export function Hero() {
         <div className="lg:col-span-7 max-w-xl">
           {/* Brand Logo & Est */}
           <div className="flex flex-col items-start gap-2.5 mb-6">
-            <div className="relative h-11 sm:h-12 md:h-14 lg:h-16 w-44 sm:w-52 md:w-60 lg:w-68">
+            <div className="relative h-14 sm:h-16 md:h-18 lg:h-20 w-56 sm:w-64 md:w-72 lg:w-80">
               <Image
                 src="/logo-text.svg"
                 alt="Bashtoli Stationery"
