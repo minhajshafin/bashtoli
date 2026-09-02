@@ -159,26 +159,26 @@ export function Hero() {
   return (
     <section
       className="relative flex items-center overflow-hidden bg-forest-800"
-      style={{ minHeight: '70svh' }}
+      style={{ minHeight: '60svh' }}
     >
       <LeafTopRight />
       <LeafBottomLeft />
 
-      <div className="relative max-w-7xl mx-auto px-5 md:px-8 w-full grid md:grid-cols-2 gap-10 lg:gap-20 items-center py-12 md:py-16">
-        {/* Left */}
-        <div>
-          <div className="mb-5">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-8 w-full grid lg:grid-cols-2 gap-10 lg:gap-20 items-center py-10 sm:py-14 md:py-16">
+        {/* Left: Branding & Story */}
+        <div className="max-w-2xl">
+          <div className="mb-4 sm:mb-5">
             <Image
               src="/logo-text.svg"
               alt="Bashtoli Stationery"
               width={280}
               height={96}
               priority
-              className="h-24 w-auto"
+              className="h-16 sm:h-20 md:h-24 w-auto"
             />
           </div>
           <p
-            className="mb-5"
+            className="mb-4 sm:mb-5"
             style={{
               color: '#c9a96e',
               fontSize: '0.68rem',
@@ -190,10 +190,10 @@ export function Hero() {
             Stationery &amp; Gifts&nbsp;·&nbsp;Est. 2026
           </p>
           <h1
-            className="mb-7"
+            className="mb-5 sm:mb-7"
             style={{
               fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 'clamp(2.8rem, 6vw, 5.2rem)',
+              fontSize: 'clamp(2.3rem, 5.5vw, 5.2rem)',
               color: '#f5ede0',
               fontWeight: 300,
               letterSpacing: '-0.025em',
@@ -208,16 +208,16 @@ export function Hero() {
             at a time.
           </h1>
           <p
-            className="mb-10 max-w-2xl text-base leading-relaxed"
+            className="mb-8 sm:mb-10 max-w-xl text-sm sm:text-base leading-relaxed"
             style={{ color: '#a8c4b0', fontWeight: 300 }}
           >
             Handpicked notebooks, artisanal pens, and paper goods from makers who believe
             writing is still the most intimate form of expression.
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap items-center gap-3.5 sm:gap-4">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 text-sm font-semibold rounded-full bg-gold-500 text-forest-800 hover:bg-gold-400 transition-colors"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-sm font-semibold rounded-full bg-gold-500 text-forest-800 hover:bg-gold-400 transition-colors shadow-sm active:scale-[0.98]"
             >
               Shop Now
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,15 +226,17 @@ export function Hero() {
             </Link>
             <Link
               href="#aboutus"
-              className="inline-flex items-center px-8 py-3.5 text-sm rounded-full border border-forest-500 text-forest-300 hover:border-gold-500 hover:text-gold-500 transition-all cursor-pointer"
+              className="inline-flex items-center px-7 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-sm rounded-full border border-forest-500 text-forest-300 hover:border-gold-500 hover:text-gold-500 transition-all cursor-pointer active:scale-[0.98]"
             >
               About Us
             </Link>
           </div>
         </div>
 
-        {/* Right: slideshow */}
-        <HeroSlideshow />
+        {/* Right: slideshow (hidden on mobile/tablet screens) */}
+        <div className="hidden lg:block">
+          <HeroSlideshow />
+        </div>
       </div>
     </section>
   )
