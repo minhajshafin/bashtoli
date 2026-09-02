@@ -66,7 +66,7 @@ export function BagClient() {
   }, 0)
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 min-h-[calc(100dvh-4rem)] flex flex-col justify-start">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-5 border-b border-forest-200 gap-4">
         <div>
