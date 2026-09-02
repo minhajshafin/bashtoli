@@ -74,23 +74,26 @@ export function Footer() {
   return (
     <footer className="border-t border-forest-800 bg-forest-950" id="contact">
       <div className="mx-auto max-w-7xl px-6 pt-12 pb-6 md:px-10 md:pt-16 md:pb-8">
-        {/* Meta */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-12">
-          <div className="sm:col-span-2 md:col-span-3 flex flex-col">
-            <Image
-              src="/logo-round.svg"
-              alt="Bashtoli Stationery"
-              width={160}
-              height={160}
-              loading="lazy"
-              className="h-28 w-28 md:h-36 md:w-36 object-contain -ml-2 mb-4"
-            />
-            <p className="text-[0.95rem] font-light text-forest-300 leading-relaxed max-w-[26ch]">
+        {/* Meta Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-10 gap-y-10 md:gap-y-12">
+          {/* Brand Logo & Tagline (Desktop only) */}
+          <div className="hidden md:flex md:col-span-3 flex-col items-center text-center max-w-[28ch]">
+            <div className="relative h-24 w-24 md:h-28 md:w-28 mb-3.5">
+              <Image
+                src="/logo-round.svg"
+                alt="Bashtoli Stationery"
+                fill
+                loading="lazy"
+                className="object-contain object-center"
+              />
+            </div>
+            <p className="text-sm font-light text-forest-300 leading-relaxed">
               A curated stationery shop for writers, dreamers, and ink-lovers.
             </p>
           </div>
 
-          <div className="md:col-span-2">
+          {/* Info Column */}
+          <div className="col-span-1 md:col-span-2">
             <FooterColumn
               title="Info"
               links={[
@@ -102,31 +105,32 @@ export function Footer() {
             />
           </div>
 
-          <div className="md:col-span-3">
+          {/* Find Us Column */}
+          <div className="col-span-1 md:col-span-3">
             <ColumnHeading>Find Us</ColumnHeading>
             <address className="not-italic">
-              <p className="text-[0.95rem] font-light text-forest-300 leading-relaxed">
+              <p className="text-xs sm:text-[0.95rem] font-light text-forest-300 leading-relaxed">
                 Shajadpur, Bashtola
                 <br />
                 Gulshan-1212, Dhaka
               </p>
-              <p className="text-[0.95rem] font-light text-forest-400 mt-3">Open 7 days · 7am – 11pm</p>
-              <div className="mt-3 space-y-1">
+              <p className="text-xs sm:text-[0.95rem] font-light text-forest-400 mt-2 sm:mt-3">Open 7 days · 7am – 11pm</p>
+              <div className="mt-2 sm:mt-3 space-y-1">
                 <a
                   href="tel:01320903666"
-                  className="text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm font-medium"
+                  className="text-xs sm:text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm font-medium"
                 >
                   01320-903666
                 </a>
                 <a
                   href="mailto:bashtoli.computer@gmail.com"
-                  className="text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                  className="text-[11px] sm:text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm truncate"
                 >
                   bashtoli.computer@gmail.com
                 </a>
               </div>
 
-              <div className="flex items-center gap-3 mt-6">
+              <div className="flex items-center gap-2 sm:gap-3 mt-4 sm:mt-6">
                 {socials.map(({ label, href, color, icon }) => (
                   <a
                     key={label}
@@ -135,9 +139,9 @@ export function Footer() {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
+                    className={`inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
                   >
-                    <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                       {icon}
                     </svg>
                   </a>
@@ -146,7 +150,8 @@ export function Footer() {
             </address>
           </div>
 
-          <div className="md:col-span-4">
+          {/* Location / Map Column */}
+          <div className="col-span-2 md:col-span-4">
             <ColumnHeading>Location</ColumnHeading>
             <div className="rounded-2xl overflow-hidden border border-forest-800">
               <iframe

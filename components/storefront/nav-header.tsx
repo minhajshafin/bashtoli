@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { CartIcon } from '@/components/storefront/cart-icon'
 import { MobileNav } from '@/components/storefront/mobile-nav'
@@ -77,19 +76,8 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           )}
         </div>
 
-        {/* Desktop: Logo + Nav links on left */}
-        <div className="hidden md:flex items-center gap-6 shrink-0">
-          <Link href="/" aria-label="Home" className="shrink-0">
-            <Image
-              src="/logo-text.svg"
-              alt="Bashtoli Stationery"
-              width={120}
-              height={40}
-              priority
-              className="h-8 w-auto"
-            />
-          </Link>
-          <div className="w-px h-5 bg-forest-700" aria-hidden="true" />
+        {/* Desktop: Nav links on left */}
+        <div className="hidden md:flex items-center gap-7 shrink-0">
           {([
             { label: 'Home', href: '/', active: isHome },
             { label: 'Shop', href: '/products', active: isShop },

@@ -72,6 +72,7 @@ export default function AuthLayout({
                   height={340}
                   priority
                   className="relative z-10 w-44 h-44 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[340px] lg:h-[340px] object-contain transition-transform duration-500 group-hover:scale-105 filter drop-shadow-[0_12px_36px_rgba(0,0,0,0.4)]"
+                  style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
             </Link>

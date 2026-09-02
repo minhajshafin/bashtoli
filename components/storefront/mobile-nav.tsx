@@ -65,13 +65,14 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-forest-700 pb-4">
               <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home" className="shrink-0">
-                <Image
-                  src="/logo-text.svg"
-                  alt="Bashtoli Stationery"
-                  width={110}
-                  height={36}
-                  className="h-7 w-auto"
-                />
+                <div className="relative h-6 w-24">
+                  <Image
+                    src="/logo-text.svg"
+                    alt="Bashtoli Stationery"
+                    fill
+                    className="object-contain object-left"
+                  />
+                </div>
               </Link>
               <button
                 id="storefront-mobile-nav-close"

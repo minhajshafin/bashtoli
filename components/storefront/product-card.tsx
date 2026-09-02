@@ -117,13 +117,6 @@ export function ProductCard({ product }: ProductCardProps) {
         >
           {product.name}
         </h3>
-        {product.description && (
-          <p
-            className="hidden sm:block line-clamp-1 text-xs text-forest-500 mb-2"
-          >
-            {product.description}
-          </p>
-        )}
         <p
           className="text-xs sm:text-base font-semibold text-forest-900"
           style={{ fontFamily: "'Fraunces', Georgia, serif" }}

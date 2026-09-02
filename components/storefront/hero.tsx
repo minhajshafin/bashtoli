@@ -164,40 +164,36 @@ export function Hero() {
       <LeafTopRight />
       <LeafBottomLeft />
 
-      <div className="relative max-w-7xl mx-auto px-5 md:px-8 w-full grid lg:grid-cols-2 gap-10 lg:gap-20 items-center py-10 sm:py-14 md:py-16">
+      <div className="relative max-w-7xl mx-auto px-5 md:px-8 w-full grid lg:grid-cols-12 gap-10 lg:gap-12 items-center py-12 sm:py-16 lg:py-20">
         {/* Left: Branding & Story */}
-        <div className="max-w-2xl">
-          <div className="mb-4 sm:mb-5">
-            <Image
-              src="/logo-text.svg"
-              alt="Bashtoli Stationery"
-              width={280}
-              height={96}
-              priority
-              className="h-16 sm:h-20 md:h-24 w-auto"
-            />
+        <div className="lg:col-span-7 max-w-xl">
+          {/* Brand Logo & Est */}
+          <div className="flex flex-col items-start gap-2.5 mb-6">
+            <div className="relative h-11 sm:h-12 md:h-14 lg:h-16 w-44 sm:w-52 md:w-60 lg:w-68">
+              <Image
+                src="/logo-text.svg"
+                alt="Bashtoli Stationery"
+                fill
+                priority
+                className="object-contain object-left"
+              />
+            </div>
+            <p
+              className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-gold-400 font-semibold"
+              style={{ fontFamily: "'Source Sans 3', system-ui, sans-serif" }}
+            >
+              Stationery &amp; Gifts&nbsp;·&nbsp;Est. 2026
+            </p>
           </div>
-          <p
-            className="mb-4 sm:mb-5"
-            style={{
-              color: '#c9a96e',
-              fontSize: '0.68rem',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              fontFamily: "'Source Sans 3', system-ui, sans-serif",
-            }}
-          >
-            Stationery &amp; Gifts&nbsp;·&nbsp;Est. 2026
-          </p>
+
           <h1
-            className="mb-5 sm:mb-7"
+            className="mb-5 sm:mb-6 text-cream-100"
             style={{
               fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 'clamp(2.3rem, 5.5vw, 5.2rem)',
-              color: '#f5ede0',
+              fontSize: 'clamp(2.2rem, 3.8vw, 3.6rem)',
               fontWeight: 300,
-              letterSpacing: '-0.025em',
-              lineHeight: 1.05,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.12,
             }}
           >
             Craft your{' '}
@@ -207,13 +203,14 @@ export function Hero() {
             <br />
             at a time.
           </h1>
+
           <p
-            className="mb-8 sm:mb-10 max-w-xl text-sm sm:text-base leading-relaxed"
-            style={{ color: '#a8c4b0', fontWeight: 300 }}
+            className="mb-8 text-sm sm:text-base leading-relaxed text-forest-300 font-light max-w-lg"
           >
             Handpicked notebooks, artisanal pens, and paper goods from makers who believe
             writing is still the most intimate form of expression.
           </p>
+
           <div className="flex flex-wrap items-center gap-3.5 sm:gap-4">
             <Link
               href="/products"
@@ -234,7 +231,7 @@ export function Hero() {
         </div>
 
         {/* Right: slideshow (hidden on mobile/tablet screens) */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex lg:col-span-5 justify-center lg:justify-end">
           <HeroSlideshow />
         </div>
       </div>
