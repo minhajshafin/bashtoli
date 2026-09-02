@@ -56,7 +56,7 @@ export function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Image
-              src="/logo-text.svg"
+              src="/logo-round.svg"
               alt="Bashtoli Stationery"
               width={120}
               height={42}
@@ -66,18 +66,6 @@ export function Footer() {
               A curated stationery shop for writers,<br />dreamers, and ink-lovers.
             </p>
           </div>
-
-          {/* Shop */}
-          <FooterColumn
-            title="Shop"
-            links={[
-              { label: 'Notebooks', href: '/products?category=notebooks-journals' },
-              { label: 'Pens & Inks', href: '/products?category=writing-instruments' },
-              { label: 'Washi Tapes', href: '/products?category=washi-tapes' },
-              { label: 'Gift Sets', href: '/products?category=gift-collections' },
-              { label: 'New Arrivals', href: '/products' },
-            ]}
-          />
 
           {/* Info */}
           <FooterColumn
@@ -112,7 +100,7 @@ export function Footer() {
                 href="mailto:hello@bashtoli.com"
                 className="text-sm text-gold-500 hover:text-gold-400 transition-colors block"
               >
-                hello@bashtoli.com
+                bashtoli@gmail.com
               </a>
               <a
                 href="https://wa.me/8801825414737"
