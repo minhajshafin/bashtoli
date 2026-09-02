@@ -3,7 +3,11 @@ import Link from 'next/link'
 
 export function AboutSection() {
   return (
-    <section id="aboutus" className="py-12 px-5 md:px-8 bg-cream-100">
+    <section
+      id="aboutus"
+      className="py-12 px-5 md:px-8 bg-cream-100 scroll-mt-35"
+      style={{ scrollMarginTop: '140px' }}
+    >
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10 items-center">
         {/* Image */}
         <div className="shrink-0 w-full md:w-56 lg:w-64">
@@ -59,16 +63,10 @@ export function AboutSection() {
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link
-              href="/contact"
-              className="inline-flex items-center px-6 py-2.5 text-sm font-semibold rounded-full bg-forest-800 text-cream-100 hover:bg-forest-600 transition-colors"
+              href="/products"
+              className="inline-flex items-center px-6 py-2.5 text-sm font-semibold rounded-full bg-forest-800 text-cream-100 hover:bg-gold-500 hover:text-forest-900 transition-colors"
             >
-              Visit Us
-            </Link>
-            <Link
-              href="/about"
-              className="text-sm font-semibold text-forest-800 hover:text-gold-500 transition-colors"
-            >
-              Read our journal &rarr;
+              Explore Collection &rarr;
             </Link>
           </div>
         </div>

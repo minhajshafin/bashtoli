@@ -93,10 +93,10 @@ export function Footer() {
             <FooterColumn
               title="Info"
               links={[
-                { label: 'About Us', href: '/about' },
-                { label: 'Contact', href: '/contact' },
+                { label: 'About Us', href: '/#aboutus' },
                 { label: 'Track My Order', href: '/order/lookup' },
                 { label: 'Shopping Bag', href: '/bag' },
+                { label: 'Explore Shop', href: '/products' },
               ]}
             />
           </div>

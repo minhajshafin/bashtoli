@@ -94,7 +94,7 @@ export function CheckoutForm({
     setDeliveryZone(zone)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     setTopError(null)
     setFieldErrors({})

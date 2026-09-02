@@ -115,7 +115,7 @@ export function OrderList({ orders, totalCount, pageSize }: OrderListProps) {
     })
   }
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
     applyFilters({ page: 1 })
   }

@@ -26,7 +26,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
   const [state, formAction, isPendingAction] = useActionState(actionFn, { error: null })
   const isPending = isPendingAction || isPendingTransition
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     startTransition(async () => {

@@ -225,8 +225,8 @@ export function Hero() {
               </svg>
             </Link>
             <Link
-              href="/about"
-              className="inline-flex items-center px-8 py-3.5 text-sm rounded-full border border-forest-500 text-forest-300 hover:border-gold-500 hover:text-gold-500 transition-all"
+              href="#aboutus"
+              className="inline-flex items-center px-8 py-3.5 text-sm rounded-full border border-forest-500 text-forest-300 hover:border-gold-500 hover:text-gold-500 transition-all cursor-pointer"
             >
               About Us
             </Link>

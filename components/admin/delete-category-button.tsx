@@ -32,7 +32,7 @@ export function DeleteCategoryButton({
     ? `${productCount} product${productCount === 1 ? '' : 's'} — reassign them first`
     : 'Delete category'
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     if (hasProducts) {
       e.preventDefault()
       return

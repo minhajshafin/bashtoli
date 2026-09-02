@@ -50,7 +50,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
   const passwordFormRef = React.useRef<HTMLFormElement>(null)
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleProfileSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleProfileSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     startProfileTransition(async () => {
@@ -63,7 +63,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
     })
   }
 
-  const handlePasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePasswordSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     startPasswordTransition(async () => {
@@ -77,7 +77,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
     })
   }
 
-  const handleDeleteSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleDeleteSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setDeleteError(null)
     const formData = new FormData()

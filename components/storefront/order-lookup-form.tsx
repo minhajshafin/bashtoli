@@ -18,7 +18,7 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
   const [topError, setTopError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<NonNullable<OrderLookupActionState['fieldErrors']>>({})
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     setTopError(null)
     setFieldErrors({})
