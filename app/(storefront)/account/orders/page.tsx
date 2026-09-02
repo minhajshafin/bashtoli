@@ -38,12 +38,18 @@ export default async function OrderHistoryPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight">
+      <div className="border-b border-forest-200 pb-5">
+        <p className="text-[11px] uppercase tracking-[0.25em] text-gold-500 font-bold mb-1">
+          History
+        </p>
+        <h1
+          className="text-2xl sm:text-3xl text-forest-900 font-normal tracking-tight"
+          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+        >
           Order History
         </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-          Manage and track your past orders.
+        <p className="text-xs text-forest-600 mt-1 font-light">
+          Manage and track your ongoing and past orders.
         </p>
       </div>
 
@@ -53,14 +59,14 @@ export default async function OrderHistoryPage() {
       )}
 
       {orders.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-zinc-200 rounded-3xl dark:border-zinc-800">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-zinc-50 text-zinc-400 dark:bg-zinc-900 dark:text-zinc-650 mb-3">
-            <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        <div className="text-center py-16 border-2 border-dashed border-forest-200 bg-cream-100/50 rounded-3xl">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-forest-100 text-forest-500 mb-3">
+            <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
             </svg>
           </div>
-          <p className="text-sm font-semibold text-zinc-400">{"You haven't placed any orders yet."}</p>
-          <p className="text-xs text-zinc-405 mt-1">Browse our products and place an order to see it listed here.</p>
+          <p className="text-sm font-semibold text-forest-900">You haven&apos;t placed any orders yet.</p>
+          <p className="text-xs text-forest-500 mt-1">Browse our products and place an order to see it listed here.</p>
         </div>
       ) : (
         <OrderHistoryList orders={orders} />

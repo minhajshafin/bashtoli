@@ -22,7 +22,7 @@ export const metadata = {
  */
 export default function ContactPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 space-y-12">
+    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 space-y-12 min-h-[calc(100dvh-4rem)]">
       {/* 1. Header segment */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
         <p className="text-xs font-bold uppercase tracking-widest text-gold-500">
