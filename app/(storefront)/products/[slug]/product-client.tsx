@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { ImageGallery } from '@/components/storefront/image-gallery'
 import { VariantSelector } from '@/components/storefront/variant-selector'
 import { AddToCartButton } from '@/components/storefront/add-to-cart-button'
@@ -20,6 +21,7 @@ export function ProductDetailClient({
   initialIsWishlisted,
 }: ProductDetailClientProps) {
   const { product, images, variants, options } = detailData
+  const router = useRouter()
   const { addItem } = useCart()
 
   // State to hold user selected options
@@ -87,6 +89,13 @@ export function ProductDetailClient({
     }, qty)
   }
 
+  // Handle Buy Now -> adds item and directs straight to checkout
+  const handleBuyNow = (qty: number) => {
+    if (!selectedVariant) return
+    handleAddToCart(qty)
+    router.push('/checkout')
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 mt-6">
       {/* Left - Image Gallery */}
@@ -149,21 +158,25 @@ export function ProductDetailClient({
           onChange={handleOptionChange}
         />
 
-        {/* Qty Picker & Add to Cart & Wishlist */}
-        <div className="mt-4 flex flex-col gap-3">
+        {/* Qty Picker & Add to Bag & Buy Now & Wishlist */}
+        <div className="mt-6 flex flex-col gap-4">
           <div className="flex items-end gap-3">
             <div className="flex-1">
               <AddToCartButton
                 variantId={selectedVariant?.id}
                 stockQty={isSelectionComplete ? selectedVariant?.stock_qty ?? 0 : undefined}
                 onAddToCart={handleAddToCart}
+                onBuyNow={handleBuyNow}
               />
             </div>
-            <WishlistButton
-              productId={product.id}
-              isLoggedIn={isLoggedIn}
-              initialIsWishlisted={initialIsWishlisted}
-            />
+            <div className="pb-0.5">
+              <WishlistButton
+                productId={product.id}
+                isLoggedIn={isLoggedIn}
+                initialIsWishlisted={initialIsWishlisted}
+                variant="detail"
+              />
+            </div>
           </div>
         </div>
 

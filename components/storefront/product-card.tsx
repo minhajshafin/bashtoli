@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ProductWithDetails } from '@/lib/queries/products'
+import { WishlistButton } from '@/components/storefront/wishlist-button'
 
 interface ProductCardProps {
   product: ProductWithDetails
@@ -74,7 +75,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Category tag */}
         {product.categories && (
           <span
-            className="absolute top-3 left-3 px-3.5 py-1 text-xs font-semibold"
+            className="absolute top-3 left-3 px-3.5 py-1 text-xs font-semibold z-10"
             style={{
               backgroundColor: '#c9a96e',
               color: '#1a3326',
@@ -85,6 +86,14 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.categories.name}
           </span>
         )}
+
+        {/* Wishlist toggle heart button */}
+        <div className="absolute top-3 right-3 z-20">
+          <WishlistButton
+            productId={product.id}
+            variant="card"
+          />
+        </div>
 
         {/* Add to bag bar */}
         <div

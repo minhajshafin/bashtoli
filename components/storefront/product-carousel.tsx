@@ -29,10 +29,10 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
     <div className="relative">
       {/* Left fade */}
       <div
-        className="absolute left-0 top-0 bottom-4 w-24 z-10 pointer-events-none transition-opacity duration-300"
+        className="absolute left-0 top-0 bottom-4 w-8 sm:w-12 z-10 pointer-events-none transition-opacity duration-300"
         style={{
-          background: 'linear-gradient(to right, #faf6ef 0%, rgba(250,246,239,0.8) 30%, transparent 100%)',
-          opacity: canScrollLeft ? 1 : 0,
+          background: 'linear-gradient(to right, rgba(250,246,239,0.7) 0%, transparent 100%)',
+          opacity: canScrollLeft ? 0.8 : 0,
         }}
       />
       {/* Left button */}
@@ -72,10 +72,10 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
 
       {/* Right fade */}
       <div
-        className="absolute right-0 top-0 bottom-4 w-24 z-10 pointer-events-none transition-opacity duration-300"
+        className="absolute right-0 top-0 bottom-4 w-8 sm:w-12 z-10 pointer-events-none transition-opacity duration-300"
         style={{
-          background: 'linear-gradient(to left, #faf6ef 0%, rgba(250,246,239,0.8) 30%, transparent 100%)',
-          opacity: canScrollRight ? 1 : 0,
+          background: 'linear-gradient(to left, rgba(250,246,239,0.7) 0%, transparent 100%)',
+          opacity: canScrollRight ? 0.8 : 0,
         }}
       />
       {/* Right button */}
