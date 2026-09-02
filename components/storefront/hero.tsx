@@ -171,10 +171,10 @@ export function Hero() {
             <Image
               src="/logo-text.svg"
               alt="Bashtoli Stationery"
-              width={160}
-              height={56}
+              width={280}
+              height={96}
               priority
-              className="h-14 w-auto"
+              className="h-24 w-auto"
             />
           </div>
           <p
@@ -208,7 +208,7 @@ export function Hero() {
             at a time.
           </h1>
           <p
-            className="mb-10 max-w-md text-base leading-relaxed"
+            className="mb-10 max-w-2xl text-base leading-relaxed"
             style={{ color: '#a8c4b0', fontWeight: 300 }}
           >
             Handpicked notebooks, artisanal pens, and paper goods from makers who believe
