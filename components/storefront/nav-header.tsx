@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { CartIcon } from '@/components/storefront/cart-icon'
 import { MobileNav } from '@/components/storefront/mobile-nav'
@@ -18,6 +19,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const accountRef = useRef<HTMLDivElement>(null)
 
@@ -26,6 +28,10 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
+
+  useEffect(() => {
+    setMobileSearchOpen(false)
+  }, [pathname])
 
   useEffect(() => {
     if (!accountOpen) return
@@ -44,9 +50,12 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
   const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
+      setMobileSearchOpen(false)
       router.push(`/products?q=${encodeURIComponent(searchQuery.trim())}`)
     }
   }
+
+  const firstName = fullName ? fullName.trim().split(' ')[0] : null
 
   return (
     <header
@@ -55,8 +64,32 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
 
-        {/* Left: nav links */}
-        <div className="hidden md:flex items-center gap-7 shrink-0">
+        {/* Mobile: Hamburger + Greeting on far left */}
+        <div className="md:hidden flex items-center gap-2.5">
+          <MobileNav isLoggedIn={isLoggedIn} fullName={fullName} />
+          {isLoggedIn && firstName && (
+            <span
+              className="text-xs font-semibold text-gold-400 max-w-[140px] truncate select-none tracking-wide"
+              title={fullName || ''}
+            >
+              Hi, {firstName}
+            </span>
+          )}
+        </div>
+
+        {/* Desktop: Logo + Nav links on left */}
+        <div className="hidden md:flex items-center gap-6 shrink-0">
+          <Link href="/" aria-label="Home" className="shrink-0">
+            <Image
+              src="/logo-text.svg"
+              alt="Bashtoli Stationery"
+              width={120}
+              height={40}
+              priority
+              className="h-8 w-auto"
+            />
+          </Link>
+          <div className="w-px h-5 bg-forest-700" aria-hidden="true" />
           {([
             { label: 'Home', href: '/', active: isHome },
             { label: 'Shop', href: '/products', active: isShop },
@@ -79,7 +112,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           ))}
         </div>
 
-        {/* Center: search */}
+        {/* Center: Desktop search */}
         <form onSubmit={handleSearch} className="flex-1 hidden md:flex items-center justify-center">
           <div className="relative w-full max-w-xs">
             <svg
@@ -109,8 +142,8 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           </div>
         </form>
 
-        {/* Right: icons */}
-        <div className="flex items-center gap-1 ml-auto md:ml-0">
+        {/* Right: Icons (Clean Search & Bag on mobile) */}
+        <div className="flex items-center gap-1.5 ml-auto">
 
           {/* Admin shortcut */}
           {isStaffOrAdmin && (
@@ -122,12 +155,41 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             </Link>
           )}
 
-          {/* Account icon with dropdown */}
-          <div ref={accountRef} className="relative">
+          {/* Mobile search toggle button */}
+          <button
+            type="button"
+            onClick={() => setMobileSearchOpen((o) => !o)}
+            aria-label="Search"
+            className="md:hidden flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full cursor-pointer"
+          >
+            {mobileSearchOpen ? (
+              <svg className="w-5 h-5 stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 stroke-[1.75]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            )}
+          </button>
+
+          {/* Desktop: Wishlist icon */}
+          <Link
+            href="/account/wishlist"
+            aria-label="Wishlist"
+            className="hidden md:flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+            </svg>
+          </Link>
+
+          {/* Desktop: Account icon with dropdown */}
+          <div ref={accountRef} className="relative hidden md:block">
             <button
               onClick={() => setAccountOpen((o) => !o)}
               aria-label="Account"
-              className="flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full"
+              className="flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full cursor-pointer"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -151,7 +213,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
                       My Account
                     </Link>
                     <form action={logoutAction}>
-                      <button type="submit" className="flex items-center gap-2.5 w-full px-4 py-2 text-sm text-forest-300 hover:bg-forest-700 hover:text-gold-400 rounded-xl transition-all">
+                      <button type="submit" className="flex items-center gap-2.5 w-full px-4 py-2 text-sm text-forest-300 hover:bg-forest-700 hover:text-gold-400 rounded-xl transition-all cursor-pointer">
                         <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" /></svg>
                         Logout
                       </button>
@@ -181,27 +243,52 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             )}
           </div>
 
-          {/* Wishlist icon */}
-          <Link
-            href="/account/wishlist"
-            aria-label="Wishlist"
-            className="flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-          </Link>
-
-          {/* Cart */}
+          {/* Shopping Bag / Cart */}
           <CartIcon />
-
-          {/* Divider */}
-          <div className="w-px h-5 mx-1 bg-forest-700 hidden md:block" aria-hidden="true" />
-
-          {/* Mobile hamburger */}
-          <MobileNav isLoggedIn={isLoggedIn} fullName={fullName} />
         </div>
       </div>
+
+      {/* Mobile Expandable Search Dropdown */}
+      {mobileSearchOpen && (
+        <div className="md:hidden border-t border-forest-700 bg-forest-800 px-4 py-3 animate-fade-in shadow-xl">
+          <form onSubmit={handleSearch} className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <svg
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-gold-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              <input
+                type="search"
+                autoFocus
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products..."
+                className="w-full pl-10 pr-14 py-2 text-sm rounded-full bg-forest-700 text-cream-100 placeholder:text-forest-400 border border-forest-600 focus:border-gold-500 focus:outline-none transition-colors"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-forest-400 hover:text-gold-400 transition-colors cursor-pointer select-none"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setMobileSearchOpen(false)}
+              className="px-2.5 py-2 text-xs font-semibold text-forest-300 hover:text-gold-400 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      )}
     </header>
   )
 }
