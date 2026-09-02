@@ -112,3 +112,53 @@ input[type="search"]::-webkit-search-results-decoration {
   color: #1a3326;
 }
 
+/* Delayed Skeleton Reveal (prevents flash of loading state on fast responses) */
+@keyframes delayedFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-delayed-fade-in {
+  opacity: 0;
+  animation: delayedFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 400ms forwards;
+}
+
+/* Shimmer animations for theme-aligned skeletons */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(237, 227, 207, 0.7) 0%,
+    rgba(250, 246, 239, 0.95) 50%,
+    rgba(237, 227, 207, 0.7) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite linear;
+}
+
+.skeleton-shimmer-dark {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 51, 38, 0.8) 0%,
+    rgba(45, 82, 64, 0.9) 50%,
+    rgba(26, 51, 38, 0.8) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite linear;
+}
+
+

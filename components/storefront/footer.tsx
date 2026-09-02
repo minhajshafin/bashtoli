@@ -82,6 +82,7 @@ export function Footer() {
               alt="Bashtoli Stationery"
               width={160}
               height={160}
+              loading="lazy"
               className="h-28 w-28 md:h-36 md:w-36 object-contain -ml-2 mb-4"
             />
             <p className="text-[0.95rem] font-light text-forest-300 leading-relaxed max-w-[26ch]">
