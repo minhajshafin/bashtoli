@@ -4,6 +4,7 @@ import React, { useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { removeFromWishlistAction } from '@/lib/actions/wishlist'
+import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 
 interface WishlistItemProps {
   product: {
@@ -49,9 +50,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
             className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-forest-400">
-            No Image
-          </div>
+          <ProductImageSkeleton size="md" />
         )}
 
         {/* Remove wishlist entry close button */}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Hero } from '@/components/storefront/hero'
+import { getStorefrontHeroSlides } from '@/lib/queries/hero-slides'
 import { FeaturedProducts } from '@/components/storefront/featured-products'
 import { CategoryGrid } from '@/components/storefront/category-grid'
 import { AboutSection } from '@/components/storefront/about-section'
@@ -27,10 +28,12 @@ export const metadata = {
  * Full-bleed layout — sections own their own backgrounds and padding.
  */
 export default async function StorefrontHomePage() {
+  const heroSlides = await getStorefrontHeroSlides()
+
   return (
     <div>
       {/* 1. Hero */}
-      <Hero />
+      <Hero slides={heroSlides} />
 
       {/* Wave: hero (forest-800) → featured products (cream-50) */}
       <div className="bg-forest-800" style={{ marginBottom: '-1px' }}>

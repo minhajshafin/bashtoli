@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { ProductWithDetails } from '@/lib/queries/products'
 import { WishlistButton } from '@/components/storefront/wishlist-button'
+import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 
 interface ProductCardProps {
   product: ProductWithDetails
@@ -52,11 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
             }}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-cream-100 text-forest-400">
-            <svg className="h-8 w-8 sm:h-10 sm:w-10 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
+          <ProductImageSkeleton size="md" />
         )}
 
         {/* Sold out overlay */}

@@ -4,36 +4,11 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-const heroSlides = [
-  {
-    img: 'https://images.unsplash.com/photo-1764044371318-c7a7d546859c?w=900&h=1080&fit=crop&auto=format',
-    alt: 'Glasses, notebooks, and pencils on a desk',
-    badge: 'New Season Collection',
-    badgeBg: '#c9a96e',
-    badgeColor: '#1a3326',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1776762249715-525ae7025e0a?w=900&h=1080&fit=crop&auto=format',
-    alt: 'Blank notebook with pencils and green leaves',
-    badge: 'Bestselling',
-    badgeBg: '#3d6e54',
-    badgeColor: '#fff',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518674660708-0e2c0473e68e?w=900&h=1080&fit=crop&auto=format',
-    alt: 'Gold fountain pen with engraved nib',
-    badge: 'On Sale — 20% Off',
-    badgeBg: '#c94f3d',
-    badgeColor: '#fff',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1785668709724-52ddd2f2c086?w=900&h=1080&fit=crop&auto=format',
-    alt: 'Decorative washi tapes with botanical patterns',
-    badge: 'Staff Pick',
-    badgeBg: '#4a7fa5',
-    badgeColor: '#fff',
-  },
-]
+import {
+  BADGE_COLOR_PRESETS,
+  DEFAULT_FALLBACK_SLIDE,
+  type HeroSlideItem,
+} from '@/lib/validations/hero-slides'
 
 function LeafTopRight() {
   return (
@@ -72,13 +47,19 @@ function LeafBottomLeft() {
   )
 }
 
-function HeroSlideshow() {
+function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
+  const activeSlides = slides && slides.length > 0 ? slides : [DEFAULT_FALLBACK_SLIDE]
   const [slide, setSlide] = useState(0)
 
   useEffect(() => {
-    const timer = setInterval(() => setSlide((s) => (s + 1) % heroSlides.length), 4500)
+    if (activeSlides.length <= 1) return
+    const timer = setInterval(() => setSlide((s) => (s + 1) % activeSlides.length), 4500)
     return () => clearInterval(timer)
-  }, [])
+  }, [activeSlides.length])
+
+  const currentSlide = activeSlides[slide] || activeSlides[0]
+  const preset =
+    BADGE_COLOR_PRESETS[currentSlide.badge_color_preset] || BADGE_COLOR_PRESETS.gold
 
   return (
     <div className="relative" style={{ maxWidth: '380px', margin: '0 auto', width: '100%' }}>
@@ -92,70 +73,114 @@ function HeroSlideshow() {
         }}
       />
       {/* Slides */}
-      <div style={{ borderRadius: '24px', aspectRatio: '4/5', overflow: 'hidden', position: 'relative', maxHeight: '480px' }}>
-        {heroSlides.map((s, i) => (
-          <img
-            key={s.img}
-            src={s.img}
-            alt={s.alt}
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              filter: 'brightness(0.88) saturate(1.15)',
-              opacity: i === slide ? 1 : 0,
-              transition: 'opacity 0.9s ease',
-            }}
-          />
-        ))}
+      <div
+        style={{
+          borderRadius: '24px',
+          aspectRatio: '4/5',
+          overflow: 'hidden',
+          position: 'relative',
+          maxHeight: '480px',
+        }}
+        className="bg-forest-900/60"
+      >
+        {activeSlides.map((s, i) => {
+          const content = (
+            <img
+              src={s.image_url}
+              alt={s.alt_text || 'Bashtoli Stationery'}
+              className="w-full h-full object-cover"
+              style={{
+                filter: 'brightness(0.92) saturate(1.1)',
+              }}
+            />
+          )
+
+          return (
+            <div
+              key={s.id}
+              className="absolute inset-0 w-full h-full"
+              style={{
+                opacity: i === slide ? 1 : 0,
+                pointerEvents: i === slide ? 'auto' : 'none',
+                transition: 'opacity 0.9s ease',
+              }}
+            >
+              {s.link_url ? (
+                <Link href={s.link_url} className="block w-full h-full">
+                  {content}
+                </Link>
+              ) : (
+                content
+              )}
+            </div>
+          )
+        })}
+
         {/* Badge */}
         <div
-          className="absolute top-4 left-4 px-4 py-1.5 text-xs font-semibold"
+          className="absolute top-4 left-4 px-4 py-1.5 text-xs font-semibold z-10 pointer-events-none"
           style={{
-            backgroundColor: heroSlides[slide].badgeBg,
-            color: heroSlides[slide].badgeColor,
+            backgroundColor: preset.bg,
+            color: preset.text,
             borderRadius: '100px',
             letterSpacing: '0.06em',
             transition: 'background-color 0.4s, color 0.4s',
             backdropFilter: 'blur(4px)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
           }}
         >
-          {heroSlides[slide].badge}
+          {currentSlide.badge_text}
         </div>
-        {/* Dots */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {heroSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setSlide(i)}
-              aria-label={`Slide ${i + 1}`}
-              style={{
-                width: i === slide ? '22px' : '7px',
-                height: '7px',
-                borderRadius: '100px',
-                backgroundColor: i === slide ? '#c9a96e' : 'rgba(255,255,255,0.5)',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-                transition: 'width 0.35s ease, background-color 0.35s',
-              }}
-            />
-          ))}
-        </div>
+
+        {/* Dots (only shown if > 1 slide) */}
+        {activeSlides.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {activeSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSlide(i)}
+                aria-label={`Slide ${i + 1}`}
+                style={{
+                  width: i === slide ? '22px' : '7px',
+                  height: '7px',
+                  borderRadius: '100px',
+                  backgroundColor: i === slide ? '#c9a96e' : 'rgba(255,255,255,0.5)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  transition: 'width 0.35s ease, background-color 0.35s',
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
       {/* Floating card */}
       <div
-        className="absolute -left-5 bottom-10 px-5 py-4 shadow-2xl hidden md:block"
+        className="absolute -left-5 bottom-10 px-5 py-4 shadow-2xl hidden md:block z-10 pointer-events-none"
         style={{ backgroundColor: '#f5ede0', borderRadius: '18px', maxWidth: '190px' }}
       >
-        <p style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: '0.98rem', fontWeight: 600, color: '#1a3326', lineHeight: 1.3 }}>
-          {heroSlides[slide].badge}
+        <p
+          style={{
+            fontFamily: "'Fraunces', Georgia, serif",
+            fontSize: '0.98rem',
+            fontWeight: 600,
+            color: '#1a3326',
+            lineHeight: 1.3,
+          }}
+        >
+          {currentSlide.badge_text}
         </p>
-        <p style={{ fontSize: '0.72rem', color: '#3d6e54', marginTop: '5px' }}>Now in store &amp; online</p>
+        <p style={{ fontSize: '0.72rem', color: '#3d6e54', marginTop: '5px' }}>
+          {currentSlide.subtext || 'Now in store & online'}
+        </p>
       </div>
     </div>
   )
 }
 
-export function Hero() {
+export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
   return (
     <section
       className="relative flex items-center overflow-hidden bg-forest-800"
@@ -232,7 +257,7 @@ export function Hero() {
 
         {/* Right: slideshow (hidden on mobile/tablet screens) */}
         <div className="hidden lg:flex lg:col-span-5 justify-center lg:justify-end">
-          <HeroSlideshow />
+          <HeroSlideshow slides={slides} />
         </div>
       </div>
     </section>

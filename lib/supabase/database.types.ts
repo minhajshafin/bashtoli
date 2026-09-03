@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      hero_slides: {
+        Row: {
+          id: string
+          image_url: string
+          alt_text: string | null
+          badge_text: string
+          badge_color_preset: 'gold' | 'forest' | 'crimson' | 'ocean' | 'slate'
+          link_url: string
+          subtext: string
+          sort_order: number
+          active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          image_url: string
+          alt_text?: string | null
+          badge_text?: string
+          badge_color_preset?: 'gold' | 'forest' | 'crimson' | 'ocean' | 'slate'
+          link_url?: string
+          subtext?: string
+          sort_order?: number
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          image_url?: string
+          alt_text?: string | null
+          badge_text?: string
+          badge_color_preset?: 'gold' | 'forest' | 'crimson' | 'ocean' | 'slate'
+          link_url?: string
+          subtext?: string
+          sort_order?: number
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       admin_audit_log: {
         Row: {
           id: string
