@@ -2,6 +2,8 @@
 
 import React, { useState, useTransition } from 'react'
 import { deleteAddressAction, setDefaultAddressAction } from '@/lib/actions/addresses'
+import { useConfirm } from '@/components/ui/confirm-dialog'
+import { useToast } from '@/components/ui/toast'
 import { AddressForm } from './address-form'
 
 interface SavedAddress {
@@ -17,17 +19,28 @@ interface AddressListProps {
 }
 
 export function AddressList({ addresses }: AddressListProps) {
+  const confirm = useConfirm()
+  const { toast } = useToast()
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
   // Handle address deletion
-  const handleDelete = (id: string) => {
-    if (!confirm('Are you sure you want to delete this address?')) return
+  const handleDelete = async (id: string) => {
+    const ok = await confirm({
+      title: 'Delete Address?',
+      description: 'Are you sure you want to remove this saved delivery address?',
+      confirmText: 'Delete Address',
+      cancelText: 'Cancel',
+      variant: 'danger',
+    })
+    if (!ok) return
 
     startTransition(async () => {
       const res = await deleteAddressAction(id)
       if (res.error) {
-        alert(res.error)
+        toast(res.error, 'error')
+      } else {
+        toast('Address removed.', 'success')
       }
     })
   }
@@ -37,7 +50,9 @@ export function AddressList({ addresses }: AddressListProps) {
     startTransition(async () => {
       const res = await setDefaultAddressAction(id)
       if (res.error) {
-        alert(res.error)
+        toast(res.error, 'error')
+      } else {
+        toast('Default address updated.', 'success')
       }
     })
   }

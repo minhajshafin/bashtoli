@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useCart } from '@/lib/cart/cart-context'
+import { useConfirm } from '@/components/ui/confirm-dialog'
 import { CartItemRow } from '@/components/storefront/cart-item'
 import { CartSummary } from '@/components/storefront/cart-summary'
 import { checkCartItemsAvailability } from '@/lib/actions/cart'
 import type { ValidatedCartItem } from '@/lib/queries/cart'
 
 export function BagClient() {
+  const confirm = useConfirm()
   const { cart, isLoaded, updateQty, removeItem, clearCart } = useCart()
   const [dbStatuses, setDbStatuses] = useState<Record<string, ValidatedCartItem>>({})
   const [isValidating, setIsValidating] = useState(false)
@@ -83,12 +85,20 @@ export function BagClient() {
 
         {cart.length > 0 && (
           <button
-            onClick={() => {
-              if (confirm('Are you sure you want to clear your shopping bag?')) {
+            type="button"
+            onClick={async () => {
+              const ok = await confirm({
+                title: 'Clear Shopping Bag?',
+                description: 'Are you sure you want to remove all items from your bag? This action cannot be undone.',
+                confirmText: 'Clear Bag',
+                cancelText: 'Keep Items',
+                variant: 'danger',
+              })
+              if (ok) {
                 clearCart()
               }
             }}
-            className="self-start sm:self-auto text-xs font-bold uppercase tracking-wider text-forest-400 hover:text-rose-600 transition-colors"
+            className="self-start sm:self-auto text-xs font-bold uppercase tracking-wider text-forest-400 hover:text-rose-600 transition-colors cursor-pointer"
           >
             Clear Bag
           </button>
