@@ -2,6 +2,7 @@ import { Resend } from 'resend'
 import React from 'react'
 import { OrderAlertEmail } from './templates/order-alert'
 import { OrderConfirmationEmail } from './templates/order-confirmation'
+import { SuggestionAlertEmail } from './templates/suggestion-alert'
 
 const resendApiKey = process.env.RESEND_API_KEY
 // Initialize client only if API key is provided
@@ -107,5 +108,75 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
           err
         )
       })
+  }
+}
+
+export interface SuggestionEmailData {
+  name?: string | null
+  contact?: string | null
+  suggestion: string
+}
+
+/**
+ * Sends customer product suggestions to staff via Resend.
+ * Sets reply_to if contact is an email.
+ */
+export async function sendSuggestionEmail(
+  data: SuggestionEmailData
+): Promise<{ success: boolean; error?: string }> {
+  const recipientEmail =
+    process.env.SUGGESTION_RECIPIENT_EMAIL ||
+    process.env.ADMIN_NOTIFICATION_EMAIL ||
+    'bashtoli.computer@gmail.com'
+
+  const fromEmail =
+    process.env.RESEND_FROM_EMAIL ||
+    'Bashtoli Suggestions <orders@bashtoli.com>'
+
+  const isEmail = Boolean(data.contact && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact.trim()))
+  const replyTo = isEmail && data.contact ? data.contact.trim() : undefined
+
+  if (!resend) {
+    console.warn(
+      `[Email Info] Resend is not configured (RESEND_API_KEY is missing or set to placeholder). Simulated sending suggestion email:`,
+      {
+        to: recipientEmail,
+        name: data.name,
+        contact: data.contact,
+        suggestion: data.suggestion,
+      }
+    )
+    return { success: true }
+  }
+
+  try {
+    const senderTitle = data.name?.trim() ? data.name.trim() : 'a Customer'
+    const res = await resend.emails.send({
+      from: fromEmail,
+      to: recipientEmail,
+      replyTo: replyTo,
+      subject: `New Item Suggestion from ${senderTitle}`,
+      react: (
+        <SuggestionAlertEmail
+          name={data.name}
+          contact={data.contact}
+          suggestion={data.suggestion}
+        />
+      ),
+    })
+
+    if (res.error) {
+      console.error('[Resend Error] Failed to send suggestion email:', res.error)
+      return { success: false, error: res.error.message || 'Failed to send suggestion email.' }
+    }
+
+    console.log(`[Resend Success] Suggestion email sent to ${recipientEmail}: ID ${res.data?.id}`)
+    return { success: true }
+  } catch (err) {
+    console.error('[Resend Connection Error] Error sending suggestion email:', err)
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'An unexpected error occurred while sending email.',
+    }
   }
 }

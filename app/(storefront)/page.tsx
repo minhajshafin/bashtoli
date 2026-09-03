@@ -53,9 +53,9 @@ export default async function StorefrontHomePage() {
       <CategoryGrid />
 
       {/* Wave: categories (forest-800) → about (cream-100) */}
-      <div className="bg-forest-800">
+      <div className="bg-forest-800" style={{ marginBottom: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ width: '100%', height: '72px', display: 'block' }}>
-          <path d="M0,0 Q360,72 720,32 Q1080,0 1440,56 L1440,72 L0,72 Z" fill="#f5ede0" />
+          <path d="M0,0 Q360,72 720,32 Q1080,0 1440,56 L1440,74 L0,74 Z" fill="#f5ede0" />
         </svg>
       </div>
 
@@ -66,9 +66,9 @@ export default async function StorefrontHomePage() {
       <MarqueeBand />
 
       {/* Wave: marquee (gold-500) → suggest (forest-900) */}
-      <div className="bg-forest-900">
+      <div className="bg-forest-900" style={{ marginTop: '-1px', marginBottom: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ width: '100%', height: '72px', display: 'block' }}>
-          <path d="M0,72 Q360,0 720,44 Q1080,72 1440,16 L1440,0 L0,0 Z" fill="#c9a96e" />
+          <path d="M0,74 Q360,0 720,44 Q1080,72 1440,16 L1440,-2 L0,-2 Z" fill="#c9a96e" />
         </svg>
       </div>
 
