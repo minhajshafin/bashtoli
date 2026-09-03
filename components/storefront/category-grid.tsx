@@ -1,81 +1,115 @@
 import React from 'react'
 import Link from 'next/link'
+import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
+import { COLLAGE_SLOT_CONFIGS } from '@/lib/validations/category-collage'
 
-const categories = [
-  { name: 'Notebooks & Journals', count: '48 items', img: 'https://images.unsplash.com/photo-1776762249715-525ae7025e0a?w=700&h=900&fit=crop&auto=format', slug: 'notebooks-journals', gridArea: 'notebooks' },
-  { name: 'Writing Instruments', count: '32 items', img: 'https://images.unsplash.com/photo-1518674660708-0e2c0473e68e?w=600&h=400&fit=crop&auto=format', slug: 'writing-instruments', gridArea: 'writing' },
-  { name: 'Ink & Calligraphy', count: '19 items', img: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&h=400&fit=crop&auto=format', slug: 'ink-calligraphy', gridArea: 'ink' },
-  { name: 'Paper & Cards', count: '56 items', img: 'https://images.unsplash.com/photo-1776762249708-31d7e1579748?w=700&h=900&fit=crop&auto=format', slug: 'paper-cards', gridArea: 'paper' },
-  { name: 'Washi & Tapes', count: '24 items', img: 'https://images.unsplash.com/photo-1785668709724-52ddd2f2c086?w=600&h=400&fit=crop&auto=format', slug: 'washi-tapes', gridArea: 'washi' },
-  { name: 'Gift Collections', count: '15 items', img: 'https://images.unsplash.com/photo-1694754920848-8855ee3ff364?w=900&h=400&fit=crop&auto=format', slug: 'gift-collections', gridArea: 'gift' },
-  { name: 'Art Supplies', count: '27 items', img: 'https://images.unsplash.com/photo-1511285547760-79b561563b35?w=600&h=400&fit=crop&auto=format', slug: 'art-supplies', gridArea: 'art' },
-  { name: 'Stamps & Seals', count: '11 items', img: 'https://images.unsplash.com/photo-1586380951230-e6703d9f6833?w=600&h=400&fit=crop&auto=format', slug: 'stamps-seals', gridArea: 'stamps' },
-  { name: 'Desk Accessories', count: '38 items', img: 'https://images.unsplash.com/photo-1568819297129-80fd50360f8e?w=600&h=400&fit=crop&auto=format', slug: 'desk-accessories', gridArea: 'desk' },
-  { name: 'Journaling Kits', count: '9 items', img: 'https://images.unsplash.com/photo-1764044371318-c7a7d546859c?w=900&h=400&fit=crop&auto=format', slug: 'journaling-kits', gridArea: 'journ' },
-]
+interface CategoryGridProps {
+  categories?: FeaturedCategoryItem[]
+}
 
-function CategoryCard({ category, style }: { category: typeof categories[0]; style?: React.CSSProperties }) {
+function CategoryCard({
+  category,
+  gridArea,
+  style,
+}: {
+  category: FeaturedCategoryItem
+  gridArea?: string
+  style?: React.CSSProperties
+}) {
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className="group relative overflow-hidden cursor-pointer block"
+      className="group relative overflow-hidden cursor-pointer block border border-forest-700/60 transition-all duration-300 hover:border-gold-500/80 shadow-md"
       style={{
-        gridArea: category.gridArea,
+        gridArea,
         borderRadius: '20px',
-        backgroundImage: `url(${category.img})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        ...(category.image_url
+          ? {
+              backgroundImage: `url(${category.image_url})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }
+          : {}),
         ...style,
       }}
     >
-      {/* Gradient overlay */}
+      {/* Background gradient if no image */}
+      {!category.image_url && (
+        <div className="absolute inset-0 bg-gradient-to-br from-forest-800 via-forest-900 to-forest-800 flex items-center justify-center pointer-events-none">
+          <svg
+            className="w-12 h-12 text-gold-500/20 stroke-[1.2]"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            />
+          </svg>
+        </div>
+      )}
+
+      {/* Dark tint gradient overlay for text legibility */}
       <div
         className="absolute inset-0 transition-all duration-350"
         style={{
-          background: 'linear-gradient(to top, rgba(13,31,21,0.88) 0%, rgba(13,31,21,0.35) 60%, rgba(13,31,21,0.05) 100%)',
+          background:
+            'linear-gradient(to top, rgba(13,31,21,0.92) 0%, rgba(13,31,21,0.45) 55%, rgba(13,31,21,0.1) 100%)',
           borderRadius: '20px',
         }}
       />
-      {/* Hover gold border */}
+
+      {/* Hover gold ring */}
       <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-350"
-        style={{ borderRadius: '20px', border: '1px solid rgba(201,169,110,0.6)' }}
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-350 pointer-events-none"
+        style={{ borderRadius: '20px', border: '1.5px solid rgba(201,169,110,0.8)' }}
       />
-      {/* Text */}
-      <div className="absolute bottom-0 left-0 right-0 p-5">
+
+      {/* Category Labels */}
+      <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
         <h3
-          className="mb-1"
+          className="mb-1 text-cream-100 group-hover:text-gold-300 transition-colors"
           style={{
             fontFamily: "'Fraunces', Georgia, serif",
             fontSize: '1.05rem',
-            color: '#f5ede0',
             fontWeight: 500,
           }}
         >
           {category.name}
         </h3>
         <p
-          className="text-xs group-hover:text-gold-500 transition-colors"
+          className="text-xs group-hover:text-gold-400 transition-colors"
           style={{
             letterSpacing: '0.08em',
             color: '#a8c4b0',
             fontFamily: "'Source Sans 3', system-ui, sans-serif",
           }}
         >
-          {category.count}&nbsp;&rarr;
+          {category.product_count !== undefined
+            ? `${category.product_count} ${category.product_count === 1 ? 'item' : 'items'}`
+            : 'Explore'}
+          &nbsp;&rarr;
         </p>
       </div>
     </Link>
   )
 }
 
-export function CategoryGrid() {
+export function CategoryGrid({ categories = [] }: CategoryGridProps) {
+  // If no categories passed, don't crash or render broken section
+  if (!categories || categories.length === 0) {
+    return null
+  }
+
   return (
     <section className="py-20 px-5 md:px-8 bg-forest-800">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-14">
+        {/* Section Heading */}
+        <div className="text-center mb-12 sm:mb-14">
           <p
-            className="text-[11px] uppercase tracking-[0.28em] mb-3"
+            className="text-[11px] uppercase tracking-[0.28em] mb-3 font-semibold"
             style={{ color: '#c9a96e' }}
           >
             Explore
@@ -94,32 +128,68 @@ export function CategoryGrid() {
           </h2>
         </div>
 
-        {/* Desktop asymmetric collage */}
+        {/* Desktop asymmetric 3-row, 7-slot collage */}
         <div
           className="hidden md:grid gap-4"
           style={{
             gridTemplate: `
-              "notebooks writing  paper" 200px
-              "notebooks ink     paper" 175px
-              "art       stamps  desk"  165px
-              "gift      journ   washi" 155px
+              "slot1 slot2 slot3" 210px
+              "slot1 slot4 slot3" 185px
+              "slot5 slot6 slot7" 180px
             / 1.35fr 1fr 1.2fr`,
           }}
         >
-          {categories.map((cat) => (
-            <CategoryCard key={cat.name} category={cat} />
-          ))}
+          {COLLAGE_SLOT_CONFIGS.map((slotConfig, index) => {
+            const cat = categories[index]
+            if (!cat) {
+              return (
+                <div
+                  key={slotConfig.gridArea}
+                  style={{ gridArea: slotConfig.gridArea, borderRadius: '20px' }}
+                  className="rounded-[20px] border border-dashed border-forest-700/40 bg-forest-900/30 flex items-center justify-center p-4 text-center"
+                >
+                  <span className="text-xs text-forest-500 font-medium">Coming Soon</span>
+                </div>
+              )
+            }
+
+            return (
+              <CategoryCard
+                key={cat.id}
+                category={cat}
+                gridArea={slotConfig.gridArea}
+              />
+            )
+          })}
         </div>
 
-        {/* Mobile 2-col grid */}
+        {/* Mobile 2-column grid */}
         <div className="md:hidden grid grid-cols-2 gap-3">
           {categories.map((cat) => (
             <CategoryCard
-              key={cat.name}
+              key={cat.id}
               category={cat}
-              style={{ gridArea: undefined, height: '180px' }}
+              style={{ height: '180px' }}
             />
           ))}
+        </div>
+
+        {/* Shop Navigation Button */}
+        <div className="mt-12 sm:mt-16 flex justify-center">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 sm:px-9 sm:py-4 rounded-full border border-gold-500/60 bg-forest-900/80 text-xs sm:text-sm font-semibold text-cream-100 hover:bg-gold-500 hover:text-forest-900 hover:border-gold-500 transition-all duration-300 shadow-md active:scale-[0.98] group"
+          >
+            <span>View All Categories</span>
+            <svg
+              className="w-4 h-4 text-gold-400 group-hover:text-forest-900 group-hover:translate-x-1 transition-all"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

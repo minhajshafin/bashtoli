@@ -165,6 +165,9 @@ export type Database = {
           name: string
           slug: string
           sort_order: number
+          is_featured: boolean
+          image_url: string | null
+          featured_order: number
           created_at: string
         }
         Insert: {
@@ -172,6 +175,9 @@ export type Database = {
           name: string
           slug: string
           sort_order?: number | null
+          is_featured?: boolean
+          image_url?: string | null
+          featured_order?: number
           created_at?: string | null
         }
         Update: {
@@ -179,6 +185,9 @@ export type Database = {
           name?: string | null
           slug?: string | null
           sort_order?: number | null
+          is_featured?: boolean
+          image_url?: string | null
+          featured_order?: number
           created_at?: string | null
         }
         Relationships: []
