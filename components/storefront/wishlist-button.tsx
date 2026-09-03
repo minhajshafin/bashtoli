@@ -1,49 +1,38 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import { addToWishlistAction, removeFromWishlistAction } from '@/lib/actions/wishlist'
+import React, { useTransition } from 'react'
+import { useWishlist } from '@/lib/wishlist/wishlist-context'
 
 interface WishlistButtonProps {
   productId: string
+  productName?: string
+  variant?: 'card' | 'detail'
+  className?: string
   isLoggedIn?: boolean
   initialIsWishlisted?: boolean
-  variant?: 'card' | 'detail'
 }
 
 /**
  * Wishlist Toggle Button.
- * Accessible, optimistic heart toggle for cards and product detail views.
+ * Accessible, optimistic heart toggle with instant toast notification and no page redirects.
  */
 export function WishlistButton({
   productId,
-  isLoggedIn = false,
-  initialIsWishlisted = false,
+  productName,
   variant = 'detail',
+  className = '',
 }: WishlistButtonProps) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const [isWishlisted, setIsWishlisted] = useState(initialIsWishlisted)
+  const { isWishlisted: checkWishlist, toggleWishlist } = useWishlist()
   const [isPending, startTransition] = useTransition()
+
+  const isWishlisted = checkWishlist(productId)
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    if (!isLoggedIn) {
-      router.push(`/login?redirect=${encodeURIComponent(pathname)}`)
-      return
-    }
-
-    const nextState = !isWishlisted
-    setIsWishlisted(nextState)
-
     startTransition(async () => {
-      const action = nextState ? addToWishlistAction : removeFromWishlistAction
-      const res = await action(productId)
-      if (res.error) {
-        setIsWishlisted(!nextState) // rollback on error
-      }
+      await toggleWishlist(productId, productName)
     })
   }
 
@@ -53,7 +42,7 @@ export function WishlistButton({
         type="button"
         onClick={handleToggle}
         disabled={isPending}
-        className="group/wishlist flex h-9 w-9 items-center justify-center rounded-full bg-forest-900/70 backdrop-blur-xs text-cream-100 hover:bg-forest-900 hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer"
+        className={`group/wishlist flex h-9 w-9 items-center justify-center rounded-full bg-forest-900/70 backdrop-blur-xs text-cream-100 hover:bg-forest-900 hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer ${className}`}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
       >
@@ -86,7 +75,7 @@ export function WishlistButton({
         isWishlisted
           ? 'border-rose-300 bg-rose-50 text-rose-600 shadow-sm'
           : 'border-forest-200 bg-cream-100 text-forest-500 hover:border-gold-500 hover:text-gold-600'
-      }`}
+      } ${className}`}
       aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
       title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
     >

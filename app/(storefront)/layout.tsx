@@ -10,6 +10,7 @@ import { Footer } from '@/components/storefront/footer'
 import { MobileNav } from '@/components/storefront/mobile-nav'
 import { ToastProvider } from '@/components/ui/toast'
 import { ConfirmDialogProvider } from '@/components/ui/confirm-dialog'
+import { WishlistProvider } from '@/lib/wishlist/wishlist-context'
 import { NavHeader } from '@/components/storefront/nav-header'
 
 export const metadata: Metadata = {
@@ -47,25 +48,27 @@ export default async function StorefrontLayout({
   return (
     <ToastProvider>
       <ConfirmDialogProvider>
-        <CartProvider isLoggedIn={!!user}>
-          <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
+        <WishlistProvider isLoggedIn={!!user}>
+          <CartProvider isLoggedIn={!!user}>
+            <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
 
-            {/* Sticky Header */}
-            <NavHeader
-              isLoggedIn={!!user}
-              fullName={profile?.full_name || user?.email || null}
-              isStaffOrAdmin={isStaffOrAdmin}
-            />
+              {/* Sticky Header */}
+              <NavHeader
+                isLoggedIn={!!user}
+                fullName={profile?.full_name || user?.email || null}
+                isStaffOrAdmin={isStaffOrAdmin}
+              />
 
-            {/* Main Content Area */}
-            <main className="flex-1">
-              {children}
-            </main>
+              {/* Main Content Area */}
+              <main className="flex-1">
+                {children}
+              </main>
 
-            {/* Footer */}
-            <Footer />
-          </div>
-        </CartProvider>
+              {/* Footer */}
+              <Footer />
+            </div>
+          </CartProvider>
+        </WishlistProvider>
       </ConfirmDialogProvider>
     </ToastProvider>
   )

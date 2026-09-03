@@ -98,3 +98,53 @@ export async function checkWishlistStatusAction(productId: string): Promise<bool
     return false
   }
 }
+
+/**
+ * Helper Server Action: Fetches all product IDs in the user's wishlist.
+ */
+export async function fetchUserWishlistAction(): Promise<string[]> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return []
+
+  try {
+    const { data, error } = await supabase
+      .from('wishlist')
+      .select('product_id')
+      .eq('user_id', user.id)
+
+    if (error) throw error
+    return (data || []).map((w) => w.product_id)
+  } catch (err) {
+    console.error('Fetch wishlist error:', err)
+    return []
+  }
+}
+
+/**
+ * Helper Server Action: Merges guest wishlist product IDs into authenticated user's wishlist.
+ */
+export async function mergeGuestWishlistAction(guestIds: string[]): Promise<void> {
+  if (!guestIds || guestIds.length === 0) return
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return
+
+  try {
+    const rows = guestIds.map((productId) => ({
+      user_id: user.id,
+      product_id: productId,
+    }))
+
+    await supabase.from('wishlist').upsert(rows, { onConflict: 'user_id,product_id' })
+  } catch (err) {
+    console.error('Merge guest wishlist error:', err)
+  }
+}

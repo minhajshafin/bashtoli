@@ -8,6 +8,7 @@ import { AddToCartButton } from '@/components/storefront/add-to-cart-button'
 import { WishlistButton } from '@/components/storefront/wishlist-button'
 import type { ProductDetailData } from '@/lib/queries/product-detail'
 import { useCart } from '@/lib/cart/cart-context'
+import { useToast } from '@/components/ui/toast'
 
 interface ProductDetailClientProps {
   detailData: ProductDetailData
@@ -23,6 +24,7 @@ export function ProductDetailClient({
   const { product, images, variants, options } = detailData
   const router = useRouter()
   const { addItem } = useCart()
+  const { toast } = useToast()
 
   // State to hold user selected options
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
@@ -102,6 +104,8 @@ export function ProductDetailClient({
       price: targetVariant.price,
       image_url: imageUrl,
     }, qty)
+
+    toast(`Added "${product.name}" to your bag!`, 'success')
   }
 
   // Handle Buy Now -> adds item and directs straight to checkout
@@ -189,6 +193,7 @@ export function ProductDetailClient({
               <div className="pb-0.5">
                 <WishlistButton
                   productId={product.id}
+                  productName={product.name}
                   isLoggedIn={isLoggedIn}
                   initialIsWishlisted={initialIsWishlisted}
                   variant="detail"
