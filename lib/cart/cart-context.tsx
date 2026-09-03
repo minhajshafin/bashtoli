@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useTransition } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode, useTransition } from 'react'
 import {
   CartItem,
   getGuestCart,
@@ -51,11 +51,15 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
         const guestItems = getGuestCart()
         if (guestItems.length > 0) {
           const mergeRes = await mergeGuestCartAction(guestItems)
-          if (mergeRes.notifications && mergeRes.notifications.length > 0) {
-            alert(mergeRes.notifications.join('\n'))
+          if (!mergeRes.error) {
+            if (mergeRes.notifications && mergeRes.notifications.length > 0) {
+              alert(mergeRes.notifications.join('\n'))
+            }
+            // Only clear guest cart after a successful merge to prevent data loss
+            clearGuestCart()
+          } else {
+            console.error('Guest cart merge failed:', mergeRes.error)
           }
-          // Clear guest cart from local storage so we do not merge it multiple times
-          clearGuestCart()
         }
 
         // 2. Load the user's database cart
@@ -80,7 +84,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
   const isLoaded = state.isLoaded
 
   // Add Item operation (optimistic local state update + persistent storage action)
-  const addItem = (item: Omit<CartItem, 'qty'>, qty: number) => {
+  const addItem = useCallback((item: Omit<CartItem, 'qty'>, qty: number) => {
     setState((prev) => {
       const updated = [...prev.cart]
       const existing = updated.find((i) => i.variant_id === item.variant_id)
@@ -104,10 +108,10 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       addToGuestCart(item, qty)
     }
-  }
+  }, [isLoggedIn])
 
   // Update Quantity operation (optimistic local state update + persistent storage action)
-  const updateQty = (variantId: string, qty: number) => {
+  const updateQty = useCallback((variantId: string, qty: number) => {
     const finalQty = Math.max(1, qty)
 
     setState((prev) => {
@@ -129,10 +133,10 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       updateGuestCartQty(variantId, finalQty)
     }
-  }
+  }, [isLoggedIn])
 
   // Remove Item operation (optimistic local state update + persistent storage action)
-  const removeItem = (variantId: string) => {
+  const removeItem = useCallback((variantId: string) => {
     setState((prev) => {
       const updated = prev.cart.filter((item) => item.variant_id !== variantId)
       return { ...prev, cart: updated }
@@ -150,10 +154,10 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       removeFromGuestCart(variantId)
     }
-  }
+  }, [isLoggedIn])
 
   // Clear Cart operation (optimistic local state update + persistent storage action)
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setState((prev) => ({ ...prev, cart: [] }))
 
     if (isLoggedIn) {
@@ -168,24 +172,24 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       clearGuestCart()
     }
-  }
+  }, [isLoggedIn])
 
   const itemCount = cart.reduce((sum, item) => sum + item.qty, 0)
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0)
 
+  const contextValue = useMemo(() => ({
+    cart,
+    isLoaded,
+    itemCount,
+    subtotal,
+    addItem,
+    updateQty,
+    removeItem,
+    clearCart,
+  }), [cart, isLoaded, itemCount, subtotal, addItem, updateQty, removeItem, clearCart])
+
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        isLoaded,
-        itemCount,
-        subtotal,
-        addItem,
-        updateQty,
-        removeItem,
-        clearCart,
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   )

@@ -14,12 +14,11 @@ interface MobileNavProps {
 export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const [lastPath, setLastPath] = useState(pathname)
-
-  if (pathname !== lastPath) {
-    setLastPath(pathname)
+  // Close the drawer whenever the route changes.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false)
-  }
+  }, [pathname])
 
   useEffect(() => {
     if (isOpen) {
@@ -42,7 +41,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
         aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
       >
-        <svg className="h-6 w-6 stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="h-6 w-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           {isOpen ? (
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           ) : (
@@ -80,7 +79,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                 className="rounded-lg p-1.5 text-forest-400 hover:text-gold-500 transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
-                <svg className="h-5 w-5 stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -107,7 +106,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                 Wishlist
               </Link>
               <Link
-                href="/cart"
+                href="/bag"
                 className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
               >
                 Shopping Bag

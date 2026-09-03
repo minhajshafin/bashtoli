@@ -19,6 +19,8 @@ export async function generateMetadata() {
   }
 }
 
+import { Suspense } from 'react'
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = await searchParams
   const rawRedirectTo = resolvedSearchParams?.redirectTo
@@ -37,5 +39,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     redirect(redirectTo)
   }
 
-  return <AuthForm type="login" />
+  return (
+    <Suspense>
+      <AuthForm type="login" />
+    </Suspense>
+  )
 }

@@ -136,21 +136,14 @@ export async function updateOrderStatusAction(
       if (itemsError) throw itemsError
 
       for (const item of items || []) {
-        const { data: variant } = await adminDb
-          .from('product_variants')
-          .select('stock_qty')
-          .eq('id', item.variant_id)
-          .maybeSingle()
+        // Atomic increment — no read-modify-write race condition
+        const { error: stockError } = await adminDb.rpc('increment_stock', {
+          p_variant_id: item.variant_id,
+          p_qty: item.qty,
+        })
 
-        if (variant) {
-          const { error: stockError } = await adminDb
-            .from('product_variants')
-            .update({ stock_qty: variant.stock_qty + item.qty })
-            .eq('id', item.variant_id)
-
-          if (stockError) {
-            console.error(`Failed to restock variant ${item.variant_id} during status update:`, stockError)
-          }
+        if (stockError) {
+          console.error(`Failed to restock variant ${item.variant_id} during status update:`, stockError)
         }
       }
     }

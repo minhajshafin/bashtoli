@@ -15,6 +15,13 @@ export function BagClient() {
   const [dbStatuses, setDbStatuses] = useState<Record<string, ValidatedCartItem>>({})
   const [isValidating, setIsValidating] = useState(false)
 
+  // Stable key that changes whenever the set of variant IDs changes (not just the count).
+  // Using sorted IDs ensures swapping one item for another (same length, different IDs) triggers re-validation.
+  const cartKey = cart
+    .map((item) => item.variant_id)
+    .sort()
+    .join(',')
+
   // Validate cart items against the database on mount or when cart keys change
   useEffect(() => {
     if (!isLoaded || cart.length === 0) return
@@ -40,7 +47,7 @@ export function BagClient() {
 
     validateItems()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded, cart.length])
+  }, [isLoaded, cartKey])
 
   if (!isLoaded) {
     return (

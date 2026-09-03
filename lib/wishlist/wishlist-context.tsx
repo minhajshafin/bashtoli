@@ -52,8 +52,13 @@ export function WishlistProvider({
         // 1. Merge guest items from localStorage if any
         const guestIds = getGuestWishlist()
         if (guestIds.length > 0) {
-          await mergeGuestWishlistAction(guestIds)
-          localStorage.removeItem(GUEST_WISHLIST_KEY)
+          const res = await mergeGuestWishlistAction(guestIds)
+          if (!res.error) {
+            // Only clear after successful merge to prevent data loss
+            localStorage.removeItem(GUEST_WISHLIST_KEY)
+          } else {
+            console.error('Guest wishlist merge failed:', res.error)
+          }
         }
         // 2. Fetch authenticated user's wishlist
         const dbIds = await fetchUserWishlistAction()

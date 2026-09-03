@@ -24,6 +24,12 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const MAX_SIZE_MB = 3
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 
+function generateCoverFilePath(catId: string, fileName: string): string {
+  const fileExt = fileName.split('.').pop()
+  const cleanFileName = fileName.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30)
+  return `category-covers/${catId}_${Date.now()}_${cleanFileName}.${fileExt}`
+}
+
 export function CategoryCollageManager({
   initialFeatured,
   initialAvailable,
@@ -134,9 +140,7 @@ export function CategoryCollageManager({
 
     try {
       const supabase = createClient()
-      const fileExt = file.name.split('.').pop()
-      const cleanFileName = file.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30)
-      const filePath = `category-covers/${catId}_${Date.now()}_${cleanFileName}.${fileExt}`
+      const filePath = generateCoverFilePath(catId, file.name)
 
       const { error: uploadError } = await supabase.storage
         .from('product-images')

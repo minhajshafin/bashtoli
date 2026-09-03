@@ -20,6 +20,7 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
   const [activeIdx, setActiveIdx] = useState(0)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({})
 
   const minSwipeDistance = 50
 
@@ -65,12 +66,13 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
         className="relative aspect-square w-full overflow-hidden rounded-3xl border border-forest-200 bg-cream-100"
       >
         <Image
-          src={activeImage.url}
+          src={failedImages[activeImage.url] ? '/placeholder-product.svg' : activeImage.url}
           alt={activeImage.alt_text || fallbackName}
           fill
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover transition-all duration-300"
+          onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
         />
       </div>
 

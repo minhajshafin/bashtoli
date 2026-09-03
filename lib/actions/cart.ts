@@ -166,31 +166,15 @@ export async function addToDbCartAction(variantId: string, qty: number): Promise
 
     if (!cart) return { error: 'Failed to access cart' }
 
-    // Check if variant already exists in DB cart
-    const { data: existing } = await supabase
-      .from('cart_items')
-      .select('id, qty')
-      .eq('cart_id', cart.id)
-      .eq('variant_id', variantId)
-      .maybeSingle()
-
-    if (existing) {
-      const newQty = Math.min(existing.qty + qty, MAX_CART_QTY)
-      const { error } = await supabase
-        .from('cart_items')
-        .update({ qty: newQty })
-        .eq('id', existing.id)
-      if (error) throw error
-    } else {
-      const { error } = await supabase
-        .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          variant_id: variantId,
-          qty: Math.min(qty, MAX_CART_QTY),
-        })
-      if (error) throw error
-    }
+    // Atomic add-or-increment — no read-modify-write race condition.
+    // Uses INSERT ... ON CONFLICT DO UPDATE under the hood.
+    const { error } = await supabase.rpc('cart_add_or_increment', {
+      p_cart_id: cart.id,
+      p_variant_id: variantId,
+      p_qty: Math.min(qty, MAX_CART_QTY),
+      p_max_qty: MAX_CART_QTY,
+    })
+    if (error) throw error
 
     revalidatePath('/bag')
     revalidatePath('/cart')

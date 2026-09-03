@@ -9,7 +9,11 @@ import type { ProductWithDetails } from '@/lib/queries/products'
 
 // Mock next/image
 vi.mock('next/image', () => ({
-  default: ({ fill, ...props }: any) => <img {...props} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean }) => {
+    const { fill: _fill, ...rest } = props
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    return <img {...rest} />
+  },
 }))
 
 // Mock next/navigation

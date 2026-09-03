@@ -184,6 +184,7 @@ export function ProductDetailClient({
             <div className="flex items-end gap-3">
               <div className="flex-1">
                 <AddToCartButton
+                  key={selectedVariant?.id ?? 'no-variant'}
                   variantId={selectedVariant?.id}
                   stockQty={isSelectionComplete ? selectedVariant?.stock_qty ?? 0 : undefined}
                   onAddToCart={handleAddToCart}

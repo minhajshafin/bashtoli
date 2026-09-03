@@ -20,13 +20,13 @@ test.describe('E2E Guest Checkout Flow', () => {
     await addToCartButton.click()
 
     // Click cart icon in navigation header to view cart
-    const cartIconLink = page.locator('a[href="/cart"]')
+    const cartIconLink = page.locator('a[href="/bag"]')
     await expect(cartIconLink).toBeVisible()
     await cartIconLink.click()
 
     // 4. Verify cart page load and item presence
-    await expect(page).toHaveURL(/\/cart/)
-    await expect(page.locator('h1')).toContainText('Shopping Cart')
+    await expect(page).toHaveURL(/\/bag/)
+    await expect(page.locator('h1')).toContainText('Shopping Bag')
     await expect(page.locator('body')).toContainText('E2E Test Bamboo Product')
 
     // Click "Proceed to Checkout" link

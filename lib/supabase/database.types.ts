@@ -497,7 +497,36 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_stock: {
+        Args: {
+          p_variant_id: string
+          p_qty: number
+        }
+        Returns: void
+      }
+      cart_add_or_increment: {
+        Args: {
+          p_cart_id: string
+          p_variant_id: string
+          p_qty: number
+          p_max_qty?: number
+        }
+        Returns: number
+      }
+      place_order: {
+        Args: {
+          p_user_id: string | null
+          p_customer_name: string
+          p_phone: string
+          p_guest_email: string | null
+          p_address: string
+          p_notes: string | null
+          p_fulfillment_type: 'delivery' | 'pickup'
+          p_delivery_zone: 'inside_dhaka' | 'outside_dhaka' | null
+          p_items: Json
+        }
+        Returns: Json
+      }
     }
     Enums: {
       delivery_zone: 'inside_dhaka' | 'outside_dhaka'

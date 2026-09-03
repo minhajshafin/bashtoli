@@ -13,6 +13,8 @@ export async function generateMetadata() {
   }
 }
 
+import { Suspense } from 'react'
+
 export default async function SignupPage() {
   const supabase = await createClient()
   const {
@@ -24,5 +26,9 @@ export default async function SignupPage() {
     redirect('/products')
   }
 
-  return <AuthForm type="signup" />
+  return (
+    <Suspense>
+      <AuthForm type="signup" />
+    </Suspense>
+  )
 }

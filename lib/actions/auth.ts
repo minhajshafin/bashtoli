@@ -220,7 +220,7 @@ export async function forgotPasswordAction(
   }
 
   // Set redirection to auth callback path
-  const redirectTo = `${appUrl}/api/auth/callback?next=/reset-password`
+  const redirectTo = `${appUrl}/api/auth/callback?redirectTo=/reset-password`
 
   try {
     const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {

@@ -126,16 +126,17 @@ export async function fetchUserWishlistAction(): Promise<string[]> {
 
 /**
  * Helper Server Action: Merges guest wishlist product IDs into authenticated user's wishlist.
+ * Returns an error indicator so the caller can avoid clearing localStorage on failure.
  */
-export async function mergeGuestWishlistAction(guestIds: string[]): Promise<void> {
-  if (!guestIds || guestIds.length === 0) return
+export async function mergeGuestWishlistAction(guestIds: string[]): Promise<{ error: string | null }> {
+  if (!guestIds || guestIds.length === 0) return { error: null }
 
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) return
+  if (!user) return { error: 'Not authenticated' }
 
   try {
     const rows = guestIds.map((productId) => ({
@@ -143,8 +144,11 @@ export async function mergeGuestWishlistAction(guestIds: string[]): Promise<void
       product_id: productId,
     }))
 
-    await supabase.from('wishlist').upsert(rows, { onConflict: 'user_id,product_id' })
+    const { error } = await supabase.from('wishlist').upsert(rows, { onConflict: 'user_id,product_id' })
+    if (error) throw error
+    return { error: null }
   } catch (err) {
     console.error('Merge guest wishlist error:', err)
+    return { error: 'Failed to merge guest wishlist.' }
   }
 }

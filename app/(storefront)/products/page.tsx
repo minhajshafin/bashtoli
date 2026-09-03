@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getStorefrontProducts, getStorefrontCategories } from '@/lib/queries/products'
 import { ProductCard } from '@/components/storefront/product-card'
 import { CategoryFilter } from '@/components/storefront/category-filter'
@@ -114,7 +115,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               {totalCount} items across all categories
             </p>
           </div>
-          <SortDropdown />
+          <Suspense>
+            <SortDropdown />
+          </Suspense>
         </div>
       </div>
 
@@ -122,19 +125,23 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <div className="max-w-7xl mx-auto px-5 md:px-8 py-10">
         {/* Mobile Categories pills */}
         <div className="md:hidden mb-6">
-          <CategoryFilter
-            categories={categories}
-            activeCategorySlug={activeCategorySlug}
-          />
+          <Suspense>
+            <CategoryFilter
+              categories={categories}
+              activeCategorySlug={activeCategorySlug}
+            />
+          </Suspense>
         </div>
 
         <div className="flex flex-col md:flex-row gap-8 lg:gap-10 items-start">
           {/* Sidebar Filter - Desktop only */}
           <aside className="hidden md:block w-64 shrink-0 sticky top-24 self-start">
-            <CategoryFilter
-              categories={categories}
-              activeCategorySlug={activeCategorySlug}
-            />
+            <Suspense>
+              <CategoryFilter
+                categories={categories}
+                activeCategorySlug={activeCategorySlug}
+              />
+            </Suspense>
           </aside>
 
           {/* Product Grid Area */}

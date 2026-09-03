@@ -10,19 +10,12 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({
-  variantId,
+  variantId: _variantId,
   stockQty,
   onAddToCart,
   onBuyNow,
 }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(1)
-  const [prevVariantId, setPrevVariantId] = useState(variantId)
-
-  // Reset quantity to 1 when selected variant changes
-  if (variantId !== prevVariantId) {
-    setPrevVariantId(variantId)
-    setQuantity(1)
-  }
 
   // Determine button state
   const isNoVariantSelected = stockQty === undefined

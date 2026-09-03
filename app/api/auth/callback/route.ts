@@ -9,7 +9,9 @@ import { NextResponse } from 'next/server'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/'
+  const rawTarget = searchParams.get('redirectTo') ?? searchParams.get('next') ?? '/'
+  // Ensure target is a relative path starting with / and not // (open redirect protection)
+  const target = rawTarget && /^\/[^/]/.test(rawTarget) ? rawTarget : '/'
 
   if (code) {
     const cookieStore = await cookies()
@@ -40,11 +42,11 @@ export async function GET(request: Request) {
       const isLocalEnv = process.env.NODE_ENV === 'development'
 
       if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${next}`)
+        return NextResponse.redirect(`${origin}${target}`)
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
+        return NextResponse.redirect(`https://${forwardedHost}${target}`)
       } else {
-        return NextResponse.redirect(`${origin}${next}`)
+        return NextResponse.redirect(`${origin}${target}`)
       }
     }
   }

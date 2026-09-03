@@ -158,23 +158,28 @@ export async function submitCheckout(
 
   // 5. Trigger emails asynchronously (fire-and-forget).
   //    Financials come from the authoritative DB result, not local variables.
-  sendOrderEmails(
-    {
-      order_number: result.order_number,
-      customer_name: parsed.data.customer_name,
-      phone: parsed.data.phone,
-      guest_email: parsed.data.guest_email || null,
-      address: parsed.data.address,
-      fulfillment_type: parsed.data.fulfillment_type,
-      delivery_zone: parsed.data.delivery_zone || null,
-      delivery_fee: result.delivery_fee,
-      subtotal: result.subtotal,
-      total: result.total,
-    },
-    itemsForEmail
-  ).catch((err) => {
-    console.error('Asynchronous sendOrderEmails failed:', err)
-  })
+  // Await the email send to prevent serverless context termination
+  // from aborting the dispatch mid-flight.
+  try {
+    await sendOrderEmails(
+      {
+        order_number: result.order_number,
+        customer_name: parsed.data.customer_name,
+        phone: parsed.data.phone,
+        guest_email: parsed.data.guest_email || null,
+        address: parsed.data.address,
+        fulfillment_type: parsed.data.fulfillment_type,
+        delivery_zone: parsed.data.delivery_zone || null,
+        delivery_fee: result.delivery_fee,
+        subtotal: result.subtotal,
+        total: result.total,
+      },
+      itemsForEmail
+    )
+  } catch (err) {
+    // Email failure should not block the checkout response.
+    console.error('sendOrderEmails failed:', err)
+  }
 
   return {
     error: null,

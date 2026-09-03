@@ -14,7 +14,7 @@ interface WishlistButtonProps {
 
 /**
  * Wishlist Toggle Button.
- * Accessible, optimistic heart toggle with instant toast notification and no page redirects.
+ * Accessible, optimistic heart toggle with instant toast notification.
  */
 export function WishlistButton({
   productId,

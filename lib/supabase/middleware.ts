@@ -192,7 +192,7 @@ export async function adminGuard(request: NextRequest) {
   if (!user) {
     // Unauthenticated: send to login, preserving the intended destination.
     const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('next', request.nextUrl.pathname)
+    loginUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
     return setSecurityHeaders(redirectWithCookies(loginUrl, getResponse()))
   }
 
