@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { checkoutSchema } from '@/lib/validations/checkout'
 import type { CartItem } from '@/lib/cart/guest-cart'
 import { sendOrderEmails } from '@/lib/email/resend'
@@ -126,7 +126,8 @@ export async function submitCheckout(
     rpc(fn: string, args?: unknown): Promise<{ data: unknown; error: { message: string } | null }>
   }
 
-  const { data: rpcData, error: rpcError } = await (supabase as unknown as LooseSupabase).rpc('place_order', {
+  const adminDb = createAdminClient()
+  const { data: rpcData, error: rpcError } = await (adminDb as unknown as LooseSupabase).rpc('place_order', {
     p_user_id: user?.id || null,
     p_customer_name: parsed.data.customer_name,
     p_phone: parsed.data.phone,
