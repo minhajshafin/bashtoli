@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] flex flex-col">
       {/* JSON-LD Schema Structured Data */}
       <ProductJsonLd
         product={data.product}

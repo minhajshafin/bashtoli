@@ -114,7 +114,7 @@ export function ProductDetailClient({
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 mt-6 pb-16 md:pb-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 mt-4 sm:mt-6 pb-16 md:pb-8 flex-1 items-start">
         {/* Left - Image Gallery */}
         <div>
           <ImageGallery images={images} fallbackName={product.name} />

@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -67,6 +68,13 @@ const socials = [
 ]
 
 export function Footer() {
+  const pathname = usePathname()
+
+  // Do not render footer on checkout page
+  if (pathname === '/checkout' || pathname?.startsWith('/checkout/')) {
+    return null
+  }
+
   const scrollToTop = () => {
     if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
   }
