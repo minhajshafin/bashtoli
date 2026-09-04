@@ -17,6 +17,7 @@ import {
   clearDbCartAction,
   mergeGuestCartAction,
 } from '@/lib/actions/cart'
+import { useToast } from '@/components/ui/toast'
 
 interface CartContextType {
   cart: CartItem[]
@@ -37,6 +38,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
  * Employs optimistic UI state updates for immediate customer visual feedback.
  */
 export function CartProvider({ children, isLoggedIn }: { children: ReactNode; isLoggedIn: boolean }) {
+  const { toast } = useToast()
   const [state, setState] = useState<{ cart: CartItem[]; isLoaded: boolean }>({
     cart: [],
     isLoaded: false,
@@ -53,7 +55,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
           const mergeRes = await mergeGuestCartAction(guestItems)
           if (!mergeRes.error) {
             if (mergeRes.notifications && mergeRes.notifications.length > 0) {
-              alert(mergeRes.notifications.join('\n'))
+              toast(mergeRes.notifications.join(' • '), 'info')
             }
             // Only clear guest cart after a successful merge to prevent data loss
             clearGuestCart()
@@ -100,7 +102,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
       startTransition(async () => {
         const res = await addToDbCartAction(item.variant_id, qty)
         if (res.error) {
-          alert(res.error)
+          toast(res.error, 'error')
           const latest = await fetchDbCart()
           setState((prev) => ({ ...prev, cart: latest }))
         }
@@ -108,7 +110,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       addToGuestCart(item, qty)
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, toast])
 
   // Update Quantity operation (optimistic local state update + persistent storage action)
   const updateQty = useCallback((variantId: string, qty: number) => {
@@ -125,7 +127,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
       startTransition(async () => {
         const res = await updateDbCartQtyAction(variantId, finalQty)
         if (res.error) {
-          alert(res.error)
+          toast(res.error, 'error')
           const latest = await fetchDbCart()
           setState((prev) => ({ ...prev, cart: latest }))
         }
@@ -133,7 +135,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       updateGuestCartQty(variantId, finalQty)
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, toast])
 
   // Remove Item operation (optimistic local state update + persistent storage action)
   const removeItem = useCallback((variantId: string) => {
@@ -146,7 +148,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
       startTransition(async () => {
         const res = await removeFromDbCartAction(variantId)
         if (res.error) {
-          alert(res.error)
+          toast(res.error, 'error')
           const latest = await fetchDbCart()
           setState((prev) => ({ ...prev, cart: latest }))
         }
@@ -154,7 +156,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       removeFromGuestCart(variantId)
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, toast])
 
   // Clear Cart operation (optimistic local state update + persistent storage action)
   const clearCart = useCallback(() => {
@@ -164,7 +166,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
       startTransition(async () => {
         const res = await clearDbCartAction()
         if (res.error) {
-          alert(res.error)
+          toast(res.error, 'error')
           const latest = await fetchDbCart()
           setState((prev) => ({ ...prev, cart: latest }))
         }
@@ -172,7 +174,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     } else {
       clearGuestCart()
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, toast])
 
   const itemCount = cart.reduce((sum, item) => sum + item.qty, 0)
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0)

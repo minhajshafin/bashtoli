@@ -217,7 +217,20 @@ export async function saveProductOptionsAndValues(
     }
   }
 
+  // Revalidate admin and storefront paths
+  const { data: prod } = await supabase
+    .from('products')
+    .select('slug')
+    .eq('id', productId)
+    .maybeSingle()
+
+  revalidatePath(PRODUCTS_PATH)
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
+  revalidatePath('/')
+  revalidatePath('/products')
+  if (prod?.slug) {
+    revalidatePath(`/products/${prod.slug}`)
+  }
   return { error: null }
 }
 
@@ -273,7 +286,43 @@ export async function updateVariantsBulk(
     }
   }
 
+  // Synchronize products.base_price with variant pricing
+  const { data: allVariants } = await supabase
+    .from('product_variants')
+    .select('price, active')
+    .eq('product_id', productId)
+
+  if (allVariants && allVariants.length > 0) {
+    const activeVariants = allVariants.filter((v) => v.active)
+    const candidateVariants = activeVariants.length > 0 ? activeVariants : allVariants
+    const lowestPrice = Math.min(...candidateVariants.map((v) => Number(v.price)))
+
+    if (Number.isFinite(lowestPrice)) {
+      await supabase
+        .from('products')
+        .update({
+          base_price: lowestPrice,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', productId)
+    }
+  }
+
+  // Revalidate admin and storefront paths
+  const { data: prod } = await supabase
+    .from('products')
+    .select('slug')
+    .eq('id', productId)
+    .maybeSingle()
+
+  revalidatePath(PRODUCTS_PATH)
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
+  revalidatePath('/')
+  revalidatePath('/products')
+  if (prod?.slug) {
+    revalidatePath(`/products/${prod.slug}`)
+  }
+
   return { error: null }
 }
 
@@ -302,6 +351,41 @@ export async function toggleVariantActive(
     return { error: `Failed to update variant: ${error.message}` }
   }
 
+  // Re-sync base_price to lowest active variant price
+  const { data: allVariants } = await supabase
+    .from('product_variants')
+    .select('price, active')
+    .eq('product_id', productId)
+
+  if (allVariants && allVariants.length > 0) {
+    const activeVariants = allVariants.filter((v) => v.active)
+    const candidateVariants = activeVariants.length > 0 ? activeVariants : allVariants
+    const lowestPrice = Math.min(...candidateVariants.map((v) => Number(v.price)))
+
+    if (Number.isFinite(lowestPrice)) {
+      await supabase
+        .from('products')
+        .update({
+          base_price: lowestPrice,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', productId)
+    }
+  }
+
+  const { data: prod } = await supabase
+    .from('products')
+    .select('slug')
+    .eq('id', productId)
+    .maybeSingle()
+
+  revalidatePath(PRODUCTS_PATH)
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
+  revalidatePath('/')
+  revalidatePath('/products')
+  if (prod?.slug) {
+    revalidatePath(`/products/${prod.slug}`)
+  }
+
   return { error: null }
 }
