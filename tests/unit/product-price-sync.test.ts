@@ -5,9 +5,10 @@ const mockRevalidatePath = vi.fn()
 const mockRedirect = vi.fn()
 
 // Define mock handlers per table
-let profilesMock: any
-let productsMock: any
-let variantsMock: any
+type TableMock = Record<string, unknown>
+let profilesMock: TableMock
+let productsMock: TableMock
+let variantsMock: TableMock
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(() =>
