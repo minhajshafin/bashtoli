@@ -1,5 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { Plus, ShoppingBag } from 'lucide-react'
 import { getServerProfile } from '@/lib/supabase/get-server-profile'
 import { fetchDashboardMetrics, fetchLowStockList } from '@/lib/queries/dashboard'
 import { DashboardStats } from '@/components/admin/dashboard-stats'
@@ -38,47 +40,51 @@ export default async function AdminPage({ searchParams }: PageProps) {
   const metrics = await fetchDashboardMetrics(threshold)
   const lowStockItems = await fetchLowStockList(threshold)
 
+  const todayFormatted = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Welcome Heading Banner */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-200/80">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">{greeting}</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Here&apos;s a live snapshot of your store catalog and checkout states today.
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {greeting}
+            </h1>
+          </div>
+          <p className="mt-1 text-xs sm:text-sm text-slate-500">
+            {todayFormatted} · Here&apos;s a live snapshot of your store catalog and checkout activity.
           </p>
         </div>
 
-        {/* Threshold quick adjuster form */}
-        <form
-          method="get"
-          className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs"
-        >
-          <label htmlFor="threshold" className="text-xs font-semibold text-slate-500 whitespace-nowrap">
-            Low Stock Threshold:
-          </label>
-          <input
-            id="threshold"
-            name="threshold"
-            type="number"
-            min="0"
-            max="100"
-            defaultValue={threshold}
-            className="w-14 h-7 text-center rounded border border-slate-350 bg-white text-xs font-bold text-slate-800 focus:border-indigo-500 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="h-7 px-2.5 rounded bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors"
+        {/* Quick Action Shortcuts */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <Link
+            href="/admin/orders"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-2xs"
           >
-            Apply
-          </button>
-        </form>
+            <ShoppingBag className="h-3.5 w-3.5 text-slate-500" />
+            <span>Orders</span>
+          </Link>
+          <Link
+            href="/admin/products/new"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-colors shadow-xs"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            <span>Add Product</span>
+          </Link>
+        </div>
       </div>
 
       {/* Metrics Card Grid */}
       <DashboardStats metrics={metrics} />
 
-      {/* Low-Stock alerts list */}
+      {/* Low-Stock alerts list with integrated threshold setting */}
       <LowStockList items={lowStockItems} threshold={threshold} />
     </div>
   )
