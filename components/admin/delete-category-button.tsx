@@ -1,17 +1,13 @@
 'use client'
 
-import { useActionState } from 'react'
-import { deleteCategory, type CategoryActionState } from '@/lib/actions/categories'
-
-const initialState: CategoryActionState = { error: null }
+import { useState, useTransition } from 'react'
+import { Trash2 } from 'lucide-react'
+import { deleteCategory } from '@/lib/actions/categories'
+import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 
 /**
  * Delete button for a single category row.
- *
- * - Shows a native confirm() dialog before submitting.
- * - Displays an inline error if the server action blocks the delete
- *   (e.g. category has associated products).
- * - Disabled while the action is in-flight.
+ * Uses the secure in-app AdminConfirmDialog modal with product checks and loading state.
  */
 export function DeleteCategoryButton({
   id,
@@ -22,46 +18,57 @@ export function DeleteCategoryButton({
   name: string
   productCount: number
 }) {
-  const [state, formAction, isPending] = useActionState(
-    deleteCategory,
-    initialState,
-  )
+  const [error, setError] = useState<string | null>(null)
+  const [isPending, startTransition] = useTransition()
+  const confirm = useAdminConfirm()
 
   const hasProducts = productCount > 0
   const tooltip = hasProducts
     ? `${productCount} product${productCount === 1 ? '' : 's'} — reassign them first`
     : 'Delete category'
 
-  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    if (hasProducts) {
-      e.preventDefault()
-      return
-    }
-    const confirmed = window.confirm(
-      `Delete category "${name}"? This cannot be undone.`,
-    )
-    if (!confirmed) {
-      e.preventDefault()
-    }
+  async function handleDeleteClick() {
+    if (hasProducts) return
+
+    const ok = await confirm({
+      title: `Delete category "${name}"?`,
+      description:
+        'This action cannot be undone. Categories with associated products cannot be deleted until products are reassigned.',
+      confirmText: 'Delete Category',
+      cancelText: 'Cancel',
+      variant: 'danger',
+    })
+
+    if (!ok) return
+
+    startTransition(async () => {
+      setError(null)
+      const formData = new FormData()
+      formData.set('id', id)
+      const res = await deleteCategory({ error: null }, formData)
+      if (res.error) {
+        setError(res.error)
+      }
+    })
   }
 
   return (
     <div>
-      <form action={formAction} onSubmit={handleSubmit}>
-        <input type="hidden" name="id" value={id} />
-        <button
-          id={`delete-category-${id}`}
-          type="submit"
-          disabled={isPending || hasProducts}
-          title={tooltip}
-          className="rounded-md px-2.5 py-1 text-sm font-medium text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          {isPending ? 'Deleting…' : 'Delete'}
-        </button>
-      </form>
-      {/* Inline error from server (e.g. product count guard fired server-side) */}
-      {state.error && (
-        <p className="mt-1 text-xs text-rose-600">{state.error}</p>
+      <button
+        id={`delete-category-${id}`}
+        type="button"
+        onClick={handleDeleteClick}
+        disabled={isPending || hasProducts}
+        title={tooltip}
+        className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-30 cursor-pointer"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
+
+      {error && (
+        <p className="mt-1 text-[11px] text-rose-600 text-right max-w-[200px] ml-auto">
+          {error}
+        </p>
       )}
     </div>
   )

@@ -2,6 +2,13 @@
 
 import React from 'react'
 import Link from 'next/link'
+import {
+  TrendingUp,
+  ShoppingBag,
+  Clock,
+  AlertTriangle,
+  ArrowUpRight,
+} from 'lucide-react'
 import type { DashboardMetrics } from '@/lib/queries/dashboard'
 
 interface DashboardStatsProps {
@@ -11,98 +18,110 @@ interface DashboardStatsProps {
 interface StatCardProps {
   label: string
   value: string | number
-  accent: string
+  sublabel?: string
+  accent: {
+    bg: string
+    text: string
+    border: string
+    glow: string
+  }
   icon: React.ReactNode
   linkHref: string
-  linkText: string
 }
 
-function StatCard({ label, value, icon, accent, linkHref, linkText }: StatCardProps) {
+function StatCard({ label, value, sublabel, icon, accent, linkHref }: StatCardProps) {
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300">
-      <div className="flex items-center gap-4">
-        <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all group-hover:scale-110 ${accent}`}>
+    <Link
+      href={linkHref}
+      className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300"
+    >
+      <div className="flex items-start justify-between">
+        <div
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${accent.border} ${accent.bg} ${accent.text} transition-transform group-hover:scale-105`}
+        >
           {icon}
         </div>
-        <div className="min-w-0">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</p>
-          <p className="text-3xl font-black text-slate-900 mt-1 truncate">{value}</p>
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 group-hover:text-slate-900 group-hover:bg-slate-100 transition-colors">
+          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </div>
       </div>
-      <div className="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
-        <span className="text-slate-450 font-medium">Quick link</span>
-        <Link
-          href={linkHref}
-          className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline inline-flex items-center gap-1 group/link"
-        >
-          {linkText}
-          <svg className="h-3 w-3 stroke-current fill-none transition-transform group-hover/link:translate-x-0.5" viewBox="0 0 24 24" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </Link>
+
+      <div className="mt-4">
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          {label}
+        </p>
+        <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-1 tracking-tight truncate">
+          {value}
+        </p>
+        {sublabel && (
+          <p className="text-xs text-slate-500 mt-1 font-medium">{sublabel}</p>
+        )}
       </div>
-    </div>
+    </Link>
   )
 }
 
 export function DashboardStats({ metrics }: DashboardStatsProps) {
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      {/* Today's Revenue — most important metric for a retail store */}
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Today's Revenue */}
       <StatCard
         label="Today's Revenue"
         value={`৳${metrics.todayRevenue.toLocaleString()}`}
-        accent="bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20"
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-            <path d="M10.75 10.818v2.614A3.13 3.13 0 0 0 11.888 13c.482-.315.612-.648.612-.875 0-.227-.13-.56-.612-.875a3.13 3.13 0 0 0-1.138-.432ZM8.33 8.62c.053.055.115.11.184.164.208.208.46.284.615.284.154 0 .406-.076.615-.284.137-.13.23-.297.23-.48 0-.184-.093-.35-.23-.48a.96.96 0 0 0-.184-.165l-.008-.006-.008-.007-.007-.006-.008-.007a.97.97 0 0 0-.498-.167.97.97 0 0 0-.498.167l-.008.007-.007.006-.008.007-.007.006Z" />
-            <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v.463A2.47 2.47 0 0 0 8.125 8c0 .68.26 1.353.866 1.846.502.406 1.145.629 1.759.719v2.204a2.133 2.133 0 0 1-.53-.157.75.75 0 0 0-.72 1.31 3.62 3.62 0 0 0 1.25.393v.435a.75.75 0 0 0 1.5 0v-.463A2.47 2.47 0 0 0 13.25 13c0-.68-.26-1.353-.866-1.846-.502-.406-1.145-.629-1.759-.719V8.23a2.13 2.13 0 0 1 .53.157.75.75 0 0 0 .72-1.31 3.62 3.62 0 0 0-1.25-.393l-.125-.014v-.13Z" clipRule="evenodd" />
-          </svg>
-        }
+        sublabel="Gross processed today"
+        accent={{
+          bg: 'bg-emerald-50',
+          text: 'text-emerald-700',
+          border: 'border-emerald-200',
+          glow: 'group-hover:ring-emerald-500/10',
+        }}
+        icon={<TrendingUp className="h-5 w-5" />}
         linkHref="/admin/orders"
-        linkText="View orders list"
       />
 
       {/* Today's Orders */}
       <StatCard
         label="Today's Orders"
         value={metrics.todayOrderCount}
-        accent="bg-indigo-50 text-indigo-600 dark:bg-indigo-950/20"
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-            <path fillRule="evenodd" d="M6 5v1H4.667a1.75 1.75 0 0 0-1.743 1.598l-.826 9.14A1.75 1.75 0 0 0 3.84 18.5H16.16a1.75 1.75 0 0 0 1.742-1.763l-.826-9.14A1.75 1.75 0 0 0 15.333 6H14V5a4 4 0 0 0-8 0Zm4-2.5A2.5 2.5 0 0 0 7.5 5v1h5V5A2.5 2.5 0 0 0 10 2.5ZM7.5 10a2.5 2.5 0 0 0 5 0V8.75a.75.75 0 0 1 1.5 0V10a4 4 0 0 1-8 0V8.75a.75.75 0 0 1 1.5 0V10Z" clipRule="evenodd" />
-          </svg>
-        }
+        sublabel="New checkouts placed"
+        accent={{
+          bg: 'bg-indigo-50',
+          text: 'text-indigo-700',
+          border: 'border-indigo-200',
+          glow: 'group-hover:ring-indigo-500/10',
+        }}
+        icon={<ShoppingBag className="h-5 w-5" />}
         linkHref="/admin/orders"
-        linkText="View orders list"
       />
 
       {/* Pending Orders */}
       <StatCard
         label="Pending Orders"
         value={metrics.pendingOrderCount}
-        accent="bg-amber-50 text-amber-600 dark:bg-amber-950/20"
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-            <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clipRule="evenodd" />
-          </svg>
-        }
+        sublabel="Awaiting confirmation"
+        accent={{
+          bg: 'bg-amber-50',
+          text: 'text-amber-700',
+          border: 'border-amber-200',
+          glow: 'group-hover:ring-amber-500/10',
+        }}
+        icon={<Clock className="h-5 w-5" />}
         linkHref="/admin/orders?status=pending"
-        linkText="Review pending list"
       />
 
       {/* Low Stock Items */}
       <StatCard
         label="Low Stock Items"
         value={metrics.lowStockCount}
-        accent="bg-rose-50 text-rose-600 dark:bg-rose-950/20"
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6">
-            <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
-          </svg>
-        }
+        sublabel="At or below threshold"
+        accent={{
+          bg: 'bg-rose-50',
+          text: 'text-rose-700',
+          border: 'border-rose-200',
+          glow: 'group-hover:ring-rose-500/10',
+        }}
+        icon={<AlertTriangle className="h-5 w-5" />}
         linkHref="#low-stock-panel"
-        linkText="Scroll to alert list"
       />
     </div>
   )

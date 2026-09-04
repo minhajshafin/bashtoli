@@ -8,6 +8,7 @@ import {
   updateProductImageAlt,
   saveProductImageOrder,
 } from '@/lib/actions/product-images'
+import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 import type { Database } from '@/lib/supabase/database.types'
 
 type ImageRow = Database['public']['Tables']['product_images']['Row']
@@ -18,6 +19,7 @@ export function ImageGalleryAdmin({
   images: ImageRow[]
 }) {
   const router = useRouter()
+  const confirm = useAdminConfirm()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
@@ -26,9 +28,16 @@ export function ImageGalleryAdmin({
   const sortedImages = [...images].sort((a, b) => a.sort_order - b.sort_order)
 
   async function handleDelete(imageId: string) {
-    if (!window.confirm('Are you sure you want to delete this image? It will be removed permanently.')) {
-      return
-    }
+    const ok = await confirm({
+      title: 'Delete Product Image?',
+      description:
+        'Are you sure you want to delete this image? It will be permanently removed from the product gallery.',
+      confirmText: 'Delete Image',
+      cancelText: 'Cancel',
+      variant: 'danger',
+    })
+    if (!ok) return
+
     setError(null)
     startTransition(async () => {
       const res = await deleteProductImage(imageId)

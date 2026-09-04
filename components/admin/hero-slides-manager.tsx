@@ -17,6 +17,7 @@ import {
   deleteHeroSlideAction,
   reorderHeroSlidesAction,
 } from '@/lib/actions/hero-slides'
+import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 
 interface HeroSlidesManagerProps {
   initialSlides: HeroSlideRow[]
@@ -105,11 +106,19 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
     })
   }
 
+  const confirm = useAdminConfirm()
+
   async function handleDelete(slideId: string) {
     if (!canDelete) return
-    if (!window.confirm('Are you sure you want to remove this slide from the hero carousel?')) {
-      return
-    }
+    const ok = await confirm({
+      title: 'Remove Hero Slide?',
+      description:
+        'Are you sure you want to remove this slide from the hero carousel? This will update the live storefront banner immediately.',
+      confirmText: 'Remove Slide',
+      cancelText: 'Cancel',
+      variant: 'danger',
+    })
+    if (!ok) return
 
     setFeedback(null)
     startTransition(async () => {
