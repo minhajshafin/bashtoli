@@ -2,6 +2,7 @@
 
 import React, { useTransition, useState } from 'react'
 import { claimGuestOrdersAction } from '@/lib/actions/claim-guest-orders'
+import { useToast } from '@/components/ui/toast'
 
 interface GuestOrder {
   id: string
@@ -17,6 +18,7 @@ interface ClaimOrdersPromptProps {
 export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
   const [orders, setOrders] = useState<GuestOrder[]>(initialOrders)
   const [isPending, startTransition] = useTransition()
+  const { toast } = useToast()
 
   if (orders.length === 0) return null
 
@@ -25,9 +27,9 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
     startTransition(async () => {
       const res = await claimGuestOrdersAction(orderIds)
       if (res.error) {
-        alert(res.error)
+        toast(res.error, 'error')
       } else {
-        alert(`Successfully linked ${orders.length} past order(s) to your account!`)
+        toast(`Successfully linked ${orders.length} past order(s) to your account!`, 'success')
         setOrders([])
       }
     })

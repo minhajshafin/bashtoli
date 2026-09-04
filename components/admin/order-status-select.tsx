@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from 'react'
 import { updateOrderStatusAction } from '@/lib/actions/order-status'
+import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 
 interface OrderStatusSelectProps {
   orderId: string
@@ -24,6 +25,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean>(false)
   const [isPending, startTransition] = useTransition()
+  const confirm = useAdminConfirm()
 
   // Determines option list based on allowed workflow transitions
   const getAllowedOptions = (curr: StatusType): { value: StatusType; label: string }[] => {
@@ -52,7 +54,6 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
       addCancel()
     } else if (curr === 'out_for_delivery') {
       list.push({ value: 'delivered', label: STATUS_LABELS.delivered })
-      addCancel()
     }
 
     return list
@@ -69,7 +70,14 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
 
     // Confirm cancellations explicitly to prevent accidents
     if (nextStatus === 'cancelled') {
-      const confirmed = window.confirm('Are you sure you want to cancel this order? This will restock all inventory items.')
+      const confirmed = await confirm({
+        title: 'Cancel this Order?',
+        description:
+          'Are you sure you want to cancel this order? This will release the item reservation and restock all inventory quantities back into the catalog.',
+        confirmText: 'Cancel Order',
+        cancelText: 'Keep Order',
+        variant: 'danger',
+      })
       if (!confirmed) return
     }
 
