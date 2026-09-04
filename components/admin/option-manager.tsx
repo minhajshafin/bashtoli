@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { saveProductOptionsAndValues } from '@/lib/actions/variants'
+import { useToast } from '@/components/ui/toast'
 
 type OptionInput = {
   name: string
@@ -17,6 +18,7 @@ export function OptionManager({
   initialOptions: { name: string; values: string[] }[]
 }) {
   const router = useRouter()
+  const { toast } = useToast()
   const [options, setOptions] = useState<OptionInput[]>(() =>
     initialOptions.map((opt) => ({
       name: opt.name,
@@ -29,7 +31,7 @@ export function OptionManager({
 
   function addOptionDimension() {
     if (options.length >= 3) {
-      alert('You can define at most 3 option dimensions (e.g. Size, Color, Material).')
+      toast('You can define at most 3 option dimensions (e.g. Size, Color, Material).', 'info')
       return
     }
     setOptions([...options, { name: '', valuesString: '' }])

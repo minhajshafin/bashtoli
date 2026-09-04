@@ -3,6 +3,7 @@
 import React, { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { demoteUserAction, type StaffMember } from '@/lib/actions/staff'
+import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 
 interface StaffListProps {
   staff: StaffMember[]
@@ -11,13 +12,21 @@ interface StaffListProps {
 
 export function StaffList({ staff, currentUserId }: StaffListProps) {
   const router = useRouter()
+  const confirm = useAdminConfirm()
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
   const handleDemote = async (member: StaffMember) => {
-    const confirm = window.confirm(`Are you sure you want to demote ${member.full_name || member.email} back to customer role?`)
-    if (!confirm) return
+    const ok = await confirm({
+      title: `Demote ${member.full_name || member.email}?`,
+      description:
+        'Are you sure you want to demote this user back to a customer role? They will immediately lose access to the administrative dashboard.',
+      confirmText: 'Demote User',
+      cancelText: 'Cancel',
+      variant: 'warning',
+    })
+    if (!ok) return
 
     setError(null)
     setSuccessMessage(null)

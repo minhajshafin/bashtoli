@@ -3,10 +3,21 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import {
+  Star,
+  Edit2,
+  Trash2,
+  Copy,
+  Check,
+  Package,
+  ExternalLink,
+} from 'lucide-react'
+import {
   toggleProductActive,
   toggleProductFeatured,
   deleteProduct,
 } from '@/lib/actions/products'
+import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
+import { useToast } from '@/components/ui/toast'
 import type { Database } from '@/lib/supabase/database.types'
 
 type ProductRow = Database['public']['Tables']['products']['Row']
@@ -16,37 +27,33 @@ export type ProductWithCategory = ProductRow & {
   categories: CategoryRow | null
 }
 
-/** Common server-action signature shared by toggleProductActive and toggleProductFeatured. */
-type ToggleAction = (id: string, value: boolean) => Promise<{ error?: string | null }>
-
 /**
- * Generic toggle switch — replaces the old ActiveToggle and FeaturedToggle
- * components that were 95 % identical (ARCH-2).
- * Accepts any server action with the standard (id, value) => Promise<{error?}> signature.
+ * Smart Status Control.
+ * Replaces the duplicate "Published" toggle + "Status" badge columns
+ * with a single interactive, accessible status control.
  */
-function ToggleSwitch({
+function SmartStatusToggle({
   id,
-  initial,
-  action,
-  ariaLabel,
+  name,
+  active,
 }: {
   id: string
-  initial: boolean
-  action: ToggleAction
-  ariaLabel?: string
+  name: string
+  active: boolean
 }) {
-  const [value, setValue] = useState(initial)
+  const { toast } = useToast()
+  const [isActive, setIsActive] = useState(active)
   const [isPending, setIsPending] = useState(false)
 
   async function handleToggle() {
     setIsPending(true)
-    const prevVal = value
-    const nextVal = !value
-    setValue(nextVal) // optimistic update
-    const res = await action(id, nextVal)
+    const prevVal = isActive
+    const nextVal = !isActive
+    setIsActive(nextVal) // optimistic update
+    const res = await toggleProductActive(id, nextVal)
     if (res.error) {
-      alert(res.error)
-      setValue(prevVal) // rollback
+      toast(res.error, 'error')
+      setIsActive(prevVal) // rollback
     }
     setIsPending(false)
   }
@@ -55,19 +62,75 @@ function ToggleSwitch({
     <button
       type="button"
       role="switch"
-      aria-checked={value}
-      aria-label={ariaLabel}
+      aria-checked={isActive}
+      aria-label={`Toggle ${name} status`}
       onClick={handleToggle}
       disabled={isPending}
-      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
-        value ? 'bg-indigo-600' : 'bg-slate-200'
+      title={isActive ? 'Click to set as Draft' : 'Click to publish as Active'}
+      className={`group inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs font-bold transition-all border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+        isActive
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300'
+          : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:border-slate-300'
       }`}
     >
       <span
-        aria-hidden="true"
-        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-          value ? 'translate-x-5' : 'translate-x-0'
+        className={`h-2 w-2 rounded-full transition-colors ${
+          isActive ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'
         }`}
+        aria-hidden="true"
+      />
+      <span>{isPending ? 'Updating…' : isActive ? 'Active' : 'Draft'}</span>
+    </button>
+  )
+}
+
+/**
+ * Featured Star Toggle.
+ * Compact and clean star toggle button.
+ */
+function FeaturedToggle({
+  id,
+  name,
+  featured,
+}: {
+  id: string
+  name: string
+  featured: boolean
+}) {
+  const { toast } = useToast()
+  const [isFeatured, setIsFeatured] = useState(featured)
+  const [isPending, setIsPending] = useState(false)
+
+  async function handleToggle() {
+    setIsPending(true)
+    const prevVal = isFeatured
+    const nextVal = !isFeatured
+    setIsFeatured(nextVal)
+    const res = await toggleProductFeatured(id, nextVal)
+    if (res.error) {
+      toast(res.error, 'error')
+      setIsFeatured(prevVal)
+    }
+    setIsPending(false)
+  }
+
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={isFeatured}
+      aria-label={`Toggle ${name} featured`}
+      onClick={handleToggle}
+      disabled={isPending}
+      title={isFeatured ? 'Featured product (click to unfeature)' : 'Mark as featured product'}
+      className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors border cursor-pointer ${
+        isFeatured
+          ? 'bg-amber-50 text-amber-500 border-amber-200 hover:bg-amber-100'
+          : 'bg-white text-slate-300 border-slate-200 hover:text-slate-500 hover:bg-slate-50'
+      }`}
+    >
+      <Star
+        className={`h-4 w-4 ${isFeatured ? 'fill-amber-400 text-amber-500' : ''}`}
       />
     </button>
   )
@@ -76,15 +139,20 @@ function ToggleSwitch({
 function DeleteButton({ id, name }: { id: string; name: string }) {
   const [isPending, setIsPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const confirm = useAdminConfirm()
 
   async function handleDelete() {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete product "${name}"?\nIf it has order history, it will be blocked. Otherwise, it will be soft-deleted.`,
-      )
-    ) {
-      return
-    }
+    const ok = await confirm({
+      title: `Delete product "${name}"?`,
+      description:
+        'This action is protected. If this product has existing customer orders, the deletion will be safely blocked to preserve financial history. Otherwise, it will be soft-deleted from the store catalog.',
+      confirmText: 'Delete Product',
+      cancelText: 'Keep Product',
+      variant: 'danger',
+    })
+
+    if (!ok) return
+
     setIsPending(true)
     setError(null)
     const res = await deleteProduct(id)
@@ -101,12 +169,13 @@ function DeleteButton({ id, name }: { id: string; name: string }) {
         type="button"
         disabled={isPending}
         onClick={handleDelete}
-        className="rounded-md px-2.5 py-1 text-sm font-medium text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-40"
+        title="Delete product"
+        className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
       >
-        {isPending ? 'Deleting...' : 'Delete'}
+        <Trash2 className="h-4 w-4" />
       </button>
       {error && (
-        <p className="mt-1 text-xs text-rose-600 break-words max-w-[180px] ml-auto">
+        <p className="mt-1 text-[11px] text-rose-600 break-words max-w-[180px] ml-auto">
           {error}
         </p>
       )}
@@ -115,33 +184,27 @@ function DeleteButton({ id, name }: { id: string; name: string }) {
 }
 
 export function ProductList({ products }: { products: ProductWithCategory[] }) {
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  const handleCopy = (slug: string) => {
+    navigator.clipboard.writeText(slug)
+    setCopiedId(slug)
+    setTimeout(() => setCopiedId(null), 1800)
+  }
+
   if (products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center shadow-sm">
-        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-6 w-6 text-slate-400"
-          >
-            <path d="m7.5 4.27 9 5.15" />
-            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-            <path d="m3.3 7 8.7 5 8.7-5" />
-            <path d="M12 22V12" />
-          </svg>
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center shadow-xs">
+        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 border border-slate-200">
+          <Package className="h-6 w-6" />
         </div>
-        <p className="text-sm font-medium text-slate-700">No products found</p>
-        <p className="mt-1 text-sm text-slate-400">
-          Try updating your filters or add a new product.
+        <p className="text-base font-bold text-slate-800">No products found</p>
+        <p className="mt-1 text-xs text-slate-500 max-w-sm">
+          Try updating your filters or search query, or create a new product to populate your catalog.
         </p>
         <Link
           href="/admin/products/new"
-          className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-indigo-700 shadow-xs"
         >
           Add Product
         </Link>
@@ -150,43 +213,49 @@ export function ProductList({ products }: { products: ProductWithCategory[] }) {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm text-slate-500">
+        <table className="w-full text-sm text-slate-600">
           <thead>
-            <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-              <th className="px-6 py-4">Product</th>
-              <th className="px-6 py-4">Category</th>
-              <th className="px-6 py-4 text-right">Price</th>
-              <th className="px-6 py-4 text-center">Published</th>
-              <th className="px-6 py-4 text-center">Featured</th>
-              <th className="px-6 py-4 text-center">Status</th>
-              <th className="px-6 py-4 text-right">Actions</th>
+            <tr className="border-b border-slate-200 bg-slate-50/70 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <th className="px-6 py-3.5">Product</th>
+              <th className="px-6 py-3.5">Category</th>
+              <th className="px-6 py-3.5 text-right">Price</th>
+              <th className="px-6 py-3.5 text-center">Status</th>
+              <th className="px-6 py-3.5 text-center">Featured</th>
+              <th className="px-6 py-3.5 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
             {products.map((product) => (
-              <tr key={product.id} className="hover:bg-slate-50 transition-colors">
-                {/* Thumbnail & Name */}
+              <tr key={product.id} className="hover:bg-slate-50/70 transition-colors">
+                {/* Product Name & Slug */}
                 <td className="px-6 py-4 font-medium text-slate-900">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 border border-slate-200">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="h-5 w-5 text-slate-400"
-                      >
-                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                        <circle cx="9" cy="9" r="2" />
-                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                      </svg>
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 border border-slate-200 text-slate-400">
+                      <Package className="h-5 w-5" />
                     </div>
                     <div className="min-w-0">
-                      <p className="truncate font-semibold text-slate-900">{product.name}</p>
-                      <p className="truncate font-mono text-xs text-slate-400">/{product.slug}</p>
+                      <p className="truncate font-bold text-slate-900 text-sm">
+                        {product.name}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="font-mono text-xs text-slate-400 truncate max-w-[160px]">
+                          /{product.slug}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(product.slug)}
+                          title="Copy product slug"
+                          className="text-slate-400 hover:text-slate-700 transition-colors"
+                        >
+                          {copiedId === product.slug ? (
+                            <Check className="h-3 w-3 text-emerald-600" />
+                          ) : (
+                            <Copy className="h-3 w-3" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -194,65 +263,51 @@ export function ProductList({ products }: { products: ProductWithCategory[] }) {
                 {/* Category */}
                 <td className="px-6 py-4">
                   {product.categories ? (
-                    <span className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+                    <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 border border-slate-200">
                       {product.categories.name}
                     </span>
                   ) : (
-                    <span className="text-slate-400 italic text-xs">Uncategorised</span>
+                    <span className="text-slate-400 italic text-xs">Uncategorized</span>
                   )}
                 </td>
 
-                {/* Base Price */}
-                <td className="px-6 py-4 text-right font-medium text-slate-900">
-                  ৳{product.base_price.toFixed(2)}
+                {/* Price */}
+                <td className="px-6 py-4 text-right font-black text-slate-900 whitespace-nowrap">
+                  ৳{product.base_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
 
-                {/* Published toggle — uses shared ToggleSwitch */}
+                {/* Smart Status Toggle (Consolidated Published + Status) */}
                 <td className="px-6 py-4 text-center">
                   <div className="flex items-center justify-center">
-                    <ToggleSwitch
+                    <SmartStatusToggle
                       id={product.id}
-                      initial={product.active}
-                      action={toggleProductActive}
-                      ariaLabel={`Toggle ${product.name} published`}
+                      name={product.name}
+                      active={product.active}
                     />
                   </div>
                 </td>
 
-                {/* Featured toggle — uses shared ToggleSwitch */}
+                {/* Featured Star Toggle */}
                 <td className="px-6 py-4 text-center">
                   <div className="flex items-center justify-center">
-                    <ToggleSwitch
+                    <FeaturedToggle
                       id={product.id}
-                      initial={product.featured}
-                      action={toggleProductFeatured}
-                      ariaLabel={`Toggle ${product.name} featured`}
+                      name={product.name}
+                      featured={product.featured}
                     />
                   </div>
-                </td>
-
-                {/* Status Badge */}
-                <td className="px-6 py-4 text-center">
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                      product.active
-                        ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/10'
-                        : 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-500/10'
-                    }`}
-                  >
-                    {product.active ? 'Active' : 'Draft'}
-                  </span>
                 </td>
 
                 {/* Actions */}
                 <td className="px-6 py-4 text-right">
-                  <div className="flex items-center justify-end gap-3">
+                  <div className="flex items-center justify-end gap-1.5">
                     <Link
                       id={`edit-product-${product.id}`}
                       href={`/admin/products/${product.id}`}
-                      className="rounded-md px-2.5 py-1 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50"
+                      title="Edit product"
+                      className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors border border-transparent hover:border-indigo-100"
                     >
-                      Edit
+                      <Edit2 className="h-4 w-4" />
                     </Link>
                     <DeleteButton id={product.id} name={product.name} />
                   </div>
