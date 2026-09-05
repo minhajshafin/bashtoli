@@ -139,6 +139,12 @@ export function OptionManager({
                 type="text"
                 required
                 value={opt.name}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }
+                }}
                 onChange={(e) =>
                   handleOptionChange(index, 'name', e.target.value)
                 }
@@ -160,6 +166,12 @@ export function OptionManager({
                 type="text"
                 required
                 value={opt.valuesString}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }
+                }}
                 onChange={(e) =>
                   handleOptionChange(index, 'valuesString', e.target.value)
                 }

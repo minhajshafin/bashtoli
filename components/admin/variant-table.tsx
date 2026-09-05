@@ -199,6 +199,12 @@ export function VariantTable({
                     <input
                       type="text"
                       value={state.sku ?? ''}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }
+                      }}
                       onChange={(e) =>
                         handleChange(v.id, 'sku', e.target.value)
                       }
@@ -218,6 +224,12 @@ export function VariantTable({
                         min="0"
                         step="0.01"
                         value={state.price}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            e.stopPropagation()
+                          }
+                        }}
                         onChange={(e) =>
                           handleChange(v.id, 'price', e.target.value)
                         }
@@ -233,6 +245,12 @@ export function VariantTable({
                         type="number"
                         min="0"
                         value={state.stock_qty}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            e.stopPropagation()
+                          }
+                        }}
                         onChange={(e) =>
                           handleChange(v.id, 'stock_qty', e.target.value)
                         }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
   Star,
@@ -69,17 +69,16 @@ function SmartStatusToggle({
       title={isActive ? 'Click to set as Draft' : 'Click to publish as Active'}
       className={`group inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs font-bold transition-all border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
         isActive
-          ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300'
-          : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:border-slate-300'
+          ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100/80 hover:border-emerald-300'
+          : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200/80 hover:border-slate-300'
       }`}
     >
       <span
-        className={`h-2 w-2 rounded-full transition-colors ${
-          isActive ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'
+        className={`h-1.5 w-1.5 rounded-full ${
+          isActive ? 'bg-emerald-500' : 'bg-slate-400'
         }`}
-        aria-hidden="true"
       />
-      <span>{isPending ? 'Updating…' : isActive ? 'Active' : 'Draft'}</span>
+      <span>{isActive ? 'Published' : 'Draft'}</span>
     </button>
   )
 }
@@ -184,7 +183,20 @@ function DeleteButton({ id, name }: { id: string; name: string }) {
 }
 
 export function ProductList({ products }: { products: ProductWithCategory[] }) {
+  const { toast } = useToast()
   const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  useEffect(() => {
+    try {
+      const msg = sessionStorage.getItem('admin_product_toast')
+      if (msg) {
+        sessionStorage.removeItem('admin_product_toast')
+        toast(msg, 'success')
+      }
+    } catch {
+      // Ignore
+    }
+  }, [toast])
 
   const handleCopy = (slug: string) => {
     navigator.clipboard.writeText(slug)
