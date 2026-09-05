@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useTransition, useRef } from 'react'
+import React, { useState, useEffect, useTransition, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -42,10 +42,35 @@ export function CategoryCollageManager({
     null
   )
 
+  const [prevInitialFeatured, setPrevInitialFeatured] = useState(initialFeatured)
+  if (initialFeatured !== prevInitialFeatured) {
+    setPrevInitialFeatured(initialFeatured)
+    setFeatured(initialFeatured)
+  }
+
+  const [prevInitialAvailable, setPrevInitialAvailable] = useState(initialAvailable)
+  if (initialAvailable !== prevInitialAvailable) {
+    setPrevInitialAvailable(initialAvailable)
+    setAvailable(initialAvailable)
+  }
+
   // Uploading cover state
   const [uploadingCatId, setUploadingCatId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const activeUploadCatIdRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    const input = fileInputRef.current
+    if (!input) return
+    const handleCancel = () => {
+      activeUploadCatIdRef.current = null
+      setUploadingCatId(null)
+    }
+    input.addEventListener('cancel', handleCancel)
+    return () => {
+      input.removeEventListener('cancel', handleCancel)
+    }
+  }, [])
 
   const canAddMore = featured.length < MAX_FEATURED_CATEGORIES
 
@@ -105,8 +130,10 @@ export function CategoryCollageManager({
 
   function triggerImageUpload(catId: string) {
     activeUploadCatIdRef.current = catId
-    setUploadingCatId(catId)
-    fileInputRef.current?.click()
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+      fileInputRef.current.click()
+    }
   }
 
   async function handleImageFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -136,6 +163,7 @@ export function CategoryCollageManager({
       return
     }
 
+    setUploadingCatId(catId)
     setFeedback(null)
 
     try {
@@ -171,6 +199,7 @@ export function CategoryCollageManager({
       })
     } finally {
       setUploadingCatId(null)
+      activeUploadCatIdRef.current = null
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
