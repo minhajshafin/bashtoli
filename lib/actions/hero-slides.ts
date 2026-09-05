@@ -9,10 +9,12 @@ import {
   HERO_SLIDE_MAX_COUNT,
   type HeroSlideInput,
 } from '@/lib/validations/hero-slides'
+import type { HeroSlideRow } from '@/lib/queries/hero-slides'
 
 export type HeroSlideActionResponse = {
   success: boolean
   error?: string | null
+  slide?: HeroSlideRow
   fieldErrors?: Partial<Record<keyof HeroSlideInput, string[]>>
 }
 
@@ -62,16 +64,20 @@ export async function createHeroSlideAction(
 
     const nextSortOrder = (lastSlide?.sort_order ?? -1) + 1
 
-    const { error: insertError } = await supabase.from('hero_slides').insert({
-      image_url: parsed.data.image_url,
-      alt_text: parsed.data.alt_text,
-      badge_text: parsed.data.badge_text,
-      badge_color_preset: parsed.data.badge_color_preset,
-      link_url: parsed.data.link_url,
-      subtext: parsed.data.subtext,
-      sort_order: nextSortOrder,
-      active: parsed.data.active,
-    })
+    const { data: insertedSlide, error: insertError } = await supabase
+      .from('hero_slides')
+      .insert({
+        image_url: parsed.data.image_url,
+        alt_text: parsed.data.alt_text,
+        badge_text: parsed.data.badge_text,
+        badge_color_preset: parsed.data.badge_color_preset,
+        link_url: parsed.data.link_url,
+        subtext: parsed.data.subtext,
+        sort_order: nextSortOrder,
+        active: parsed.data.active,
+      })
+      .select()
+      .single()
 
     if (insertError) {
       return { success: false, error: insertError.message }
@@ -79,7 +85,7 @@ export async function createHeroSlideAction(
 
     revalidatePath('/')
     revalidatePath('/admin/storefront')
-    return { success: true }
+    return { success: true, slide: insertedSlide as HeroSlideRow }
   } catch (err) {
     return {
       success: false,
