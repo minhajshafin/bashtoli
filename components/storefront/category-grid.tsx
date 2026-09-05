@@ -11,18 +11,20 @@ function CategoryCard({
   category,
   gridArea,
   style,
+  className = '',
 }: {
   category: FeaturedCategoryItem
   gridArea?: string
   style?: React.CSSProperties
+  className?: string
 }) {
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className="group relative overflow-hidden cursor-pointer block border border-forest-700/60 transition-all duration-300 hover:border-gold-500/80 shadow-md"
+      className={`group relative overflow-hidden cursor-pointer block w-full h-full rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
       style={{
         gridArea,
-        borderRadius: '20px',
+        borderRadius: '24px',
         ...(category.image_url
           ? {
               backgroundImage: `url(${category.image_url})`,
@@ -35,7 +37,7 @@ function CategoryCard({
     >
       {/* Background gradient if no image */}
       {!category.image_url && (
-        <div className="absolute inset-0 bg-gradient-to-br from-forest-800 via-forest-900 to-forest-800 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 bg-linear-to-br from-forest-800 via-forest-900 to-forest-800 flex items-center justify-center pointer-events-none">
           <svg
             className="w-12 h-12 text-gold-500/20 stroke-[1.2]"
             fill="none"
@@ -53,18 +55,11 @@ function CategoryCard({
 
       {/* Dark tint gradient overlay for text legibility */}
       <div
-        className="absolute inset-0 transition-all duration-350"
+        className="absolute inset-0 rounded-3xl border border-forest-700/90 group-hover:border-gold-500/80 transition-all duration-300 pointer-events-none"
         style={{
           background:
             'linear-gradient(to top, rgba(13,31,21,0.92) 0%, rgba(13,31,21,0.45) 55%, rgba(13,31,21,0.1) 100%)',
-          borderRadius: '20px',
         }}
-      />
-
-      {/* Hover gold ring */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-350 pointer-events-none"
-        style={{ borderRadius: '20px', border: '1.5px solid rgba(201,169,110,0.8)' }}
       />
 
       {/* Category Labels */}
@@ -128,7 +123,7 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
           </h2>
         </div>
 
-        {/* Desktop asymmetric 3-row, 7-slot collage */}
+        {/* Desktop symmetric 3-row, 7-slot collage */}
         <div
           className="hidden md:grid gap-4"
           style={{
@@ -136,7 +131,7 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
               "slot1 slot2 slot3" 210px
               "slot1 slot4 slot3" 185px
               "slot5 slot6 slot7" 180px
-            / 1.35fr 1fr 1.2fr`,
+            / 1.2fr 1fr 1.2fr`,
           }}
         >
           {COLLAGE_SLOT_CONFIGS.map((slotConfig, index) => {
@@ -145,8 +140,8 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
               return (
                 <div
                   key={slotConfig.gridArea}
-                  style={{ gridArea: slotConfig.gridArea, borderRadius: '20px' }}
-                  className="rounded-[20px] border border-dashed border-forest-700/40 bg-forest-900/30 flex items-center justify-center p-4 text-center"
+                  style={{ gridArea: slotConfig.gridArea, borderRadius: '24px' }}
+                  className="w-full h-full rounded-3xl border border-dashed border-forest-700/40 bg-forest-900/30 flex items-center justify-center p-4 text-center"
                 >
                   <span className="text-xs text-forest-500 font-medium">Coming Soon</span>
                 </div>
@@ -165,10 +160,11 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
 
         {/* Mobile 2-column grid */}
         <div className="md:hidden grid grid-cols-2 gap-3">
-          {categories.map((cat) => (
+          {categories.map((cat, index) => (
             <CategoryCard
               key={cat.id}
               category={cat}
+              className={index === categories.length - 1 && categories.length % 2 === 1 ? 'col-span-2' : ''}
               style={{ height: '180px' }}
             />
           ))}
