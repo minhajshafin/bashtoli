@@ -36,6 +36,12 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
     null
   )
 
+  const [prevInitialSlides, setPrevInitialSlides] = useState(initialSlides)
+  if (initialSlides !== prevInitialSlides) {
+    setPrevInitialSlides(initialSlides)
+    setSlides(initialSlides)
+  }
+
   // Upload state
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -202,6 +208,9 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
       })
 
       if (res.success) {
+        if (res.slide) {
+          setSlides((prev) => [...prev, res.slide!])
+        }
         setFeedback({ type: 'success', message: 'Hero slide uploaded and added!' })
         setNewAltText('')
         if (fileInputRef.current) fileInputRef.current.value = ''
@@ -546,7 +555,12 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
               <button
                 type="button"
                 disabled={isUploading}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={() => {
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = ''
+                    fileInputRef.current.click()
+                  }
+                }}
                 className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700 disabled:opacity-50 transition-colors cursor-pointer"
               >
                 {isUploading ? (
