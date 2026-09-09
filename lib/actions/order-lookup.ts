@@ -2,6 +2,8 @@
 
 import { createAdminClient } from '@/lib/supabase/server'
 import { orderLookupSchema } from '@/lib/validations/order-lookup'
+import { headers } from 'next/headers'
+import { checkOrderLookupRateLimit } from '@/lib/supabase/rate-limit'
 
 export type OrderLookupActionState = {
   error: string | null
@@ -17,6 +19,15 @@ export async function lookupOrder(formData: {
   order_number: string
   phone: string
 }): Promise<OrderLookupActionState> {
+  // 0. Rate limiting check (sliding window 5 req / 60 s per IP)
+  const reqHeaders = await headers()
+  const rl = await checkOrderLookupRateLimit(reqHeaders)
+  if (rl.limited) {
+    return {
+      error: `Too many lookup attempts. Please wait ${rl.retryAfter} seconds before trying again.`,
+    }
+  }
+
   // 1. Zod schema validation
   const parsed = orderLookupSchema.safeParse(formData)
   if (!parsed.success) {

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
 import { MAX_FEATURED_CATEGORIES } from '@/lib/validations/category-collage'
+import { unstable_rethrow } from 'next/navigation'
 
 /**
  * Fetch featured categories for the storefront homepage 7-slot collage.
@@ -65,6 +66,7 @@ export async function getFeaturedCollageCategories(): Promise<FeaturedCategoryIt
       product_count: countMap[cat.id] || 0,
     }))
   } catch (err) {
+    unstable_rethrow(err)
     console.warn('[CategoryCollage] Query error:', err)
     return []
   }
@@ -127,6 +129,7 @@ export async function getAdminCategoryCollageData(): Promise<{
 
     return { featured, available, error: null }
   } catch (err) {
+    unstable_rethrow(err)
     return {
       featured: [],
       available: [],

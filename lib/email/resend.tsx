@@ -28,8 +28,9 @@ interface OrderInfo {
 }
 
 /**
- * Fires email notifications asynchronously (fire-and-forget).
- * Logs failure but never blocks caller execution.
+ * Sends email notifications reliably within serverless lifecycle.
+ * Awaits both admin alert and customer confirmation to ensure Vercel
+ * serverless execution context does not freeze before HTTP sockets complete.
  */
 export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) {
   const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'admin@example.com'
@@ -41,74 +42,82 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
     return
   }
 
+  const dispatches: Promise<void>[] = []
+
   // 1. Send Admin Alert Email
-  resend.emails
-    .send({
-      from: 'Bashtoli Orders <orders@bashtoli.com>',
-      to: adminEmail,
-      subject: `New Order ${order.order_number} - ৳${Number(order.total).toLocaleString()}`,
-      react: (
-        <OrderAlertEmail
-          orderNumber={order.order_number}
-          customerName={order.customer_name}
-          phone={order.phone}
-          address={order.address}
-          fulfillmentType={order.fulfillment_type}
-          deliveryZone={order.delivery_zone || null}
-          deliveryFee={Number(order.delivery_fee)}
-          subtotal={Number(order.subtotal)}
-          total={Number(order.total)}
-          items={items}
-        />
-      ),
-    })
-    .then((res) => {
-      if (res.error) {
-        console.error(`[Resend Error] Admin alert send failed for ${order.order_number}:`, res.error)
-      } else {
-        console.log(`[Resend Success] Admin alert sent for ${order.order_number}: ID ${res.data?.id}`)
+  dispatches.push(
+    (async () => {
+      try {
+        const res = await resend.emails.send({
+          from: 'Bashtoli Orders <orders@bashtoli.com>',
+          to: adminEmail,
+          subject: `New Order ${order.order_number} - ৳${Number(order.total).toLocaleString()}`,
+          react: (
+            <OrderAlertEmail
+              orderNumber={order.order_number}
+              customerName={order.customer_name}
+              phone={order.phone}
+              address={order.address}
+              fulfillmentType={order.fulfillment_type}
+              deliveryZone={order.delivery_zone || null}
+              deliveryFee={Number(order.delivery_fee)}
+              subtotal={Number(order.subtotal)}
+              total={Number(order.total)}
+              items={items}
+            />
+          ),
+        })
+        if (res.error) {
+          console.error(`[Resend Error] Admin alert send failed for ${order.order_number}:`, res.error)
+        } else {
+          console.log(`[Resend Success] Admin alert sent for ${order.order_number}: ID ${res.data?.id}`)
+        }
+      } catch (err) {
+        console.error(`[Resend Connection Error] Admin alert catch for ${order.order_number}:`, err)
       }
-    })
-    .catch((err) => {
-      console.error(`[Resend Connection Error] Admin alert catch for ${order.order_number}:`, err)
-    })
+    })()
+  )
 
   // 2. Send Customer Confirmation Email (if email was provided at checkout)
   if (order.guest_email && order.guest_email.trim() !== '') {
-    resend.emails
-      .send({
-        from: 'Bashtoli <orders@bashtoli.com>',
-        to: order.guest_email,
-        subject: `Your Bashtoli Order ${order.order_number} has been received!`,
-        react: (
-          <OrderConfirmationEmail
-            orderNumber={order.order_number}
-            customerName={order.customer_name}
-            address={order.address}
-            total={Number(order.total)}
-            items={items}
-          />
-        ),
-      })
-      .then((res) => {
-        if (res.error) {
+    dispatches.push(
+      (async () => {
+        try {
+          const res = await resend.emails.send({
+            from: 'Bashtoli <orders@bashtoli.com>',
+            to: order.guest_email!.trim(),
+            subject: `Your Bashtoli Order ${order.order_number} has been received!`,
+            react: (
+              <OrderConfirmationEmail
+                orderNumber={order.order_number}
+                customerName={order.customer_name}
+                address={order.address}
+                total={Number(order.total)}
+                items={items}
+              />
+            ),
+          })
+          if (res.error) {
+            console.error(
+              `[Resend Error] Customer confirmation send failed to ${order.guest_email} for ${order.order_number}:`,
+              res.error
+            )
+          } else {
+            console.log(
+              `[Resend Success] Customer confirmation sent to ${order.guest_email}: ID ${res.data?.id}`
+            )
+          }
+        } catch (err) {
           console.error(
-            `[Resend Error] Customer confirmation send failed to ${order.guest_email} for ${order.order_number}:`,
-            res.error
-          )
-        } else {
-          console.log(
-            `[Resend Success] Customer confirmation sent to ${order.guest_email}: ID ${res.data?.id}`
+            `[Resend Connection Error] Customer confirmation catch for ${order.order_number}:`,
+            err
           )
         }
-      })
-      .catch((err) => {
-        console.error(
-          `[Resend Connection Error] Customer confirmation catch for ${order.order_number}:`,
-          err
-        )
-      })
+      })()
+    )
   }
+
+  await Promise.allSettled(dispatches)
 }
 
 export interface SuggestionEmailData {

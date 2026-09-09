@@ -22,7 +22,23 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
   if (!user) return { orders: [], error: 'Not authenticated' }
 
   try {
-    // Get customer profile (for phone number matching)
+    // 1. Try atomic database RPC
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: rpcOrders, error: rpcError } = await (supabase as any).rpc('find_unclaimed_guest_orders')
+
+    if (!rpcError && rpcOrders) {
+      return {
+        orders: rpcOrders.map((o: { id: string; order_number: string; created_at: string; total: number | string }) => ({
+          id: o.id,
+          order_number: o.order_number,
+          created_at: o.created_at,
+          total: Number(o.total),
+        })),
+        error: null,
+      }
+    }
+
+    // 2. Fallback to direct query (works once SELECT RLS policy from migration 019 is active)
     const { data: profile } = await supabase
       .from('profiles')
       .select('phone')
@@ -73,7 +89,7 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
 /**
  * Server Action: Claims specific guest orders and associates them with the customer profile.
  */
-export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ error: string | null; success?: boolean }> {
+export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ error: string | null; success?: boolean; claimed?: number }> {
   const supabase = await createClient()
   const {
     data: { user },
@@ -86,38 +102,20 @@ export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ erro
       return { error: 'No orders selected.' }
     }
 
-    // Update orders where ID is in the list, user_id is null, and verify matching phone/email for security
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('phone')
-      .eq('id', user.id)
-      .maybeSingle()
+    // Execute atomic claim_guest_orders RPC (bypasses customer UPDATE RLS securely via SECURITY DEFINER)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: claimedCount, error: rpcError } = await (supabase as any).rpc('claim_guest_orders', {
+      p_order_ids: orderIds,
+    })
 
-    const phone = profile?.phone || ''
-    const email = user.email || ''
-
-    // Match conditions check again on update for strict RLS security
-    let updateQuery = supabase
-      .from('orders')
-      .update({ user_id: user.id })
-      .in('id', orderIds)
-      .is('user_id', null)
-
-    if (phone && email) {
-      updateQuery = updateQuery.or(`phone.eq.${encodeURIComponent(phone)},guest_email.eq.${encodeURIComponent(email)}`)
-    } else if (phone) {
-      updateQuery = updateQuery.eq('phone', phone)
-    } else {
-      updateQuery = updateQuery.eq('guest_email', email)
+    if (rpcError) {
+      console.error('RPC claim_guest_orders error:', rpcError)
+      throw rpcError
     }
-
-    const { error } = await updateQuery
-
-    if (error) throw error
 
     revalidatePath('/account/orders')
     revalidatePath('/account')
-    return { error: null, success: true }
+    return { error: null, success: true, claimed: claimedCount ?? orderIds.length }
   } catch (err) {
     console.error('Error claiming guest orders:', err)
     return { error: 'Failed to claim orders.' }

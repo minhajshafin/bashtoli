@@ -15,14 +15,15 @@ interface CartItemProps {
 
 export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemProps) {
   // Determine if item is active and has stock
-  const isAvailable = dbStatus ? dbStatus.active === true : true
+  const isOutOfStock = dbStatus ? dbStatus.stock_qty <= 0 : false
+  const isAvailable = dbStatus ? dbStatus.active === true && dbStatus.stock_qty > 0 : true
   const maxStock = dbStatus ? dbStatus.stock_qty : 999
   const currentPrice = dbStatus ? dbStatus.price : item.price
 
   // Warning check: if price in database differs from snapshot
   const hasPriceChanged = dbStatus && dbStatus.price !== item.price
   // Warning check: if quantity is more than stock in database
-  const isOverstocked = dbStatus && item.qty > dbStatus.stock_qty
+  const isOverstocked = dbStatus && dbStatus.stock_qty > 0 && item.qty > dbStatus.stock_qty
 
   const lineTotal = currentPrice * item.qty
 
@@ -52,7 +53,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
             </h3>
             {!isAvailable && (
               <span className="rounded bg-rose-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-rose-700 uppercase">
-                Unavailable
+                {isOutOfStock ? 'Out of Stock' : 'Unavailable'}
               </span>
             )}
           </div>
@@ -71,6 +72,11 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
                 </span>
               )}
             </div>
+            {isOutOfStock && (
+              <p className="text-[10px] text-rose-600 font-bold">
+                This item is currently sold out. Please remove it from your bag to checkout.
+              </p>
+            )}
             {isOverstocked && (
               <p className="text-[10px] text-gold-600 font-bold">
                 Only {dbStatus?.stock_qty} left in stock. Quantity adjusted.

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/database.types'
+import { unstable_rethrow } from 'next/navigation'
 
 export type HeroSlideRow = Database['public']['Tables']['hero_slides']['Row']
 
@@ -37,6 +38,7 @@ export async function getStorefrontHeroSlides(): Promise<HeroSlideRow[]> {
 
     return data
   } catch (err) {
+    unstable_rethrow(err)
     console.warn('[HeroSlides] Query error, falling back to default slide:', err)
     return [DEFAULT_FALLBACK_SLIDE]
   }
@@ -63,6 +65,7 @@ export async function getAdminHeroSlides(): Promise<{
 
     return { slides: data || [], error: null }
   } catch (err) {
+    unstable_rethrow(err)
     return {
       slides: [],
       error: err instanceof Error ? err.message : 'Unknown database error',

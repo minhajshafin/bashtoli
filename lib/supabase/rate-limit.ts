@@ -41,6 +41,20 @@ function getClientIp(request: NextRequest): string {
   return '127.0.0.1'
 }
 
+export function getClientIpFromHeaders(headersList: { get(name: string): string | null }): string {
+  const realIp = headersList.get('x-real-ip')
+  if (realIp) return realIp
+
+  const forwarded = headersList.get('x-forwarded-for')
+  if (forwarded) {
+    const ips = forwarded.split(',').map((s) => s.trim()).filter(Boolean)
+    const ip = ips[ips.length - 1]
+    return ip === '::1' ? '127.0.0.1' : ip
+  }
+
+  return '127.0.0.1'
+}
+
 function isConfigured(): boolean {
   return Boolean(
     process.env.UPSTASH_REDIS_REST_URL &&
@@ -52,6 +66,7 @@ function isConfigured(): boolean {
 
 let authLimiter: Ratelimit | null = null
 let orderLimiter: Ratelimit | null = null
+let checkoutLimiter: Ratelimit | null = null
 
 function getAuthLimiter(): Ratelimit {
   if (!authLimiter) {
@@ -75,6 +90,18 @@ function getOrderLimiter(): Ratelimit {
     })
   }
   return orderLimiter
+}
+
+function getCheckoutLimiter(): Ratelimit {
+  if (!checkoutLimiter) {
+    checkoutLimiter = new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(5, '60 s'),
+      prefix: 'rl:checkout',
+      analytics: false,
+    })
+  }
+  return checkoutLimiter
 }
 
 // ── Public API ────────────────────────────────────────────────
@@ -107,15 +134,20 @@ export async function checkAuthRateLimit(
 }
 
 /**
- * Check the order-lookup rate limit for the given request's IP.
+ * Check the order-lookup rate limit for the given request or headers.
  * Returns `{ limited: false }` when Upstash is not configured (fail-open).
  */
 export async function checkOrderLookupRateLimit(
-  request: NextRequest
+  requestOrHeaders?: NextRequest | { get(name: string): string | null }
 ): Promise<RateLimitResult> {
   if (!isConfigured()) return { limited: false }
 
-  const ip = getClientIp(request)
+  let ip = '127.0.0.1'
+  if (requestOrHeaders && 'nextUrl' in requestOrHeaders) {
+    ip = getClientIp(requestOrHeaders as NextRequest)
+  } else if (requestOrHeaders && 'get' in requestOrHeaders) {
+    ip = getClientIpFromHeaders(requestOrHeaders)
+  }
 
   try {
     const { success, reset } = await getOrderLimiter().limit(ip)
@@ -124,6 +156,34 @@ export async function checkOrderLookupRateLimit(
     return { limited: true, retryAfter }
   } catch (err) {
     console.error('[rate-limit] Order limiter error:', err)
+    return { limited: false }
+  }
+}
+
+/**
+ * Check the checkout rate limit for the given request or headers.
+ * Limits to 5 checkout attempts / 60 s per IP to prevent automated COD flood.
+ * Returns `{ limited: false }` when Upstash is not configured (fail-open).
+ */
+export async function checkCheckoutRateLimit(
+  requestOrHeaders?: NextRequest | { get(name: string): string | null }
+): Promise<RateLimitResult> {
+  if (!isConfigured()) return { limited: false }
+
+  let ip = '127.0.0.1'
+  if (requestOrHeaders && 'nextUrl' in requestOrHeaders) {
+    ip = getClientIp(requestOrHeaders as NextRequest)
+  } else if (requestOrHeaders && 'get' in requestOrHeaders) {
+    ip = getClientIpFromHeaders(requestOrHeaders)
+  }
+
+  try {
+    const { success, reset } = await getCheckoutLimiter().limit(ip)
+    if (success) return { limited: false }
+    const retryAfter = Math.ceil((reset - Date.now()) / 1000)
+    return { limited: true, retryAfter }
+  } catch (err) {
+    console.error('[rate-limit] Checkout limiter error:', err)
     return { limited: false }
   }
 }

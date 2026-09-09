@@ -4,8 +4,8 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { checkoutSchema } from '@/lib/validations/checkout'
 import type { CartItem } from '@/lib/cart/guest-cart'
 import { sendOrderEmails } from '@/lib/email/resend'
-
-
+import { headers } from 'next/headers'
+import { checkCheckoutRateLimit } from '@/lib/supabase/rate-limit'
 
 export type CheckoutActionState = {
   error: string | null
@@ -34,6 +34,15 @@ export async function submitCheckout(
   },
   cartItems: CartItem[]
 ): Promise<CheckoutActionState> {
+  // 0. Rate limiting check (sliding window 5 req / 60 s per IP)
+  const reqHeaders = await headers()
+  const rl = await checkCheckoutRateLimit(reqHeaders)
+  if (rl.limited) {
+    return {
+      error: `Too many checkout attempts. Please wait ${rl.retryAfter} seconds before trying again.`,
+    }
+  }
+
   if (!cartItems || cartItems.length === 0) {
     return { error: 'Your cart is empty. Please add items to proceed.' }
   }

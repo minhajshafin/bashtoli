@@ -35,10 +35,10 @@ export function BagClient() {
       for (const res of results) {
         statusMap[res.variant_id] = res
 
-        // Automatic adjustment: if current quantity exceeds database stock, cap it
+        // Automatic adjustment: if current quantity exceeds database stock, cap it (only if stock is available)
         const cartItem = cart.find((i) => i.variant_id === res.variant_id)
-        if (cartItem && res.active && cartItem.qty > res.stock_qty) {
-          updateQty(res.variant_id, Math.max(1, res.stock_qty))
+        if (cartItem && res.active && res.stock_qty > 0 && cartItem.qty > res.stock_qty) {
+          updateQty(res.variant_id, res.stock_qty)
         }
       }
       setDbStatuses(statusMap)
@@ -57,21 +57,22 @@ export function BagClient() {
     )
   }
 
-  // Check if cart has unavailable items (either missing from DB, inactive, or parent inactive)
-  const hasUnavailableItems = cart.some((item) => {
-    const dbStatus = dbStatuses[item.variant_id]
-    if (dbStatus) {
-      return !dbStatus.active
-    }
-    return false
-  })
+  // Check if cart has unavailable items (either missing from DB, inactive, or out of stock)
+  const hasUnavailableItems =
+    !isValidating &&
+    Object.keys(dbStatuses).length > 0 &&
+    cart.some((item) => {
+      const dbStatus = dbStatuses[item.variant_id]
+      if (!dbStatus) return true
+      return !dbStatus.active || dbStatus.stock_qty <= 0
+    })
 
   // Calculate dynamic subtotal using latest database price if validated, fallback to snapshot price
   const validatedSubtotal = cart.reduce((sum, item) => {
     const dbStatus = dbStatuses[item.variant_id]
     const price = dbStatus ? dbStatus.price : item.price
-    const isItemActive = dbStatus ? dbStatus.active : true
-    return isItemActive ? sum + price * item.qty : sum
+    const isItemAvailable = dbStatus ? dbStatus.active && dbStatus.stock_qty > 0 : true
+    return isItemAvailable ? sum + price * item.qty : sum
   }, 0)
 
   return (
