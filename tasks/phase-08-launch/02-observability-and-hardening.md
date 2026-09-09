@@ -38,12 +38,12 @@ Establish lightweight, production-grade observability, verify Upstash Redis rate
 
 ## Acceptance Criteria
 
-- [ ] Vercel Analytics receives real traffic events from preview/production deployments.
-- [ ] Upstash Redis rate limits enforce thresholds and return HTTP 429 / user-friendly error messages when exceeded.
-- [ ] Redis downtime simulation confirms site fails open without crashing checkout.
-- [ ] Production runtime logs capture unexpected 5xx errors with clean stack traces.
-- [ ] Security headers verified using browser DevTools or `curl -I`.
-- [ ] `npm audit` returns 0 vulnerabilities before launch.
+- [x] Vercel Analytics receives real traffic events from preview/production deployments.
+- [x] Upstash Redis rate limits enforce thresholds and return HTTP 429 / user-friendly error messages when exceeded.
+- [x] Redis downtime simulation confirms site fails open without crashing checkout.
+- [x] Production runtime logs capture unexpected 5xx errors with clean stack traces.
+- [x] Security headers verified using browser DevTools or `curl -I`.
+- [x] `npm audit` returns 0 vulnerabilities before launch.
 
 ## Dependencies
 
@@ -62,7 +62,7 @@ Establish lightweight, production-grade observability, verify Upstash Redis rate
 
 ## Definition of Done
 
-- [ ] Observability active on Vercel dashboard.
-- [ ] Rate limit thresholds tested and validated under concurrent test requests.
-- [ ] Security headers and audit verification checklist signed off.
-- [ ] No client bundle exposes server environment variables or service keys.
+- [x] Observability active on Vercel dashboard.
+- [x] Rate limit thresholds tested and validated under concurrent test requests.
+- [x] Security headers and audit verification checklist signed off.
+- [x] No client bundle exposes server environment variables or service keys.

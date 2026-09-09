@@ -4,8 +4,10 @@
 
 | Service | Role |
 |---|---|
-| Vercel | Next.js application hosting |
+| Vercel | Next.js application hosting & edge runtime |
 | Supabase | Database, auth, file storage |
+| Upstash | Serverless Redis for distributed rate limiting |
+| Resend | Transactional email notifications |
 
 ## Environments
 
@@ -13,13 +15,14 @@
 
 1. Clone repository
 2. Copy `.env.local.example` → `.env.local`
-3. Fill in Supabase and Resend credentials
+3. Fill in Supabase, Upstash Redis, and Resend credentials
 4. Run `npm run dev`
 
 ### Staging (Recommended)
 
 - Separate Supabase project or branch
 - Vercel preview/staging deployment
+- Upstash Redis staging database
 - Resend test mode
 - Used for owner review before launch (Phase 7–8)
 
@@ -27,9 +30,10 @@
 
 - Supabase production project
 - Vercel production deployment
+- Upstash Redis production REST credentials (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`)
 - Resend production API key
-- Sentry DSN configured
-- Custom domain (if applicable)
+- Vercel Web Analytics & Speed Insights enabled
+- Custom domain (`bashtoli.com`)
 
 ## Environment Variables
 
@@ -113,44 +117,101 @@ A default admin account has been created for the **development** Supabase projec
 - **Do not hardcode the UUID** in the repository — always paste it at run time.
 - For production: run the script once, then remove the UUID from your clipboard.
 
+## Rate Limiting & Abuse Prevention (Upstash Redis)
+
+Distributed rate limiting is enforced in `proxy.ts` (Next.js Edge middleware) and Server Actions using `@upstash/ratelimit` over HTTPS REST.
+
+### Active Limits
+
+| Key Prefix | Target Route / Action | Sliding Window Limit | Action on Exceeded |
+|---|---|---|---|
+| `rl:auth` | `/login`, `/signup`, `/forgot-password`, `/reset-password` | **10 requests / 60 seconds** per IP | HTTP 429 + `Retry-After` header |
+| `rl:order` | `/order/lookup`, `/order/:orderNumber` | **5 requests / 60 seconds** per IP | HTTP 429 + `Retry-After` header |
+| `rl:checkout` | `createOrderAction` (COD checkout submission) | **5 requests / 60 seconds** per IP | Friendly error toast in checkout UI |
+
+### Edge IP Extraction & Security
+
+Client IP is extracted in `lib/supabase/rate-limit.ts`:
+- Uses `x-real-ip` (set by Vercel edge infrastructure, immune to client header spoofing).
+- Falls back to the rightmost IP in `x-forwarded-for` (the entry appended by the trusted edge proxy, ignoring any client-injected prefixes).
+- Normalizes loopback `::1` to `127.0.0.1`.
+
+### Fail-Open Resilience Architecture
+
+If `UPSTASH_REDIS_REST_URL` is unconfigured, or if Upstash experiences temporary downtime or connection timeouts, all rate limiters automatically fail open (`{ limited: false }`) with diagnostic console errors. This ensures legitimate customer checkouts and logins are never blocked during infrastructure disruptions.
+
+### Operational Runbook: Rate Limit Management
+
+1. **Unblocking a Legitimate IP:**
+   If a legitimate user or office IP is temporarily rate limited:
+   ```bash
+   # Connect via Upstash CLI or Web Console
+   DEL rl:auth:<IP_ADDRESS>
+   DEL rl:checkout:<IP_ADDRESS>
+   ```
+2. **Adjusting Thresholds for Flash Sales / Promotions:**
+   Adjust the sliding window parameters in `lib/supabase/rate-limit.ts` (e.g. `Ratelimit.slidingWindow(20, '60 s')`) and deploy.
+
+---
+
+## Observability & Error Monitoring
+
+Bashtoli uses a zero-dependency, cloud-native observability stack optimized for Next.js on Vercel:
+
+1. **Vercel Web Analytics & Real User Monitoring (RUM):**
+   - Initialized via `<Analytics />` from `@vercel/analytics/react` in [`app/layout.tsx`](file:///home/billy/Projects/bashtoli/app/layout.tsx).
+   - Monitors live pageviews, referrers, and geo-distribution without cookies or PII collection.
+
+2. **Core Web Vitals & Speed Insights:**
+   - Tracks real-world Largest Contentful Paint (LCP), Interaction to Next Paint (INP), and Cumulative Layout Shift (CLS).
+   - Enabled via Content-Security-Policy headers allowing `https://va.vercel-scripts.com` and `https://vitals.vercel-insights.com`.
+
+3. **Vercel Serverless Function & Edge Runtime Logs:**
+   - Real-time streaming of all Server Action errors, failed database operations, and Resend email dispatches.
+   - Configured with alerts for any sudden spike in HTTP 5xx responses.
+
+---
+
 ## Launch Checklist (Phase 8)
 
 ### Pre-Deploy
 
-- [ ] All E2E tests passing
-- [ ] Sentry configured and receiving test events
-- [ ] Production environment variables set in Vercel
-- [ ] Supabase RLS policies reviewed
-- [ ] Resend domain verified (production)
-- [ ] Owner has entered real product catalog
-- [ ] About/Contact pages populated with business info
-- [ ] WhatsApp number configured
+- [ ] All 6 Playwright E2E suites passing (`npm run test:e2e`)
+- [ ] All 13 unit test suites passing (`npm test`)
+- [ ] 0 lint errors (`npm run lint`) and 0 vulnerabilities (`npm audit`)
+- [ ] Vercel Analytics active in RootLayout
+- [ ] Upstash Redis credentials set in Vercel production environment
+- [ ] Supabase RLS policies and guest order claiming RPC active
+- [ ] Resend domain verified (`orders@bashtoli.com`) with production API key
+- [ ] Owner has verified real product catalog, pricing, and initial stock
+- [ ] About/Contact pages and WhatsApp contact link populated
 
 ### Deploy
 
 - [ ] Deploy to Vercel production
-- [ ] Verify custom domain (if applicable)
-- [ ] Smoke test: browse → cart → checkout → admin order view
-- [ ] Verify email notifications (owner + customer)
+- [ ] Verify custom domain (`bashtoli.com`) SSL and DNS propagation
+- [ ] Smoke test: browse → cart → checkout → admin order inspection
+- [ ] Verify transactional email delivery (owner notification + customer receipt)
 
 ### Post-Launch
 
 - [ ] Handoff training session with owner/staff
-- [ ] Document admin dashboard usage for non-technical users
-- [ ] Monitor Sentry for first 48 hours
-- [ ] Confirm owner can manage products and orders independently
+- [ ] Review Vercel Analytics and Core Web Vitals over the first 48 hours
+- [ ] Monitor Upstash Redis usage and rate limiting analytics
 
 ## Rollback Plan
 
-- Vercel instant rollback to previous deployment
-- Database migrations should be backward-compatible or have down migrations
-- Keep staging environment available for hotfix verification
+- Vercel instant rollback to previous successful deployment.
+- Database migrations are backward-compatible.
+- Staging environment remains available for hotfix verification.
 
 ## Monitoring Post-Launch
 
 | Tool | What to Watch |
 |---|---|
-| Sentry | Unhandled errors, checkout failures |
-| Vercel Analytics | Page load times, traffic |
-| Supabase Dashboard | DB performance, storage usage |
-| Resend Dashboard | Email delivery rates |
+| Vercel Runtime Logs | Server Action errors, 5xx responses, Resend dispatches |
+| Vercel Analytics | Real-user page traffic, top referrers, bounce rate |
+| Vercel Speed Insights | Core Web Vitals (LCP < 2.5s, INP < 200ms, CLS < 0.1) |
+| Upstash Redis Console | Rate limiting key hits, command volume, latency |
+| Supabase Dashboard | Postgres connections, disk IOPS, auth sessions |
+| Resend Dashboard | Email delivery rates, bounce / spam reports |

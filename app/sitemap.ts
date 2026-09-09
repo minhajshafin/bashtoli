@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/lib/supabase/database.types'
 
 /**
- * Generates sitemap.xml dynamically on requests.
+ * Generates sitemap.xml dynamically on requests or at build time.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bashtoli.com'
@@ -35,7 +36,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   try {
-    const supabase = await createClient()
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+    if (!url || !key) return staticUrls
+
+    const supabase = createSupabaseClient<Database>(url, key, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    })
 
     // Fetch active products
     const { data: products } = await supabase
