@@ -332,6 +332,8 @@ The database schema is organized into **6 sequential, consolidated baseline migr
 | `005_row_level_security.sql` | Enables RLS on all 16 tables with non-recursive, hardened security policies. Restricts customer access to owned data, protects draft catalog items, isolates admin role updates, and prevents public listing of sensitive records. |
 | `006_storage.sql` | Provisions the `product-images` storage bucket (public CDN read, 5 MB limit, image MIME types) and establishes authenticated staff/admin upload, update, and delete policies while blocking anonymous metadata listing. |
 
+> **Tip (One-Click Dashboard Provisioning)**: For manual setup in the Supabase Web Dashboard SQL Editor, a concatenated master script is provided at [`supabase/scripts/master-schema.sql`](../supabase/scripts/master-schema.sql). Copy and paste this single file to provision the entire database in one click.
+
 ## 10. Security Hardening & Isolation Architecture
 
 - **`app_private` Schema**: Non-exposed schema hidden from PostgREST API. Internal security functions `is_admin()` and `is_staff_or_admin()` reside here to prevent unauthorized PostgREST RPC execution while remaining fully accessible to PostgreSQL's Row-Level Security engine.
