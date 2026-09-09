@@ -9,7 +9,6 @@ import {
   Copy,
   Check,
   Package,
-  ExternalLink,
 } from 'lucide-react'
 import {
   toggleProductActive,

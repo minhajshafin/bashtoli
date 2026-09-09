@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { ExternalLink, Shield, ShieldCheck, User } from 'lucide-react'
+import { ExternalLink, Shield, ShieldCheck } from 'lucide-react'
 import { getServerProfile } from '@/lib/supabase/get-server-profile'
 import { LogoutButton } from './logout-button'
 import { SidebarToggleButton } from './sidebar-toggle-button'

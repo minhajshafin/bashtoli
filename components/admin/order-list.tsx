@@ -12,7 +12,6 @@ import {
   ChevronRight,
   ArrowRight,
   Inbox,
-  Filter,
 } from 'lucide-react'
 import type { AdminOrderSummary } from '@/lib/queries/orders'
 

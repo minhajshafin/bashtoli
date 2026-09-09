@@ -6,7 +6,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Package,
 } from 'lucide-react'
 import {
   fetchAdminProducts,
