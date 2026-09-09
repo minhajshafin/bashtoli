@@ -38,16 +38,8 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const forwardedHost = request.headers.get('x-forwarded-host')
-      const isLocalEnv = process.env.NODE_ENV === 'development'
-
-      if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${target}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${target}`)
-      } else {
-        return NextResponse.redirect(`${origin}${target}`)
-      }
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || origin
+      return NextResponse.redirect(`${baseUrl}${target}`)
     }
   }
 
