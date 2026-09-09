@@ -44,6 +44,9 @@ Extends Supabase Auth users with application-specific data.
 | `name` | text | |
 | `slug` | text | Unique |
 | `sort_order` | integer | Display ordering |
+| `is_featured` | boolean | Homepage 7-slot category collage toggle |
+| `image_url` | text | Category cover photo URL |
+| `featured_order` | integer | Position in homepage collage (1-7) |
 | `created_at` | timestamptz | |
 
 ### products
@@ -196,6 +199,37 @@ Snapshot of purchased items at time of order.
 | `changed_by` | uuid (FK) | → profiles.id |
 | `changed_at` | timestamptz | |
 
+### hero_slides
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | uuid (PK) | |
+| `image_url` | text | Supabase Storage URL |
+| `alt_text` | text | Accessible image description |
+| `badge_text` | text | Pill badge label (e.g. "New Collection") |
+| `badge_color_preset` | text | `gold` \| `forest` \| `crimson` \| `ocean` \| `slate` |
+| `link_url` | text | Destination link (e.g. `/products`) |
+| `subtext` | text | Carousel subtitle |
+| `sort_order` | integer | Display ordering |
+| `active` | boolean | Toggle slide visibility |
+| `created_at` | timestamptz | |
+| `updated_at` | timestamptz | |
+
+### admin_audit_log
+
+Immutable security audit log of privileged administrative actions.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | uuid (PK) | |
+| `performed_by` | uuid (FK) | → profiles.id (admin who performed change) |
+| `action` | text | `promote` \| `demote` |
+| `target_user_id` | uuid | Target customer account |
+| `target_email` | text | Target email snapshot |
+| `old_role` | text | Previous role |
+| `new_role` | text | Assigned role |
+| `created_at` | timestamptz | Immutable timestamp |
+
 ## 3. Indexes
 
 Create upfront:
@@ -285,6 +319,25 @@ Example: `ORD-20260703-0042`
 - Sequential counter per day
 - Unique constraint + index on `orders.order_number`
 
-## 9. Migrations
+## 9. Consolidated Database Migrations
 
-SQL migrations will live in `supabase/migrations/`. Phase 1 creates all tables, indexes, RLS policies, and the first-admin bootstrap script.
+The database schema is organized into **6 sequential, consolidated baseline migrations** in `supabase/migrations/`:
+
+| Migration File | Description |
+|---|---|
+| `001_types_and_extensions.sql` | Enables PostgreSQL extensions (`uuid-ossp`, `pgcrypto`), creates application ENUMs (`user_role`, `fulfillment_type`, `order_status`, `delivery_zone`), and provisions the `app_private` security schema. |
+| `002_core_tables.sql` | DDL for all 16 application tables (`profiles`, `categories`, `products`, `product_images`, `product_options`, `product_option_values`, `product_variants`, `addresses`, `carts`, `cart_items`, `wishlist`, `orders`, `order_items`, `order_status_history`, `hero_slides`, `admin_audit_log`) with foreign key constraints, checks, and defaults. |
+| `003_indexes.sql` | High-performance query indexes for storefront navigation (`idx_products_category_id`, `idx_products_active`), variant lookups (`idx_variants_product_id`), featured collage (`idx_categories_featured`), hero slides (`idx_hero_slides_sort`), and order querying (`idx_orders_order_number`, `idx_orders_status`, `idx_orders_user_id`). |
+| `004_functions_and_triggers.sql` | Automated timestamp triggers (`set_updated_at`), audit log immutability trigger (`prevent_audit_log_modification`), auth user signup hook (`handle_new_user`), `app_private` helper functions (`is_admin`, `is_staff_or_admin`), advisory-locked order generator (`generate_order_number`), and atomic RPCs (`place_order`, `increment_stock`, `cart_add_or_increment`, `find_unclaimed_guest_orders`, `claim_guest_orders`). Hardened with `SET search_path = public` and least-privilege permission grants. |
+| `005_row_level_security.sql` | Enables RLS on all 16 tables with non-recursive, hardened security policies. Restricts customer access to owned data, protects draft catalog items, isolates admin role updates, and prevents public listing of sensitive records. |
+| `006_storage.sql` | Provisions the `product-images` storage bucket (public CDN read, 5 MB limit, image MIME types) and establishes authenticated staff/admin upload, update, and delete policies while blocking anonymous metadata listing. |
+
+## 10. Security Hardening & Isolation Architecture
+
+- **`app_private` Schema**: Non-exposed schema hidden from PostgREST API. Internal security functions `is_admin()` and `is_staff_or_admin()` reside here to prevent unauthorized PostgREST RPC execution while remaining fully accessible to PostgreSQL's Row-Level Security engine.
+- **Atomic Operations**:
+  - `place_order`: Computes server-authoritative financials directly from `product_variants` and verifies item availability within an atomic transaction.
+  - `increment_stock`: Atomically restores variant stock upon order cancellation.
+  - `cart_add_or_increment`: Atomically inserts or increments cart items using `ON CONFLICT DO UPDATE`.
+  - `claim_guest_orders`: Atomically binds unclaimed guest orders matching verified phone/email to the caller's `auth.uid()`.
+

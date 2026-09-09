@@ -57,7 +57,7 @@ Implement high-confidence E2E test specs using Playwright running in headless mo
 
 - All storefront routes and customer account features (Phases 3, 5).
 - Admin management panels and order workflow (Phases 2, 6).
-- Post-Phase 7 database RPCs (Migration `019_guest_order_claiming.sql`).
+- Post-Phase 7 database RPCs (Migration `004_functions_and_triggers.sql`).
 - Seed script (`scripts/seed-mock-products.ts`) to ensure test catalog predictability.
 
 ## Files to Modify

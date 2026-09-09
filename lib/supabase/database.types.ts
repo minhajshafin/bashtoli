@@ -527,6 +527,21 @@ export type Database = {
         }
         Returns: Json
       }
+      find_unclaimed_guest_orders: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          order_number: string
+          created_at: string
+          total: number
+        }[]
+      }
+      claim_guest_orders: {
+        Args: {
+          p_order_ids?: string[] | null
+        }
+        Returns: number
+      }
     }
     Enums: {
       delivery_zone: 'inside_dhaka' | 'outside_dhaka'

@@ -33,13 +33,13 @@ Guest checkout is proven before account features. Real product data is available
 
 ## Phase 8: QA & Launch Details
 
-Phase 8 was modernized to incorporate all post-Phase 7 custom features, database migrations (001–019), security hardenings, Upstash Redis rate limiters, and admin operations.
+Phase 8 was modernized to incorporate all post-Phase 7 custom features, consolidated database migrations (001–006), security hardenings, Upstash Redis rate limiters, and admin operations.
 
 | Task | Title | Scope |
 |---|---|---|
 | [01-expand-e2e-tests.md](./phase-08-launch/01-expand-e2e-tests.md) | Full-Suite E2E Playwright Tests | Guest checkout, admin order fulfillment/status transitions, guest order claiming via RPC, wishlist persistence, storefront hero and 7-slot category collage managers, and customer suggestions with honeypot bot defense |
 | [02-observability-and-hardening.md](./phase-08-launch/02-observability-and-hardening.md) | Observability, Rate Limiting & Hardening | Zero-dependency observability with `@vercel/analytics`, Upstash Redis rate limit verification (`rl:auth`, `rl:order`, `rl:checkout`), Vercel runtime logging, and security headers |
-| [03-production-deployment.md](./phase-08-launch/03-production-deployment.md) | Production Deployment Runbook | Sequential application of all 19 Supabase migrations, dual storage buckets (`product-images`, `category-covers`), `app_private` role security, Upstash cluster, Resend custom domain, and staging smoke test sequence |
+| [03-production-deployment.md](./phase-08-launch/03-production-deployment.md) | Production Deployment Runbook | Sequential application of 6 consolidated Supabase migrations, storage bucket configuration, `app_private` role security, Upstash cluster, Resend custom domain, and staging smoke test sequence |
 | [04-owner-handoff.md](./phase-08-launch/04-owner-handoff.md) | Owner Handoff, Admin Guide & Incident Runbook | Delivery of `docs/admin-guide.md` covering catalog/variants/images, order fulfillment lifecycle, storefront hero/collage management, staff permissions, and incident runbook (restock recovery, cancellations, rate limit unblocking) |
 
 ## Related Documentation

@@ -5,21 +5,19 @@
 
 ## Goal
 
-Deploy the application to Vercel production with a dedicated Supabase production project (running all 19 migrations 001–019, dual storage buckets, and `app_private` role hardening), Upstash Redis rate limiter cluster, Resend email domain verification, staging preview validation, and verified end-to-end smoke testing before custom domain cutover.
+Deploy the application to Vercel production with a dedicated Supabase production project (running the 6 consolidated baseline migrations 001–006, storage bucket configuration, and `app_private` role hardening), Upstash Redis rate limiter cluster, Resend email domain verification, staging preview validation, and verified end-to-end smoke testing before custom domain cutover.
 
 ## Requirements
 
 1. **Supabase Production Project Provisioning**:
    - Create a dedicated Supabase production project in a close regional data center (e.g. `ap-southeast-1` Singapore for optimal Bangladesh latency).
-   - Apply all 19 database migrations in chronological sequence from `supabase/migrations/`:
-     - `001_initial_schema.sql` through `008_rls_policies.sql` (core tables, audit logs, RLS).
-     - `009_order_status_history.sql` through `015_suggestions_honeypot.sql` (status history, customer accounts, hero slides, category collage, suggestions).
-     - `016_category_covers_storage.sql` (dual bucket policy).
-     - `017_fix_product_images_insert_policy.sql` & `018_admin_roles_hardening.sql` (`app_private` schema isolation for `is_admin` and `is_staff_or_admin`).
-     - `019_guest_order_claiming.sql` (`claim_guest_orders` atomic security-definer RPC).
-   - Configure Storage Buckets:
-     - `product-images`: public, 2 MB file size limit, allowed MIME types: `image/jpeg`, `image/png`, `image/webp`.
-     - `category-covers`: public, 3 MB file size limit, allowed MIME types: `image/jpeg`, `image/png`, `image/webp`.
+   - Apply the 6 consolidated baseline database migrations in sequence from `supabase/migrations/`:
+     - `001_types_and_extensions.sql` (extensions, enums, `app_private` schema).
+     - `002_core_tables.sql` (all 16 application tables with FKs and constraints).
+     - `003_indexes.sql` (performance indexes for storefront, search, and admin).
+     - `004_functions_and_triggers.sql` (triggers, order number generator, atomic RPCs, role helpers).
+     - `005_row_level_security.sql` (hardened, non-circular RLS policies for all 16 tables).
+     - `006_storage.sql` (`product-images` storage bucket and security policies).
    - Verify `app_private` schema is non-exposed to PostgREST public API schema list.
    - Execute bootstrap script (`supabase/scripts/bootstrap-admin.sql`) to set up initial store owner admin account.
 
