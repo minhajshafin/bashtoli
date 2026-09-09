@@ -1,58 +1,45 @@
-# Open Items
+# Decision Log & Open Items
 
-Decisions pending confirmation with the business owner. These affect implementation details and should be resolved before the relevant phase begins.
+This document tracks technical, operational, and business policy decisions made throughout the project lifecycle, along with deferred features earmarked for post-launch releases (v1.1+).
 
-## Business Policy
+---
 
-| Item | Priority | Impact | Relevant Phase |
+## 1. Resolved Decisions (v1.0 Launch Scope)
+
+All foundational architectural, operational, and policy decisions for the initial production launch have been resolved and implemented in code:
+
+| Decision Area | Status | Final Resolution | Implemented In |
 |---|---|---|---|
-| Made-to-order products and lead time display | Medium | Additional product field + PDP display | Phase 3 (Storefront) |
-| Minimum order amount (if any) | Low | Checkout validation rules | Phase 4 (Checkout) |
+| **Delivery Fee Calculation** | ✅ Resolved | Zone-based flat rates: **৳70 inside Dhaka**, **৳120 outside Dhaka**. Store pickup is **৳0 (free)**. | `lib/config/delivery.ts`, `004_functions_and_triggers.sql` |
+| **Shipping Regions** | ✅ Resolved | Dhaka Metropolitan Area (`inside_dhaka`) and all other Bangladesh districts (`outside_dhaka`). | `checkout.tsx`, `orders` table |
+| **Payment Model** | ✅ Resolved | **Cash on Delivery (COD)** exclusively for v1. Customers pay courier upon parcel inspection. | `checkout` flow, PRD |
+| **Customer Cancellation Window** | ✅ Resolved | Customers can cancel strictly within **24 hours** of order placement and only while status is **`pending`**. Enforced by database RLS. | `005_row_level_security.sql`, `orders.ts` |
+| **Staff Access & Roles** | ✅ Resolved | Three-tier hierarchy (`customer`, `staff`, `admin`). Staff manage catalog and fulfillment; Admin manages staff accounts and audit logs. | `app_private` schema, `/admin/staff` |
+| **Image Storage Strategy** | ✅ Resolved | Single public Supabase storage bucket (`product-images`). File metadata listing restricted to authenticated staff/admins to prevent scraping. | `006_storage.sql` |
+| **Slug Generation** | ✅ Resolved | Automatic kebab-case slugification with server-side validation and database UNIQUE constraint. | `lib/validations/product.ts` |
+| **Storefront Visual Merchandising** | ✅ Resolved | Database-backed dynamic **Hero Carousel** and **7-slot Category Collage Grid** managed via `/admin/storefront`. | `components/admin/storefront-cms.tsx` |
+| **Customer Suggestions** | ✅ Resolved | Modal suggestion submission with silent honeypot anti-spam trap and Resend email delivery. | `lib/actions/suggestions.ts` |
+| **Rate Limiting Architecture** | ✅ Resolved | Serverless sliding-window rate limiting via **Upstash Redis** (`rl:auth`, `rl:order`, `rl:checkout`) with fail-open fault tolerance. | `lib/rate-limit.ts` |
+| **Observability Strategy** | ✅ Resolved | Zero-dependency `@vercel/analytics` for Core Web Vitals and Vercel edge runtime logging for errors. | `app/layout.tsx` |
+| **Database Migration Model** | ✅ Resolved | Consolidated from 19 iterative scripts into **6 clean baseline migrations** plus one-click master script. | `supabase/migrations/` |
 
-## Staff & Access
+---
 
-| Item | Priority | Impact | Relevant Phase |
+## 2. Deferred Features (v1.1+ Roadmap)
+
+The following items are deferred for post-launch evaluation after the store owner begins live fulfillment:
+
+| Feature | Priority | Technical Impact | Notes |
 |---|---|---|---|
-| Who counts as "staff" | Low | Add employees later, or owner-only for now? | Phase 6 |
+| **Local SMS Notifications** | Medium | Third-party SMS gateway integration (e.g. SSL Wireless or Twilio) | Automated SMS dispatched when courier marks parcel `out_for_delivery`. |
+| **Mobile Banking / Digital Payments** | High | bKash / Nagad / SSLCommerz gateway integration | Optional online prepayment before courier dispatch. |
+| **Formal Returns & Exchange Portal** | Low | New customer return request workflow | Owner handles returns via phone/WhatsApp during initial launch phase. |
+| **Advanced Sales & Inventory Reporting** | Low | Additional charts and CSV export endpoints | Basic operational metrics and low-stock alerts are sufficient for initial order volume. |
+| **Automated Inventory Reservation** | Low | Temporary cart hold with countdown timer | Not needed for current order volume; transactional stock decrement at order creation is sufficient. |
 
-## Branding & Content
+---
 
-| Item | Priority | Impact | Relevant Phase |
-|---|---|---|---|
-| Branding assets | **High** | Logo, colors, business info for footer/About page — needed before Phase 7 | Phase 7 (Polish) |
-| WhatsApp business number | **High** | Contact page and order confirmation link — needed before Phase 4 | Phase 4, Phase 7 |
+## 3. Maintenance & Handover Notice
 
-## Technical
-
-| Item | Priority | Impact | Relevant Phase |
-|---|---|---|---|
-| Supabase Storage bucket visibility | Medium | Public bucket (direct URL in `<Image>`) vs private (signed URLs). Recommend: **public** for simplicity | Phase 1 |
-| Slug generation strategy | Low | Auto-generate from product/category name; allow manual override; unique constraint enforced | Phase 2 |
-
-## Future (v1.1)
-
-| Item | Impact | Notes |
-|---|---|---|
-| SMS notifications on order status | Twilio or local provider | Deferred from v1; fast follow-up |
-| Return/refund flow | Affects order cancellation UI | Deferred until owner confirms policy |
-
-## Resolution Tracking
-
-| Item | Status | Decision | Date |
-|---|---|---|---|
-| Delivery fee logic | ✅ Resolved | Zone-based: ৳70 inside Dhaka, ৳120 outside Dhaka | 2026-07-05 |
-| Shipping/delivery areas | ✅ Resolved | Dhaka city (inside) and rest of Bangladesh (outside) | 2026-07-05 |
-| Delivery vs pickup | ✅ Resolved | Both offered: delivery (zoned fee) + pickup (free) | 2026-07-05 |
-| Order cancellation window | ✅ Resolved | Customer: ≤24h from creation, pending only. Admin: anytime non-final | 2026-07-05 |
-| Product return/cancellation policy | ✅ Resolved | No returns in v1; cancellation window defined above | 2026-07-05 |
-| Made-to-order products | Open | — | — |
-| Minimum order amount | Open | — | — |
-| Staff access model | Open | — | — |
-| Branding assets | Open | — | — |
-| WhatsApp business number | Open | — | — |
-| Supabase Storage bucket | Open | — | — |
-| Slug generation strategy | Open | — | — |
-| SMS notifications | Deferred (v1.1) | — | — |
-| Return/refund flow | Deferred (v1.1) | — | — |
-
-Update this table as decisions are made.
+> [!NOTE]
+> Following Phase 8 completion, this document serves as a permanent record of design decisions. The internal `tasks/` directory will be removed prior to client handoff.

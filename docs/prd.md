@@ -144,6 +144,8 @@ cancelled       cancelled  (both branches restock items)
 | **5. Customer accounts** | 8 | Signup/login, saved addresses, wishlist, cart merge on login |
 | **6. Admin ops** | 9 | Order management, status workflow, low-stock alerts, staff role management |
 | **7. Polish & content** | 10–11 | Responsive pass, About/Contact pages, owner finishes catalog, SEO pass, UI polish |
-| **8. QA & launch** | 12 | E2E tests, bug fixes, Sentry setup, Vercel deploy, handoff + training |
+| **8. QA & launch** | 12 | Playwright E2E suites, Upstash Redis rate limiting, schema consolidation, Vercel deploy, handoff & training |
 
-See [tasks/](../tasks/README.md) for detailed task breakdowns.
+> [!NOTE]
+> Detailed sprint task breakdowns were tracked in `tasks/` during active development. That directory will be removed upon final project handover to the client, leaving `docs/` as the permanent documentation set.
+
