@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { createAdminClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 /**
  * Generates sitemap.xml dynamically on requests.
@@ -20,10 +20,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
   ]
 
   try {
-    const supabase = createAdminClient()
+    const supabase = await createClient()
 
     // Fetch active products
     const { data: products } = await supabase

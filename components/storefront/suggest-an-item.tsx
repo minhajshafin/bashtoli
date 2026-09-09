@@ -116,33 +116,54 @@ export function SuggestAnItem() {
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your name (optional)"
-                disabled={isSubmitting}
-                className="px-5 py-3 text-sm outline-none rounded-full bg-forest-800 border border-forest-700 text-cream-100 placeholder:text-forest-500 focus:border-gold-500 disabled:opacity-60 transition-colors"
-              />
-              <input
-                type="text"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                placeholder="Email or phone (optional)"
-                disabled={isSubmitting}
-                className="px-5 py-3 text-sm outline-none rounded-full bg-forest-800 border border-forest-700 text-cream-100 placeholder:text-forest-500 focus:border-gold-500 disabled:opacity-60 transition-colors"
-              />
+              <div>
+                <label htmlFor="suggestion-name" className="sr-only">
+                  Your name (optional)
+                </label>
+                <input
+                  id="suggestion-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name (optional)"
+                  aria-label="Your name (optional)"
+                  disabled={isSubmitting}
+                  className="w-full px-5 py-3 text-sm outline-none rounded-full bg-forest-800 border border-forest-700 text-cream-100 placeholder:text-forest-500 focus:border-gold-500 disabled:opacity-60 transition-colors"
+                />
+              </div>
+              <div>
+                <label htmlFor="suggestion-contact" className="sr-only">
+                  Email or phone (optional)
+                </label>
+                <input
+                  id="suggestion-contact"
+                  type="text"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  placeholder="Email or phone (optional)"
+                  aria-label="Email or phone (optional)"
+                  disabled={isSubmitting}
+                  className="w-full px-5 py-3 text-sm outline-none rounded-full bg-forest-800 border border-forest-700 text-cream-100 placeholder:text-forest-500 focus:border-gold-500 disabled:opacity-60 transition-colors"
+                />
+              </div>
             </div>
 
-            <textarea
-              value={suggestion}
-              onChange={(e) => setSuggestion(e.target.value)}
-              placeholder="What item would you like us to carry? Be as specific as you like — brand, type, price range…"
-              required
-              rows={3}
-              disabled={isSubmitting}
-              className="px-5 py-3.5 text-sm outline-none resize-none rounded-2xl bg-forest-800 border border-forest-700 text-cream-100 placeholder:text-forest-500 focus:border-gold-500 disabled:opacity-60 transition-colors leading-relaxed"
-            />
+            <div>
+              <label htmlFor="suggestion-message" className="sr-only">
+                What item would you like us to carry?
+              </label>
+              <textarea
+                id="suggestion-message"
+                value={suggestion}
+                onChange={(e) => setSuggestion(e.target.value)}
+                placeholder="What item would you like us to carry? Be as specific as you like — brand, type, price range…"
+                aria-label="What item would you like us to carry?"
+                required
+                rows={3}
+                disabled={isSubmitting}
+                className="w-full px-5 py-3.5 text-sm outline-none resize-none rounded-2xl bg-forest-800 border border-forest-700 text-cream-100 placeholder:text-forest-500 focus:border-gold-500 disabled:opacity-60 transition-colors leading-relaxed"
+              />
+            </div>
 
             {errorMessage && (
               <p className="text-xs text-rose-400 px-3 py-2 bg-rose-950/40 rounded-lg border border-rose-900/50">

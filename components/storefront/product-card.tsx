@@ -68,9 +68,8 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="group block cursor-pointer overflow-hidden rounded-2xl sm:rounded-[20px] bg-cream-200 transition-all duration-300"
+    <div
+      className="group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-[20px] bg-cream-200 transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -80,25 +79,27 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       {/* Image Container */}
       <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={altText}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
-            className="object-cover"
-            style={{
-              transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)',
-              transform: hovered ? 'scale(1.06)' : 'scale(1)',
-            }}
-          />
-        ) : (
-          <ProductImageSkeleton size="md" />
-        )}
+        <Link href={`/products/${product.slug}`} className="block w-full h-full">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={altText}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
+              className="object-cover"
+              style={{
+                transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)',
+                transform: hovered ? 'scale(1.06)' : 'scale(1)',
+              }}
+            />
+          ) : (
+            <ProductImageSkeleton size="md" />
+          )}
+        </Link>
 
         {/* Sold out overlay */}
         {isSoldOut && (
-          <div className="absolute inset-0 bg-forest-900/60 flex items-center justify-center z-20">
+          <div className="absolute inset-0 bg-forest-900/60 flex items-center justify-center z-20 pointer-events-none">
             <span className="rounded-full bg-rose-600 px-2.5 py-0.5 sm:px-3.5 sm:py-1 text-[10px] sm:text-xs font-bold tracking-wide text-white uppercase shadow-md">
               Sold Out
             </span>
@@ -108,7 +109,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Category tag (desktop only) */}
         {product.categories && (
           <span
-            className="hidden sm:inline-block absolute top-3 left-3 px-3 py-1 text-xs font-semibold z-10"
+            className="hidden sm:inline-block absolute top-3 left-3 px-3 py-1 text-xs font-semibold z-10 pointer-events-none"
             style={{
               backgroundColor: '#c9a96e',
               color: '#1a3326',
@@ -177,9 +178,9 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Info Section */}
-      <div className="p-3 sm:p-4">
+      <Link href={`/products/${product.slug}`} className="p-3 sm:p-4 block flex-1">
         <h3
-          className="text-xs sm:text-base font-medium text-forest-950 line-clamp-1 sm:line-clamp-2 mb-1"
+          className="text-xs sm:text-base font-medium text-forest-950 line-clamp-1 sm:line-clamp-2 mb-1 group-hover:text-forest-700 transition-colors"
           style={{ fontFamily: "'Fraunces', Georgia, serif" }}
         >
           {product.name}
@@ -193,7 +194,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-[10px] font-normal text-forest-500 ml-1">onwards</span>
           )}
         </p>
-      </div>
-    </Link>
+      </Link>
+    </div>
   )
 }
