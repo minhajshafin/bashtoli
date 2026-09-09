@@ -39,11 +39,13 @@ const WishlistContext = createContext<WishlistContextType | null>(null)
 export function WishlistProvider({
   children,
   isLoggedIn,
+  initialWishlistIds = [],
 }: {
   children: React.ReactNode
   isLoggedIn: boolean
+  initialWishlistIds?: string[]
 }) {
-  const [wishlistIds, setWishlistIds] = useState<string[]>([])
+  const [wishlistIds, setWishlistIds] = useState<string[]>(initialWishlistIds)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -54,15 +56,12 @@ export function WishlistProvider({
         if (guestIds.length > 0) {
           const res = await mergeGuestWishlistAction(guestIds)
           if (!res.error) {
-            // Only clear after successful merge to prevent data loss
             localStorage.removeItem(GUEST_WISHLIST_KEY)
-          } else {
-            console.error('Guest wishlist merge failed:', res.error)
           }
         }
-        // 2. Fetch authenticated user's wishlist
+        // 2. Fetch authenticated user's wishlist and merge with any existing optimistic items
         const dbIds = await fetchUserWishlistAction()
-        setWishlistIds(dbIds)
+        setWishlistIds((prev) => Array.from(new Set([...prev, ...dbIds])))
       } else {
         setWishlistIds(getGuestWishlist())
       }
@@ -80,9 +79,9 @@ export function WishlistProvider({
       const alreadyWishlisted = wishlistIds.includes(productId)
       const nextState = !alreadyWishlisted
 
-      // Optimistic state update
+      // Optimistic state update: immediate synchronous state change
       setWishlistIds((prev) =>
-        nextState ? [...prev, productId] : prev.filter((id) => id !== productId)
+        nextState ? Array.from(new Set([...prev, productId])) : prev.filter((id) => id !== productId)
       )
 
       if (nextState) {
@@ -103,7 +102,7 @@ export function WishlistProvider({
         if (res.error) {
           // Rollback on error
           setWishlistIds((prev) =>
-            alreadyWishlisted ? [...prev, productId] : prev.filter((id) => id !== productId)
+            alreadyWishlisted ? Array.from(new Set([...prev, productId])) : prev.filter((id) => id !== productId)
           )
           toast(res.error, 'error')
           return alreadyWishlisted

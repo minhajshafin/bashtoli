@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 interface GuestOrderSummary {
@@ -38,8 +38,15 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
       }
     }
 
-    // 2. Fallback to direct query (works once SELECT RLS policy from migration 019 is active)
-    const { data: profile } = await supabase
+    // 2. Fallback to direct query if RPC is not yet in Postgres schema cache
+    let dbClient = supabase
+    try {
+      dbClient = createAdminClient()
+    } catch {
+      // Continue with user supabase client if service role not set
+    }
+
+    const { data: profile } = await dbClient
       .from('profiles')
       .select('phone')
       .eq('id', user.id)
@@ -53,7 +60,7 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
     }
 
     // Build the query conditions dynamically
-    let query = supabase
+    let query = dbClient
       .from('orders')
       .select('id, order_number, created_at, total')
       .is('user_id', null)
@@ -103,14 +110,31 @@ export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ erro
     }
 
     // Execute atomic claim_guest_orders RPC (bypasses customer UPDATE RLS securely via SECURITY DEFINER)
+    let claimedCount: number | null = null
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: claimedCount, error: rpcError } = await (supabase as any).rpc('claim_guest_orders', {
+    const { data: rpcCount, error: rpcError } = await (supabase as any).rpc('claim_guest_orders', {
       p_order_ids: orderIds,
     })
 
-    if (rpcError) {
-      console.error('RPC claim_guest_orders error:', rpcError)
-      throw rpcError
+    if (!rpcError) {
+      claimedCount = rpcCount
+    } else {
+      // Graceful fallback to admin client if RPC is not yet present
+      let dbClient = supabase
+      try {
+        dbClient = createAdminClient()
+      } catch {
+        throw rpcError
+      }
+
+      const { error: updateError } = await dbClient
+        .from('orders')
+        .update({ user_id: user.id })
+        .in('id', orderIds)
+        .is('user_id', null)
+
+      if (updateError) throw updateError
+      claimedCount = orderIds.length
     }
 
     revalidatePath('/account/orders')

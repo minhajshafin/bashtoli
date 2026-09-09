@@ -10,7 +10,6 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({
-  variantId: _variantId,
   stockQty,
   onAddToCart,
   onBuyNow,

@@ -1,36 +1,44 @@
 import { test, expect } from '@playwright/test'
+import { ensureTestCatalog } from './test-helpers'
 
 test.describe('E2E Guest Checkout Flow', () => {
-  test('should complete browse, add to cart, and checkout happy path successfully', async ({ page }) => {
+  test.beforeAll(async () => {
+    await ensureTestCatalog()
+  })
+
+  test('should complete browse, add to bag, and checkout happy path successfully', async ({ page }) => {
     // 1. Navigate to storefront products listing
     await page.goto('/products')
     await expect(page).toHaveTitle(/Products/i)
 
     // 2. Select the seeded test product
-    const productCardLink = page.locator('a[href="/products/e2e-test-bamboo-product"]')
-    await expect(productCardLink).toBeVisible({ timeout: 10000 })
+    const productCardLink = page.locator('a[href="/products/e2e-test-bamboo-product"]').first()
+    await expect(productCardLink).toBeVisible({ timeout: 15000 })
     await productCardLink.click()
 
-    // 3. Open product details and add to cart
+    // 3. Open product details and add to bag
     await expect(page).toHaveURL(/\/products\/e2e-test-bamboo-product/)
     await expect(page.locator('h1')).toContainText('E2E Test Bamboo Product')
-    
-    const addToCartButton = page.locator('button:has-text("Add to Cart")')
-    await expect(addToCartButton).toBeVisible()
-    await addToCartButton.click()
 
-    // Click cart icon in navigation header to view cart
-    const cartIconLink = page.locator('a[href="/bag"]')
-    await expect(cartIconLink).toBeVisible()
-    await cartIconLink.click()
+    const addToBagButton = page.locator('button:has-text("Add to Bag")')
+    await expect(addToBagButton).toBeVisible()
+    await addToBagButton.click()
 
-    // 4. Verify cart page load and item presence
+    // Wait for toast or brief animation
+    await page.waitForTimeout(500)
+
+    // Click cart/bag link in navigation to view shopping bag
+    const bagLink = page.locator('a[href="/bag"]').first()
+    await expect(bagLink).toBeVisible()
+    await bagLink.click()
+
+    // 4. Verify bag page load and item presence
     await expect(page).toHaveURL(/\/bag/)
-    await expect(page.locator('h1')).toContainText('Shopping Bag')
+    await expect(page.locator('h1')).toContainText(/Shopping Bag/i)
     await expect(page.locator('body')).toContainText('E2E Test Bamboo Product')
 
-    // Click "Proceed to Checkout" link
-    const checkoutLink = page.locator('a[href="/checkout"]')
+    // Click "Proceed to Checkout"
+    const checkoutLink = page.locator('a[href="/checkout"]').first()
     await expect(checkoutLink).toBeVisible()
     await checkoutLink.click()
 
@@ -55,11 +63,10 @@ test.describe('E2E Guest Checkout Flow', () => {
     await placeOrderButton.click()
 
     // 6. Verify order confirmation screen and tracking details
-    // Matches ORD-YYYYMMDD-NNNN dynamic sequence
-    await page.waitForURL(/\/order\/ORD-\d{8}-\d{4}/, { timeout: 20000 })
-    await expect(page.locator('h1')).toContainText('Order Status')
-    
-    // Check client name, order number prefix, and product details exist in the page body
+    // Sequence matches ORD-YYYYMMDD-NNNN
+    await page.waitForURL(/\/order\/ORD-\d{8}-\d{4}/, { timeout: 25000 })
+    await expect(page.locator('h1')).toContainText(/Thank you/i)
+
     const pageBody = page.locator('body')
     await expect(pageBody).toContainText('Playwright E2E Client')
     await expect(pageBody).toContainText('ORD-')

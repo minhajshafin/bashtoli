@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useTransition } from 'react'
+import React, { useState } from 'react'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
 
 interface WishlistButtonProps {
@@ -23,17 +23,22 @@ export function WishlistButton({
   className = '',
 }: WishlistButtonProps) {
   const { isWishlisted: checkWishlist, toggleWishlist } = useWishlist()
-  const [isPending, startTransition] = useTransition()
+  const [isPending, setIsPending] = useState(false)
 
   const isWishlisted = checkWishlist(productId)
 
-  const handleToggle = (e: React.MouseEvent) => {
+  const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
-    startTransition(async () => {
+    if (isPending) return
+
+    setIsPending(true)
+    try {
       await toggleWishlist(productId, productName)
-    })
+    } finally {
+      setIsPending(false)
+    }
   }
 
   if (variant === 'card') {

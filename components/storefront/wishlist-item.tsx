@@ -3,8 +3,9 @@
 import React, { useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
-import { useWishlist } from '@/lib/wishlist/wishlist-context'
+import { removeFromWishlistAction } from '@/lib/actions/wishlist'
 
 interface WishlistItemProps {
   product: {
@@ -22,14 +23,15 @@ interface WishlistItemProps {
  * Renders product overview cards inside the customer wishlist grid with click-to-delete toggles.
  */
 export function WishlistItem({ product }: WishlistItemProps) {
-  const { toggleWishlist } = useWishlist()
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   const handleRemove = (e: React.MouseEvent) => {
     e.preventDefault() // prevent click routing to details page
     e.stopPropagation()
     startTransition(async () => {
-      await toggleWishlist(product.id, product.name)
+      await removeFromWishlistAction(product.id)
+      router.refresh()
     })
   }
 

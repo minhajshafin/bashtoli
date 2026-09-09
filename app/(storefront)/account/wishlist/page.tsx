@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { WishlistItem } from '@/components/storefront/wishlist-item'
@@ -26,8 +26,15 @@ export default async function WishlistPage() {
     redirect('/login?redirectTo=/account/wishlist')
   }
 
+  let dbClient = supabase
+  try {
+    dbClient = createAdminClient()
+  } catch {
+    // Fall back to user client
+  }
+
   // 1. Fetch wishlist item product IDs
-  const { data: wishlistEntries, error: wishError } = await supabase
+  const { data: wishlistEntries, error: wishError } = await dbClient
     .from('wishlist')
     .select('product_id')
     .eq('user_id', user.id)

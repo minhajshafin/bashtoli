@@ -9,6 +9,7 @@ export default function AuthError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  void _error
   return (
     <div className="flex min-h-[50vh] flex-col items-center justify-center px-4 text-center">
       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 text-rose-600 mb-4">

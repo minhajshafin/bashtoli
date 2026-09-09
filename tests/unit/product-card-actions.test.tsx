@@ -11,6 +11,7 @@ import type { ProductWithDetails } from '@/lib/queries/products'
 vi.mock('next/image', () => ({
   default: (props: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean }) => {
     const { fill: _fill, ...rest } = props
+    void _fill
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
     return <img {...rest} />
   },

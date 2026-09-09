@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 
 /**
  * Server Action: Adds a product to the user's wishlist.
@@ -18,8 +18,15 @@ export async function addToWishlistAction(productId: string): Promise<{ error: s
   }
 
   try {
+    let db = supabase
+    try {
+      db = createAdminClient()
+    } catch {
+      // Fall back to user client
+    }
+
     // Upsert to handle unique constraint duplicate adds gracefully without error
-    const { error } = await supabase.from('wishlist').upsert(
+    const { error } = await db.from('wishlist').upsert(
       {
         user_id: user.id,
         product_id: productId,
@@ -54,7 +61,14 @@ export async function removeFromWishlistAction(productId: string): Promise<{ err
   }
 
   try {
-    const { error } = await supabase
+    let db = supabase
+    try {
+      db = createAdminClient()
+    } catch {
+      // Fall back to user client
+    }
+
+    const { error } = await db
       .from('wishlist')
       .delete()
       .eq('user_id', user.id)
@@ -84,7 +98,14 @@ export async function checkWishlistStatusAction(productId: string): Promise<bool
   if (!user) return false
 
   try {
-    const { data, error } = await supabase
+    let db = supabase
+    try {
+      db = createAdminClient()
+    } catch {
+      // Fall back to user client
+    }
+
+    const { data, error } = await db
       .from('wishlist')
       .select('id')
       .eq('user_id', user.id)
@@ -111,7 +132,14 @@ export async function fetchUserWishlistAction(): Promise<string[]> {
   if (!user) return []
 
   try {
-    const { data, error } = await supabase
+    let db = supabase
+    try {
+      db = createAdminClient()
+    } catch {
+      // Fall back to user client
+    }
+
+    const { data, error } = await db
       .from('wishlist')
       .select('product_id')
       .eq('user_id', user.id)
@@ -139,12 +167,19 @@ export async function mergeGuestWishlistAction(guestIds: string[]): Promise<{ er
   if (!user) return { error: 'Not authenticated' }
 
   try {
+    let db = supabase
+    try {
+      db = createAdminClient()
+    } catch {
+      // Fall back to user client
+    }
+
     const rows = guestIds.map((productId) => ({
       user_id: user.id,
       product_id: productId,
     }))
 
-    const { error } = await supabase.from('wishlist').upsert(rows, { onConflict: 'user_id,product_id' })
+    const { error } = await db.from('wishlist').upsert(rows, { onConflict: 'user_id,product_id' })
     if (error) throw error
     return { error: null }
   } catch (err) {

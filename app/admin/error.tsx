@@ -7,6 +7,7 @@ export default function AdminError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  void _error
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
       <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-red-100 text-red-600 mb-4">

@@ -80,7 +80,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     }
 
     initCart()
-  }, [isLoggedIn])
+  }, [isLoggedIn, toast])
 
   const cart = state.cart
   const isLoaded = state.isLoaded

@@ -44,14 +44,14 @@ Implement high-confidence E2E test specs using Playwright running in headless mo
 
 ## Acceptance Criteria
 
-- [ ] `tests/e2e/checkout.spec.ts` passes consistently.
-- [ ] `tests/e2e/admin-orders.spec.ts` verifies order fulfillment and status transitions.
-- [ ] `tests/e2e/guest-order-claim.spec.ts` verifies guest order detection and claiming via RPC.
-- [ ] `tests/e2e/account-wishlist.spec.ts` verifies card heart toggle and `/account/wishlist` page.
-- [ ] `tests/e2e/admin-storefront.spec.ts` verifies hero slide and collage updates on homepage.
-- [ ] `tests/e2e/suggestions.spec.ts` verifies item suggestion submission and honeypot guard.
-- [ ] `npm run test:e2e` executes all tests without flakiness in headless mode.
-- [ ] Test execution guidelines and CI configurations documented in `docs/testing.md`.
+- [x] `tests/e2e/checkout.spec.ts` passes consistently.
+- [x] `tests/e2e/admin-orders.spec.ts` verifies order fulfillment and status transitions.
+- [x] `tests/e2e/guest-order-claim.spec.ts` verifies guest order detection and claiming via RPC.
+- [x] `tests/e2e/account-wishlist.spec.ts` verifies card heart toggle and `/account/wishlist` page.
+- [x] `tests/e2e/admin-storefront.spec.ts` verifies hero slide and collage updates on homepage.
+- [x] `tests/e2e/suggestions.spec.ts` verifies item suggestion submission and honeypot guard.
+- [x] `npm run test:e2e` executes all tests without flakiness in headless mode.
+- [x] Test execution guidelines and CI configurations documented in `docs/testing.md`.
 
 ## Dependencies
 
@@ -74,7 +74,7 @@ Implement high-confidence E2E test specs using Playwright running in headless mo
 
 ## Definition of Done
 
-- [ ] All 6 E2E test suites pass deterministically (`npm run test:e2e`).
-- [ ] Playwright runs cleanly in CI and local environments.
-- [ ] No race conditions, unhandled rejections, or flaky timeouts.
-- [ ] Test documentation completed in `docs/testing.md`.
+- [x] All 6 E2E test suites pass deterministically (`npm run test:e2e`).
+- [x] Playwright runs cleanly in CI and local environments.
+- [x] No race conditions, unhandled rejections, or flaky timeouts.
+- [x] Test documentation completed in `docs/testing.md`.
