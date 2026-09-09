@@ -85,10 +85,13 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
       >
         {activeSlides.map((s, i) => {
           const content = (
-            <img
+            <Image
               src={s.image_url}
               alt={s.alt_text || 'Bashtoli Stationery'}
-              className="w-full h-full object-cover"
+              fill
+              priority={i === 0}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
+              className="object-cover"
               style={{
                 filter: 'brightness(0.92) saturate(1.1)',
               }}
@@ -106,7 +109,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
               }}
             >
               {s.link_url ? (
-                <Link href={s.link_url} className="block w-full h-full">
+                <Link href={s.link_url} className="block w-full h-full relative">
                   {content}
                 </Link>
               ) : (

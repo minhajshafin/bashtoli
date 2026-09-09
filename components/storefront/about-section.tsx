@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function AboutSection() {
   return (
@@ -10,13 +11,13 @@ export function AboutSection() {
     >
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10 items-center">
         {/* Image */}
-        <div className="shrink-0 w-full md:w-56 lg:w-64">
-          <img
+        <div className="relative shrink-0 w-full md:w-56 lg:w-64 aspect-square overflow-hidden rounded-[20px]">
+          <Image
             src="https://images.unsplash.com/photo-1694754920848-8855ee3ff364?w=500&h=500&fit=crop&auto=format"
             alt="Cozy stationery setup with notebook and candle"
-            className="w-full object-cover rounded-[20px]"
-            style={{ aspectRatio: '1/1' }}
-            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 224px, 256px"
+            className="object-cover"
           />
         </div>
 

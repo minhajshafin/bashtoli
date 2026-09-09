@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/database.types'
+import { cache } from 'react'
 
 export type ProductVariantRow = Database['public']['Tables']['product_variants']['Row']
 export type ProductImageRow = Database['public']['Tables']['product_images']['Row']
@@ -19,8 +20,9 @@ export interface ProductDetailData {
 
 /**
  * Fetch all details for a product by slug, filtering for active state.
+ * Wrapped in React.cache() to deduplicate requests between generateMetadata and Page render.
  */
-export async function getProductDetail(slug: string): Promise<ProductDetailData | null> {
+export const getProductDetail = cache(async (slug: string): Promise<ProductDetailData | null> => {
   const supabase = await createClient()
 
   // 1. Fetch active product and its category
@@ -110,4 +112,4 @@ export async function getProductDetail(slug: string): Promise<ProductDetailData 
     variants: variants || [],
     options: structuredOptions,
   }
-}
+})

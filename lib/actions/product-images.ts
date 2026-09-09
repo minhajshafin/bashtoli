@@ -205,18 +205,29 @@ export async function saveProductImageOrder(
     return { error: err instanceof Error ? err.message : 'Unauthorized.' }
   }
 
-  let productId = ''
+  if (!imagesOrder || imagesOrder.length === 0) {
+    return { error: null }
+  }
 
+  // 1. Batch fetch all targeted images in a single query
+  const ids = imagesOrder.map((i) => i.id)
+  const { data: currentRows, error: fetchErr } = await supabase
+    .from('product_images')
+    .select('id, product_id, alt_text')
+    .in('id', ids)
+
+  if (fetchErr || !currentRows || currentRows.length === 0) {
+    return { error: fetchErr ? fetchErr.message : 'Images not found.' }
+  }
+
+  const rowMap = new Map(currentRows.map((r) => [r.id, r]))
+  const productId = currentRows[0]?.product_id || ''
+
+  // 2. Validate all updates before applying
+  const updatesToApply: { id: string; sort_order: number }[] = []
   for (const update of imagesOrder) {
-    // Fetch row to validate
-    const { data: current } = await supabase
-      .from('product_images')
-      .select('*')
-      .eq('id', update.id)
-      .single()
-
+    const current = rowMap.get(update.id)
     if (!current) continue
-    productId = current.product_id
 
     const parsed = productImageUpdateSchema.safeParse({
       id: update.id,
@@ -230,15 +241,22 @@ export async function saveProductImageOrder(
       }
     }
 
-    const { error: updateErr } = await supabase
-      .from('product_images')
-      .update({ sort_order: parsed.data.sort_order })
-      .eq('id', update.id)
+    updatesToApply.push({ id: update.id, sort_order: parsed.data.sort_order })
+  }
 
-    if (updateErr) {
-      return {
-        error: `Failed to save new sorting position: ${updateErr.message}`,
-      }
+  // 3. Execute updates concurrently via Promise.all
+  const updatePromises = updatesToApply.map(({ id, sort_order }) =>
+    supabase
+      .from('product_images')
+      .update({ sort_order })
+      .eq('id', id)
+  )
+
+  const results = await Promise.all(updatePromises)
+  const failed = results.find((r) => r.error)
+  if (failed && failed.error) {
+    return {
+      error: `Failed to save new sorting position: ${failed.error.message}`,
     }
   }
 

@@ -98,45 +98,35 @@ export async function getStorefrontProducts({
 
 /**
  * Fetch all categories with their product count.
+ * Uses database-level embedded aggregation rather than transferring all products into memory.
  */
 export async function getStorefrontCategories() {
   const supabase = await createClient()
 
-  // Fetch categories and active products concurrently to count them manually
-  const [categoriesRes, productsRes] = await Promise.all([
-    supabase
-      .from('categories')
-      .select('*')
-      .order('sort_order', { ascending: true }),
-    supabase
-      .from('products')
-      .select('category_id, active')
-      .eq('active', true),
-  ])
+  const { data: categories, error } = await supabase
+    .from('categories')
+    .select('id, name, slug, sort_order, products(count)')
+    .eq('products.active', true)
+    .order('sort_order', { ascending: true })
 
-  if (categoriesRes.error) {
-    console.error('Error fetching storefront categories:', categoriesRes.error)
+  if (error || !categories) {
+    console.error('Error fetching storefront categories:', error)
     return []
   }
 
-  const categories = categoriesRes.data || []
-  const activeProducts = productsRes.data || []
-
-  // Count active products per category
-  const countMap = new Map<string, number>()
-  for (const product of activeProducts) {
-    if (product.category_id && product.active) {
-      countMap.set(product.category_id, (countMap.get(product.category_id) ?? 0) + 1)
-    }
-  }
-
-  return categories.map((category) => {
+  return (categories as unknown as Array<{
+    id: string
+    name: string
+    slug: string
+    sort_order: number
+    products?: Array<{ count: number }> | null
+  }>).map((category) => {
     return {
       id: category.id,
       name: category.name,
       slug: category.slug,
       sort_order: category.sort_order,
-      activeProductsCount: countMap.get(category.id) ?? 0,
+      activeProductsCount: category.products?.[0]?.count ?? 0,
     }
   })
 }
