@@ -79,7 +79,7 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       {/* Image Container */}
       <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
-        <Link href={`/products/${product.slug}`} className="block w-full h-full">
+        <Link href={`/products/${product.slug}`} className="relative block w-full h-full">
           {imageUrl ? (
             <Image
               src={imageUrl}
