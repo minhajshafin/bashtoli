@@ -286,6 +286,21 @@ CREATE INDEX IF NOT EXISTS idx_products_category_id ON public.products (category
 -- Storefront queries filtering active products
 CREATE INDEX IF NOT EXISTS idx_products_active      ON public.products (active);
 
+-- Main storefront category browsing: active products by category ordered by newest
+CREATE INDEX IF NOT EXISTS idx_products_active_category_created ON public.products (active, category_id, created_at DESC);
+
+-- Price sorting on active products
+CREATE INDEX IF NOT EXISTS idx_products_active_price ON public.products (active, base_price);
+
+-- Featured sorting on active products
+CREATE INDEX IF NOT EXISTS idx_products_active_featured ON public.products (active, featured DESC, created_at DESC);
+
+-- Product slug lookup for active products
+CREATE INDEX IF NOT EXISTS idx_products_slug ON public.products (slug) WHERE active = true;
+
+-- Product images by product ordered by sort_order
+CREATE INDEX IF NOT EXISTS idx_product_images_product_id ON public.product_images (product_id, sort_order);
+
 -- Variant lookup by parent product
 CREATE INDEX IF NOT EXISTS idx_variants_product_id  ON public.product_variants (product_id);
 
