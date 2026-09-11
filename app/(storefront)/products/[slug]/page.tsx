@@ -54,16 +54,22 @@ export async function generateMetadata({ params }: ProductPageProps) {
  */
 export default async function ProductPage({ params }: ProductPageProps) {
   const resolvedParams = await params
-  const data = await getProductDetail(resolvedParams.slug)
+
+  const supabasePromise = createClient().then(async (client) => {
+    const {
+      data: { user },
+    } = await client.auth.getUser()
+    return { client, user }
+  })
+
+  const [data, { client: supabase, user }] = await Promise.all([
+    getProductDetail(resolvedParams.slug),
+    supabasePromise,
+  ])
 
   if (!data) {
     notFound()
   }
-
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
 
   const isLoggedIn = !!user
   let isWishlisted = false
