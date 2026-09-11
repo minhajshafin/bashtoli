@@ -46,35 +46,35 @@ export const getProductDetail = cache(async (slug: string): Promise<ProductDetai
       : product.categories ?? null,
   }
 
-  // 2. Fetch images (ordered by sort_order)
-  const { data: images, error: imagesError } = await supabase
-    .from('product_images')
-    .select('*')
-    .eq('product_id', product.id)
-    .order('sort_order', { ascending: true })
+  // 2. Fetch images, active variants, and options concurrently in parallel
+  const [
+    { data: images, error: imagesError },
+    { data: variants, error: variantsError },
+    { data: options, error: optionsError },
+  ] = await Promise.all([
+    supabase
+      .from('product_images')
+      .select('*')
+      .eq('product_id', product.id)
+      .order('sort_order', { ascending: true }),
+    supabase
+      .from('product_variants')
+      .select('*')
+      .eq('product_id', product.id)
+      .eq('active', true),
+    supabase
+      .from('product_options')
+      .select('*')
+      .eq('product_id', product.id)
+      .order('sort_order', { ascending: true }),
+  ])
 
   if (imagesError) {
     console.error('Error fetching product images:', imagesError)
   }
-
-  // 3. Fetch active variants
-  const { data: variants, error: variantsError } = await supabase
-    .from('product_variants')
-    .select('*')
-    .eq('product_id', product.id)
-    .eq('active', true)
-
   if (variantsError) {
     console.error('Error fetching product variants:', variantsError)
   }
-
-  // 4. Fetch options (ordered by sort_order)
-  const { data: options, error: optionsError } = await supabase
-    .from('product_options')
-    .select('*')
-    .eq('product_id', product.id)
-    .order('sort_order', { ascending: true })
-
   if (optionsError) {
     console.error('Error fetching product options:', optionsError)
   }
