@@ -70,6 +70,7 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
           alt={activeImage.alt_text || fallbackName}
           fill
           preload
+          loading="eager"
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover transition-all duration-300"
           onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}

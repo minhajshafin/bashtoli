@@ -242,3 +242,29 @@ export function AccountPageSkeleton() {
     </div>
   )
 }
+
+/**
+ * Featured Products Section Skeleton for Suspense streaming.
+ */
+export function FeaturedProductsSkeleton() {
+  return (
+    <section className="py-20 px-5 md:px-8 bg-cream-50" aria-busy="true" aria-label="Loading featured products">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+          <div>
+            <div className="h-3 w-16 mb-3 rounded-md skeleton-shimmer" />
+            <div className="h-10 w-64 rounded-md skeleton-shimmer" />
+          </div>
+          <div className="h-10 w-36 rounded-full skeleton-shimmer" />
+        </div>
+        <div className="flex gap-5 overflow-hidden pb-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="shrink-0 w-[270px]">
+              <ProductCardSkeleton />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

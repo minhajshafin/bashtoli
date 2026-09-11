@@ -1,6 +1,7 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createPublicClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/database.types'
 import { unstable_rethrow } from 'next/navigation'
+import { unstable_cache } from 'next/cache'
 
 export type HeroSlideRow = Database['public']['Tables']['hero_slides']['Row']
 
@@ -21,28 +22,36 @@ export const DEFAULT_FALLBACK_SLIDE: HeroSlideRow = {
 /**
  * Fetch active hero slides for the public storefront.
  * Returns default fallback slide if database table is not yet migrated or empty.
+ * Cached using Next.js unstable_cache with cookie-free anonymous client.
  */
-export async function getStorefrontHeroSlides(): Promise<HeroSlideRow[]> {
-  try {
-    const supabase = await createClient()
-    const { data, error } = await supabase
-      .from('hero_slides')
-      .select('*')
-      .eq('active', true)
-      .order('sort_order', { ascending: true })
-      .order('created_at', { ascending: true })
+export const getStorefrontHeroSlides = unstable_cache(
+  async (): Promise<HeroSlideRow[]> => {
+    try {
+      const supabase = createPublicClient()
+      const { data, error } = await supabase
+        .from('hero_slides')
+        .select('*')
+        .eq('active', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: true })
 
-    if (error || !data || data.length === 0) {
+      if (error || !data || data.length === 0) {
+        return [DEFAULT_FALLBACK_SLIDE]
+      }
+
+      return data
+    } catch (err) {
+      unstable_rethrow(err)
+      console.warn('[HeroSlides] Query error, falling back to default slide:', err)
       return [DEFAULT_FALLBACK_SLIDE]
     }
-
-    return data
-  } catch (err) {
-    unstable_rethrow(err)
-    console.warn('[HeroSlides] Query error, falling back to default slide:', err)
-    return [DEFAULT_FALLBACK_SLIDE]
-  }
-}
+  },
+  ['storefront-hero-slides'],
+  {
+    tags: ['hero-slides'],
+    revalidate: 3600,
+  },
+)
 
 /**
  * Fetch all hero slides for admin management.

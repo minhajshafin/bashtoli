@@ -84,19 +84,26 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
         className="bg-forest-900/60"
       >
         {activeSlides.map((s, i) => {
-          const content = (
+          // Mount the current slide and immediately adjacent slides (for seamless cross-fading)
+          const isCurrent = i === slide
+          const isNext = (slide + 1) % activeSlides.length === i
+          const isPrev = (slide - 1 + activeSlides.length) % activeSlides.length === i
+          const shouldMountImage = isCurrent || isNext || isPrev
+
+          const content = shouldMountImage ? (
             <Image
               src={s.image_url}
               alt={s.alt_text || 'Bashtoli Stationery'}
               fill
               preload={i === 0}
+              loading={i === 0 ? 'eager' : 'lazy'}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
               className="object-cover"
               style={{
                 filter: 'brightness(0.92) saturate(1.1)',
               }}
             />
-          )
+          ) : null
 
           return (
             <div

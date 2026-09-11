@@ -32,7 +32,7 @@ export default async function StorefrontLayout({
   if (user) {
     const { data: prof } = await supabase
       .from('profiles')
-      .select('*')
+      .select('full_name, role')
       .eq('id', user.id)
       .maybeSingle()
     profile = prof

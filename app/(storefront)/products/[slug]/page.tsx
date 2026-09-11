@@ -2,7 +2,7 @@ import { getProductDetail } from '@/lib/queries/product-detail'
 import { notFound } from 'next/navigation'
 import { Breadcrumb } from '@/components/storefront/breadcrumb'
 import { ProductDetailClient } from './product-client'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createPublicClient } from '@/lib/supabase/server'
 import React from 'react'
 import { ProductJsonLd } from '@/components/storefront/json-ld'
 
@@ -10,6 +10,26 @@ interface ProductPageProps {
   params: Promise<{
     slug: string
   }>
+}
+
+/**
+ * Pre-render all active product pages at build time.
+ */
+export async function generateStaticParams() {
+  try {
+    const supabase = createPublicClient()
+    const { data: products } = await supabase
+      .from('products')
+      .select('slug')
+      .eq('active', true)
+
+    return (products || []).map((p) => ({
+      slug: p.slug,
+    }))
+  } catch (err) {
+    console.warn('[ProductPage] Error generating static params:', err)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: ProductPageProps) {

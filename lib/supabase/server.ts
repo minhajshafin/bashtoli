@@ -40,6 +40,24 @@ export async function createClient() {
 }
 
 /**
+ * Creates a lightweight anonymous Supabase client that does NOT read cookies.
+ * Safe for build-time generation (generateStaticParams), static site generation,
+ * or public queries that don't depend on user authentication.
+ */
+export function createPublicClient() {
+  return createSupabaseClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    },
+  )
+}
+
+/**
  * Creates a Supabase client that uses the SERVICE ROLE key.
  * This client BYPASSES Row-Level Security entirely.
  *

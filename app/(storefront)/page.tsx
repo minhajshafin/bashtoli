@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Hero } from '@/components/storefront/hero'
 import { getStorefrontHeroSlides } from '@/lib/queries/hero-slides'
 import { getFeaturedCollageCategories } from '@/lib/queries/category-collage'
@@ -7,6 +7,7 @@ import { CategoryGrid } from '@/components/storefront/category-grid'
 import { AboutSection } from '@/components/storefront/about-section'
 import { MarqueeBand } from '@/components/storefront/marquee-band'
 import { SuggestAnItem } from '@/components/storefront/suggest-an-item'
+import { FeaturedProductsSkeleton } from '@/components/storefront/skeletons'
 
 export const metadata = {
   title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
@@ -46,8 +47,10 @@ export default async function StorefrontHomePage() {
         </svg>
       </div>
 
-      {/* 2. Featured Products */}
-      <FeaturedProducts />
+      {/* 2. Featured Products (Streams in behind Suspense) */}
+      <Suspense fallback={<FeaturedProductsSkeleton />}>
+        <FeaturedProducts />
+      </Suspense>
 
       {/* Wave: cream-50 → categories (forest-800) */}
       <div className="bg-forest-800">

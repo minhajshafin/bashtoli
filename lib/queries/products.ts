@@ -1,5 +1,6 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createPublicClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/database.types'
+import { unstable_cache } from 'next/cache'
 
 export type ProductWithDetails = Database['public']['Tables']['products']['Row'] & {
   product_variants: Database['public']['Tables']['product_variants']['Row'][]
@@ -96,88 +97,112 @@ export async function getStorefrontProducts({
   }
 }
 
+export interface StorefrontCategoryItem {
+  id: string
+  name: string
+  slug: string
+  sort_order: number
+  activeProductsCount: number
+}
+
 /**
  * Fetch all categories with their product count.
  * Uses database-level embedded aggregation rather than transferring all products into memory.
+ * Cached using Next.js unstable_cache with cookie-free anonymous client.
  */
-export async function getStorefrontCategories() {
-  const supabase = await createClient()
+export const getStorefrontCategories = unstable_cache(
+  async (): Promise<StorefrontCategoryItem[]> => {
+    const supabase = createPublicClient()
 
-  const { data: categories, error } = await supabase
-    .from('categories')
-    .select('id, name, slug, sort_order, products(count)')
-    .eq('products.active', true)
-    .order('sort_order', { ascending: true })
+    const { data: categories, error } = await supabase
+      .from('categories')
+      .select('id, name, slug, sort_order, products(count)')
+      .eq('products.active', true)
+      .order('sort_order', { ascending: true })
 
-  if (error || !categories) {
-    console.error('Error fetching storefront categories:', error)
-    return []
-  }
-
-  return (categories as unknown as Array<{
-    id: string
-    name: string
-    slug: string
-    sort_order: number
-    products?: Array<{ count: number }> | null
-  }>).map((category) => {
-    return {
-      id: category.id,
-      name: category.name,
-      slug: category.slug,
-      sort_order: category.sort_order,
-      activeProductsCount: category.products?.[0]?.count ?? 0,
+    if (error || !categories) {
+      console.error('Error fetching storefront categories:', error)
+      return []
     }
-  })
-}
+
+    return (categories as unknown as Array<{
+      id: string
+      name: string
+      slug: string
+      sort_order: number
+      products?: Array<{ count: number }> | null
+    }>).map((category) => {
+      return {
+        id: category.id,
+        name: category.name,
+        slug: category.slug,
+        sort_order: category.sort_order,
+        activeProductsCount: category.products?.[0]?.count ?? 0,
+      }
+    })
+  },
+  ['storefront-categories'],
+  {
+    tags: ['categories'],
+    revalidate: 3600,
+  },
+)
 
 /**
  * Fetch active featured products.
  * Falls back to the 4 newest active products if no products are flagged as featured.
+ * Cached using Next.js unstable_cache with cookie-free anonymous client.
  */
-export async function getFeaturedProducts(): Promise<ProductWithDetails[]> {
-  const supabase = await createClient()
+export const getFeaturedProducts = unstable_cache(
+  async (): Promise<ProductWithDetails[]> => {
+    const supabase = createPublicClient()
 
-  // 1. Fetch featured, active products with variants and images
-  const { data: featured, error } = await supabase
-    .from('products')
-    .select(`
-      *,
-      product_variants!inner(*),
-      product_images(*),
-      categories:category_id(*)
-    `)
-    .eq('active', true)
-    .eq('product_variants.active', true)
-    .eq('featured', true)
-    .order('created_at', { ascending: false })
+    // 1. Fetch featured, active products with variants and images
+    const { data: featured, error } = await supabase
+      .from('products')
+      .select(`
+        *,
+        product_variants!inner(*),
+        product_images(*),
+        categories:category_id(*)
+      `)
+      .eq('active', true)
+      .eq('product_variants.active', true)
+      .eq('featured', true)
+      .order('created_at', { ascending: false })
 
-  if (!error && featured && featured.length > 0) {
-    return featured as unknown as ProductWithDetails[]
-  }
+    if (!error && featured && featured.length > 0) {
+      return featured as unknown as ProductWithDetails[]
+    }
 
-  if (error) {
-    console.error('Error fetching featured products:', error)
-  }
+    if (error) {
+      console.error('Error fetching featured products:', error)
+    }
 
-  // 2. Fallback: 4 newest active products
-  const { data: newest, error: newestError } = await supabase
-    .from('products')
-    .select(`
-      *,
-      product_variants!inner(*),
-      product_images(*),
-      categories:category_id(*)
-    `)
-    .eq('active', true)
-    .eq('product_variants.active', true)
-    .order('created_at', { ascending: false })
-    .limit(4)
+    // 2. Fallback: 4 newest active products
+    const { data: newest, error: newestError } = await supabase
+      .from('products')
+      .select(`
+        *,
+        product_variants!inner(*),
+        product_images(*),
+        categories:category_id(*)
+      `)
+      .eq('active', true)
+      .eq('product_variants.active', true)
+      .order('created_at', { ascending: false })
+      .limit(4)
 
-  if (newestError) {
-    console.error('Error fetching featured fallback products:', newestError)
-    return []
-  }
+    if (newestError) {
+      console.error('Error fetching featured fallback products:', newestError)
+      return []
+    }
 
-  return (newest as unknown as ProductWithDetails[]) || []
-}
+    return (newest as unknown as ProductWithDetails[]) || []
+  },
+  ['storefront-featured-products'],
+  {
+    tags: ['featured-products'],
+    revalidate: 900,
+  },
+)
