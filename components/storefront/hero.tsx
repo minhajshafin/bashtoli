@@ -89,7 +89,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
               src={s.image_url}
               alt={s.alt_text || 'Bashtoli Stationery'}
               fill
-              priority={i === 0}
+              preload={i === 0}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
               className="object-cover"
               style={{
@@ -202,7 +202,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
                 src="/logo-text.svg"
                 alt="Bashtoli Stationery"
                 fill
-                priority
+                preload
                 className="object-contain object-left"
               />
             </div>

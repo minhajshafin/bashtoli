@@ -69,7 +69,7 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
           src={failedImages[activeImage.url] ? '/placeholder-product.svg' : activeImage.url}
           alt={activeImage.alt_text || fallbackName}
           fill
-          priority
+          preload
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover transition-all duration-300"
           onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
