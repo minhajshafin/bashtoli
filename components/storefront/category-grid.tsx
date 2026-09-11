@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
 import { COLLAGE_SLOT_CONFIGS } from '@/lib/validations/category-collage'
 
@@ -25,18 +26,19 @@ function CategoryCard({
       style={{
         gridArea,
         borderRadius: '24px',
-        ...(category.image_url
-          ? {
-              backgroundImage: `url(${category.image_url})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }
-          : {}),
         ...style,
       }}
     >
-      {/* Background gradient if no image */}
-      {!category.image_url && (
+      {category.image_url ? (
+        <Image
+          src={category.image_url}
+          alt={category.name}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      ) : (
+        /* Background gradient if no image */
         <div className="absolute inset-0 bg-linear-to-br from-forest-800 via-forest-900 to-forest-800 flex items-center justify-center pointer-events-none">
           <svg
             className="w-12 h-12 text-gold-500/20 stroke-[1.2]"
