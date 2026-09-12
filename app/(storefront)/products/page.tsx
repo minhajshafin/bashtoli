@@ -175,8 +175,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             {products.length > 0 ? (
               <>
                 <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                  {products.map((product, idx) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      loading={idx < 4 ? 'eager' : 'lazy'}
+                    />
                   ))}
                 </div>
 

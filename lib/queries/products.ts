@@ -1,4 +1,4 @@
-import { createClient, createPublicClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/database.types'
 import { unstable_cache } from 'next/cache'
 
@@ -16,21 +16,17 @@ interface GetStorefrontProductsParams {
   limit?: number
 }
 
-/**
- * Fetch active products that have at least one active variant.
- * Supports filtering by category slug, name text search (ILIKE), sorting, and pagination.
- */
-export async function getStorefrontProducts({
-  categorySlug,
-  search,
-  sort = 'new',
-  page = 1,
-  limit = 12,
-}: GetStorefrontProductsParams): Promise<{
+const fetchStorefrontProductsFromDb = async (
+  categorySlug: string,
+  search: string,
+  sort: 'featured' | 'price-asc' | 'price-desc' | 'new',
+  page: number,
+  limit: number,
+): Promise<{
   products: ProductWithDetails[]
   totalCount: number
-}> {
-  const supabase = await createClient()
+}> => {
+  const supabase = createPublicClient()
   const offset = (page - 1) * limit
 
   // Create base query
@@ -95,6 +91,33 @@ export async function getStorefrontProducts({
     products: (data as unknown as ProductWithDetails[]) || [],
     totalCount: count || 0,
   }
+}
+
+const getCachedStorefrontProducts = unstable_cache(
+  fetchStorefrontProductsFromDb,
+  ['storefront-products-catalog'],
+  {
+    tags: ['products'],
+    revalidate: 600,
+  },
+)
+
+/**
+ * Fetch active products that have at least one active variant.
+ * Supports filtering by category slug, name text search (ILIKE), sorting, and pagination.
+ * Cached using Next.js unstable_cache with cookie-free anonymous client.
+ */
+export async function getStorefrontProducts({
+  categorySlug = '',
+  search = '',
+  sort = 'new',
+  page = 1,
+  limit = 12,
+}: GetStorefrontProductsParams): Promise<{
+  products: ProductWithDetails[]
+  totalCount: number
+}> {
+  return getCachedStorefrontProducts(categorySlug, search, sort, page, limit)
 }
 
 export interface StorefrontCategoryItem {

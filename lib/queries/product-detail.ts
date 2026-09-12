@@ -1,6 +1,7 @@
-import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/supabase/database.types'
 import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 
 export type ProductVariantRow = Database['public']['Tables']['product_variants']['Row']
 export type ProductImageRow = Database['public']['Tables']['product_images']['Row']
@@ -18,12 +19,8 @@ export interface ProductDetailData {
   })[]
 }
 
-/**
- * Fetch all details for a product by slug, filtering for active state.
- * Wrapped in React.cache() to deduplicate requests between generateMetadata and Page render.
- */
-export const getProductDetail = cache(async (slug: string): Promise<ProductDetailData | null> => {
-  const supabase = await createClient()
+const fetchProductDetailFromDb = async (slug: string): Promise<ProductDetailData | null> => {
+  const supabase = createPublicClient()
 
   // 1. Fetch active product and its category
   const { data: product, error: productError } = await supabase
@@ -112,4 +109,23 @@ export const getProductDetail = cache(async (slug: string): Promise<ProductDetai
     variants: variants || [],
     options: structuredOptions,
   }
+}
+
+const getCachedProductDetail = unstable_cache(
+  fetchProductDetailFromDb,
+  ['product-detail-data'],
+  {
+    tags: ['products'],
+    revalidate: 3600,
+  },
+)
+
+/**
+ * Fetch all details for a product by slug, filtering for active state.
+ * Wrapped in React.cache() to deduplicate requests between generateMetadata and Page render,
+ * and backed by Next.js unstable_cache with cookie-free anonymous client.
+ */
+export const getProductDetail = cache(async (slug: string): Promise<ProductDetailData | null> => {
+  if (!slug) return null
+  return getCachedProductDetail(slug)
 })

@@ -11,9 +11,10 @@ import { useToast } from '@/components/ui/toast'
 
 interface ProductCardProps {
   product: ProductWithDetails
+  loading?: 'lazy' | 'eager'
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
   const [hovered, setHovered] = useState(false)
   const { addItem } = useCart()
   const { toast } = useToast()
@@ -85,6 +86,7 @@ export function ProductCard({ product }: ProductCardProps) {
               src={imageUrl}
               alt={altText}
               fill
+              loading={loading}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
               className="object-cover"
               style={{
