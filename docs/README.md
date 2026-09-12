@@ -13,6 +13,7 @@ E-commerce platform for an artisanal Bangladeshi brand selling handcrafted bambo
 
 | Document | Description | Audience |
 |---|---|---|
+| [Project Handover](./handover.md) | Comprehensive platform handover, credentials matrix, workflows, and operations sign-off | Store Owner & Stakeholders |
 | [Admin Guide](./admin-guide.md) | Store owner operations manual, visual CMS controls, staff access, and incident runbook | Owner & Operational Staff |
 | [PRD](./prd.md) | Product requirements, scope, fulfillment rules, and functional specifications | Product & Engineering |
 | [Architecture](./architecture.md) | System design, route protection, auth flows, Upstash Redis rate limiting, and integrations | Engineering |
@@ -26,8 +27,8 @@ E-commerce platform for an artisanal Bangladeshi brand selling handcrafted bambo
 
 ## Project Status
 
-- **Current State:** **Phase 8 — QA, Hardening & Launch Preparation**
-- **Build Status:** All 7 core development phases complete; comprehensive Playwright E2E suite passing (8/8 journeys); 97 unit tests passing; 0 ESLint errors; production build validated (31/31 routes).
+- **Current State:** **Phase 8 — QA, Hardening & Launch Completed (Final Handover)**
+- **Build Status:** All 8 project phases complete; comprehensive Playwright E2E suite passing (8/8 journeys); 108 unit tests passing across 15 suites; 0 ESLint errors; strict TypeScript passing; production build validated (54/54 routes with PPR).
 - **Core Milestones Delivered:**
   1. **Phase 1 (Setup & Schema)**: Consolidated 6 baseline database migrations, RLS security, and admin bootstrap.
   2. **Phase 2 (Admin MVP)**: Product/category/variant CRUD, multi-image upload, and draft toggle.

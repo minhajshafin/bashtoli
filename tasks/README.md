@@ -20,7 +20,7 @@ Implementation tasks organized by project phase. Each task file follows a standa
 | 5. Customer Accounts | 8 | [phase-05-accounts/](./phase-05-accounts/) | 6 | Completed |
 | 6. Admin Ops | 9 | [phase-06-admin-ops/](./phase-06-admin-ops/) | 4 | Completed |
 | 7. Polish & Content | 10–11 | [phase-07-polish/](./phase-07-polish/) | 5 | Completed |
-| 8. QA & Launch | 12 | [phase-08-launch/](./phase-08-launch/) | 4 | Ready for Execution |
+| 8. QA & Launch | 12 | [phase-08-launch/](./phase-08-launch/) | 4 | Completed |
 
 ## Dependency Flow
 

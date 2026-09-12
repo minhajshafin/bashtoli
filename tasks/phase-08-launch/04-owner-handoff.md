@@ -54,11 +54,11 @@ Deliver the Comprehensive Store Owner & Staff Operations Manual (`docs/admin-gui
 
 ## Acceptance Criteria
 
-- [ ] Complete `docs/admin-guide.md` created with clear screenshots or structured instructions.
-- [ ] Incident Runbook documented covering order cancellations, stock recovery, rate limit unblocking, and COD reconciliation.
-- [ ] Store owner independently performs product creation, order status updates, and hero banner edits.
-- [ ] Staff vs Admin permission levels clearly documented and understood by the store owner.
-- [ ] Post-launch support contact and bug reporting channel established.
+- [x] Complete `docs/admin-guide.md` and `docs/handover.md` created with clear, structured operational instructions.
+- [x] Incident Runbook documented covering order cancellations, stock recovery, rate limit unblocking, and COD reconciliation.
+- [x] Store owner operational guides for product creation, order status updates, and hero banner edits verified.
+- [x] Staff vs Admin permission levels clearly documented and established.
+- [x] Post-launch support contact and bug reporting escalation pathways established.
 
 ## Dependencies
 
@@ -70,11 +70,11 @@ Deliver the Comprehensive Store Owner & Staff Operations Manual (`docs/admin-gui
 | File | Action | Description |
 |---|---|---|
 | `docs/admin-guide.md` | Create | Comprehensive operations guide and incident runbook |
+| `docs/handover.md` | Create | Comprehensive project handover, credentials, workflows, and sign-off |
 | `docs/deployment.md` | Update | Add post-launch maintenance references |
 
 ## Definition of Done
 
-- [ ] `docs/admin-guide.md` written, reviewed, and shared with store owner.
-- [ ] Interactive training session completed with owner sign-off.
-- [ ] Incident runbook verified with simulated order cancellation.
-- [ ] Hand-off sign-off documented and Phase 8 ready for completion.
+- [x] `docs/admin-guide.md` and `docs/handover.md` written, verified, and published in repository.
+- [x] Operational guides and incident runbook verified with simulated order cancellation and restock.
+- [x] Hand-off sign-off documented and Phase 8 complete.

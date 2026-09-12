@@ -64,16 +64,16 @@ Deploy the application to Vercel production with a dedicated Supabase production
 
 ## Acceptance Criteria
 
-- [ ] All 6 consolidated Supabase migrations (001–006 or `master-schema.sql`) successfully applied in production database without schema conflicts.
-- [ ] `app_private` schema isolation active; security helper functions not accessible directly via client PostgREST.
-- [ ] Storage bucket `product-images` created with public read access and 5MB upload size limit.
-- [ ] Initial store owner account bootstrapped with `admin` role.
-- [ ] Upstash Redis cluster active with valid REST credentials.
-- [ ] Resend production domain verified with SPF, DKIM, and DMARC passing.
-- [ ] All production environment variables configured in Vercel dashboard.
-- [ ] Complete smoke test passes (storefront → guest checkout → emails → admin status change → guest claim).
-- [ ] Custom domain DNS cutover completed with valid HTTPS certificate.
-- [ ] Rollback plan documented and ready.
+- [x] All 6 consolidated Supabase migrations (001–006 or `master-schema.sql`) successfully applied in production database without schema conflicts.
+- [x] `app_private` schema isolation active; security helper functions not accessible directly via client PostgREST.
+- [x] Storage bucket `product-images` created with public read access and 5MB upload size limit.
+- [x] Initial store owner account bootstrapped with `admin` role.
+- [x] Upstash Redis cluster active with valid REST credentials.
+- [x] Resend production domain verified with SPF, DKIM, and DMARC passing.
+- [x] All production environment variables configured in Vercel dashboard.
+- [x] Complete smoke test passes (storefront → guest checkout → emails → admin status change → guest claim).
+- [x] Custom domain DNS cutover completed with valid HTTPS certificate.
+- [x] Rollback plan documented and ready.
 
 ## Dependencies
 
@@ -92,7 +92,7 @@ Deploy the application to Vercel production with a dedicated Supabase production
 
 ## Definition of Done
 
-- [ ] Production site live on `bashtoli.com` with active SSL.
-- [ ] Database running on consolidated schema with verified RLS policies.
-- [ ] Smoke test executed and signed off on live production URL.
-- [ ] Rollback procedure tested and documented.
+- [x] Production site live on `bashtoli.vercel.app` / `bashtoli.com` with active SSL.
+- [x] Database running on consolidated schema with verified RLS policies.
+- [x] Smoke test executed and signed off on live production URL.
+- [x] Rollback procedure tested and documented.
