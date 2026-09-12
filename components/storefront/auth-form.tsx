@@ -116,7 +116,7 @@ export function AuthForm({ type }: AuthFormProps) {
               required
               disabled={isPending}
               className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 px-4 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
-              placeholder="e.g. Shafin Minhaj"
+              placeholder="e.g. Minhaj Shafin"
             />
             {state.fieldErrors?.fullName && (
               <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.fullName[0]}</p>
@@ -168,7 +168,6 @@ export function AuthForm({ type }: AuthFormProps) {
               required
               disabled={isPending}
               className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 pl-4 pr-10 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
-              placeholder="••••••••"
             />
             <button
               type="button"
@@ -208,7 +207,6 @@ export function AuthForm({ type }: AuthFormProps) {
               required
               disabled={isPending}
               className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 px-4 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
-              placeholder="••••••••"
             />
             {state.fieldErrors?.confirmPassword && (
               <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.confirmPassword[0]}</p>
