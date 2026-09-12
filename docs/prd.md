@@ -145,7 +145,5 @@ cancelled       cancelled  (both branches restock items)
 | **6. Admin ops** | 9 | Order management, status workflow, low-stock alerts, staff role management |
 | **7. Polish & content** | 10–11 | Responsive pass, About/Contact pages, owner finishes catalog, SEO pass, UI polish |
 | **8. QA & launch** | 12 | Playwright E2E suites, Upstash Redis rate limiting, schema consolidation, Vercel deploy, handoff & training |
-
 > [!NOTE]
-> Detailed sprint task breakdowns were tracked in `tasks/` during active development. That directory will be removed upon final project handover to the client, leaving `docs/` as the permanent documentation set.
-
+> All implementation phases have been delivered, verified, and handed over, with `docs/` serving as the permanent documentation set.

@@ -39,7 +39,7 @@ The following items are deferred for post-launch evaluation after the store owne
 
 ---
 
-## 3. Maintenance & Handover Notice
+## 3. Maintenance Notice
 
 > [!NOTE]
-> Following Phase 8 completion, this document serves as a permanent record of design decisions. The internal `tasks/` directory will be removed prior to client handoff.
+> Following project completion and launch, this document serves as a permanent record of design decisions.

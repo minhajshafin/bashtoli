@@ -3,9 +3,8 @@
 E-commerce platform for an artisanal Bangladeshi brand selling handcrafted bamboo goods, mugs, wearables, and home decor. Full-featured customer storefront with Cash-on-Delivery (COD) checkout, customer accounts, and an administrative dashboard for order fulfillment, inventory tracking, and dynamic visual merchandising.
 
 > [!NOTE]
-> **Documentation Lifecycle & Handover**:
+> **Documentation Lifecycle**:
 > The `docs/` directory is the permanent, standalone technical and operational documentation repository for this project.
-> The root `tasks/` directory contains internal phase-by-phase implementation sprint tracking used during development and will be removed upon final project handover.
 
 ---
 

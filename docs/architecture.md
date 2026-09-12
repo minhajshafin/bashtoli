@@ -213,6 +213,3 @@ bashtoli/
 │   └── unit/                   # Vitest unit test suites
 └── docs/                       # Permanent technical & operational documentation
 ```
-
-> [!NOTE]
-> The root `tasks/` directory contains internal phase-by-phase implementation sprint tracking used during development and will be removed upon final handover to the client.

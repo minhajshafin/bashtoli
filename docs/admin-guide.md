@@ -4,7 +4,7 @@ Welcome to the **Bashtoli Operations Manual**. This comprehensive guide provides
 
 > [!NOTE]
 > **Operational Reference**:
-> This document is the permanent operations manual for the Bashtoli platform. All internal engineering sprint task files (`tasks/`) will be removed upon handover.
+> This document is the permanent operations manual for the Bashtoli platform.
 
 ---
 
