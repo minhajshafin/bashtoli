@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import {
   productOptionsSchema,
   variantInlineUpdateSchema,
+  type VariantInlineUpdateType,
 } from '@/lib/validations/variant'
 import { generateOptionCombinations } from '@/lib/utils/generate-variants'
 import type { Database } from '@/lib/supabase/database.types'
@@ -243,8 +244,8 @@ export async function updateVariantsBulk(
   productId: string,
   updates: {
     id: string
-    price: number
-    stock_qty: number
+    price: number | string
+    stock_qty: number | string
     sku?: string | null
     active: boolean
   }[]
@@ -257,22 +258,24 @@ export async function updateVariantsBulk(
     return { error: err instanceof Error ? err.message : 'Unauthorized.' }
   }
 
-  // Validate all updates first
+  // Validate and coerce all updates first
+  const validatedUpdates: VariantInlineUpdateType[] = []
   for (const update of updates) {
     const parsed = variantInlineUpdateSchema.safeParse(update)
     if (!parsed.success) {
       return {
-        error: `Validation error for variant update: ${parsed.error.issues[0].message}`,
+        error: `Validation error for variant update: ${parsed.error.issues[0]?.message ?? 'Invalid variant data'}`,
       }
     }
+    validatedUpdates.push(parsed.data)
   }
 
-  // Run sequential updates
-  for (const update of updates) {
+  // Run sequential updates using clean, validated and coerced data
+  for (const update of validatedUpdates) {
     const { error } = await supabase
       .from('product_variants')
       .update({
-        sku: update.sku?.trim() || null,
+        sku: update.sku ?? null,
         price: update.price,
         stock_qty: update.stock_qty,
         active: update.active,

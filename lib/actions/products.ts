@@ -14,7 +14,14 @@ export type ProductActionState = {
   error: string | null
   fieldErrors?: Partial<
     Record<
-      'name' | 'slug' | 'description' | 'category_id' | 'base_price' | 'active' | 'featured',
+      | 'name'
+      | 'slug'
+      | 'description'
+      | 'category_id'
+      | 'base_price'
+      | 'active'
+      | 'featured'
+      | 'initial_stock_qty',
       string[]
     >
   >
@@ -40,6 +47,7 @@ export async function createProduct(
     base_price: formData.get('base_price'),
     active: formData.get('active'),
     featured: formData.get('featured'),
+    initial_stock_qty: formData.get('initial_stock_qty') ?? '0',
   })
 
   if (!parsed.success) {
@@ -90,13 +98,16 @@ export async function createProduct(
       product_id: newProduct.id,
       sku: null,
       price: parsed.data.base_price,
-      stock_qty: 0,
+      stock_qty: parsed.data.initial_stock_qty ?? 0,
       active: true,
       option_values: {},
     })
   }
 
   revalidatePath(PRODUCTS_PATH)
+  if (newProduct?.id) {
+    revalidatePath(`${PRODUCTS_PATH}/${newProduct.id}`)
+  }
   revalidatePath('/')
   revalidatePath('/products')
   revalidateTag('products', 'max')
@@ -104,7 +115,7 @@ export async function createProduct(
   if (newProduct?.slug) {
     revalidatePath(`/products/${newProduct.slug}`)
   }
-  redirect(PRODUCTS_PATH)
+  redirect(`${PRODUCTS_PATH}/${newProduct.id}`)
 }
 
 /**
@@ -248,7 +259,7 @@ export async function updateProduct(
   }
   revalidateTag('products', 'max')
   revalidateTag('featured-products', 'max')
-  redirect(PRODUCTS_PATH)
+  return { error: null }
 }
 
 /**

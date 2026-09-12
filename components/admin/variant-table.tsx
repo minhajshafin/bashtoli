@@ -1,16 +1,17 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateVariantsBulk } from '@/lib/actions/variants'
+import { useProductStudio } from '@/components/admin/product-studio-context'
 import type { Database } from '@/lib/supabase/database.types'
 
 type VariantRow = Database['public']['Tables']['product_variants']['Row']
 
-type VariantChange = {
+export type VariantChange = {
   id: string
-  price: number
-  stock_qty: number
+  price: number | string
+  stock_qty: number | string
   sku: string | null
   active: boolean
 }
@@ -23,12 +24,43 @@ export function VariantTable({
   variants: VariantRow[]
 }) {
   const router = useRouter()
+  const studio = useProductStudio()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
   // Track changed variants locally before saving
   const [changes, setChanges] = useState<Record<string, VariantChange>>({})
+
+  // Synchronize dirty state with studio context
+  useEffect(() => {
+    studio?.setHasVariantChanges(Object.keys(changes).length > 0)
+  }, [changes, studio])
+
+  // Common save routine
+  const executeSave = useCallback(async (): Promise<boolean> => {
+    setError(null)
+    setSuccess(false)
+    const updates = Object.values(changes)
+    if (updates.length === 0) return true
+
+    const res = await updateVariantsBulk(productId, updates)
+    if (res.error) {
+      setError(res.error)
+      return false
+    }
+    setSuccess(true)
+    setChanges({})
+    router.refresh()
+    return true
+  }, [changes, productId, router])
+
+  // Register save handler with studio context
+  useEffect(() => {
+    if (studio?.registerVariantSaveHandler) {
+      studio.registerVariantSaveHandler(executeSave)
+    }
+  }, [studio, executeSave])
 
   // Dynamically extract option keys present across all variants
   const optionKeys: string[] = []
@@ -64,48 +96,49 @@ export function VariantTable({
     const variant = variants.find((v) => v.id === variantId)
     if (!variant) return
 
-    const currentState = getVariantState(variant)
-    setChanges({
-      ...changes,
-      [variantId]: {
-        ...currentState,
-        [field]: value,
-      },
+    setChanges((prev) => {
+      const currentState = prev[variantId] || {
+        id: variant.id,
+        price: variant.price,
+        stock_qty: variant.stock_qty,
+        sku: variant.sku,
+        active: variant.active,
+      }
+      return {
+        ...prev,
+        [variantId]: {
+          ...currentState,
+          [field]: value,
+        },
+      }
     })
   }
 
   async function handleSave() {
-    setError(null)
-    setSuccess(false)
-
-    const updates = Object.values(changes)
-    if (updates.length === 0) {
-      return
-    }
-
     startTransition(async () => {
-      const res = await updateVariantsBulk(productId, updates)
-      if (res.error) {
-        setError(res.error)
-      } else {
-        setSuccess(true)
-        setChanges({})
-        router.refresh()
-      }
+      await executeSave()
     })
   }
 
   async function handleBulkToggle(active: boolean) {
     setSuccess(false)
-    const nextChanges = { ...changes }
-    variants.forEach((v) => {
-      const current = getVariantState(v)
-      nextChanges[v.id] = {
-        ...current,
-        active,
-      }
+    setChanges((prev) => {
+      const nextChanges = { ...prev }
+      variants.forEach((v) => {
+        const current = prev[v.id] || {
+          id: v.id,
+          price: v.price,
+          stock_qty: v.stock_qty,
+          sku: v.sku,
+          active: v.active,
+        }
+        nextChanges[v.id] = {
+          ...current,
+          active,
+        }
+      })
+      return nextChanges
     })
-    setChanges(nextChanges)
   }
 
   const hasChanges = Object.keys(changes).length > 0

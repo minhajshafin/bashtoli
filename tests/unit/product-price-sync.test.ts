@@ -158,8 +158,10 @@ describe('Product Price Synchronization', () => {
       formData.set('base_price', '480')
       formData.set('active', 'on')
 
-      await updateProduct({ error: null }, formData)
+      const res = await updateProduct({ error: null }, formData)
 
+      expect(res).toEqual({ error: null })
+      expect(mockRedirect).not.toHaveBeenCalled()
       expect(mockVariantUpdate).toHaveBeenCalledWith(
         expect.objectContaining({
           price: 480,
@@ -201,8 +203,10 @@ describe('Product Price Synchronization', () => {
       formData.set('base_price', '200')
       formData.set('active', 'on')
 
-      await updateProduct({ error: null }, formData)
+      const res = await updateProduct({ error: null }, formData)
 
+      expect(res).toEqual({ error: null })
+      expect(mockRedirect).not.toHaveBeenCalled()
       expect(mockVariantInsert).toHaveBeenCalledWith(
         expect.objectContaining({
           product_id: PROD_UUID_3,
@@ -238,6 +242,7 @@ describe('Product Price Synchronization', () => {
       formData.set('slug', 'bamboo-tray')
       formData.set('base_price', '220')
       formData.set('active', 'on')
+      formData.set('initial_stock_qty', '18')
 
       await createProduct({ error: null }, formData)
 
@@ -245,6 +250,7 @@ describe('Product Price Synchronization', () => {
         expect.objectContaining({
           product_id: PROD_UUID_1,
           price: 220,
+          stock_qty: 18,
           active: true,
           option_values: {},
         })
@@ -252,6 +258,7 @@ describe('Product Price Synchronization', () => {
       expect(mockRevalidatePath).toHaveBeenCalledWith('/')
       expect(mockRevalidatePath).toHaveBeenCalledWith('/products')
       expect(mockRevalidatePath).toHaveBeenCalledWith('/products/bamboo-tray')
+      expect(mockRedirect).toHaveBeenCalledWith(`/admin/products/${PROD_UUID_1}`)
     })
   })
 

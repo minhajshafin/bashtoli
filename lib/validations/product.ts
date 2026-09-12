@@ -39,6 +39,13 @@ export const createProductSchema = z.object({
     (val) => val === 'true' || val === 'on' || val === true,
     z.boolean()
   ),
+  initial_stock_qty: z.coerce
+    .number()
+    .int('Stock must be a whole number')
+    .min(0, 'Stock must be 0 or greater')
+    .max(100000, 'Stock must be 100,000 or less')
+    .default(0)
+    .optional(),
 })
 
 export const updateProductSchema = createProductSchema.extend({
