@@ -140,11 +140,11 @@ export async function signupAction(
 
   const supabase = await createClient()
 
-  let appUrl = process.env.NEXT_PUBLIC_APP_URL
+  let appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL
   if (!appUrl) {
     const headersList = await headers()
-    const host = headersList.get('host')
-    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+    const host = headersList.get('x-forwarded-host') || headersList.get('host')
+    const protocol = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'development' ? 'http' : 'https')
     appUrl = host ? `${protocol}://${host}` : 'http://localhost:3000'
   }
 
@@ -153,7 +153,7 @@ export async function signupAction(
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
-        emailRedirectTo: `${appUrl}/login`,
+        emailRedirectTo: `${appUrl}/api/auth/callback?redirectTo=/account`,
         data: {
           full_name: parsed.data.fullName,
         },
@@ -211,11 +211,11 @@ export async function forgotPasswordAction(
 
   // Use NEXT_PUBLIC_APP_URL — do NOT derive the redirect base URL solely from
   // the Host header, which is client-controlled (Host Header Injection). (L-NEW-2)
-  let appUrl = process.env.NEXT_PUBLIC_APP_URL
+  let appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL
   if (!appUrl) {
     const headersList = await headers()
-    const host = headersList.get('host')
-    const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+    const host = headersList.get('x-forwarded-host') || headersList.get('host')
+    const protocol = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'development' ? 'http' : 'https')
     appUrl = host ? `${protocol}://${host}` : 'http://localhost:3000'
   }
 
