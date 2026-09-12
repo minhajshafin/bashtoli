@@ -132,6 +132,8 @@ export function CheckoutForm({
       } else if (result.orderNumber) {
         // Clear guest cart in state/localStorage
         clearCart()
+        // Refresh router cache so newly deducted stock is immediately recognized if user navigates back
+        router.refresh()
         // Redirect to confirmation page with phone verification parameter
         router.push(`/order/${result.orderNumber}?phone=${encodeURIComponent(phone)}`)
       }

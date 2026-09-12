@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient, createAdminClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 /**
  * Server Action: Allows a customer to self-cancel their pending order within 24 hours of placement.
@@ -72,7 +72,7 @@ export async function customerCancelOrderAction(orderId: string): Promise<{ erro
     // 6. Restock items: Increment product_variants stock_qty
     const { data: orderItems, error: itemsError } = await adminDb
       .from('order_items')
-      .select('variant_id, qty')
+      .select('variant_id, qty, product_id')
       .eq('order_id', orderId)
 
     if (itemsError) throw itemsError
@@ -89,8 +89,22 @@ export async function customerCancelOrderAction(orderId: string): Promise<{ erro
       }
     }
 
+    revalidateTag('products', 'max')
+    revalidateTag('featured-products', 'max')
+    revalidateTag('categories', 'max')
+    revalidatePath('/products')
+    revalidatePath('/')
+    revalidatePath('/admin')
+    revalidatePath('/admin/products')
+    revalidatePath('/admin/orders')
     revalidatePath(`/order/${order.order_number}`)
     revalidatePath('/account/orders')
+
+    for (const item of orderItems || []) {
+      if (item.product_id) {
+        revalidatePath(`/admin/products/${item.product_id}`)
+      }
+    }
 
     return { error: null, success: true }
   } catch (err) {

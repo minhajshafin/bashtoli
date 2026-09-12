@@ -4,7 +4,7 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { orderStatusSchema } from '@/lib/validations/order-status'
 import { resend } from '@/lib/email/resend'
 import { OrderStatusUpdateEmail } from '@/lib/email/templates/order-status-update'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import React from 'react'
 
 type StatusType = 'pending' | 'confirmed' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled'
@@ -130,7 +130,7 @@ export async function updateOrderStatusAction(
     if (nextStatus === 'cancelled') {
       const { data: items, error: itemsError } = await adminDb
         .from('order_items')
-        .select('variant_id, qty')
+        .select('variant_id, qty, product_id')
         .eq('order_id', orderId)
 
       if (itemsError) throw itemsError
@@ -144,6 +144,20 @@ export async function updateOrderStatusAction(
 
         if (stockError) {
           console.error(`Failed to restock variant ${item.variant_id} during status update:`, stockError)
+        }
+      }
+
+      revalidateTag('products', 'max')
+      revalidateTag('featured-products', 'max')
+      revalidateTag('categories', 'max')
+      revalidatePath('/products')
+      revalidatePath('/')
+      revalidatePath('/admin')
+      revalidatePath('/admin/products')
+
+      for (const item of items || []) {
+        if (item.product_id) {
+          revalidatePath(`/admin/products/${item.product_id}`)
         }
       }
     }

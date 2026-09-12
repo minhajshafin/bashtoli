@@ -6,6 +6,7 @@ import type { CartItem } from '@/lib/cart/guest-cart'
 import { sendOrderEmails } from '@/lib/email/resend'
 import { headers } from 'next/headers'
 import { checkCheckoutRateLimit } from '@/lib/supabase/rate-limit'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 export type CheckoutActionState = {
   error: string | null
@@ -69,7 +70,7 @@ export async function submitCheckout(
   const variantIds = cartItems.map((item) => item.variant_id)
   const { data: dbVariants, error: dbError } = await supabase
     .from('product_variants')
-    .select('id, price, active, stock_qty, products!inner(name, active)')
+    .select('id, price, active, stock_qty, product_id, products!inner(id, name, slug, active)')
     .in('id', variantIds)
 
   if (dbError || !dbVariants) {
@@ -166,7 +167,37 @@ export async function submitCheckout(
 
   const result = rpcData as PlaceOrderResult
 
-  // 5. Trigger emails asynchronously (fire-and-forget).
+  // 5. Invalidate caches so decreased stock reflects immediately across storefront & admin
+  const productIds = Array.from(new Set(cartItems.map((item) => item.product_id)))
+  const productSlugs = Array.from(
+    new Set(
+      (dbVariants || [])
+        .map((v) => {
+          const prod = v.products as unknown as { slug?: string } | null
+          return prod?.slug
+        })
+        .filter((slug): slug is string => Boolean(slug))
+    )
+  )
+
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
+  revalidateTag('categories', 'max')
+  revalidatePath('/products')
+  revalidatePath('/')
+  revalidatePath('/admin')
+  revalidatePath('/admin/products')
+  revalidatePath('/admin/orders')
+
+  for (const productId of productIds) {
+    revalidatePath(`/admin/products/${productId}`)
+  }
+
+  for (const slug of productSlugs) {
+    revalidatePath(`/products/${slug}`)
+  }
+
+  // 6. Trigger emails asynchronously (fire-and-forget).
   //    Financials come from the authoritative DB result, not local variables.
   // Await the email send to prevent serverless context termination
   // from aborting the dispatch mid-flight.
