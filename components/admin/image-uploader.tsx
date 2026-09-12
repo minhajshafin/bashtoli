@@ -92,6 +92,9 @@ export function ImageUploader({
       for (const file of files) {
         await uploadFile(file)
       }
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
     }
   }
 
@@ -114,6 +117,9 @@ export function ImageUploader({
       const files = Array.from(e.dataTransfer.files)
       for (const file of files) {
         await uploadFile(file)
+      }
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
       }
     }
   }

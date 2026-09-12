@@ -50,9 +50,14 @@ export function ImageGalleryAdmin({
   }
 
   async function handleAltSave(imageId: string, altText: string) {
+    const current = images.find((i) => i.id === imageId)
+    if (current && (current.alt_text ?? '') === altText.trim()) {
+      return
+    }
+
     setError(null)
     setSuccessMsg(null)
-    const res = await updateProductImageAlt(imageId, altText)
+    const res = await updateProductImageAlt(imageId, altText.trim())
     if (res.error) {
       setError(res.error)
     } else {

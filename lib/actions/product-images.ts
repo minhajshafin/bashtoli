@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import {
   productImageInsertSchema,
   productImageUpdateSchema,
+  updateProductImageAltSchema,
 } from '@/lib/validations/product-image'
 import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 
@@ -108,7 +109,10 @@ export async function updateProductImageAlt(
     return { error: err instanceof Error ? err.message : 'Unauthorized.' }
   }
 
-  const parsed = productImageUpdateSchema.safeParse({ alt_text: altText })
+  const parsed = updateProductImageAltSchema.safeParse({
+    id: imageId,
+    alt_text: altText,
+  })
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message || 'Invalid alt text.' }
   }
