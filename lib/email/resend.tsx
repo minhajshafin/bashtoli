@@ -42,6 +42,7 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
     return
   }
 
+  const fromAddress = process.env.RESEND_FROM_EMAIL || 'Bashtoli Orders <orders@bashtoli.com>'
   const dispatches: Promise<void>[] = []
 
   // 1. Send Admin Alert Email
@@ -49,7 +50,7 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
     (async () => {
       try {
         const res = await resend.emails.send({
-          from: 'Bashtoli Orders <orders@bashtoli.com>',
+          from: fromAddress,
           to: adminEmail,
           subject: `New Order ${order.order_number} - ৳${Number(order.total).toLocaleString()}`,
           react: (
@@ -84,7 +85,7 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
       (async () => {
         try {
           const res = await resend.emails.send({
-            from: 'Bashtoli <orders@bashtoli.com>',
+            from: fromAddress,
             to: order.guest_email!.trim(),
             subject: `Your Bashtoli Order ${order.order_number} has been received!`,
             react: (
