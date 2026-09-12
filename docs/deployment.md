@@ -41,22 +41,26 @@ See [Tech Stack — Environment Variables](./tech-stack.md#environment-variables
 
 **Critical:** `SUPABASE_SERVICE_ROLE_KEY` must never be exposed to the client. Verify with `grep` that it does not appear in client bundles.
 
-## Vercel Configuration (Planned)
+## Vercel Configuration
 
-```
-vercel.json (if needed)
-├── Build command: next build
-├── Output: .next
-└── Environment variables set in Vercel dashboard
-```
+Configured in `vercel.json`:
+- Framework: `nextjs`
+- Region: `sin1` (Singapore) — ensures sub-50ms latency to Bangladesh customers and sub-5ms latency to Supabase in `ap-southeast-1`.
 
-## Supabase Setup
+## Supabase Production Setup
 
-1. Create Supabase project (Phase 1)
-2. Run migrations from `supabase/migrations/` in order (`001_` → `008_`)
-3. Configure Storage bucket `product-images` (public, 2 MB limit, WebP/JPEG/PNG)
-4. Set up RLS policies (migration `008_rls_policies.sql`)
-5. Bootstrap first admin user — see section below
+1. **Create Project**: In [Supabase Dashboard](https://supabase.com/dashboard), create a new project in region **Singapore (`ap-southeast-1`)**.
+2. **Apply Database Schema**:
+   - **Option A (Recommended)**: Open **SQL Editor** → **New Query**, paste the entire contents of [`supabase/scripts/master-schema.sql`](file:///home/billy/Projects/bashtoli/supabase/scripts/master-schema.sql), and click **Run**.
+   - **Option B (Sequential Migrations)**: Run the 6 migrations in order from `supabase/migrations/`:
+     1. `001_types_and_extensions.sql` (Enums, extensions, `app_private` schema)
+     2. `002_core_tables.sql` (16 core tables and relational constraints)
+     3. `003_indexes.sql` (Storefront and search performance indexes)
+     4. `004_functions_and_triggers.sql` (Audit loggers, order number generator, atomic RPCs)
+     5. `005_row_level_security.sql` (Hardened RLS policies for all 16 tables)
+     6. `006_storage.sql` (`product-images` bucket and RLS policies)
+3. **Verify Storage Bucket**: In **Storage** → verify the `product-images` bucket exists with public read access and 5MB file limit (`5242880` bytes). All storefront imagery (product gallery, category covers, hero slides) resides in this single bucket.
+4. **Bootstrap Owner Admin Account**: See the step-by-step section below.
 
 ## Bootstrapping the First Admin User
 
@@ -176,7 +180,7 @@ Bashtoli uses a zero-dependency, cloud-native observability stack optimized for 
 
 ### Pre-Deploy
 
-- [ ] All 6 Playwright E2E suites passing (`npm run test:e2e`)
+- [ ] All 8 Playwright E2E tests passing (`npm run test:e2e`)
 - [ ] All 13 unit test suites passing (`npm test`)
 - [ ] 0 lint errors (`npm run lint`) and 0 vulnerabilities (`npm audit`)
 - [ ] Vercel Analytics active in RootLayout

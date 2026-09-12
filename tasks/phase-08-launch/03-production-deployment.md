@@ -64,9 +64,9 @@ Deploy the application to Vercel production with a dedicated Supabase production
 
 ## Acceptance Criteria
 
-- [ ] All 19 Supabase migrations successfully applied in production database without schema conflicts.
+- [ ] All 6 consolidated Supabase migrations (001–006 or `master-schema.sql`) successfully applied in production database without schema conflicts.
 - [ ] `app_private` schema isolation active; security helper functions not accessible directly via client PostgREST.
-- [ ] Storage buckets `product-images` and `category-covers` created with public read access and correct upload size limits.
+- [ ] Storage bucket `product-images` created with public read access and 5MB upload size limit.
 - [ ] Initial store owner account bootstrapped with `admin` role.
 - [ ] Upstash Redis cluster active with valid REST credentials.
 - [ ] Resend production domain verified with SPF, DKIM, and DMARC passing.
@@ -86,13 +86,13 @@ Deploy the application to Vercel production with a dedicated Supabase production
 
 | File | Action | Description |
 |---|---|---|
-| `.env.local.example` | Verify | Confirm all required production environment variables are documented |
-| `docs/deployment.md` | Update | Update production runbook with migrations 001–019, dual buckets, and Upstash |
-| `vercel.json` | Create/Verify | Ensure optimal caching and security headers |
+| `.env.local.example` | Complete | Document all required production environment variables |
+| `docs/deployment.md` | Update | Update production runbook with migrations 001–006, dual buckets, Upstash, and Vercel sin1 region |
+| `vercel.json` | Complete | Created with sin1 region routing and Next.js preset |
 
 ## Definition of Done
 
 - [ ] Production site live on `bashtoli.com` with active SSL.
-- [ ] Database running on migration 019 with verified RLS policies.
+- [ ] Database running on consolidated schema with verified RLS policies.
 - [ ] Smoke test executed and signed off on live production URL.
 - [ ] Rollback procedure tested and documented.

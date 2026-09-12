@@ -25,7 +25,7 @@ interface HeroSlidesManagerProps {
 }
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_SIZE_MB = 3
+const MAX_SIZE_MB = 5
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 
 export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerProps) {
