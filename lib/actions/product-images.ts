@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import {
   productImageInsertSchema,
@@ -90,6 +90,8 @@ export async function addProductImage(
   }
 
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   return { error: null }
 }
 
@@ -106,27 +108,20 @@ export async function updateProductImageAlt(
     return { error: err instanceof Error ? err.message : 'Unauthorized.' }
   }
 
-  // Fetch current row to preserve sort_order during schema validation
+  const parsed = productImageUpdateSchema.safeParse({ alt_text: altText })
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message || 'Invalid alt text.' }
+  }
+
+  // Get current image to find product_id for revalidation
   const { data: current, error: getErr } = await supabase
     .from('product_images')
-    .select('*')
+    .select('product_id')
     .eq('id', imageId)
     .single()
 
   if (getErr || !current) {
-    return { error: 'Image not found: ' + (getErr?.message ?? '') }
-  }
-
-  const parsed = productImageUpdateSchema.safeParse({
-    id: imageId,
-    alt_text: altText,
-    sort_order: current.sort_order,
-  })
-
-  if (!parsed.success) {
-    return {
-      error: 'Validation error: ' + parsed.error.issues[0].message,
-    }
+    return { error: 'Image not found.' }
   }
 
   const { error: updateErr } = await supabase
@@ -141,6 +136,8 @@ export async function updateProductImageAlt(
   }
 
   revalidatePath(`${PRODUCTS_PATH}/${current.product_id}`)
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   return { error: null }
 }
 
@@ -190,6 +187,8 @@ export async function deleteProductImage(
   }
 
   revalidatePath(`${PRODUCTS_PATH}/${image.product_id}`)
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   return { error: null }
 }
 
@@ -263,6 +262,8 @@ export async function saveProductImageOrder(
   if (productId) {
     revalidatePath(`${PRODUCTS_PATH}/${productId}`)
   }
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
 
   return { error: null }
 }

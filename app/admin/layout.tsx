@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
+export const instant = false
+
 /**
  * Root layout for all /admin/* routes.
  *

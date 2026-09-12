@@ -15,6 +15,8 @@ export async function generateMetadata() {
 
 import { Suspense } from 'react'
 
+export const instant = false
+
 export default async function SignupPage() {
   const supabase = await createClient()
   const {

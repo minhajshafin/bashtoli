@@ -21,6 +21,8 @@ export async function generateMetadata() {
 
 import { Suspense } from 'react'
 
+export const instant = false
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = await searchParams
   const rawRedirectTo = resolvedSearchParams?.redirectTo

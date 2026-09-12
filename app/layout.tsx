@@ -22,16 +22,6 @@ export const metadata: Metadata = {
     default: "Bashtoli | Artisanal Stationery & Paper Goods",
   },
   description: "Handcrafted stationery, artisanal paper goods, journals, and desktop crafts from Bashtoli.",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-    apple: [
-      { url: "/apple-icon.svg", type: "image/svg+xml" },
-    ],
-  },
 };
 
 export default function RootLayout({

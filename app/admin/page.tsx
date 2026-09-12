@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: 'Bashtoli store management metrics dashboard',
 }
 
+export const instant = false
+
 interface PageProps {
   searchParams: Promise<{
     threshold?: string

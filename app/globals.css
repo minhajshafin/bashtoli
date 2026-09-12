@@ -2,8 +2,8 @@
 
 @theme {
   /* Typography */
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-sans: 'Source Sans 3', system-ui, sans-serif;
+  --font-display: var(--font-fraunces), 'Fraunces', Georgia, serif;
+  --font-sans: var(--font-source-sans-3), 'Source Sans 3', system-ui, sans-serif;
 
   /* Forest greens */
   --color-forest-950: #080f0a;
@@ -68,6 +68,11 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Ensure all headings and Fraunces styled elements resolve to next/font Fraunces variable */
+[style*="Fraunces"] {
+  font-family: var(--font-fraunces), 'Fraunces', Georgia, serif !important;
 }
 
 /* Base Accessibility focus outlines (WCAG 2.1 AA) */

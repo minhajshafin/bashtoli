@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'New Product',
 }
 
+export const instant = false
+
 export default async function NewProductPage() {
   let categories: Awaited<ReturnType<typeof fetchAdminCategories>> = []
 

@@ -34,6 +34,8 @@ function isOrderCancelable(createdAtStr: string, status: string): boolean {
   return createdAt.getTime() > Date.now() - 24 * 60 * 60 * 1000
 }
 
+export const instant = false
+
 export default async function OrderConfirmationPage({
   params,
   searchParams,

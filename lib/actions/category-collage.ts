@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 import {
@@ -87,6 +87,8 @@ export async function toggleCategoryFeaturedAction(
     revalidatePath('/')
     revalidatePath('/admin/storefront')
     revalidatePath('/admin/categories')
+    revalidateTag('category-collage', 'max')
+    revalidateTag('categories', 'max')
     return { success: true }
   } catch (err) {
     return {
@@ -126,6 +128,8 @@ export async function updateCategoryCoverImageAction(
     revalidatePath('/')
     revalidatePath('/admin/storefront')
     revalidatePath('/admin/categories')
+    revalidateTag('category-collage', 'max')
+    revalidateTag('categories', 'max')
     return { success: true }
   } catch (err) {
     return {
@@ -164,6 +168,8 @@ export async function reorderFeaturedCategoriesAction(
 
     revalidatePath('/')
     revalidatePath('/admin/storefront')
+    revalidateTag('category-collage', 'max')
+    revalidateTag('categories', 'max')
     return { success: true }
   } catch (err) {
     return {

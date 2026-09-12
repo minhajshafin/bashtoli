@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import {
   productOptionsSchema,
@@ -228,6 +228,8 @@ export async function saveProductOptionsAndValues(
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   if (prod?.slug) {
     revalidatePath(`/products/${prod.slug}`)
   }
@@ -319,6 +321,8 @@ export async function updateVariantsBulk(
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   if (prod?.slug) {
     revalidatePath(`/products/${prod.slug}`)
   }
@@ -383,6 +387,8 @@ export async function toggleVariantActive(
   revalidatePath(`${PRODUCTS_PATH}/${productId}`)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   if (prod?.slug) {
     revalidatePath(`/products/${prod.slug}`)
   }

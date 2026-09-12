@@ -9,6 +9,8 @@ export async function generateMetadata() {
   }
 }
 
+export const instant = false
+
 /**
  * Saved Addresses page.
  * Loads customer addresses server-side and renders the dashboard.

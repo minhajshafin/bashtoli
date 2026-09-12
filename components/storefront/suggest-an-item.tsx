@@ -64,7 +64,7 @@ export function SuggestAnItem() {
         <h2
           className="mb-4"
           style={{
-            fontFamily: "'Fraunces', Georgia, serif",
+            fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
             fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
             color: '#f5ede0',
             fontWeight: 300,
@@ -84,7 +84,7 @@ export function SuggestAnItem() {
           <div className="py-8">
             <p
               style={{
-                fontFamily: "'Fraunces', Georgia, serif",
+                fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
                 fontSize: '1.25rem',
                 color: '#c9a96e',
                 fontStyle: 'italic',

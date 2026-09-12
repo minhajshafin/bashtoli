@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: 'Manage staff accounts and administrative authorization roles.',
 }
 
+export const instant = false
+
 /**
  * Staff management route page (restricted to administrators only).
  */

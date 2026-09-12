@@ -95,8 +95,8 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
               src={s.image_url}
               alt={s.alt_text || 'Bashtoli Stationery'}
               fill
-              preload={i === 0}
               loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : 'low'}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
               className="object-cover"
               style={{
@@ -173,7 +173,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
       >
         <p
           style={{
-            fontFamily: "'Fraunces', Georgia, serif",
+            fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
             fontSize: '0.98rem',
             fontWeight: 600,
             color: '#1a3326',
@@ -209,7 +209,8 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
                 src="/logo-text.svg"
                 alt="Bashtoli Stationery"
                 fill
-                preload
+                loading="eager"
+                fetchPriority="high"
                 className="object-contain object-left"
               />
             </div>
@@ -224,7 +225,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           <h1
             className="mb-5 sm:mb-6 text-cream-100"
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
               fontSize: 'clamp(2.2rem, 3.8vw, 3.6rem)',
               fontWeight: 300,
               letterSpacing: '-0.02em',

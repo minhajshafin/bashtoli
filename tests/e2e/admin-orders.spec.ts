@@ -23,7 +23,7 @@ test.describe('Admin Order Lifecycle & Fulfillment', () => {
 
     // 4. Verify order details page snapshot
     await expect(page).toHaveURL(/\/admin\/orders\/[0-9a-fA-F-]+/)
-    await expect(page.locator('h1')).toContainText(/ORD-/i)
+    await expect(page.locator('h1', { hasText: /ORD-/i })).toBeVisible()
     await expect(page.locator('h2:has-text("Purchased Items")')).toBeVisible()
 
     // 5. Test status transition

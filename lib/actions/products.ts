@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import {
@@ -99,6 +99,8 @@ export async function createProduct(
   revalidatePath(PRODUCTS_PATH)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   if (newProduct?.slug) {
     revalidatePath(`/products/${newProduct.slug}`)
   }
@@ -244,6 +246,8 @@ export async function updateProduct(
   if (currentProduct?.slug && currentProduct.slug !== parsed.data.slug) {
     revalidatePath(`/products/${currentProduct.slug}`)
   }
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   redirect(PRODUCTS_PATH)
 }
 
@@ -274,6 +278,8 @@ export async function toggleProductActive(
   revalidatePath(PRODUCTS_PATH)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   return { error: null }
 }
 
@@ -304,6 +310,8 @@ export async function toggleProductFeatured(
   revalidatePath(PRODUCTS_PATH)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   return { error: null }
 }
 
@@ -350,6 +358,8 @@ export async function deleteProduct(
     revalidatePath(PRODUCTS_PATH)
     revalidatePath('/')
     revalidatePath('/products')
+    revalidateTag('products', 'max')
+    revalidateTag('featured-products', 'max')
     // Return a success with a contextual note — the product was deactivated, not deleted
     return { error: null }
   }
@@ -407,5 +417,7 @@ export async function deleteProduct(
   revalidatePath(PRODUCTS_PATH)
   revalidatePath('/')
   revalidatePath('/products')
+  revalidateTag('products', 'max')
+  revalidateTag('featured-products', 'max')
   return { error: null }
 }

@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 import {
@@ -85,6 +85,7 @@ export async function createHeroSlideAction(
 
     revalidatePath('/')
     revalidatePath('/admin/storefront')
+    revalidateTag('hero-slides', 'max')
     return { success: true, slide: insertedSlide as HeroSlideRow }
   } catch (err) {
     return {
@@ -133,6 +134,7 @@ export async function updateHeroSlideAction(
 
     revalidatePath('/')
     revalidatePath('/admin/storefront')
+    revalidateTag('hero-slides', 'max')
     return { success: true }
   } catch (err) {
     return {
@@ -180,6 +182,7 @@ export async function deleteHeroSlideAction(
 
     revalidatePath('/')
     revalidatePath('/admin/storefront')
+    revalidateTag('hero-slides', 'max')
     return { success: true }
   } catch (err) {
     return {
@@ -210,6 +213,7 @@ export async function reorderHeroSlidesAction(
 
     revalidatePath('/')
     revalidatePath('/admin/storefront')
+    revalidateTag('hero-slides', 'max')
     return { success: true }
   } catch (err) {
     return {

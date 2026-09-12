@@ -28,6 +28,7 @@ vi.mock('@/lib/supabase/server', () => ({
 
 vi.mock('next/cache', () => ({
   revalidatePath: (path: string) => mockRevalidatePath(path),
+  revalidateTag: vi.fn(),
 }))
 
 vi.mock('next/navigation', () => ({

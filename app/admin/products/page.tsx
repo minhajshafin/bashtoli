@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: 'Manage store catalog, prices, and status.',
 }
 
+export const instant = false
+
 interface PageProps {
   searchParams: Promise<{
     status?: string

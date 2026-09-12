@@ -10,6 +10,8 @@ export async function generateMetadata() {
   }
 }
 
+export const instant = false
+
 /**
  * Customer Wishlist Page.
  * Server component that retrieves and lists all saved product listings.

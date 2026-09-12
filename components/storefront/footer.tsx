@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -69,6 +69,12 @@ const socials = [
 
 export function Footer() {
   const pathname = usePathname()
+  const [currentYear, setCurrentYear] = useState<number>(2026)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCurrentYear(new Date().getFullYear())
+  }, [])
 
   // Do not render footer on checkout page
   if (pathname === '/checkout' || pathname?.startsWith('/checkout/')) {
@@ -188,7 +194,7 @@ export function Footer() {
         <div className="pt-8 pb-2 border-t border-forest-800 flex flex-col-reverse md:flex-row items-center justify-between gap-6 mt-10 md:mt-12">
           <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-3 text-center sm:text-left">
             <p className="text-xs font-light text-forest-500">
-              &copy; {new Date().getFullYear()} Bashtoli Stationery.
+              &copy; {currentYear} Bashtoli Stationery.
             </p>
             <div className="flex items-center gap-5">
               <Link href="/privacy" className="text-xs text-forest-500 hover:text-forest-300 transition-colors duration-200">

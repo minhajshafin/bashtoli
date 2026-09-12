@@ -18,9 +18,9 @@ test.describe('E2E Guest Checkout Flow', () => {
 
     // 3. Open product details and add to bag
     await expect(page).toHaveURL(/\/products\/e2e-test-bamboo-product/)
-    await expect(page.locator('h1')).toContainText('E2E Test Bamboo Product')
+    await expect(page.locator('h1', { hasText: 'E2E Test Bamboo Product' })).toBeVisible()
 
-    const addToBagButton = page.locator('button:has-text("Add to Bag")')
+    const addToBagButton = page.getByRole('button', { name: 'Add to Bag', exact: true })
     await expect(addToBagButton).toBeVisible()
     await addToBagButton.click()
 
@@ -34,7 +34,7 @@ test.describe('E2E Guest Checkout Flow', () => {
 
     // 4. Verify bag page load and item presence
     await expect(page).toHaveURL(/\/bag/)
-    await expect(page.locator('h1')).toContainText(/Shopping Bag/i)
+    await expect(page.locator('h1', { hasText: /Shopping Bag/i })).toBeVisible()
     await expect(page.locator('body')).toContainText('E2E Test Bamboo Product')
 
     // Click "Proceed to Checkout"
@@ -44,7 +44,7 @@ test.describe('E2E Guest Checkout Flow', () => {
 
     // 5. Fill out shipping details in checkout form
     await expect(page).toHaveURL(/\/checkout/)
-    await expect(page.locator('h1')).toContainText('Checkout')
+    await expect(page.locator('h1', { hasText: 'Checkout' })).toBeVisible()
 
     await page.fill('input#customer_name', 'Playwright E2E Client')
     await page.fill('input#phone', '01712345678')
@@ -65,7 +65,7 @@ test.describe('E2E Guest Checkout Flow', () => {
     // 6. Verify order confirmation screen and tracking details
     // Sequence matches ORD-YYYYMMDD-NNNN
     await page.waitForURL(/\/order\/ORD-\d{8}-\d{4}/, { timeout: 25000 })
-    await expect(page.locator('h1')).toContainText(/Thank you/i)
+    await expect(page.locator('h1', { hasText: /Thank you/i })).toBeVisible()
 
     const pageBody = page.locator('body')
     await expect(pageBody).toContainText('Playwright E2E Client')

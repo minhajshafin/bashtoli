@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Manage and review order customer particulars.',
 }
 
+export const instant = false
+
 interface PageProps {
   params: Promise<{
     id: string

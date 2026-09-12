@@ -2,7 +2,7 @@ import { getProductDetail } from '@/lib/queries/product-detail'
 import { notFound } from 'next/navigation'
 import { Breadcrumb } from '@/components/storefront/breadcrumb'
 import { ProductDetailClient } from './product-client'
-import { createClient, createPublicClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/server'
 import React from 'react'
 import { ProductJsonLd } from '@/components/storefront/json-ld'
 
@@ -74,35 +74,10 @@ export async function generateMetadata({ params }: ProductPageProps) {
  */
 export default async function ProductPage({ params }: ProductPageProps) {
   const resolvedParams = await params
-
-  const supabasePromise = createClient().then(async (client) => {
-    const {
-      data: { user },
-    } = await client.auth.getUser()
-    return { client, user }
-  })
-
-  const [data, { client: supabase, user }] = await Promise.all([
-    getProductDetail(resolvedParams.slug),
-    supabasePromise,
-  ])
+  const data = await getProductDetail(resolvedParams.slug)
 
   if (!data) {
     notFound()
-  }
-
-  const isLoggedIn = !!user
-  let isWishlisted = false
-
-  if (user) {
-    const { data: wishlistEntry } = await supabase
-      .from('wishlist')
-      .select('id')
-      .eq('user_id', user.id)
-      .eq('product_id', data.product.id)
-      .maybeSingle()
-
-    isWishlisted = !!wishlistEntry
   }
 
   return (
@@ -121,11 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       />
 
       {/* Main product view split */}
-      <ProductDetailClient
-        detailData={data}
-        isLoggedIn={isLoggedIn}
-        initialIsWishlisted={isWishlisted}
-      />
+      <ProductDetailClient detailData={data} />
     </div>
   )
 }

@@ -6,7 +6,7 @@ const ITEMS = 'Notebooks ·  Fountain Pens ·  Washi Tapes ·  Letterpress
 
 export function MarqueeBand() {
   return (
-    <div className="overflow-hidden py-4 bg-gold-500" aria-hidden="true">
+    <div className="overflow-hidden py-4 bg-gold-500" style={{ overflowAnchor: 'none' }} aria-hidden="true">
       <div
         className="flex whitespace-nowrap"
         style={{ animation: 'marquee 30s linear infinite' }}
@@ -16,7 +16,7 @@ export function MarqueeBand() {
             key={i}
             className="mx-8 text-sm text-forest-800"
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
               fontStyle: 'italic',
               letterSpacing: '0.05em',
             }}

@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: 'Storefront Management',
 }
 
+export const instant = false
+
 export default async function AdminStorefrontPage() {
   const [{ slides, error: heroError }, { featured, available }] =
     await Promise.all([getAdminHeroSlides(), getAdminCategoryCollageData()])

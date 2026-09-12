@@ -18,7 +18,7 @@ export function AccountNav() {
 
   return (
     <div className="flex flex-col gap-6">
-      <nav className="flex flex-row lg:flex-col gap-1.5 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 scrollbar-none">
+      <nav className="flex flex-row lg:flex-col gap-1.5 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 scrollbar-none" style={{ overflowAnchor: 'none' }}>
         {NAV_ITEMS.map(({ label, href }) => {
           const isActive = pathname === href
           return (

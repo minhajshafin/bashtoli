@@ -12,14 +12,14 @@ import { useToast } from '@/components/ui/toast'
 
 interface ProductDetailClientProps {
   detailData: ProductDetailData
-  isLoggedIn: boolean
-  initialIsWishlisted: boolean
+  isLoggedIn?: boolean
+  initialIsWishlisted?: boolean
 }
 
 export function ProductDetailClient({
   detailData,
-  isLoggedIn,
-  initialIsWishlisted,
+  isLoggedIn = false,
+  initialIsWishlisted = false,
 }: ProductDetailClientProps) {
   const { product, images, variants, options } = detailData
   const router = useRouter()

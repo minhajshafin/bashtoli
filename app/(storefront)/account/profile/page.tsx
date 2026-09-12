@@ -10,6 +10,8 @@ export async function generateMetadata() {
   }
 }
 
+export const instant = false
+
 /**
  * Customer Profile Settings page.
  * Server component that authenticates the user and provides profile details to the interactive client form.

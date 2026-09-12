@@ -20,6 +20,7 @@ vi.mock('@/lib/supabase/server', () => ({
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }))
 
 import { deleteProduct } from '@/lib/actions/products'

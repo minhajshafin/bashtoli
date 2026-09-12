@@ -32,7 +32,7 @@ export function AboutSection() {
           <p
             className="mb-3 leading-relaxed"
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
               fontSize: 'clamp(0.85rem, 0.8rem + 0.5vw, 1.1rem)',
               color: '#2d5240',
               fontStyle: 'italic',
@@ -44,7 +44,7 @@ export function AboutSection() {
           <h2
             className="mb-3"
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
               fontSize: 'clamp(1.5rem, 2.8vw, 2.1rem)',
               color: '#1a3326',
               fontWeight: 400,

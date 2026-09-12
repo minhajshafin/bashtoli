@@ -60,6 +60,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
+          overflowAnchor: 'none',
         }}
       >
         {products.map((p) => (

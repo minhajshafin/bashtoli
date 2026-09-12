@@ -7,6 +7,8 @@ export const metadata = {
   description: 'View and filter all incoming storefront checkouts.',
 }
 
+export const instant = false
+
 interface PageProps {
   searchParams: Promise<{
     status?: string

@@ -36,7 +36,7 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
   return (
     <div className="w-full">
       {/* Mobile Horizontal Filter Chips */}
-      <div className="flex md:hidden w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+      <div className="flex md:hidden w-full overflow-x-auto pb-2 scrollbar-none gap-2" style={{ overflowAnchor: 'none' }}>
         <button
           type="button"
           onClick={() => handleCategorySelect(null)}

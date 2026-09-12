@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   title: 'Categories',
 }
 
+export const instant = false
+
 type CategoryRow = Database['public']['Tables']['categories']['Row']
 
 /**

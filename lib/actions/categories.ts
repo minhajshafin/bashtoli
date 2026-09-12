@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import {
   createCategorySchema,
@@ -75,6 +75,10 @@ export async function createCategory(
   }
 
   revalidatePath(CATEGORIES_PATH)
+  revalidatePath('/')
+  revalidatePath('/products')
+  revalidateTag('categories', 'max')
+  revalidateTag('category-collage', 'max')
   return { error: null }
 }
 
@@ -136,6 +140,10 @@ export async function updateCategory(
   }
 
   revalidatePath(CATEGORIES_PATH)
+  revalidatePath('/')
+  revalidatePath('/products')
+  revalidateTag('categories', 'max')
+  revalidateTag('category-collage', 'max')
   return { error: null }
 }
 
@@ -191,5 +199,9 @@ export async function deleteCategory(
   }
 
   revalidatePath(CATEGORIES_PATH)
+  revalidatePath('/')
+  revalidatePath('/products')
+  revalidateTag('categories', 'max')
+  revalidateTag('category-collage', 'max')
   return { error: null }
 }

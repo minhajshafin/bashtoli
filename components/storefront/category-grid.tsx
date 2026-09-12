@@ -70,7 +70,7 @@ function CategoryCard({
         <h3
           className="mb-1 text-cream-100 group-hover:text-gold-300 transition-colors"
           style={{
-            fontFamily: "'Fraunces', Georgia, serif",
+            fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
             fontSize: '1.05rem',
             fontWeight: 500,
           }}
@@ -114,7 +114,7 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
           </p>
           <h2
             style={{
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
               fontSize: 'clamp(1.9rem, 4vw, 3rem)',
               color: '#f5ede0',
               fontWeight: 400,

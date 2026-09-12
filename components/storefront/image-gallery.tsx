@@ -69,8 +69,8 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
           src={failedImages[activeImage.url] ? '/placeholder-product.svg' : activeImage.url}
           alt={activeImage.alt_text || fallbackName}
           fill
-          preload
           loading="eager"
+          fetchPriority="high"
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover transition-all duration-300"
           onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
@@ -79,7 +79,10 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
 
       {/* Thumbnails Row */}
       {images.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
+        <div
+          className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin"
+          style={{ overflowAnchor: 'none' }}
+        >
           {images.map((img, idx) => {
             const isActive = idx === activeIdx
             return (

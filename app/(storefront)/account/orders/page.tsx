@@ -13,6 +13,8 @@ export async function generateMetadata() {
   }
 }
 
+export const instant = false
+
 /**
  * Customer Order History Page.
  * Server component that retrieves and shows customer checkouts and matching claimable guest orders.

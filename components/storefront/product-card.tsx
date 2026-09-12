@@ -183,13 +183,13 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
       <Link href={`/products/${product.slug}`} className="p-3 sm:p-4 block flex-1">
         <h3
           className="text-xs sm:text-base font-medium text-forest-950 line-clamp-1 sm:line-clamp-2 mb-1 group-hover:text-forest-700 transition-colors"
-          style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+          style={{ fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif" }}
         >
           {product.name}
         </h3>
         <p
           className="text-xs sm:text-base font-semibold text-forest-900"
-          style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+          style={{ fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif" }}
         >
           ৳{lowestPrice.toLocaleString()}
           {activeVariants.length > 1 && (

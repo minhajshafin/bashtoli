@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Provide your shipping info and complete your order with Cash on Delivery.',
 }
 
+export const instant = false
+
 /**
  * Checkout page route.
  * Server component loading user profile data and saved addresses to pre-fill the form.

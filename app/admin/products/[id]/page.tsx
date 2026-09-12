@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   title: 'Edit Product',
 }
 
+export const instant = false
+
 interface PageProps {
   params: Promise<{ id: string }>
 }
