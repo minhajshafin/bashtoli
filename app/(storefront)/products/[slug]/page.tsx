@@ -23,12 +23,18 @@ export async function generateStaticParams() {
       .select('slug')
       .eq('active', true)
 
-    return (products || []).map((p) => ({
-      slug: p.slug,
-    }))
+    if (products && products.length > 0) {
+      return products.map((p) => ({
+        slug: p.slug,
+      }))
+    }
+
+    // Next.js 16 Cache Components requires generateStaticParams to return >= 1 result
+    // to validate the static shell at build time when the catalog is initially empty.
+    return [{ slug: '_placeholder' }]
   } catch (err) {
     console.warn('[ProductPage] Error generating static params:', err)
-    return []
+    return [{ slug: '_placeholder' }]
   }
 }
 
