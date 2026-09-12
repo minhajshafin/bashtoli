@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { Trash2, Loader2 } from 'lucide-react'
 import {
   deleteProductImage,
   updateProductImageAlt,
@@ -21,6 +22,7 @@ export function ImageGalleryAdmin({
   const router = useRouter()
   const confirm = useAdminConfirm()
   const [isPending, startTransition] = useTransition()
+  const [deletingId, setDeletingId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
 
@@ -39,12 +41,17 @@ export function ImageGalleryAdmin({
     if (!ok) return
 
     setError(null)
+    setDeletingId(imageId)
     startTransition(async () => {
-      const res = await deleteProductImage(imageId)
-      if (res.error) {
-        setError(res.error)
-      } else {
-        router.refresh()
+      try {
+        const res = await deleteProductImage(imageId)
+        if (res.error) {
+          setError(res.error)
+        } else {
+          router.refresh()
+        }
+      } finally {
+        setDeletingId(null)
       }
     })
   }
@@ -159,21 +166,15 @@ export function ImageGalleryAdmin({
                   type="button"
                   disabled={isPending}
                   onClick={() => handleDelete(img.id)}
-                  className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-rose-600/90 text-white hover:bg-rose-700 transition shadow-sm opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  aria-label="Delete image"
                   title="Delete image"
+                  className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:scale-105 active:scale-95 transition-all shadow-md opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.75 3A2.75 2.75 0 0 0 6 5.75v.5H5a.75.75 0 0 0 0 1.5h10a.75.75 0 0 0 0-1.5h-1v-.5A2.75 2.75 0 0 0 11.25 3h-2.5ZM9 6v-.25C9 4.784 9.784 4 10.75 4h.5c.966 0 1.75.784 1.75 1.75V6H9ZM4 8.75a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H13.9a4.85 4.85 0 0 1-.36 1.4l-.84 3.79c-.38 1.71-1.9 2.91-3.66 2.91h-1.08c-1.76 0-3.28-1.2-3.66-2.91l-.84-3.79a4.85 4.85 0 0 1-.36-1.4H4.75a.75.75 0 0 1-.75-.75Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  {deletingId === img.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin text-white" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
                 </button>
               </div>
 

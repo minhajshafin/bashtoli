@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 const mockGetUser = vi.fn()
 const mockRevalidatePath = vi.fn()
 const mockRevalidateTag = vi.fn()
+const mockStorageFrom = vi.fn()
 
 type TableMock = Record<string, unknown>
 let profilesMock: TableMock
@@ -19,6 +20,9 @@ vi.mock('@/lib/supabase/server', () => ({
         if (table === 'product_images') return productImagesMock
         throw new Error(`Unexpected table ${table}`)
       }),
+      storage: {
+        from: mockStorageFrom,
+      },
     })
   ),
 }))
@@ -31,6 +35,7 @@ vi.mock('next/cache', () => ({
 import {
   addProductImage,
   updateProductImageAlt,
+  deleteProductImage,
 } from '@/lib/actions/product-images'
 
 const PROD_UUID = 'c1111111-1111-4111-8111-111111111111'
@@ -152,6 +157,60 @@ describe('Product Images Actions', () => {
         sort_order: 2,
       })
       expect(mockRevalidatePath).toHaveBeenCalledWith(`/admin/products/${PROD_UUID}`)
+    })
+  })
+
+  describe('deleteProductImage', () => {
+    it('successfully deletes image from database and storage bucket', async () => {
+      const mockDbDelete = vi.fn().mockReturnValue({
+        eq: vi.fn().mockResolvedValue({ error: null }),
+      })
+      const mockStorageRemove = vi.fn().mockResolvedValue({ error: null })
+
+      mockStorageFrom.mockReturnValue({
+        remove: mockStorageRemove,
+      })
+
+      productImagesMock = {
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({
+              data: {
+                id: IMG_UUID_1,
+                product_id: PROD_UUID,
+                url: `https://example.com/storage/v1/object/public/product-images/${PROD_UUID}/test.webp`,
+              },
+              error: null,
+            }),
+          }),
+        }),
+        delete: mockDbDelete,
+      }
+
+      const res = await deleteProductImage(IMG_UUID_1)
+
+      expect(res).toEqual({ error: null })
+      expect(mockDbDelete).toHaveBeenCalled()
+      expect(mockStorageFrom).toHaveBeenCalledWith('product-images')
+      expect(mockStorageRemove).toHaveBeenCalledWith([`${PROD_UUID}/test.webp`])
+      expect(mockRevalidatePath).toHaveBeenCalledWith(`/admin/products/${PROD_UUID}`)
+    })
+
+    it('returns error if image is not found', async () => {
+      productImagesMock = {
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({
+              data: null,
+              error: { message: 'Row not found' },
+            }),
+          }),
+        }),
+      }
+
+      const res = await deleteProductImage('non-existent-id')
+
+      expect(res.error).toContain('Image not found')
     })
   })
 })
