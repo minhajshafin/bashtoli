@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react'
 import Link from 'next/link'
+import { LeafDownfacing, LeafUprising } from '@/components/storefront/leaf-decorations'
 
 interface ErrorPageProps {
   error: Error & { digest?: string }
@@ -19,25 +20,14 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <div className="relative min-h-[calc(100dvh-4rem)] flex items-center justify-center bg-cream-50 px-4 py-16 text-center overflow-hidden">
       {/* Botanical ambient decoration */}
-      <svg
-        viewBox="0 0 320 320"
-        fill="none"
-        className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 pointer-events-none opacity-20"
-        aria-hidden="true"
-      >
-        <path d="M300 10 Q260 70 200 110 Q150 145 170 210 Q185 250 230 270" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-        <path d="M200 90 Q182 65 158 82 Q148 100 168 112 Q188 124 200 90Z" fill="#c9a96e" opacity="0.7" />
-        <path d="M240 55 Q222 30 198 47 Q188 65 208 77 Q228 89 240 55Z" fill="#c9a96e" opacity="0.5" />
-      </svg>
-      <svg
-        viewBox="0 0 280 280"
-        fill="none"
-        className="absolute bottom-0 left-0 w-56 h-56 md:w-72 md:h-72 pointer-events-none opacity-15"
-        aria-hidden="true"
-      >
-        <path d="M20 260 Q60 215 80 155 Q100 95 55 45" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-        <path d="M75 120 Q95 95 80 70 Q62 63 57 80 Q52 97 75 120Z" fill="#c9a96e" opacity="0.6" />
-      </svg>
+      <LeafDownfacing
+        className="absolute top-0 right-0 w-60 h-auto md:w-80 pointer-events-none text-forest-800"
+        style={{ opacity: 0.15 }}
+      />
+      <LeafUprising
+        className="absolute bottom-0 left-0 w-52 h-auto md:w-72 pointer-events-none text-forest-800"
+        style={{ opacity: 0.12 }}
+      />
 
       <div className="relative z-10 max-w-xl mx-auto space-y-6">
         {/* Satirical badge */}

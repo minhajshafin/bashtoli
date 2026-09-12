@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { ToastProvider } from '@/components/ui/toast'
+import { LeafDownfacing, LeafUprising } from '@/components/storefront/leaf-decorations'
 
 export const metadata: Metadata = {
   title: {
@@ -31,28 +32,14 @@ export default function AuthLayout({
         />
 
         {/* Botanical corner decorations (matching Hero section) */}
-        <svg
-          viewBox="0 0 320 320"
-          fill="none"
-          className="fixed top-0 right-0 w-64 h-64 md:w-80 md:h-80 pointer-events-none opacity-20"
-          aria-hidden="true"
-        >
-          <path d="M300 10 Q260 70 200 110 Q150 145 170 210 Q185 250 230 270" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-          <path d="M200 90 Q182 65 158 82 Q148 100 168 112 Q188 124 200 90Z" fill="#c9a96e" opacity="0.7" />
-          <path d="M240 55 Q222 30 198 47 Q188 65 208 77 Q228 89 240 55Z" fill="#c9a96e" opacity="0.5" />
-          <path d="M275 25 Q257 5 233 22 Q223 38 243 47 Q263 56 275 25Z" fill="#c9a96e" opacity="0.4" />
-        </svg>
-
-        <svg
-          viewBox="0 0 280 280"
-          fill="none"
-          className="fixed bottom-0 left-0 w-56 h-56 md:w-72 md:h-72 pointer-events-none opacity-18"
-          aria-hidden="true"
-        >
-          <path d="M20 260 Q60 215 80 155 Q100 95 55 45" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-          <path d="M75 120 Q95 95 80 70 Q62 63 57 80 Q52 97 75 120Z" fill="#c9a96e" opacity="0.6" />
-          <path d="M55 165 Q78 140 62 115 Q44 108 39 125 Q34 142 55 165Z" fill="#c9a96e" opacity="0.5" />
-        </svg>
+        <LeafDownfacing
+          className="fixed -top-4 -right-4 w-60 h-auto sm:w-72 md:w-84 lg:w-96 pointer-events-none text-gold-400"
+          style={{ opacity: 0.16 }}
+        />
+        <LeafUprising
+          className="fixed -bottom-4 -left-4 w-52 h-auto sm:w-64 md:w-76 lg:w-88 pointer-events-none text-gold-400"
+          style={{ opacity: 0.13 }}
+        />
 
         {/* 2-Column Main Stage */}
         <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">

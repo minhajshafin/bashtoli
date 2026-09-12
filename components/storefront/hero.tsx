@@ -9,41 +9,23 @@ import {
   DEFAULT_FALLBACK_SLIDE,
   type HeroSlideItem,
 } from '@/lib/validations/hero-slides'
+import { LeafDownfacing, LeafUprising } from '@/components/storefront/leaf-decorations'
 
 function LeafTopRight() {
   return (
-    <svg
-      viewBox="0 0 320 320"
-      fill="none"
-      className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 pointer-events-none"
-      style={{ opacity: 0.13 }}
-      aria-hidden="true"
-    >
-      <path d="M300 10 Q260 70 200 110 Q150 145 170 210 Q185 250 230 270" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-      <path d="M200 90 Q182 65 158 82 Q148 100 168 112 Q188 124 200 90Z" fill="#c9a96e" opacity="0.7" />
-      <path d="M240 55 Q222 30 198 47 Q188 65 208 77 Q228 89 240 55Z" fill="#c9a96e" opacity="0.5" />
-      <path d="M275 25 Q257 5 233 22 Q223 38 243 47 Q263 56 275 25Z" fill="#c9a96e" opacity="0.4" />
-      <path d="M310 45 Q320 95 308 145 Q296 185 268 205" stroke="#c9a96e" strokeWidth="1" fill="none" opacity="0.5" />
-      <path d="M280 115 Q260 92 245 110 Q240 127 255 133 Q270 139 280 115Z" fill="#c9a96e" opacity="0.4" />
-      <path d="M265 160 Q245 137 230 155 Q225 172 240 178 Q255 184 265 160Z" fill="#c9a96e" opacity="0.3" />
-    </svg>
+    <LeafDownfacing
+      className="absolute top-0 right-0 w-44 h-auto sm:w-52 md:w-60 lg:w-72 pointer-events-none text-gold-400"
+      style={{ opacity: 0.15 }}
+    />
   )
 }
 
 function LeafBottomLeft() {
   return (
-    <svg
-      viewBox="0 0 280 280"
-      fill="none"
-      className="absolute bottom-0 left-0 w-52 h-52 md:w-64 md:h-64 pointer-events-none"
-      style={{ opacity: 0.1 }}
-      aria-hidden="true"
-    >
-      <path d="M20 260 Q60 215 80 155 Q100 95 55 45" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-      <path d="M75 120 Q95 95 80 70 Q62 63 57 80 Q52 97 75 120Z" fill="#c9a96e" opacity="0.6" />
-      <path d="M55 165 Q78 140 62 115 Q44 108 39 125 Q34 142 55 165Z" fill="#c9a96e" opacity="0.5" />
-      <path d="M36 205 Q59 180 43 155 Q25 148 20 165 Q15 182 36 205Z" fill="#c9a96e" opacity="0.4" />
-    </svg>
+    <LeafUprising
+      className="absolute bottom-0 left-0 w-36 h-auto sm:w-44 md:w-52 lg:w-60 pointer-events-none text-gold-400"
+      style={{ opacity: 0.12 }}
+    />
   )
 }
 

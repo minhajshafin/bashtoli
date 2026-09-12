@@ -6,6 +6,7 @@ import { OrderStatus } from '@/components/storefront/order-status'
 import { OrderLookupForm } from '@/components/storefront/order-lookup-form'
 import { WhatsAppLink } from '@/components/storefront/whatsapp-link'
 import { CancelOrderButton } from '@/components/storefront/cancel-order-button'
+import { LeafDownfacing } from '@/components/storefront/leaf-decorations'
 
 interface OrderPageProps {
   params: Promise<{
@@ -125,16 +126,10 @@ export default async function OrderConfirmationPage({
   return (
     <div className="relative min-h-[calc(100dvh-4rem)] bg-cream-50 px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
       {/* Botanical corner decorations */}
-      <svg
-        viewBox="0 0 320 320"
-        fill="none"
-        className="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 pointer-events-none opacity-20"
-        aria-hidden="true"
-      >
-        <path d="M300 10 Q260 70 200 110 Q150 145 170 210 Q185 250 230 270" stroke="#c9a96e" strokeWidth="1.5" fill="none" />
-        <path d="M200 90 Q182 65 158 82 Q148 100 168 112 Q188 124 200 90Z" fill="#c9a96e" opacity="0.7" />
-        <path d="M240 55 Q222 30 198 47 Q188 65 208 77 Q228 89 240 55Z" fill="#c9a96e" opacity="0.5" />
-      </svg>
+      <LeafDownfacing
+        className="absolute top-0 right-0 w-60 h-auto md:w-80 pointer-events-none text-forest-800"
+        style={{ opacity: 0.15 }}
+      />
 
       <div className="relative z-10 mx-auto max-w-3xl space-y-8">
         {/* Header Banner */}
