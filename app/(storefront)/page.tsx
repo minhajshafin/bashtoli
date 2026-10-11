@@ -5,7 +5,6 @@ import { getFeaturedCollageCategories } from '@/lib/queries/category-collage'
 import { FeaturedProducts } from '@/components/storefront/featured-products'
 import { CategoryGrid } from '@/components/storefront/category-grid'
 import { AboutSection } from '@/components/storefront/about-section'
-import { MarqueeBand } from '@/components/storefront/marquee-band'
 import { SuggestAnItem } from '@/components/storefront/suggest-an-item'
 import { FeaturedProductsSkeleton } from '@/components/storefront/skeletons'
 
@@ -48,10 +47,7 @@ export default async function StorefrontHomePage() {
       {/* 3. Categories: Bento Grid (Atelier Moss) */}
       <CategoryGrid categories={featuredCategories} />
 
-      {/* 4. Marquee: Tactile Washi-Tape Ribbon */}
-      <MarqueeBand />
-
-      {/* 5. About: Atelier Heritage & Materiality (Alabaster Cotton) */}
+      {/* 4. About: Atelier Heritage & Materiality (Alabaster Cotton) */}
       <AboutSection />
 
       {/* 6. Suggest an item: Patron Collaboration Form (Deep Forest) */}

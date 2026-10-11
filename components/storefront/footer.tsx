@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { AtelierChopSeal, DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
+import { DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -91,27 +91,56 @@ export function Footer() {
       <DriftingBambooLeaf theme="dark" className="left-1/3 bottom-4 hidden sm:block opacity-60" rotation={14} scale={0.9} />
 
       <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-12 pb-8 md:pt-14 md:pb-8">
+        {/* Mobile Brand Header */}
+        <div className="md:hidden flex items-center gap-4 mb-8 pb-6 border-b border-forest-800/60">
+          <Link
+            href="/"
+            className="inline-block rounded-full focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 shrink-0"
+            aria-label="Bashtoli Home"
+          >
+            <Image
+              src="/logo-round.svg"
+              alt="Bashtoli Stationery"
+              width={64}
+              height={64}
+              loading="lazy"
+              className="h-16 w-16 object-contain"
+            />
+          </Link>
+          <div>
+            <span className="font-display text-lg font-medium text-cream-100 block">
+              Bashtoli Stationery
+            </span>
+            <span className="text-[11px] uppercase tracking-wider text-gold-400 font-sans block mt-0.5">
+              Dhaka · Est. 2026
+            </span>
+          </div>
+        </div>
+
         {/* Meta Grid */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-10 gap-y-10 md:gap-y-12">
-          {/* Brand Logo & Atelier Bio (Desktop only) */}
+          {/* Brand Logo & Shop Bio (Desktop only) */}
           <div className="hidden md:flex md:col-span-3 flex-col items-start text-left max-w-[28ch]">
-            <div className="relative h-10 w-26 mb-4">
+            <Link
+              href="/"
+              className="relative inline-block mb-5 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full"
+              aria-label="Bashtoli Home"
+            >
               <Image
-                src="/logo-text.svg"
+                src="/logo-round.svg"
                 alt="Bashtoli Stationery"
-                fill
+                width={88}
+                height={88}
                 loading="lazy"
-                className="object-contain object-left"
+                className="h-20 w-20 lg:h-22 lg:w-22 object-contain transition-transform duration-300 group-hover:scale-105"
               />
-            </div>
+            </Link>
             <p className="text-xs font-light text-forest-300 leading-relaxed">
               Curated everyday stationery, artisanal paper goods, and timeless desk companions woven for thoughtful writers.
             </p>
             <p className="text-[10px] tracking-widest uppercase text-gold-400 font-semibold mt-4">
               Dhaka, Bangladesh · Est. 2026
             </p>
-            {/* Atelier Hankō Chop Seal */}
-            <AtelierChopSeal size="sm" className="mt-3.5 opacity-90" />
           </div>
 
           {/* Info Column */}
@@ -174,7 +203,7 @@ export function Footer() {
 
           {/* Location / Boutique Showcase Column */}
           <div className="col-span-2 md:col-span-4">
-            <ColumnHeading>Atelier Location</ColumnHeading>
+            <ColumnHeading>Our Location</ColumnHeading>
             <div className="rounded-2xl overflow-hidden border border-forest-800 bg-forest-900 shadow-md">
               <iframe
                 title="Bashtoli Location"

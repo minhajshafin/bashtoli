@@ -129,11 +129,11 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center py-9 sm:py-11 lg:py-14">
         {/* Left: Story & Discovery */}
         <div className="lg:col-span-7 max-w-2xl">
-          {/* Atelier Eyebrow */}
+          {/* Stationery Eyebrow */}
           <div className="inline-flex items-center gap-2.5 mb-4">
             <span className="h-px w-6 bg-gold-400/60" />
             <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-gold-400 font-sans font-medium">
-              Bamboo Stationery Atelier &mdash; Est. 2026
+              Bamboo Stationery & Gifts &mdash; Est. 2026
             </span>
           </div>
 

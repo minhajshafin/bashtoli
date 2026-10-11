@@ -54,151 +54,172 @@ export function SuggestAnItem() {
   }
 
   return (
-    <section className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-forest-950 bg-laid-paper-dark border-t border-forest-800/80 overflow-hidden">
+    <section className="relative overflow-hidden py-18 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark border-t border-forest-800/80">
       {/* Minimalist Drifting Sumi-e Leaf */}
-      <DriftingBambooLeaf theme="dark" className="right-12 sm:right-20 bottom-12 hidden sm:block" rotation={-28} scale={1.1} />
+      <DriftingBambooLeaf
+        theme="dark"
+        className="right-8 sm:right-16 bottom-12 hidden sm:block opacity-45 pointer-events-none"
+        rotation={-22}
+        scale={0.9}
+      />
 
-      <div className="relative z-10 max-w-xl mx-auto text-center">
-        <span className="inline-block text-[11px] sm:text-xs uppercase tracking-[0.22em] font-sans font-medium text-gold-400 mb-2.5">
-          Atelier Requests
-        </span>
-        <h2 className="mb-3.5 font-display text-cream-50 font-medium leading-tight text-3xl sm:text-4xl md:text-5xl tracking-[-0.015em]">
-          Don&apos;t see what<br />you&apos;re looking for?
-        </h2>
-        <p className="mb-8 text-xs sm:text-sm leading-relaxed text-forest-300 font-light max-w-md mx-auto font-sans">
-          We curate our atelier collection around what{' '}
-          <em className="text-gold-300 font-editorial">you</em> reach for. Tell us what&apos;s missing &mdash; we read every
-          dispatch and source directly from artisanal makers.
-        </p>
-
-        {submitted ? (
-          <div className="py-8 bg-forest-900/50 rounded-2xl border border-forest-800 p-6 animate-fade-in">
-            <p
-              className="font-editorial text-xl sm:text-2xl text-gold-300 mb-2"
-            >
-              Thank you &mdash; we&apos;ll look into it. &#10022;
-            </p>
-            <p className="text-sm text-forest-300 font-sans">Your suggestion directly shapes our next atelier shipment.</p>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="mt-6 text-xs uppercase tracking-widest text-gold-400 hover:text-gold-300 underline underline-offset-4 transition-colors cursor-pointer font-sans"
-            >
-              Suggest another item
-            </button>
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-24 items-start">
+        {/* Left Column: High-Legibility Editorial Copy (Max-w-xl) */}
+        <div className="lg:col-span-5 max-w-xl text-left">
+          {/* Overline Kicker */}
+          <div className="flex items-center gap-2.5 mb-4">
+            <span className="h-px w-6 sm:w-8 bg-gold-500/70" />
+            <span className="text-xs uppercase tracking-[0.2em] font-sans font-semibold text-gold-400">
+              Customer Requests · Dhaka
+            </span>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 text-left">
-            {/* Honeypot field for bot suppression */}
-            <input
-              type="text"
-              name="b_hp_check"
-              value={honeypot}
-              onChange={(e) => setHoneypot(e.target.value)}
-              tabIndex={-1}
-              autoComplete="off"
-              className="hidden"
-              aria-hidden="true"
-            />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <div>
-                <label htmlFor="suggestion-name" className="sr-only">
-                  Your name (optional)
-                </label>
-                <input
-                  id="suggestion-name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Your name (optional)"
-                  aria-label="Your name (optional)"
-                  disabled={isSubmitting}
-                  className="w-full px-5 py-3 text-xs sm:text-sm outline-none rounded-full bg-forest-900/90 border border-forest-800 text-cream-100 placeholder:text-forest-400 focus:border-gold-500/80 focus:ring-1 focus:ring-gold-500/30 disabled:opacity-60 transition-all shadow-inner font-sans"
-                />
+          {/* High-Contrast Display Headline */}
+          <h2 className="font-display font-medium text-cream-50 text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.12] tracking-[-0.015em] text-balance mb-5">
+            Looking for something{' '}
+            <em className="font-editorial italic font-normal text-gold-300">
+              in particular?
+            </em>
+          </h2>
+
+          {/* Crisp, Highly Readable Sans Body Text */}
+          <p className="font-sans text-[15px] sm:text-base lg:text-[17px] leading-[1.75] text-cream-100/95 font-normal text-pretty mb-8">
+            Tell us which fountain pen, notebook, or specialty paper you&apos;re searching for. We read every note and stock our shelves around what our community asks for most.
+          </p>
+
+          {/* Reassuring Community Note */}
+          <div className="pt-6 border-t border-forest-800">
+            <p className="text-xs sm:text-[13px] font-sans text-cream-300/80 leading-relaxed">
+              No account needed. Your suggestions directly guide what we bring in on our next stocking run.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Balanced Form with Flawless Full-Width Alignment (Max-w-xl) */}
+        <div className="lg:col-span-7 flex justify-start lg:justify-end w-full">
+          <div className="w-full max-w-xl">
+            {submitted ? (
+              <div className="py-10 sm:py-14 text-left animate-fade-in border-l-2 border-gold-500 pl-6 sm:pl-8">
+                <h3 className="font-display text-2xl sm:text-3xl text-cream-50 font-medium mb-2.5">
+                  Thank you — we&apos;ve noted it down.
+                </h3>
+                <p className="font-sans text-base sm:text-[17px] text-cream-200 mb-6 leading-relaxed max-w-md">
+                  Your suggestion has been added to our shop logbook for the next stocking trip.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="text-xs uppercase tracking-[0.18em] font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors cursor-pointer border-b border-gold-400/60 hover:border-gold-300 pb-1"
+                >
+                  Suggest another item →
+                </button>
               </div>
-              <div>
-                <label htmlFor="suggestion-contact" className="sr-only">
-                  Email or phone (optional)
-                </label>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
+                {/* Honeypot field for bot suppression */}
                 <input
-                  id="suggestion-contact"
                   type="text"
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  placeholder="Email or phone (optional)"
-                  aria-label="Email or phone (optional)"
-                  disabled={isSubmitting}
-                  className="w-full px-5 py-3 text-xs sm:text-sm outline-none rounded-full bg-forest-900/90 border border-forest-800 text-cream-100 placeholder:text-forest-400 focus:border-gold-500/80 focus:ring-1 focus:ring-gold-500/30 disabled:opacity-60 transition-all shadow-inner font-sans"
+                  name="b_hp_check"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
                 />
-              </div>
-            </div>
 
-            <div>
-              <label htmlFor="suggestion-message" className="sr-only">
-                What item would you like us to carry?
-              </label>
-              <textarea
-                id="suggestion-message"
-                value={suggestion}
-                onChange={(e) => setSuggestion(e.target.value)}
-                placeholder="What item would you like us to carry? Be as specific as you like — brand, paper weight, nib size…"
-                aria-label="What item would you like us to carry?"
-                required
-                rows={3}
-                disabled={isSubmitting}
-                className="w-full px-5 py-3.5 text-xs sm:text-sm outline-none resize-none rounded-2xl bg-forest-900/90 border border-forest-800 text-cream-100 placeholder:text-forest-400 focus:border-gold-500/80 focus:ring-1 focus:ring-gold-500/30 disabled:opacity-60 transition-all leading-relaxed shadow-inner font-sans"
-              />
-            </div>
-
-            {errorMessage && (
-              <p className="text-xs text-rose-300 px-4 py-2.5 bg-rose-950/60 rounded-xl border border-rose-900/60 font-sans">
-                {errorMessage}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="self-end px-8 py-3 text-xs uppercase tracking-widest font-semibold rounded-full bg-gold-500 text-forest-950 hover:bg-gold-400 disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center gap-2 cursor-pointer shadow-md active:scale-98 font-sans"
-            >
-              {isSubmitting ? (
-                <>
-                  <span>Sending...</span>
-                  <svg
-                    className="w-4 h-4 animate-spin text-forest-950"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
+                {/* Field 1: Primary Request (Full Width) */}
+                <div className="relative group">
+                  <label
+                    htmlFor="suggestion-message"
+                    className="block text-xs uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-2"
                   >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                </>
-              ) : (
-                <>
-                  <span>Share with us</span>
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </>
-              )}
-            </button>
-          </form>
-        )}
+                    The item you&apos;d like us to carry <span className="text-gold-400">*</span>
+                  </label>
+                  <textarea
+                    id="suggestion-message"
+                    value={suggestion}
+                    onChange={(e) => setSuggestion(e.target.value)}
+                    placeholder="e.g. Midori MD A5 Notebook, Pilot Iroshizuku ink, brass ruler…"
+                    aria-label="What item would you like us to carry?"
+                    required
+                    rows={3}
+                    disabled={isSubmitting}
+                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-base font-sans focus:outline-none transition-colors duration-200 resize-none py-2 px-0 leading-relaxed"
+                  />
+                </div>
+
+                {/* Field 2: Name (Full Width, Perfectly Aligned) */}
+                <div className="relative group">
+                  <label
+                    htmlFor="suggestion-name"
+                    className="block text-xs uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-2"
+                  >
+                    Your name <span className="text-forest-300 font-normal lowercase tracking-normal">(optional)</span>
+                  </label>
+                  <input
+                    id="suggestion-name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="How should we know you?"
+                    aria-label="Your name (optional)"
+                    disabled={isSubmitting}
+                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-base font-sans focus:outline-none transition-colors duration-200 py-2 px-0"
+                  />
+                </div>
+
+                {/* Field 3: Contact (Full Width, Perfectly Aligned) */}
+                <div className="relative group">
+                  <label
+                    htmlFor="suggestion-contact"
+                    className="block text-xs uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-2"
+                  >
+                    Contact <span className="text-forest-300 font-normal lowercase tracking-normal">(email or phone)</span>
+                  </label>
+                  <input
+                    id="suggestion-contact"
+                    type="text"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                    placeholder="If you'd like us to notify you (optional)"
+                    aria-label="Email or phone (optional)"
+                    disabled={isSubmitting}
+                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-base font-sans focus:outline-none transition-colors duration-200 py-2 px-0"
+                  />
+                </div>
+
+                {errorMessage && (
+                  <p className="text-xs sm:text-sm text-rose-200 py-3 px-4 bg-rose-950/60 border border-rose-800/80 rounded-xl font-sans">
+                    {errorMessage}
+                  </p>
+                )}
+
+                {/* Action Row: Left-Aligned Microcopy + Right-Aligned Submit Button */}
+                <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <span className="text-xs font-sans text-forest-300/80">
+                    Directly reviewed by our shopkeeper.
+                  </span>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full text-xs font-sans uppercase tracking-[0.18em] font-bold bg-gold-500 text-forest-950 hover:bg-gold-400 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group shadow-subtle shrink-0"
+                  >
+                    {isSubmitting ? (
+                      <span>Sending to shop…</span>
+                    ) : (
+                      <>
+                        <span>Send suggestion</span>
+                        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   )
 }
-
