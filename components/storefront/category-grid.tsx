@@ -22,7 +22,7 @@ function CategoryCard({
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className={`group relative overflow-hidden cursor-pointer block w-full h-full rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
+      className={`group relative overflow-hidden cursor-pointer block w-full h-full rounded-2xl sm:rounded-3xl border border-forest-700/60 hover:border-gold-400/70 shadow-md hover:shadow-lifted transition-all duration-500 ${className}`}
       style={{
         gridArea,
         borderRadius: '24px',
@@ -36,11 +36,11 @@ function CategoryCard({
           fill
           loading="lazy"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-106"
         />
       ) : (
         /* Background gradient if no image */
-        <div className="absolute inset-0 bg-linear-to-br from-forest-800 via-forest-900 to-forest-800 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-forest-850 via-forest-900 to-forest-950 flex items-center justify-center pointer-events-none">
           <svg
             className="w-12 h-12 text-gold-500/20 stroke-[1.2]"
             fill="none"
@@ -56,30 +56,27 @@ function CategoryCard({
         </div>
       )}
 
-      {/* Dark tint gradient overlay for text legibility */}
+      {/* Luminous bottom vignette for clean legibility without obscuring photography */}
       <div
-        className="absolute inset-0 rounded-3xl border border-forest-700/90 group-hover:border-gold-500/80 transition-all duration-300 pointer-events-none"
+        className="absolute inset-0 rounded-2xl sm:rounded-3xl transition-opacity duration-300 pointer-events-none"
         style={{
           background:
-            'linear-gradient(to top, rgba(13,31,21,0.92) 0%, rgba(13,31,21,0.45) 55%, rgba(13,31,21,0.1) 100%)',
+            'linear-gradient(to top, rgba(10,22,15,0.85) 0%, rgba(10,22,15,0.3) 45%, transparent 75%)',
         }}
       />
 
       {/* Category Labels */}
-      <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10 flex flex-col items-start">
+        {category.product_count !== undefined && (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-forest-950/70 backdrop-blur-xs border border-forest-700/70 text-[10px] font-semibold text-gold-300 font-sans mb-1.5 shadow-sm">
+            {category.product_count} {category.product_count === 1 ? 'item' : 'items'}
+          </span>
+        )}
         <h3
-          className="mb-1 text-cream-100 group-hover:text-gold-300 transition-colors font-display text-base sm:text-lg font-medium"
+          className="text-cream-100 group-hover:text-gold-300 transition-colors font-display text-base sm:text-lg font-medium leading-snug"
         >
           {category.name}
         </h3>
-        <p
-          className="text-xs group-hover:text-gold-400 transition-colors tracking-wider text-forest-300 font-sans"
-        >
-          {category.product_count !== undefined
-            ? `${category.product_count} ${category.product_count === 1 ? 'item' : 'items'}`
-            : 'Explore'}
-          &nbsp;&rarr;
-        </p>
       </div>
     </Link>
   )
@@ -92,33 +89,28 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   }
 
   return (
-    <section className="py-20 px-5 md:px-8 bg-forest-800">
+    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-forest-900 border-t border-forest-800/80">
       <div className="max-w-7xl mx-auto">
         {/* Section Heading */}
-        <div className="text-center mb-12 sm:mb-14">
-          <p
-            className="text-[11px] uppercase tracking-[0.28em] mb-3 font-semibold text-gold-400 font-sans"
-          >
-            Explore
-          </p>
+        <div className="text-center mb-8 sm:mb-10 max-w-xl mx-auto">
           <h2
-            className="font-editorial text-cream-100 font-normal leading-tight"
-            style={{
-              fontSize: 'clamp(2.1rem, 4.2vw, 3.25rem)',
-            }}
+            className="font-editorial text-cream-100 font-normal leading-tight text-2xl sm:text-3xl md:text-4xl"
           >
             Browse by Category
           </h2>
+          <p className="text-xs sm:text-sm text-forest-300 font-light mt-2.5 leading-relaxed font-sans">
+            Curated papers, journals, fine instruments, and accessories grouped for thoughtful contemplation.
+          </p>
         </div>
 
         {/* Desktop symmetric 3-row, 7-slot collage */}
         <div
-          className="hidden md:grid gap-4"
+          className="hidden md:grid gap-3.5"
           style={{
             gridTemplate: `
-              "slot1 slot2 slot3" 210px
-              "slot1 slot4 slot3" 185px
-              "slot5 slot6 slot7" 180px
+              "slot1 slot2 slot3" 190px
+              "slot1 slot4 slot3" 165px
+              "slot5 slot6 slot7" 160px
             / 1.2fr 1fr 1.2fr`,
           }}
         >
@@ -153,16 +145,16 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
               key={cat.id}
               category={cat}
               className={index === categories.length - 1 && categories.length % 2 === 1 ? 'col-span-2' : ''}
-              style={{ height: '180px' }}
+              style={{ height: '170px' }}
             />
           ))}
         </div>
 
         {/* Shop Navigation Button */}
-        <div className="mt-12 sm:mt-16 flex justify-center">
+        <div className="mt-8 sm:mt-10 flex justify-center">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 sm:px-9 sm:py-4 rounded-full border border-gold-500/60 bg-forest-900/80 text-xs sm:text-sm font-semibold text-cream-100 hover:bg-gold-500 hover:text-forest-900 hover:border-gold-500 transition-all duration-300 shadow-md active:scale-[0.98] group"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-full border border-gold-500/60 bg-forest-900/80 text-xs sm:text-sm font-semibold text-cream-100 hover:bg-gold-500 hover:text-forest-900 hover:border-gold-500 transition-all duration-300 shadow-md active:scale-[0.98] group"
           >
             <span>View All Categories</span>
             <svg

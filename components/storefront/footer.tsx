@@ -86,7 +86,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-forest-800/80 bg-forest-950 text-cream-100" id="contact">
-      <div className="mx-auto max-w-7xl px-6 pt-14 pb-8 md:px-10 md:pt-18 md:pb-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-8 md:pt-14 md:pb-8">
         {/* Meta Grid */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-10 gap-y-10 md:gap-y-12">
           {/* Brand Logo & Atelier Bio (Desktop only) */}

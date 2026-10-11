@@ -6,7 +6,7 @@ import React from 'react'
 export function ProductCardSkeleton() {
   return (
     <div
-      className="overflow-hidden rounded-2xl sm:rounded-[20px] bg-cream-100/90 shadow-xs border border-forest-200/40"
+      className="overflow-hidden rounded-2xl bg-cream-50 shadow-xs border border-forest-900/10"
       aria-hidden="true"
     >
       {/* 4/5 Aspect Ratio Image Shimmer */}
@@ -248,18 +248,18 @@ export function AccountPageSkeleton() {
  */
 export function FeaturedProductsSkeleton() {
   return (
-    <section className="py-20 px-5 md:px-8 bg-cream-50" aria-busy="true" aria-label="Loading featured products">
+    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-cream-100 border-b border-forest-200/60" aria-busy="true" aria-label="Loading featured products">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-7 sm:mb-9 gap-4">
           <div>
-            <div className="h-3 w-16 mb-3 rounded-md skeleton-shimmer" />
-            <div className="h-10 w-64 rounded-md skeleton-shimmer" />
+            <div className="h-8 w-56 rounded-md skeleton-shimmer mb-2" />
+            <div className="h-4 w-72 rounded-md skeleton-shimmer opacity-70" />
           </div>
-          <div className="h-10 w-36 rounded-full skeleton-shimmer" />
+          <div className="h-8 w-24 rounded-full skeleton-shimmer" />
         </div>
-        <div className="flex gap-5 overflow-hidden pb-4">
+        <div className="flex gap-4 sm:gap-5 overflow-hidden pb-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="shrink-0 w-[270px]">
+            <div key={i} className="shrink-0 w-[220px] sm:w-[250px] md:w-[270px]">
               <ProductCardSkeleton />
             </div>
           ))}
