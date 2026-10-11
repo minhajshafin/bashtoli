@@ -197,27 +197,25 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
               />
             </div>
             <p
-              className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-gold-400 font-semibold"
-              style={{ fontFamily: "'Source Sans 3', system-ui, sans-serif" }}
+              className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-gold-400 font-semibold font-sans"
             >
               Stationery &amp; Gifts&nbsp;·&nbsp;Est. 2026
             </p>
           </div>
 
           <h1
-            className="mb-5 sm:mb-6 text-cream-100"
+            className="mb-5 sm:mb-6 text-cream-100 font-display"
             style={{
-              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-              fontSize: 'clamp(2.2rem, 3.8vw, 3.6rem)',
-              fontWeight: 300,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.12,
+              fontSize: 'clamp(2.4rem, 4.4vw, 4.2rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.015em',
+              lineHeight: 1.1,
             }}
           >
             Craft your{' '}
-            <em>story,</em>
+            <em className="font-editorial text-gold-300">story,</em>
             <br />
-            <span style={{ color: '#c9a96e', fontStyle: 'italic', fontWeight: 500 }}>one page</span>
+            <span className="font-editorial text-gold-400 font-medium">one page</span>
             <br />
             at a time.
           </h1>

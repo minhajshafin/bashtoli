@@ -182,18 +182,16 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
       {/* Info Section */}
       <Link href={`/products/${product.slug}`} className="p-3 sm:p-4 block flex-1">
         <h3
-          className="text-xs sm:text-base font-medium text-forest-950 line-clamp-1 sm:line-clamp-2 mb-1 group-hover:text-forest-700 transition-colors"
-          style={{ fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif" }}
+          className="font-display text-sm sm:text-lg font-medium text-forest-950 line-clamp-1 sm:line-clamp-2 mb-1 group-hover:text-forest-700 transition-colors"
         >
           {product.name}
         </h3>
         <p
-          className="text-xs sm:text-base font-semibold text-forest-900"
-          style={{ fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif" }}
+          className="font-price text-xs sm:text-base font-semibold text-forest-900"
         >
           ৳{lowestPrice.toLocaleString()}
           {activeVariants.length > 1 && (
-            <span className="text-[10px] font-normal text-forest-500 ml-1">onwards</span>
+            <span className="text-[10px] font-normal text-forest-500 ml-1 font-sans">onwards</span>
           )}
         </p>
       </Link>

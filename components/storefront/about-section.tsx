@@ -24,33 +24,17 @@ export function AboutSection() {
         {/* Text */}
         <div className="flex-1">
           <p
-            className="text-[11px] uppercase tracking-[0.28em] mb-3"
-            style={{ color: '#c9a96e', fontFamily: "'Source Sans 3', system-ui, sans-serif" }}
+            className="text-[11px] uppercase tracking-[0.28em] mb-3 text-gold-600 font-semibold font-sans"
           >
             Our Story
           </p>
           <p
-            className="mb-3 leading-relaxed"
-            style={{
-              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-              fontSize: 'clamp(0.85rem, 0.8rem + 0.5vw, 1.1rem)',
-              color: '#2d5240',
-              fontStyle: 'italic',
-              lineHeight: 1.55,
-            }}
+            className="mb-3 leading-relaxed font-editorial text-forest-700 text-base sm:text-lg"
           >
             &ldquo;A notebook is a letter to your future self.&rdquo;
           </p>
           <h2
-            className="mb-3"
-            style={{
-              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-              fontSize: 'clamp(1.5rem, 2.8vw, 2.1rem)',
-              color: '#1a3326',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              lineHeight: 1.15,
-            }}
+            className="mb-3 font-editorial text-forest-950 text-2xl sm:text-3xl font-normal leading-tight"
           >
             Born from a love of beautiful things
           </h2>

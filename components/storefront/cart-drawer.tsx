@@ -72,8 +72,7 @@ export function CartDrawer() {
         <div className="flex items-center justify-between border-b border-forest-200/80 bg-cream-100/60 px-6 py-4.5">
           <div className="flex items-center gap-2.5">
             <h2
-              className="font-display text-xl tracking-tight text-forest-950"
-              style={{ fontOpticalSizing: 'auto' }}
+              className="font-display text-2xl tracking-tight text-forest-950 font-medium"
             >
               Your Selection
             </h2>

@@ -68,22 +68,12 @@ function CategoryCard({
       {/* Category Labels */}
       <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
         <h3
-          className="mb-1 text-cream-100 group-hover:text-gold-300 transition-colors"
-          style={{
-            fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-            fontSize: '1.05rem',
-            fontWeight: 500,
-          }}
+          className="mb-1 text-cream-100 group-hover:text-gold-300 transition-colors font-display text-base sm:text-lg font-medium"
         >
           {category.name}
         </h3>
         <p
-          className="text-xs group-hover:text-gold-400 transition-colors"
-          style={{
-            letterSpacing: '0.08em',
-            color: '#a8c4b0',
-            fontFamily: "'Source Sans 3', system-ui, sans-serif",
-          }}
+          className="text-xs group-hover:text-gold-400 transition-colors tracking-wider text-forest-300 font-sans"
         >
           {category.product_count !== undefined
             ? `${category.product_count} ${category.product_count === 1 ? 'item' : 'items'}`
@@ -107,19 +97,14 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
         {/* Section Heading */}
         <div className="text-center mb-12 sm:mb-14">
           <p
-            className="text-[11px] uppercase tracking-[0.28em] mb-3 font-semibold"
-            style={{ color: '#c9a96e' }}
+            className="text-[11px] uppercase tracking-[0.28em] mb-3 font-semibold text-gold-400 font-sans"
           >
             Explore
           </p>
           <h2
+            className="font-editorial text-cream-100 font-normal leading-tight"
             style={{
-              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-              fontSize: 'clamp(1.9rem, 4vw, 3rem)',
-              color: '#f5ede0',
-              fontWeight: 400,
-              fontStyle: 'italic',
-              lineHeight: 1.1,
+              fontSize: 'clamp(2.1rem, 4.2vw, 3.25rem)',
             }}
           >
             Browse by Category

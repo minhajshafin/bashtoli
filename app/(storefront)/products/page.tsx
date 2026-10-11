@@ -75,24 +75,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-5">
           <div>
             <h1
+              className="font-editorial text-cream-100 font-normal leading-tight"
               style={{
-                fontFamily: "'Fraunces', Georgia, serif",
-                fontSize: 'clamp(1.9rem, 4vw, 3rem)',
-                color: '#f5ede0',
-                fontWeight: 300,
-                fontStyle: 'italic',
-                lineHeight: 1.1,
+                fontSize: 'clamp(2.1rem, 4.2vw, 3.25rem)',
               }}
             >
               {activeCategory ? activeCategory.name : 'All Products'}
             </h1>
             <p
-              style={{
-                color: '#a8c4b0',
-                fontSize: '0.85rem',
-                marginTop: '6px',
-                fontFamily: "'Source Sans 3', system-ui, sans-serif",
-              }}
+              className="text-forest-300 text-xs sm:text-sm mt-1.5 font-sans"
             >
               {totalCount} items across all categories
             </p>

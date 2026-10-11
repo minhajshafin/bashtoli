@@ -62,15 +62,7 @@ export function SuggestAnItem() {
           Help Us Grow
         </p>
         <h2
-          className="mb-4"
-          style={{
-            fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-            fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-            color: '#f5ede0',
-            fontWeight: 300,
-            fontStyle: 'italic',
-            lineHeight: 1.15,
-          }}
+          className="mb-4 font-editorial text-cream-100 font-normal leading-tight text-3xl sm:text-4xl"
         >
           Don&apos;t see what<br />you&apos;re looking for?
         </h2>
@@ -83,12 +75,7 @@ export function SuggestAnItem() {
         {submitted ? (
           <div className="py-8">
             <p
-              style={{
-                fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-                fontSize: '1.25rem',
-                color: '#c9a96e',
-                fontStyle: 'italic',
-              }}
+              className="font-editorial text-xl text-gold-400"
             >
               Thank you &mdash; we&apos;ll look into it. &#10022;
             </p>

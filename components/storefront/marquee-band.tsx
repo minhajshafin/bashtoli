@@ -14,12 +14,7 @@ export function MarqueeBand() {
         {Array.from({ length: 8 }).map((_, i) => (
           <span
             key={i}
-            className="mx-8 text-sm text-forest-800"
-            style={{
-              fontFamily: "var(--font-fraunces), 'Fraunces', Georgia, serif",
-              fontStyle: 'italic',
-              letterSpacing: '0.05em',
-            }}
+            className="mx-8 text-sm sm:text-base text-forest-950 font-editorial tracking-wider font-medium"
           >
             {ITEMS}
           </span>

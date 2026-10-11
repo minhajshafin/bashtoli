@@ -148,16 +148,14 @@ export function ProductDetailClient({
 
           {/* Title */}
           <h1
-            className="text-2xl md:text-3xl lg:text-4xl font-normal text-forest-800 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic', lineHeight: 1.1 }}
+            className="text-2xl md:text-3xl lg:text-4xl font-normal text-forest-950 tracking-tight font-editorial"
           >
             {product.name}
           </h1>
 
           {/* Price Display */}
           <div
-            className="text-2xl md:text-3xl font-semibold my-4 pb-4 border-b border-cream-200"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", color: '#1a3326' }}
+            className="text-2xl md:text-3xl font-semibold my-4 pb-4 border-b border-cream-200 text-forest-950 font-price"
           >
             {renderPrice()}
           </div>
