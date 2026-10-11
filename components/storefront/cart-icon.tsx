@@ -2,15 +2,26 @@
 
 import Link from 'next/link'
 import React from 'react'
+import { usePathname } from 'next/navigation'
 import { useCart } from '@/lib/cart/cart-context'
 
 export function CartIcon() {
-  const { itemCount, isLoaded } = useCart()
+  const { itemCount, isLoaded, openDrawer } = useCart()
+  const pathname = usePathname()
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // If not already on checkout or bag page, smoothly open drawer instead of page navigation
+    if (pathname !== '/checkout' && pathname !== '/bag') {
+      e.preventDefault()
+      openDrawer()
+    }
+  }
 
   return (
     <Link
       href="/bag"
-      className="relative flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-500 transition-colors rounded-full"
+      onClick={handleClick}
+      className="relative flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-300 transition-colors rounded-full active:scale-95 cursor-pointer"
       aria-label="View Shopping Bag"
     >
       <svg
@@ -30,8 +41,7 @@ export function CartIcon() {
       {/* Cart quantity badge */}
       {isLoaded && itemCount > 0 && (
         <span
-          className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black text-forest-800 shadow-sm animate-fade-in"
-          style={{ backgroundColor: '#c9a96e' }}
+          className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full text-[10px] font-bold text-forest-950 font-price shadow-sm animate-fade-in bg-gold-500"
         >
           {itemCount}
         </span>

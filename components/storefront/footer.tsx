@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h4 className="text-[0.7rem] tracking-[0.18em] uppercase text-gold-400/90 font-medium mb-6">
+    <h4 className="text-[11px] tracking-[0.2em] uppercase text-gold-400 font-semibold mb-5 font-sans">
       {children}
     </h4>
   )
@@ -23,7 +23,7 @@ function FooterColumn({
   return (
     <div>
       <ColumnHeading>{title}</ColumnHeading>
-      <ul className="space-y-4">
+      <ul className="space-y-3.5">
         {links.map(({ label, href, external }) => (
           <li key={label}>
             {external || href.startsWith('http') ? (
@@ -31,14 +31,14 @@ function FooterColumn({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[0.95rem] font-light text-forest-300 hover:text-gold-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                className="text-xs sm:text-sm font-light text-forest-300 hover:text-gold-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
               >
                 {label}
               </a>
             ) : (
               <Link
                 href={href}
-                className="text-[0.95rem] font-light text-forest-300 hover:text-cream-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                className="text-xs sm:text-sm font-light text-forest-300 hover:text-cream-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
               >
                 {label}
               </Link>
@@ -72,7 +72,6 @@ export function Footer() {
   const [currentYear, setCurrentYear] = useState<number>(2026)
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentYear(new Date().getFullYear())
   }, [])
 
@@ -86,65 +85,68 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-forest-800 bg-forest-950" id="contact">
-      <div className="mx-auto max-w-7xl px-6 pt-12 pb-6 md:px-10 md:pt-16 md:pb-8">
+    <footer className="border-t border-forest-800/80 bg-forest-950 text-cream-100" id="contact">
+      <div className="mx-auto max-w-7xl px-6 pt-14 pb-8 md:px-10 md:pt-18 md:pb-10">
         {/* Meta Grid */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-10 gap-y-10 md:gap-y-12">
-          {/* Brand Logo & Tagline (Desktop only) */}
-          <div className="hidden md:flex md:col-span-3 flex-col items-center text-center max-w-[28ch]">
-            <div className="relative h-24 w-24 md:h-28 md:w-28 mb-3.5">
+          {/* Brand Logo & Atelier Bio (Desktop only) */}
+          <div className="hidden md:flex md:col-span-3 flex-col items-start text-left max-w-[28ch]">
+            <div className="relative h-10 w-26 mb-4">
               <Image
-                src="/logo-round.svg"
+                src="/logo-text.svg"
                 alt="Bashtoli Stationery"
                 fill
                 loading="lazy"
-                className="object-contain object-center"
+                className="object-contain object-left"
               />
             </div>
-            <p className="text-sm font-light text-forest-300 leading-relaxed">
-              A curated stationery shop for writers, dreamers, and ink-lovers.
+            <p className="text-xs font-light text-forest-300 leading-relaxed">
+              Curated everyday stationery, artisanal paper goods, and timeless desk companions woven for thoughtful writers.
+            </p>
+            <p className="text-[10px] tracking-widest uppercase text-gold-400 font-semibold mt-4">
+              Dhaka, Bangladesh · Est. 2026
             </p>
           </div>
 
           {/* Info Column */}
           <div className="col-span-1 md:col-span-2">
             <FooterColumn
-              title="Info"
+              title="Collection"
               links={[
-                { label: 'About Us', href: '/#aboutus' },
+                { label: 'All Products', href: '/products' },
+                { label: 'Our Story', href: '/#aboutus' },
                 { label: 'Track My Order', href: '/order/lookup' },
                 { label: 'Shopping Bag', href: '/bag' },
-                { label: 'Explore Shop', href: '/products' },
               ]}
             />
           </div>
 
-          {/* Find Us Column */}
+          {/* Customer Care Column */}
           <div className="col-span-1 md:col-span-3">
-            <ColumnHeading>Find Us</ColumnHeading>
+            <ColumnHeading>Visit &amp; Contact</ColumnHeading>
             <address className="not-italic">
-              <p className="text-xs sm:text-[0.95rem] font-light text-forest-300 leading-relaxed">
+              <p className="text-xs sm:text-[0.92rem] font-light text-forest-300 leading-relaxed">
                 Shajadpur, Bashtola
                 <br />
                 Gulshan-1212, Dhaka
               </p>
-              <p className="text-xs sm:text-[0.95rem] font-light text-forest-400 mt-2 sm:mt-3">Open 7 days · 7am – 11pm</p>
-              <div className="mt-2 sm:mt-3 space-y-1">
+              <p className="text-xs text-forest-400 mt-2">Open 7 days · 7am – 11pm</p>
+              <div className="mt-2.5 space-y-1">
                 <a
                   href="tel:01320903666"
-                  className="text-xs sm:text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm font-medium"
+                  className="text-xs sm:text-sm text-gold-400 hover:text-gold-300 transition-colors duration-200 block font-price font-medium"
                 >
                   01320-903666
                 </a>
                 <a
                   href="mailto:bashtoli.computer@gmail.com"
-                  className="text-[11px] sm:text-[0.95rem] text-gold-400 hover:text-gold-300 transition-colors duration-200 block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm truncate"
+                  className="text-[11px] sm:text-xs text-gold-400 hover:text-gold-300 transition-colors duration-200 block truncate"
                 >
                   bashtoli.computer@gmail.com
                 </a>
               </div>
 
-              <div className="flex items-center gap-2 sm:gap-3 mt-4 sm:mt-6">
+              <div className="flex items-center gap-2 sm:gap-3 mt-4 sm:mt-5">
                 {socials.map(({ label, href, color, icon }) => (
                   <a
                     key={label}
@@ -153,7 +155,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className={`inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
+                    className={`inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
                   >
                     <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                       {icon}
@@ -164,16 +166,16 @@ export function Footer() {
             </address>
           </div>
 
-          {/* Location / Map Column */}
+          {/* Location / Boutique Showcase Column */}
           <div className="col-span-2 md:col-span-4">
-            <ColumnHeading>Location</ColumnHeading>
-            <div className="rounded-2xl overflow-hidden border border-forest-800">
+            <ColumnHeading>Atelier Location</ColumnHeading>
+            <div className="rounded-2xl overflow-hidden border border-forest-800 bg-forest-900 shadow-md">
               <iframe
                 title="Bashtoli Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d852.1068079492925!2d90.42298250636408!3d23.79462584364245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c78c486ded25%3A0x63964f79a60c5a7!2z4Kas4Ka-4KaB4Ka24Kak4Kay4KeAIOCmleCmruCnjeCmquCmv-CmieCmn-CmvuCmsCAtIEJhc2h0b2xpIENvbXB1dGVy!5e0!3m2!1sen!2sbd!4v1788283104370!5m2!1sen!2sbd"
                 width="100%"
-                height="180"
-                style={{ border: 0, display: 'block' }}
+                height="160"
+                style={{ border: 0, display: 'block', filter: 'brightness(0.9) contrast(1.05)' }}
                 allowFullScreen={false}
                 loading="lazy"
                 referrerPolicy="strict-origin-when-cross-origin"
@@ -183,52 +185,37 @@ export function Footer() {
               href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[0.8rem] tracking-wide text-forest-400 mt-3 inline-block hover:text-forest-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+              className="text-[11px] tracking-wider uppercase text-forest-400 mt-2.5 inline-flex items-center gap-1.5 hover:text-gold-400 transition-colors duration-200"
             >
-              Open in maps &rarr;
+              <span>Get Directions</span>
+              <span>&rarr;</span>
             </a>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 pb-2 border-t border-forest-800 flex flex-col-reverse md:flex-row items-center justify-between gap-6 mt-10 md:mt-12">
+        <div className="pt-8 pb-2 border-t border-forest-800/80 flex flex-col-reverse md:flex-row items-center justify-between gap-6 mt-10 md:mt-12">
           <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-3 text-center sm:text-left">
-            <p className="text-xs font-light text-forest-500">
-              &copy; {currentYear} Bashtoli Stationery.
+            <p className="text-xs font-light text-forest-400">
+              &copy; {currentYear} Bashtoli Stationery. Handcrafted in Dhaka.
             </p>
             <div className="flex items-center gap-5">
-              <Link href="/privacy" className="text-xs text-forest-500 hover:text-forest-300 transition-colors duration-200">
-                Privacy Policy
+              <Link href="/privacy" className="text-xs text-forest-400 hover:text-gold-400 transition-colors duration-200">
+                Privacy
               </Link>
-              <Link href="/terms" className="text-xs text-forest-500 hover:text-forest-300 transition-colors duration-200">
-                Terms of Service
+              <Link href="/terms" className="text-xs text-forest-400 hover:text-gold-400 transition-colors duration-200">
+                Terms
               </Link>
             </div>
-            <a
-              href="https://github.com/minhajshafin/bashtoli"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Found a bug? Roast our code or send a PR."
-              className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-forest-900 border border-forest-800 text-gold-400 hover:bg-forest-800 hover:border-gold-400/40 hover:text-gold-300 transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60"
-            >
-              <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                />
-              </svg>
-              GitHub
-            </a>
           </div>
 
           <button
             type="button"
             onClick={scrollToTop}
-            className="group inline-flex items-center gap-3 text-xs tracking-wide text-forest-400 hover:text-gold-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full"
+            className="group inline-flex items-center gap-3 text-xs tracking-wider uppercase text-forest-400 hover:text-gold-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full cursor-pointer"
           >
-            Back to top
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-forest-700 group-hover:border-gold-400/60 group-hover:-translate-y-0.5 transition-all duration-200">
+            <span>Back to top</span>
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:-translate-y-0.5 transition-all duration-200">
               <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <line x1="12" y1="19" x2="12" y2="5" />
                 <polyline points="6 11 12 5 18 11" />

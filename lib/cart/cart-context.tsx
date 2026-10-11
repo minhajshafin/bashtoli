@@ -24,7 +24,10 @@ interface CartContextType {
   isLoaded: boolean
   itemCount: number
   subtotal: number
-  addItem: (item: Omit<CartItem, 'qty'>, qty: number) => void
+  isDrawerOpen: boolean
+  openDrawer: () => void
+  closeDrawer: () => void
+  addItem: (item: Omit<CartItem, 'qty'>, qty: number, openDrawerOnAdd?: boolean) => void
   updateQty: (variantId: string, qty: number) => void
   removeItem: (variantId: string) => void
   clearCart: () => void
@@ -43,6 +46,9 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     cart: [],
     isLoaded: false,
   })
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const openDrawer = useCallback(() => setIsDrawerOpen(true), [])
+  const closeDrawer = useCallback(() => setIsDrawerOpen(false), [])
   const [, startTransition] = useTransition()
 
   // Load and merge cart based on auth state
@@ -86,7 +92,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
   const isLoaded = state.isLoaded
 
   // Add Item operation (optimistic local state update + persistent storage action)
-  const addItem = useCallback((item: Omit<CartItem, 'qty'>, qty: number) => {
+  const addItem = useCallback((item: Omit<CartItem, 'qty'>, qty: number, openDrawerOnAdd: boolean = true) => {
     setState((prev) => {
       const updated = [...prev.cart]
       const existing = updated.find((i) => i.variant_id === item.variant_id)
@@ -97,6 +103,10 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
       }
       return { ...prev, cart: updated }
     })
+
+    if (openDrawerOnAdd) {
+      setIsDrawerOpen(true)
+    }
 
     if (isLoggedIn) {
       startTransition(async () => {
@@ -184,11 +194,14 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
     isLoaded,
     itemCount,
     subtotal,
+    isDrawerOpen,
+    openDrawer,
+    closeDrawer,
     addItem,
     updateQty,
     removeItem,
     clearCart,
-  }), [cart, isLoaded, itemCount, subtotal, addItem, updateQty, removeItem, clearCart])
+  }), [cart, isLoaded, itemCount, subtotal, isDrawerOpen, openDrawer, closeDrawer, addItem, updateQty, removeItem, clearCart])
 
   return (
     <CartContext.Provider value={contextValue}>

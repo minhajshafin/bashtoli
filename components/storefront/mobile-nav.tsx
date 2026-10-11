@@ -14,9 +14,9 @@ interface MobileNavProps {
 export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+
   // Close the drawer whenever the route changes.
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false)
   }, [pathname])
 
@@ -37,11 +37,11 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
       <button
         id="storefront-mobile-nav-toggle"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center p-2 rounded-xl text-gold-400 hover:text-gold-500 transition-colors cursor-pointer"
+        className="inline-flex items-center justify-center p-2 rounded-xl text-gold-400 hover:text-gold-300 transition-colors cursor-pointer"
         aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
       >
-        <svg className="h-6 w-6 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="h-6 w-6 stroke-[1.75]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           {isOpen ? (
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           ) : (
@@ -56,15 +56,15 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
           {/* Backdrop */}
           <div
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-forest-950/70 backdrop-blur-xs"
+            className="fixed inset-0 bg-forest-950/80 backdrop-blur-xs transition-opacity animate-fade-in"
             aria-hidden="true"
           />
           {/* Panel - Slides from Left */}
-          <div className="relative mr-auto flex h-full w-80 max-w-[85vw] flex-col bg-forest-800 p-6 shadow-2xl animate-slide-in-left overflow-y-auto">
+          <div className="relative mr-auto flex h-full w-80 max-w-[85vw] flex-col bg-forest-900 border-r border-forest-800/80 p-6 shadow-2xl animate-slide-in-left overflow-y-auto">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-forest-700 pb-4">
+            <div className="flex items-center justify-between border-b border-forest-800 pb-4">
               <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home" className="shrink-0">
-                <div className="relative h-6 w-24">
+                <div className="relative h-8 w-20">
                   <Image
                     src="/logo-text.svg"
                     alt="Bashtoli Stationery"
@@ -76,7 +76,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               <button
                 id="storefront-mobile-nav-close"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1.5 text-forest-400 hover:text-gold-500 transition-colors cursor-pointer"
+                className="rounded-lg p-1.5 text-forest-400 hover:text-gold-400 transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
                 <svg className="h-5 w-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,41 +86,27 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
             </div>
 
             {/* Navigation Links */}
-            <nav className="flex-1 py-6 space-y-1 text-sm font-medium text-gold-400">
-              <Link
-                href="/"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
-              >
-                Home
-              </Link>
-              <Link
-                href="/products"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
-              >
-                Shop All Products
-              </Link>
-              <Link
-                href="/account/wishlist"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
-              >
-                Wishlist
-              </Link>
-              <Link
-                href="/bag"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
-              >
-                Shopping Bag
-              </Link>
-              <Link
-                href="/order/lookup"
-                className="block py-3 px-3 rounded-xl border border-transparent hover:border-forest-600 hover:text-gold-500 hover:bg-forest-700/50 transition-all"
-              >
-                Track Order
-              </Link>
+            <nav className="flex-1 py-6 space-y-1" aria-label="Mobile Navigation">
+              {[
+                { label: 'Home', href: '/' },
+                { label: 'Shop All Products', href: '/products' },
+                { label: 'Our Story', href: '/#aboutus' },
+                { label: 'Track My Order', href: '/order/lookup' },
+                { label: 'Wishlist', href: '/account/wishlist' },
+                { label: 'Shopping Bag', href: '/bag' },
+              ].map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="block py-3 px-3.5 rounded-xl text-sm font-medium text-cream-100 hover:text-gold-400 hover:bg-forest-800/60 transition-all"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
 
             {/* Account Footer */}
-            <div className="border-t border-forest-700 pt-5 space-y-3">
+            <div className="border-t border-forest-800 pt-5 space-y-3">
               {isLoggedIn ? (
                 <>
                   <div className="px-3">
@@ -131,23 +117,23 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                   </div>
                   <Link
                     href="/account"
-                    className="block text-center py-2.5 rounded-xl border border-forest-600 text-xs font-bold text-gold-400 hover:bg-forest-700 transition-colors"
+                    className="block text-center py-2.5 rounded-xl border border-forest-700 bg-forest-800/50 text-xs font-bold uppercase tracking-wider text-gold-400 hover:bg-forest-800 transition-colors"
                   >
                     Manage Account
                   </Link>
                   <form action={logoutAction} className="w-full">
                     <button
                       type="submit"
-                      className="w-full text-center py-2.5 rounded-xl bg-rose-900/30 text-xs font-bold text-rose-400 hover:bg-rose-900/50 transition-colors cursor-pointer"
+                      className="w-full text-center py-2.5 rounded-xl bg-terracotta-500/20 text-xs font-bold uppercase tracking-wider text-terracotta-400 hover:bg-terracotta-500/30 transition-colors cursor-pointer"
                     >
-                      Logout
+                      Sign Out
                     </button>
                   </form>
                 </>
               ) : (
                 <Link
                   href="/login"
-                  className="block text-center py-3 rounded-full bg-gold-500 text-xs font-bold text-forest-800 hover:bg-gold-400 transition-colors shadow-sm"
+                  className="block text-center py-3 rounded-full bg-gold-500 text-xs font-bold uppercase tracking-wider text-forest-950 hover:bg-gold-400 transition-colors shadow-sm"
                 >
                   Sign In / Register
                 </Link>

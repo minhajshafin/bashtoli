@@ -186,7 +186,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
         <div className="lg:col-span-7 max-w-xl">
           {/* Brand Logo & Est */}
           <div className="flex flex-col items-start gap-2.5 mb-6">
-            <div className="relative h-14 sm:h-16 md:h-18 lg:h-20 w-56 sm:w-64 md:w-72 lg:w-80">
+            <div className="relative h-14 sm:h-16 md:h-18 lg:h-20 w-36 sm:w-40 md:w-44 lg:w-50">
               <Image
                 src="/logo-text.svg"
                 alt="Bashtoli Stationery"

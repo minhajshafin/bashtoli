@@ -7,6 +7,8 @@ import { ToastProvider } from '@/components/ui/toast'
 import { ConfirmDialogProvider } from '@/components/ui/confirm-dialog'
 import { WishlistProvider } from '@/lib/wishlist/wishlist-context'
 import { NavHeader } from '@/components/storefront/nav-header'
+import { CartDrawer } from '@/components/storefront/cart-drawer'
+import { MobileBottomDock } from '@/components/storefront/mobile-bottom-dock'
 
 export const metadata: Metadata = {
   title: {
@@ -28,13 +30,19 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
             isStaffOrAdmin={false}
           />
 
-          {/* Main Content Area */}
-          <main className="flex-1">
+          {/* Main Content Area (padding-bottom for mobile bottom dock) */}
+          <main className="flex-1 pb-16 md:pb-0">
             {children}
           </main>
 
           {/* Footer */}
           <Footer />
+
+          {/* Slide-over Shopping Bag Drawer */}
+          <CartDrawer />
+
+          {/* Mobile Bottom Navigation Dock */}
+          <MobileBottomDock />
         </div>
       </CartProvider>
     </WishlistProvider>
@@ -72,13 +80,19 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
             isStaffOrAdmin={isStaffOrAdmin}
           />
 
-          {/* Main Content Area */}
-          <main className="flex-1">
+          {/* Main Content Area (padding-bottom for mobile bottom dock) */}
+          <main className="flex-1 pb-16 md:pb-0">
             {children}
           </main>
 
           {/* Footer */}
           <Footer />
+
+          {/* Slide-over Shopping Bag Drawer */}
+          <CartDrawer />
+
+          {/* Mobile Bottom Navigation Dock */}
+          <MobileBottomDock />
         </div>
       </CartProvider>
     </WishlistProvider>
@@ -100,4 +114,3 @@ export default function StorefrontLayout({
     </ToastProvider>
   )
 }
-
