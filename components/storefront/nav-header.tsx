@@ -65,7 +65,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           : 'bg-forest-950 border-b border-forest-800/70'
       }`}
     >
-      <div className="mx-auto flex h-18 sm:h-20 max-w-7xl items-center justify-between gap-4 md:gap-8 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-18 sm:h-20 max-w-[1440px] xl:max-w-[1520px] items-center justify-between gap-4 md:gap-8 px-4 sm:px-6 lg:px-8 xl:px-10">
 
         {/* Mobile: Hamburger Toggle + Prominent Brand Logo */}
         <div className="md:hidden flex items-center gap-2.5 sm:gap-3">

@@ -6,57 +6,123 @@ import { ProductCard } from '@/components/storefront/product-card'
 import type { ProductWithDetails } from '@/lib/queries/products'
 
 export function ProductCarousel({ products }: { products: ProductWithDetails[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  const isInteractingRef = useRef(false)
+  const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
+  // Ensure there are enough items to loop seamlessly across all desktop viewports
+  const baseItems =
+    products.length >= 6
+      ? products
+      : products.length >= 3
+      ? [...products, ...products]
+      : [...products, ...products, ...products, ...products]
+
+  const infiniteItems = [...baseItems, ...baseItems]
+
+  // Continuous auto-gliding motion with hover & manual interaction pause
   useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const update = () => {
-      const maxScroll = el.scrollWidth - el.clientWidth
-      setCanScrollLeft(el.scrollLeft > 6)
-      setCanScrollRight(el.scrollLeft < maxScroll - 6)
-      if (maxScroll > 0) {
-        setScrollProgress(Math.min(100, Math.max(0, (el.scrollLeft / maxScroll) * 100)))
-      }
-    }
-    update()
-    el.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
-    return () => {
-      el.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
-  }, [products.length])
+    const container = scrollContainerRef.current
+    if (!container) return
 
-  const scroll = (dir: 'left' | 'right') => {
-    const el = scrollRef.current
-    if (!el) return
-    const step = el.clientWidth * 0.72
-    el.scrollBy({ left: dir === 'left' ? -step : step, behavior: 'smooth' })
+    // Honor users who prefer reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    let rafId: number
+    const speed = 0.65 // subtle, luxurious glide speed
+
+    const step = () => {
+      if (!isHovered && !isInteractingRef.current && container) {
+        container.scrollLeft += speed
+        const halfWidth = container.scrollWidth / 2
+        if (container.scrollLeft >= halfWidth) {
+          container.scrollLeft -= halfWidth
+        }
+      }
+      rafId = requestAnimationFrame(step)
+    }
+
+    rafId = requestAnimationFrame(step)
+    return () => {
+      cancelAnimationFrame(rafId)
+      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current)
+    }
+  }, [isHovered])
+
+  // Handle seamless wrap when scrolling manually
+  const handleScroll = () => {
+    const container = scrollContainerRef.current
+    if (!container) return
+    const halfWidth = container.scrollWidth / 2
+
+    if (container.scrollLeft <= 0) {
+      container.scrollLeft += halfWidth
+    } else if (container.scrollLeft >= halfWidth * 1.95) {
+      container.scrollLeft -= halfWidth
+    }
+  }
+
+  // Manual scroll with Left / Right buttons
+  const scrollManual = (direction: 'left' | 'right') => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    isInteractingRef.current = true
+    if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current)
+
+    const scrollDelta = direction === 'left' ? -310 : 310
+    container.scrollBy({ left: scrollDelta, behavior: 'smooth' })
+
+    // Resume subtle auto-drift after 4s of idle time
+    interactionTimeoutRef.current = setTimeout(() => {
+      isInteractingRef.current = false
+    }, 4000)
   }
 
   return (
     <div className="w-full">
-      {/* Editorial Header Row: Minimal Titles on Left, Directional Controls on Right */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-7 sm:mb-9 gap-4">
+      {/* Header Row: Upright High-Contrast Serif + Minimal Navigation Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
         <div>
-          <h2 className="font-editorial text-forest-950 font-normal leading-tight text-2xl sm:text-3xl md:text-4xl tracking-tight">
+          <h2 className="font-display font-medium text-forest-950 leading-tight text-3xl sm:text-4xl md:text-5xl tracking-[-0.015em]">
             Curated Essentials
           </h2>
-          <p className="text-xs sm:text-sm text-forest-700/80 font-light mt-1.5 font-sans max-w-md">
-            Handpicked notebooks, fine writing instruments, and archival paper goods.
+          <p className="text-sm sm:text-base text-forest-800 font-normal mt-2 font-sans max-w-lg">
+            Handpicked fountain pen journals, fine writing instruments, and bamboo paper goods.
           </p>
         </div>
 
-        {/* Top Controls: "View All" + Directional Arrow Buttons */}
+        {/* Minimal Controls: Manual Navigation Arrows + View All */}
         <div className="flex items-center gap-3.5 self-start sm:self-auto">
+          <div className="flex items-center gap-1.5" role="group" aria-label="Carousel navigation">
+            <button
+              type="button"
+              onClick={() => scrollManual('left')}
+              aria-label="Scroll left"
+              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-forest-900/15 bg-cream-50/90 text-forest-900 hover:bg-forest-950 hover:text-cream-50 hover:border-forest-950 transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+            >
+              <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollManual('right')}
+              aria-label="Scroll right"
+              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-forest-900/15 bg-cream-50/90 text-forest-900 hover:bg-forest-950 hover:text-cream-50 hover:border-forest-950 transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+            >
+              <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
           <Link
             id="featured-view-all-link"
             href="/products"
-            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.16em] font-semibold text-forest-900 hover:text-gold-600 transition-colors group font-sans"
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.16em] font-semibold text-forest-950 hover:text-gold-700 transition-colors group font-sans pl-3 border-l border-forest-900/15"
           >
             <span>View All</span>
             <svg
@@ -68,87 +134,46 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </Link>
-
-          {/* Minimal Circular Directional Buttons */}
-          <div className="flex items-center gap-1.5 pl-2.5 border-l border-forest-900/15">
-            <button
-              type="button"
-              aria-label="Previous products"
-              onClick={() => scroll('left')}
-              disabled={!canScrollLeft}
-              className="flex items-center justify-center w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-forest-900/20 text-forest-900 hover:bg-forest-950 hover:text-cream-100 hover:border-forest-950 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer active:scale-95"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              aria-label="Next products"
-              onClick={() => scroll('right')}
-              disabled={!canScrollRight}
-              className="flex items-center justify-center w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full border border-forest-900/20 text-forest-900 hover:bg-forest-950 hover:text-cream-100 hover:border-forest-950 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer active:scale-95"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Carousel Rail Viewport */}
-      <div className="relative">
-        {/* Left edge fade scrim */}
+      {/* Infinite Scroll Viewport with Narrow, Refined Edge Scrims */}
+      <div
+        className="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-10 px-4 sm:px-6 lg:px-8 xl:px-10"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Subtle, narrow left edge fade */}
         <div
-          className="absolute left-0 top-0 bottom-4 w-6 sm:w-12 z-10 pointer-events-none transition-opacity duration-300"
+          className="absolute left-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none"
           style={{
-            background: 'linear-gradient(to right, #f6f0e4 0%, transparent 100%)',
-            opacity: canScrollLeft ? 0.95 : 0,
+            background: 'linear-gradient(to right, rgba(246, 240, 228, 0.75) 0%, transparent 100%)',
           }}
         />
 
-        {/* Scroll rail */}
+        {/* Horizontal Carousel Track with Native Scroll & Auto-Gliding */}
         <div
-          ref={scrollRef}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1"
-          style={{
-            scrollSnapType: 'x mandatory',
-            WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-none py-2 select-none"
         >
-          {products.map((p) => (
+          {infiniteItems.map((p, index) => (
             <div
-              key={p.id}
-              className="shrink-0 w-[220px] sm:w-[250px] md:w-[270px]"
-              style={{ scrollSnapAlign: 'start' }}
+              key={`${p.id}-${index}`}
+              className="shrink-0 w-[230px] sm:w-[260px] md:w-[280px]"
             >
               <ProductCard product={p} />
             </div>
           ))}
-          <div className="shrink-0 w-3 sm:w-4" aria-hidden="true" />
         </div>
 
-        {/* Right edge fade scrim */}
+        {/* Subtle, narrow right edge fade */}
         <div
-          className="absolute right-0 top-0 bottom-4 w-6 sm:w-12 z-10 pointer-events-none transition-opacity duration-300"
+          className="absolute right-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none"
           style={{
-            background: 'linear-gradient(to left, #f6f0e4 0%, transparent 100%)',
-            opacity: canScrollRight ? 0.95 : 0,
+            background: 'linear-gradient(to left, rgba(246, 240, 228, 0.75) 0%, transparent 100%)',
           }}
         />
-      </div>
-
-      {/* Subtle Progress Bar */}
-      <div className="flex items-center justify-center mt-5">
-        <div className="w-20 sm:w-28 h-[2px] rounded-full bg-forest-900/10 overflow-hidden">
-          <div
-            className="h-full bg-forest-900/40 rounded-full transition-all duration-150 ease-out"
-            style={{ width: `${Math.max(14, scrollProgress)}%` }}
-          />
-        </div>
       </div>
     </div>
   )

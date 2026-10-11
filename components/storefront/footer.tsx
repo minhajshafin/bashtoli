@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { AtelierChopSeal, DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -85,8 +86,11 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-forest-800/80 bg-forest-950 text-cream-100" id="contact">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-8 md:pt-14 md:pb-8">
+    <footer className="relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden" id="contact">
+      {/* Minimalist Drifting Sumi-e Leaf */}
+      <DriftingBambooLeaf theme="dark" className="left-1/3 bottom-4 hidden sm:block opacity-60" rotation={14} scale={0.9} />
+
+      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-12 pb-8 md:pt-14 md:pb-8">
         {/* Meta Grid */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-10 gap-y-10 md:gap-y-12">
           {/* Brand Logo & Atelier Bio (Desktop only) */}
@@ -106,6 +110,8 @@ export function Footer() {
             <p className="text-[10px] tracking-widest uppercase text-gold-400 font-semibold mt-4">
               Dhaka, Bangladesh · Est. 2026
             </p>
+            {/* Atelier Hankō Chop Seal */}
+            <AtelierChopSeal size="sm" className="mt-3.5 opacity-90" />
           </div>
 
           {/* Info Column */}

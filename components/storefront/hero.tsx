@@ -9,6 +9,7 @@ import {
   DEFAULT_FALLBACK_SLIDE,
   type HeroSlideItem,
 } from '@/lib/validations/hero-slides'
+import { BambooPaperWatermark, DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 
 function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
@@ -120,25 +121,28 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
 export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
   return (
-    <section className="relative flex items-center overflow-hidden bg-forest-950 border-b border-forest-800/70">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid lg:grid-cols-12 gap-8 lg:gap-12 items-center py-8 sm:py-10 lg:py-12">
+    <section className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark border-b border-forest-800/70">
+      {/* Blind-Debossed Pulp Watermark + Minimalist Drifting Leaf */}
+      <BambooPaperWatermark theme="dark" className="-right-10 top-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96" />
+      <DriftingBambooLeaf theme="dark" className="left-8 sm:left-16 bottom-8 hidden sm:block" rotation={24} scale={1.2} />
+
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center py-9 sm:py-11 lg:py-14">
         {/* Left: Story & Discovery */}
-        <div className="lg:col-span-7 max-w-xl">
+        <div className="lg:col-span-7 max-w-2xl">
           {/* Atelier Eyebrow */}
           <div className="inline-flex items-center gap-2.5 mb-4">
             <span className="h-px w-6 bg-gold-400/60" />
             <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-gold-400 font-sans font-medium">
-              Stationery &amp; Gifts &mdash; Est. 2026
+              Bamboo Stationery Atelier &mdash; Est. 2026
             </span>
           </div>
 
           <h1
-            className="mb-3.5 sm:mb-4 text-cream-100 font-display"
+            className="mb-3.5 sm:mb-4 text-cream-50 font-display font-medium"
             style={{
-              fontSize: 'clamp(2.15rem, 4.2vw, 3.75rem)',
-              fontWeight: 400,
+              fontSize: 'clamp(2.35rem, 4.5vw, 4.15rem)',
               letterSpacing: '-0.015em',
-              lineHeight: 1.1,
+              lineHeight: 1.08,
             }}
           >
             Craft your{' '}
@@ -150,9 +154,9 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           </h1>
 
           <p
-            className="mb-6 text-xs sm:text-sm leading-relaxed text-forest-300 font-light max-w-lg"
+            className="mb-6 text-sm sm:text-base leading-relaxed text-forest-200/90 font-normal max-w-xl"
           >
-            Handpicked notebooks, artisanal pens, and paper goods from makers who believe
+            Handpicked notebooks, artisanal pens, and bamboo paper goods from makers who believe
             writing is still the most intimate form of expression.
           </p>
 

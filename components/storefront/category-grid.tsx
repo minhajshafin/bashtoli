@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
 import { COLLAGE_SLOT_CONFIGS } from '@/lib/validations/category-collage'
+import { DriftingLeavesPair } from '@/components/storefront/bamboo-motifs'
 
 interface CategoryGridProps {
   categories?: FeaturedCategoryItem[]
@@ -89,17 +90,20 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   }
 
   return (
-    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-forest-900 border-t border-forest-800/80">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Heading */}
-        <div className="text-center mb-8 sm:mb-10 max-w-xl mx-auto">
+    <section className="relative overflow-hidden py-14 sm:py-18 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-900 bg-laid-paper-dark border-t border-forest-800/80">
+      {/* Minimalist Drifting Sumi-e Leaves Pair */}
+      <DriftingLeavesPair theme="dark" className="left-8 sm:left-14 top-10 hidden sm:block opacity-75" />
+
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
+        {/* Section Heading — Bold, Upright & Highly Readable */}
+        <div className="text-center mb-9 sm:mb-12 max-w-2xl mx-auto">
           <h2
-            className="font-editorial text-cream-100 font-normal leading-tight text-2xl sm:text-3xl md:text-4xl"
+            className="font-display font-medium text-cream-50 leading-tight text-3xl sm:text-4xl md:text-5xl tracking-[-0.015em]"
           >
             Browse by Category
           </h2>
-          <p className="text-xs sm:text-sm text-forest-300 font-light mt-2.5 leading-relaxed font-sans">
-            Curated papers, journals, fine instruments, and accessories grouped for thoughtful contemplation.
+          <p className="text-sm sm:text-base text-forest-200/90 font-normal mt-2.5 leading-relaxed font-sans">
+            Curated papers, journals, fine instruments, and desk accessories grouped for thoughtful exploration.
           </p>
         </div>
 

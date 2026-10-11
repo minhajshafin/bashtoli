@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { submitSuggestionAction } from '@/lib/actions/suggestions'
+import { DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 export function SuggestAnItem() {
   const [name, setName] = useState('')
@@ -53,14 +54,18 @@ export function SuggestAnItem() {
   }
 
   return (
-    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-forest-950 border-t border-forest-800/80">
-      <div className="max-w-xl mx-auto text-center">
-        <h2
-          className="mb-3.5 font-editorial text-cream-100 font-normal leading-tight text-2xl sm:text-3xl md:text-4xl"
-        >
+    <section className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-forest-950 bg-laid-paper-dark border-t border-forest-800/80 overflow-hidden">
+      {/* Minimalist Drifting Sumi-e Leaf */}
+      <DriftingBambooLeaf theme="dark" className="right-12 sm:right-20 bottom-12 hidden sm:block" rotation={-28} scale={1.1} />
+
+      <div className="relative z-10 max-w-xl mx-auto text-center">
+        <span className="inline-block text-[11px] sm:text-xs uppercase tracking-[0.22em] font-sans font-medium text-gold-400 mb-2.5">
+          Atelier Requests
+        </span>
+        <h2 className="mb-3.5 font-display text-cream-50 font-medium leading-tight text-3xl sm:text-4xl md:text-5xl tracking-[-0.015em]">
           Don&apos;t see what<br />you&apos;re looking for?
         </h2>
-        <p className="mb-7 text-xs sm:text-sm leading-relaxed text-forest-300 font-light max-w-md mx-auto font-sans">
+        <p className="mb-8 text-xs sm:text-sm leading-relaxed text-forest-300 font-light max-w-md mx-auto font-sans">
           We curate our atelier collection around what{' '}
           <em className="text-gold-300 font-editorial">you</em> reach for. Tell us what&apos;s missing &mdash; we read every
           dispatch and source directly from artisanal makers.

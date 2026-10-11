@@ -99,6 +99,10 @@
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+@keyframes carouselInfinite {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 body {
   background: #fbf8f2;
@@ -167,6 +171,36 @@ html {
 .paper-grain {
   background-image: radial-gradient(rgba(18, 36, 27, 0.04) 1px, transparent 0);
   background-size: 24px 24px;
+}
+
+
+/* Traditional Laid Paper Materiality (Sugeta Bamboo Screen Wires) */
+.bg-laid-paper {
+  background-color: #f6f0e4;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(18, 36, 27, 0.025) 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 180px,
+      rgba(18, 36, 27, 0.015) 181px
+    );
+}
+
+.bg-laid-paper-dark {
+  background-color: #0e1e17;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      rgba(246, 240, 228, 0.018) 32px
+    );
 }
 
 /* Base Accessibility focus outlines (WCAG 2.1 AA) */
