@@ -5,35 +5,73 @@
   --font-display: var(--font-fraunces), 'Fraunces', Georgia, serif;
   --font-sans: var(--font-source-sans-3), 'Source Sans 3', system-ui, sans-serif;
 
-  /* Forest greens */
-  --color-forest-950: #080f0a;
-  --color-forest-900: #0d1f15;
-  --color-forest-800: #1a3326;
-  --color-forest-700: #243d2e;
-  --color-forest-600: #2d5240;
-  --color-forest-500: #3d6e54;
-  --color-forest-400: #6a9e7c;
-  --color-forest-300: #a8c4b0;
-  --color-forest-200: #c8dace;
+  /* Forest greens — Harmonized Atelier Moss */
+  --color-forest-950: #0a160f;
+  --color-forest-900: #102218;
+  --color-forest-800: #162e21;
+  --color-forest-700: #1e3d2c;
+  --color-forest-600: #29503b;
+  --color-forest-500: #386b4f;
+  --color-forest-400: #5c9674;
+  --color-forest-300: #90bfa3;
+  --color-forest-200: #c3dcd0;
   --color-forest-100: #e4ede7;
 
-  /* Gold accents */
-  --color-gold-600: #a8863a;
-  --color-gold-500: #c9a96e;
-  --color-gold-400: #e2c99a;
-  --color-gold-300: #f0e0c0;
+  /* Gold accents — Burnished Warm Brass */
+  --color-gold-600: #9a7833;
+  --color-gold-500: #c4a265;
+  --color-gold-400: #ddc391;
+  --color-gold-300: #eee0bf;
+  --color-gold-200: #f7f1e1;
 
-  /* Cream backgrounds */
-  --color-cream-50:  #faf6ef;
-  --color-cream-100: #f5ede0;
-  --color-cream-200: #ede3cf;
-  --color-cream-300: #e0d0b8;
+  /* Cream backgrounds — Warm Alabaster Cotton Paper */
+  --color-cream-50:  #fbf8f2;
+  --color-cream-100: #f6f0e4;
+  --color-cream-200: #ece3d2;
+  --color-cream-300: #ded0b9;
+
+  /* Terracotta — Muted Artisanal Rust */
+  --color-terracotta-600: #8f3621;
+  --color-terracotta-500: #b54a2e;
+  --color-terracotta-400: #d46e50;
+  --color-terracotta-100: #faeae5;
+
+  /* Sage — Tactile Soft Surface */
+  --color-sage-50:  #f4f7f5;
+  --color-sage-100: #e5ece7;
+  --color-sage-200: #cbdcd0;
+
+  /* Shadows — Multi-layered Diffuse Elevations */
+  --shadow-subtle: 0 1px 2px rgba(16, 34, 24, 0.04), 0 2px 6px rgba(16, 34, 24, 0.02);
+  --shadow-atelier: 0 2px 4px rgba(16, 34, 24, 0.03), 0 12px 28px -4px rgba(16, 34, 24, 0.07);
+  --shadow-lifted: 0 8px 24px -4px rgba(16, 34, 24, 0.08), 0 24px 48px -8px rgba(16, 34, 24, 0.12);
+  --shadow-glass: 0 20px 50px rgba(10, 22, 15, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 
   /* Animations */
   --animate-shake: shake 0.35s ease-in-out;
   --animate-slide-in-right: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-slide-in-left: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in: fadeIn 0.25s ease-out;
+}
+
+:root {
+  /* Fluid Typography Scale */
+  --text-hero: clamp(2.6rem, 5.2vw + 1rem, 5rem);
+  --text-display: clamp(1.9rem, 3.6vw + 0.5rem, 3.25rem);
+  --text-heading: clamp(1.35rem, 2vw + 0.4rem, 1.95rem);
+  --text-subheading: clamp(1.05rem, 1vw + 0.4rem, 1.3rem);
+  --text-body: clamp(0.92rem, 0.2vw + 0.86rem, 1.05rem);
+  --text-body-sm: clamp(0.8rem, 0.15vw + 0.76rem, 0.88rem);
+  --text-label: clamp(0.68rem, 0.12vw + 0.64rem, 0.76rem);
+
+  /* Hairline Borders */
+  --border-hairline-dark: rgba(246, 240, 228, 0.10);
+  --border-hairline-light: rgba(16, 34, 24, 0.08);
+  --border-hairline-gold: rgba(196, 162, 101, 0.24);
+
+  /* Motion Timing Defaults */
+  --ease-atelier: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes shake {
@@ -59,8 +97,8 @@
 }
 
 body {
-  background: #faf6ef;
-  color: #0d1f15;
+  background: #fbf8f2;
+  color: #102218;
   font-family: var(--font-source-sans-3), 'Source Sans 3', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -73,6 +111,55 @@ html {
 /* Ensure all headings and Fraunces styled elements resolve to next/font Fraunces variable */
 [style*="Fraunces"] {
   font-family: var(--font-fraunces), 'Fraunces', Georgia, serif !important;
+}
+
+/* Phase 1 Typography Utilities */
+.font-display {
+  font-family: var(--font-fraunces), 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.025em;
+}
+
+.font-editorial {
+  font-family: var(--font-fraunces), 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.015em;
+}
+
+.font-price {
+  font-family: var(--font-source-sans-3), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Phase 1 Tactile Hairline Borders */
+.border-hairline {
+  border: 1px solid var(--border-hairline-light);
+}
+
+.border-hairline-dark {
+  border: 1px solid var(--border-hairline-dark);
+}
+
+.border-hairline-gold {
+  border: 1px solid var(--border-hairline-gold);
+}
+
+/* Phase 1 Subtle Paper Grain Materiality */
+.paper-grain {
+  background-image: radial-gradient(rgba(18, 36, 27, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
 }
 
 /* Base Accessibility focus outlines (WCAG 2.1 AA) */
