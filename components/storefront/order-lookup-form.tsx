@@ -47,15 +47,15 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
     <form onSubmit={handleSubmit} className="space-y-4 text-left">
       {/* Top error banner */}
       {topError && (
-        <div className="rounded-2xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 animate-fade-in">
+        <div className="rounded-xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 animate-fade-in font-sans">
           {topError}
         </div>
       )}
 
       {/* Order Number */}
       <div>
-        <label htmlFor="order_number" className="text-[11px] font-bold uppercase tracking-[0.2em] text-forest-700 block mb-1.5">
-          Order Number
+        <label htmlFor="order_number" className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 block mb-1.5">
+          Order Reference
         </label>
         <input
           type="text"
@@ -63,17 +63,17 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
           value={orderNumber}
           onChange={(e) => setOrderNumber(e.target.value)}
           placeholder="e.g. ORD-20260703-0042"
-          className="w-full rounded-full border border-forest-200 bg-cream-50 py-3 px-5 text-sm text-forest-900 placeholder:text-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
+          className="w-full rounded-xl border border-forest-200/80 bg-cream-50 py-3 px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
           required
         />
         {fieldErrors.order_number && (
-          <p className="text-rose-600 text-xs mt-1 font-medium pl-3">{fieldErrors.order_number[0]}</p>
+          <p className="text-rose-600 text-xs mt-1 font-semibold pl-1 font-sans">{fieldErrors.order_number[0]}</p>
         )}
       </div>
 
       {/* Phone Number */}
       <div>
-        <label htmlFor="phone" className="text-[11px] font-bold uppercase tracking-[0.2em] text-forest-700 block mb-1.5">
+        <label htmlFor="phone" className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 block mb-1.5">
           Phone Number
         </label>
         <input
@@ -82,11 +82,11 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="e.g. 017XXXXXXXX"
-          className="w-full rounded-full border border-forest-200 bg-cream-50 py-3 px-5 text-sm text-forest-900 placeholder:text-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
+          className="w-full rounded-xl border border-forest-200/80 bg-cream-50 py-3 px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
           required
         />
         {fieldErrors.phone && (
-          <p className="text-rose-600 text-xs mt-1 font-medium pl-3">{fieldErrors.phone[0]}</p>
+          <p className="text-rose-600 text-xs mt-1 font-semibold pl-1 font-sans">{fieldErrors.phone[0]}</p>
         )}
       </div>
 
@@ -94,11 +94,11 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full flex h-12 items-center justify-center rounded-full text-sm font-bold bg-gold-500 text-forest-900 shadow-sm hover:bg-gold-400 disabled:opacity-50 transition-all active:scale-[0.98] cursor-pointer mt-2"
+        className="w-full flex h-11 items-center justify-center rounded-xl text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider bg-forest-900 text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 disabled:opacity-50 transition-all active:scale-[0.98] cursor-pointer mt-2"
       >
         {isSubmitting ? (
           <span className="flex items-center gap-2">
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-forest-900 border-t-transparent" />
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-cream-100 border-t-gold-400" />
             Tracking...
           </span>
         ) : (

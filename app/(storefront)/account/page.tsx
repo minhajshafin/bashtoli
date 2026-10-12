@@ -76,37 +76,35 @@ export default async function AccountPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="border-b border-forest-200 pb-6">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold-500 mb-1.5">
+      <div className="border-b border-forest-200/80 pb-6">
+        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1.5">
           Account Overview
         </p>
-        <h1
-          className="text-2xl sm:text-[1.75rem] text-forest-900 font-medium tracking-tight font-display"
-        >
-          Welcome, {displayName}
+        <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
+          Welcome back, {displayName}
         </h1>
-        <p className="text-xs sm:text-[13px] text-forest-600 mt-1.5 font-normal">
-          Manage your orders, saved addresses, wishlist, and profile information.
+        <p className="text-xs sm:text-[13px] text-forest-600 mt-1.5 font-sans leading-relaxed">
+          Manage your stationery orders, delivery addresses, saved wishlist, and personal profile.
         </p>
       </div>
 
-      {/* Reduced Minimal Buttons (No subtext) */}
+      {/* Quick Links Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         {quickLinks.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="flex items-center justify-between px-5 py-4 rounded-2xl border border-forest-200 bg-cream-100/70 hover:bg-cream-100 hover:border-gold-500/50 hover:shadow-md transition-all duration-200 group"
+            className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-forest-200/80 bg-cream-100/60 hover:bg-cream-100 hover:border-gold-500/50 hover:shadow-2xs transition-all duration-200 group"
           >
             <div className="flex items-center gap-3.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-forest-800 text-gold-400 group-hover:bg-gold-500 group-hover:text-forest-900 transition-colors shrink-0">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 group-hover:bg-gold-500 group-hover:text-forest-950 transition-colors shrink-0 shadow-2xs">
                 {item.icon}
               </div>
-              <span className="text-sm sm:text-base font-semibold text-forest-900 group-hover:text-gold-600 transition-colors">
+              <span className="text-sm sm:text-[15px] font-medium text-forest-950 group-hover:text-gold-600 transition-colors font-sans">
                 {item.title}
               </span>
             </div>
-            <span className="text-forest-400 group-hover:text-gold-500 group-hover:translate-x-1 transition-all text-base font-bold">
+            <span className="text-forest-400 group-hover:text-gold-600 group-hover:translate-x-1 transition-all text-base font-semibold">
               &rarr;
             </span>
           </Link>
@@ -114,17 +112,15 @@ export default async function AccountPage() {
       </div>
 
       {/* Recent Orders Section */}
-      <div className="pt-4">
+      <div className="pt-2">
         <div className="flex items-center justify-between mb-4">
-          <h2
-            className="text-lg sm:text-xl font-medium text-forest-900 font-display"
-          >
+          <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
             Recent Orders
           </h2>
           {orders.length > 0 && (
             <Link
               href="/account/orders"
-              className="text-sm font-semibold text-gold-600 hover:text-gold-500 transition-colors"
+              className="text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
             >
               View all ({orders.length}) &rarr;
             </Link>
@@ -136,18 +132,18 @@ export default async function AccountPage() {
             {recentOrders.map((order) => (
               <div
                 key={order.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 sm:p-5 rounded-2xl border border-forest-200 bg-cream-100/70 hover:bg-cream-100 transition-colors"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 sm:p-5 rounded-2xl border border-forest-200/80 bg-cream-100/60 hover:bg-cream-100/90 hover:border-forest-300 transition-all shadow-2xs"
               >
                 <div>
                   <div className="flex items-center gap-2.5">
-                    <span className="text-sm font-bold text-forest-900">
+                    <span className="text-sm font-bold text-forest-950 font-mono">
                       {order.order_number}
                     </span>
-                    <span className="text-xs uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full bg-forest-200 text-forest-800">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full bg-forest-200/80 text-forest-800 border border-forest-300/60 font-sans">
                       {order.status}
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-forest-500 mt-1">
+                  <p className="text-xs text-forest-600 mt-1 font-sans">
                     {new Date(order.created_at).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
@@ -156,13 +152,13 @@ export default async function AccountPage() {
                     · {order.item_count} {order.item_count === 1 ? 'item' : 'items'}
                   </p>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-4">
-                  <span className="text-base sm:text-lg font-bold text-forest-900">
+                <div className="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-forest-200/60">
+                  <span className="text-base sm:text-lg font-bold text-forest-950 font-price">
                     ৳{order.total.toLocaleString()}
                   </span>
                   <Link
                     href={`/order/${order.order_number}`}
-                    className="text-xs sm:text-sm font-semibold px-4 py-2 rounded-full bg-forest-800 text-cream-100 hover:bg-gold-500 hover:text-forest-900 transition-colors"
+                    className="text-xs font-sans font-semibold px-4 py-2 rounded-xl bg-forest-900 text-cream-50 hover:bg-gold-500 hover:text-forest-950 transition-all shadow-2xs"
                   >
                     View Details
                   </Link>
@@ -171,14 +167,22 @@ export default async function AccountPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-forest-200 bg-cream-100/40 p-8 text-center">
-            <p className="text-sm text-forest-600">You haven&apos;t placed any orders yet.</p>
-            <Link
-              href="/products"
-              className="inline-flex mt-3 text-sm font-bold text-gold-600 hover:text-gold-500 hover:underline"
-            >
-              Browse our stationery collection &rarr;
-            </Link>
+          <div className="rounded-2xl border border-dashed border-forest-200/80 bg-cream-100/40 p-8 sm:p-10 text-center space-y-2">
+            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-1 border border-forest-200/60">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
+              </svg>
+            </div>
+            <p className="text-sm font-medium text-forest-900">You haven&apos;t placed any orders yet.</p>
+            <p className="text-xs text-forest-600">Discover our handmade notebooks, pens, and desk essentials.</p>
+            <div className="pt-2">
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
+              >
+                Browse stationery collection &rarr;
+              </Link>
+            </div>
           </div>
         )}
       </div>

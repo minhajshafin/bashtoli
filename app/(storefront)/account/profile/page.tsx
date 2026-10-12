@@ -52,16 +52,14 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-forest-200 pb-5">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-gold-500 font-bold mb-1">
+      <div className="border-b border-forest-200/80 pb-5">
+        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
           Preferences
         </p>
-        <h1
-          className="text-xl sm:text-2xl text-forest-900 font-medium tracking-tight font-display"
-        >
+        <h1 className="text-2xl sm:text-3xl text-forest-950 font-medium tracking-tight font-display">
           Profile Settings
         </h1>
-        <p className="text-xs text-forest-600 mt-1 font-normal">
+        <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
           Manage your account information, default checkout details, and password.
         </p>
       </div>

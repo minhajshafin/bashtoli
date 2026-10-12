@@ -99,29 +99,38 @@ export default async function WishlistPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1
-          className="text-xl sm:text-2xl font-medium text-forest-900 tracking-tight font-display"
-        >
+      <div className="border-b border-forest-200/80 pb-5">
+        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
+          Saved Items
+        </p>
+        <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
           My Wishlist
         </h1>
-        <p className="text-xs text-forest-600 mt-1">
-          Items you have saved to purchase or review later.
+        <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
+          Handcrafted notebooks and stationeries you have saved to purchase or review later.
         </p>
       </div>
 
       {wishlistProducts.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-forest-200 rounded-3xl bg-cream-100">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-forest-100 text-forest-400 mb-3">
-            <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        <div className="text-center py-12 sm:py-16 border border-dashed border-forest-200/80 rounded-2xl sm:rounded-3xl bg-cream-100/40 space-y-2">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-2 border border-forest-200/60">
+            <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
             </svg>
           </div>
-          <p className="text-sm font-semibold text-forest-800">Your wishlist is currently empty.</p>
-          <p className="text-xs text-forest-500 mt-1">Explore our catalog and click the heart icon to save products.</p>
+          <p className="text-sm font-semibold text-forest-950">Your wishlist is currently empty.</p>
+          <p className="text-xs text-forest-600 max-w-sm mx-auto">Explore our catalog and save items you want to keep in mind for future orders.</p>
+          <div className="pt-2">
+            <a
+              href="/products"
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
+            >
+              Explore Stationery Goods &rarr;
+            </a>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6">
           {wishlistProducts.map((product) => (
             <WishlistItem key={product.id} product={product} />
           ))}

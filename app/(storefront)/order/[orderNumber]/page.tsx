@@ -8,6 +8,7 @@ import { WhatsAppLink } from '@/components/storefront/whatsapp-link'
 import { CancelOrderButton } from '@/components/storefront/cancel-order-button'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { PrintReceiptButton } from '@/components/storefront/print-receipt-button'
+import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 
 interface OrderPageProps {
   params: Promise<{
@@ -78,8 +79,9 @@ export default async function OrderConfirmationPage({
   // If no access, show phone verification gate
   if (!hasAccess) {
     return (
-      <div className="min-h-[calc(100dvh-5rem)] flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-md bg-cream-100/70 border border-forest-200/80 rounded-3xl p-8 sm:p-10 shadow-2xs space-y-6 text-center animate-fade-in">
+      <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center px-4 py-12 sm:py-16 overflow-hidden">
+        <CheckoutBackgroundArt />
+        <div className="relative z-10 w-full max-w-md bg-cream-100/70 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-7 sm:p-10 shadow-2xs space-y-6 text-center animate-fade-in backdrop-blur-xs">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-2 shadow-xs border border-forest-800">
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -123,6 +125,7 @@ export default async function OrderConfirmationPage({
 
   return (
     <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-8 sm:px-6 lg:px-8 xl:px-10 overflow-hidden">
+      <CheckoutBackgroundArt />
       <div className="relative z-10 mx-auto max-w-3xl space-y-6 sm:space-y-8">
         {/* 3-Step Visual Progress Track */}
         <div className="print:hidden">

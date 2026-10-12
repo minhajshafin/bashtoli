@@ -39,10 +39,10 @@ export function OrderStatus({ status }: OrderStatusProps) {
   return (
     <div className="space-y-4 py-2">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gold-600">
+        <h3 className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
           Order Progress
         </h3>
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-forest-800 text-gold-400 capitalize">
+        <span className="text-[11px] font-sans font-semibold px-2.5 py-0.5 rounded-full bg-forest-900 text-gold-400 capitalize border border-forest-800 shadow-2xs">
           {status.replace(/_/g, ' ')}
         </span>
       </div>
@@ -60,8 +60,8 @@ export function OrderStatus({ status }: OrderStatusProps) {
                   isCompleted
                     ? 'bg-gold-500 text-forest-900 shadow-xs'
                     : isActive
-                    ? 'bg-forest-800 text-gold-400 border-2 border-gold-500 ring-4 ring-gold-500/20 shadow-xs'
-                    : 'bg-cream-200/80 text-forest-400 border border-forest-200'
+                    ? 'bg-forest-900 text-gold-400 border-2 border-gold-500 ring-4 ring-gold-500/20 shadow-xs'
+                    : 'bg-cream-200/80 text-forest-400 border border-forest-200/80'
                 }`}
               >
                 {isCompleted ? (
@@ -73,10 +73,10 @@ export function OrderStatus({ status }: OrderStatusProps) {
                 )}
               </div>
               <div>
-                <p className={`text-sm font-bold ${isActive ? 'text-forest-900' : isCompleted ? 'text-forest-800' : 'text-forest-400'}`}>
+                <p className={`text-sm font-semibold font-sans ${isActive ? 'text-forest-950 font-bold' : isCompleted ? 'text-forest-900' : 'text-forest-400'}`}>
                   {step.label}
                 </p>
-                <p className="text-[11px] text-forest-500">{step.description}</p>
+                <p className="text-[11px] text-forest-500 font-sans">{step.description}</p>
               </div>
             </div>
           )
@@ -104,8 +104,8 @@ export function OrderStatus({ status }: OrderStatusProps) {
                     isCompleted
                       ? 'bg-gold-500 text-forest-900 shadow-sm'
                       : isActive
-                      ? 'bg-forest-800 text-gold-400 border-2 border-gold-500 ring-4 ring-gold-500/20 shadow-sm'
-                      : 'bg-cream-200 text-forest-400 border border-forest-200'
+                      ? 'bg-forest-900 text-gold-400 border-2 border-gold-500 ring-4 ring-gold-500/20 shadow-sm'
+                      : 'bg-cream-200 text-forest-400 border border-forest-200/80'
                   }`}
                 >
                   {isCompleted ? (

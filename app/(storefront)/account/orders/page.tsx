@@ -40,17 +40,15 @@ export default async function OrderHistoryPage() {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-forest-200 pb-5">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-gold-500 font-bold mb-1">
-          History
+      <div className="border-b border-forest-200/80 pb-5">
+        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
+          Purchase Records
         </p>
-        <h1
-          className="text-xl sm:text-2xl text-forest-900 font-medium tracking-tight font-display"
-        >
+        <h1 className="text-2xl sm:text-3xl text-forest-950 font-medium tracking-tight font-display">
           Order History
         </h1>
-        <p className="text-xs text-forest-600 mt-1 font-normal">
-          Manage and track your ongoing and past orders.
+        <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
+          Manage and track your ongoing and past stationery orders.
         </p>
       </div>
 
@@ -60,14 +58,14 @@ export default async function OrderHistoryPage() {
       )}
 
       {orders.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-forest-200 bg-cream-100/50 rounded-3xl">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-forest-100 text-forest-500 mb-3">
+        <div className="text-center py-12 sm:py-16 border border-dashed border-forest-200/80 bg-cream-100/40 rounded-2xl sm:rounded-3xl space-y-2">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-2 border border-forest-200/60">
             <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="1.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
             </svg>
           </div>
-          <p className="text-sm font-semibold text-forest-900">You haven&apos;t placed any orders yet.</p>
-          <p className="text-xs text-forest-500 mt-1">Browse our products and place an order to see it listed here.</p>
+          <p className="text-sm font-semibold text-forest-950">You haven&apos;t placed any orders yet.</p>
+          <p className="text-xs text-forest-600 max-w-sm mx-auto">Browse our handcrafted notebooks and studio supplies to get started.</p>
         </div>
       ) : (
         <OrderHistoryList orders={orders} />
