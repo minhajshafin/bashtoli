@@ -84,7 +84,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
   return (
     <div className="w-full">
       {/* Header Row: Upright High-Contrast Serif + Minimal Navigation Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 lg:mb-6 gap-4">
         <div>
           <h2 className="font-display font-medium text-forest-950 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
             Curated Essentials

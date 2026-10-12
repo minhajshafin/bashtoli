@@ -248,7 +248,7 @@ export function AccountPageSkeleton() {
  */
 export function FeaturedProductsSkeleton() {
   return (
-    <section className="py-14 sm:py-18 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-100" aria-busy="true" aria-label="Loading featured products">
+    <section className="py-6 sm:py-8 lg:py-9 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-100" aria-busy="true" aria-label="Loading featured products">
       <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-7 sm:mb-9 gap-4">
           <div>

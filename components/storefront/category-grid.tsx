@@ -2,7 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
-import { DriftingLeavesPair } from '@/components/storefront/bamboo-motifs'
 
 interface CategoryGridProps {
   categories?: FeaturedCategoryItem[]
@@ -12,16 +11,16 @@ type CardSize = 'hero' | 'medium' | 'compact'
 
 const SIZE_CONFIGS: Record<CardSize, { padding: string; title: string }> = {
   hero: {
-    padding: 'p-3.5 sm:p-4 lg:p-5',
-    title: 'text-base sm:text-lg lg:text-[19px] font-medium tracking-[-0.015em]',
+    padding: 'p-4 sm:p-5 lg:p-6',
+    title: 'text-base sm:text-lg lg:text-[21px] font-display font-medium tracking-[-0.015em]',
   },
   medium: {
-    padding: 'p-3 sm:p-3.5 lg:p-4',
-    title: 'text-sm sm:text-[15px] lg:text-base font-medium tracking-[-0.01em]',
+    padding: 'p-3.5 sm:p-4 lg:p-4.5',
+    title: 'text-sm sm:text-[15px] lg:text-[17px] font-display font-medium tracking-[-0.01em]',
   },
   compact: {
-    padding: 'p-2.5 sm:p-3 lg:p-3.5',
-    title: 'text-xs sm:text-[13px] lg:text-sm font-medium tracking-[-0.01em]',
+    padding: 'p-3 sm:p-3.5 lg:p-4',
+    title: 'text-xs sm:text-[13px] lg:text-[15px] font-display font-medium tracking-[-0.01em]',
   },
 }
 
@@ -41,11 +40,8 @@ function CategoryCard({
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className={`group relative overflow-hidden cursor-pointer block w-full rounded-xl sm:rounded-2xl border border-forest-800/70 hover:border-gold-500/60 focus-visible:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50 shadow-md hover:shadow-xl transition-all duration-500 ${className}`}
-      style={{
-        borderRadius: '20px',
-        ...style,
-      }}
+      className={`group relative overflow-hidden cursor-pointer block w-full rounded-2xl border border-forest-800/60 hover:border-gold-400/60 focus-visible:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/40 shadow-sm hover:shadow-xl transition-all duration-500 ${className}`}
+      style={style}
     >
       {/* Background Image / Fallback Gradient */}
       {category.image_url ? (
@@ -54,7 +50,7 @@ function CategoryCard({
           alt={category.name}
           fill
           loading="lazy"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 420px"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 450px"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
       ) : (
@@ -82,19 +78,19 @@ function CategoryCard({
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'linear-gradient(to top, rgba(8,18,13,0.88) 0%, rgba(8,18,13,0.25) 45%, transparent 75%)',
+            'linear-gradient(to top, rgba(10,22,15,0.92) 0%, rgba(10,22,15,0.38) 42%, transparent 72%)',
         }}
       />
 
       {/* Subtle Golden Sheen on Hover */}
-      <div className="absolute inset-0 bg-gold-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute inset-0 bg-gold-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
       {/* Dynamic Title Hierarchy & Sliding Micro-Cue */}
       <div
         className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-all duration-300 ${sizeConfig.padding}`}
       >
         <h3
-          className={`text-cream-50 group-hover:text-gold-200 transition-colors duration-300 font-display leading-tight ${sizeConfig.title}`}
+          className={`text-cream-50 group-hover:text-gold-200 transition-colors duration-300 leading-tight ${sizeConfig.title}`}
         >
           {category.name}
         </h3>
@@ -124,8 +120,7 @@ function EmptySlotCard({
 }) {
   return (
     <div
-      style={{ borderRadius: '20px' }}
-      className={`w-full rounded-xl sm:rounded-2xl border border-dashed border-forest-800/60 bg-forest-950/30 flex items-center justify-center p-4 text-center ${className}`}
+      className={`w-full rounded-2xl border border-dashed border-forest-800/60 bg-forest-950/30 flex items-center justify-center p-4 text-center ${className}`}
     >
       <span className="text-[10px] uppercase tracking-[0.2em] text-forest-400/70 font-sans font-medium">
         {label}
@@ -143,25 +138,28 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   const [cat1, cat2, cat3, cat4, cat5, cat6, cat7] = categories
 
   return (
-    <section className="relative overflow-hidden py-8 sm:py-10 lg:py-12 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-900 bg-laid-paper-dark">
-      {/* Minimalist Drifting Sumi-e Leaves Pair */}
-      <DriftingLeavesPair theme="dark" className="left-8 sm:left-14 top-6 hidden sm:block opacity-75" />
-
+    <section className="relative overflow-hidden py-12 sm:py-14 lg:py-16 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-900 bg-laid-paper-dark">
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
-        {/* Section Heading — Compact Editorial Header with Inline Text Link */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 sm:mb-6 lg:mb-7 gap-4">
+        {/* Section Heading — Minimal Editorial Header with Inline Text Link */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 lg:mb-9 gap-4">
           <div className="max-w-2xl">
-            <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="h-px w-4 bg-gold-400/60" />
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-gold-400/90 font-sans font-medium">
+                Collections &middot; Archive
+              </span>
+            </div>
+            <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em]">
               Curated Collections
             </h2>
-            <p className="text-xs sm:text-[13px] lg:text-sm text-forest-200/85 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
+            <p className="text-xs sm:text-[13px] lg:text-sm text-forest-200/80 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
               Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
             </p>
           </div>
 
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 self-start sm:self-end text-xs sm:text-[13px] uppercase tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-0.5"
+            className="inline-flex items-center gap-2 self-start sm:self-end text-[11px] sm:text-xs uppercase tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-1"
           >
             <span className="border-b border-gold-400/40 group-hover/link:border-gold-200 pb-0.5 transition-colors">
               Explore All Collections
@@ -172,69 +170,69 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
           </Link>
         </div>
 
-        {/* Desktop Wabi-Sabi Staggered 3-Column Masonry (Calibrated to fit in a single viewport) */}
-        <div className="hidden md:grid md:grid-cols-3 gap-3.5 lg:gap-4.5 items-start">
-          {/* Column 1 (Left): Tall Portrait (Hero) + Compact Landscape (Medium) */}
-          <div className="flex flex-col gap-3.5 lg:gap-4.5 w-full">
+        {/* Desktop Wabi-Sabi Staggered 3-Column Masonry (Increased height & harmonious proportions) */}
+        <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
+          {/* Column 1 (Left): Tall Portrait (Hero) + Balanced Landscape (Medium) */}
+          <div className="flex flex-col gap-4 lg:gap-5 w-full">
             {cat1 ? (
-              <CategoryCard category={cat1} size="hero" className="h-[250px] lg:h-[270px] xl:h-[285px]" />
+              <CategoryCard category={cat1} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
             ) : (
-              <EmptySlotCard className="h-[250px] lg:h-[270px] xl:h-[285px]" />
+              <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
             )}
             {cat2 ? (
-              <CategoryCard category={cat2} size="medium" className="h-[145px] lg:h-[155px] xl:h-[165px]" />
+              <CategoryCard category={cat2} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
             ) : (
-              <EmptySlotCard className="h-[145px] lg:h-[155px] xl:h-[165px]" />
+              <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
             )}
           </div>
 
-          {/* Column 2 (Center): Medium Landscape + Tall Portrait (Hero) (Staggered Seams) */}
-          <div className="flex flex-col gap-3.5 lg:gap-4.5 w-full">
+          {/* Column 2 (Center): Balanced Landscape (Medium) + Tall Portrait (Hero) */}
+          <div className="flex flex-col gap-4 lg:gap-5 w-full">
             {cat3 ? (
-              <CategoryCard category={cat3} size="medium" className="h-[155px] lg:h-[165px] xl:h-[175px]" />
+              <CategoryCard category={cat3} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
             ) : (
-              <EmptySlotCard className="h-[155px] lg:h-[165px] xl:h-[175px]" />
+              <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
             )}
             {cat4 ? (
-              <CategoryCard category={cat4} size="hero" className="h-[240px] lg:h-[260px] xl:h-[275px]" />
+              <CategoryCard category={cat4} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
             ) : (
-              <EmptySlotCard className="h-[240px] lg:h-[260px] xl:h-[275px]" />
+              <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
             )}
           </div>
 
-          {/* Column 3 (Right): Three Artfully Stacked Compact/Medium Blocks */}
-          <div className="flex flex-col gap-3 lg:gap-3.5 w-full">
+          {/* Column 3 (Right): Three Artfully Stacked Blocks */}
+          <div className="flex flex-col gap-3.5 lg:gap-4 w-full">
             {cat5 ? (
-              <CategoryCard category={cat5} size="compact" className="h-[125px] lg:h-[135px] xl:h-[142px]" />
+              <CategoryCard category={cat5} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
             ) : (
-              <EmptySlotCard className="h-[125px] lg:h-[135px] xl:h-[142px]" />
+              <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
             )}
             {cat6 ? (
-              <CategoryCard category={cat6} size="compact" className="h-[125px] lg:h-[135px] xl:h-[142px]" />
+              <CategoryCard category={cat6} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
             ) : (
-              <EmptySlotCard className="h-[125px] lg:h-[135px] xl:h-[142px]" />
+              <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
             )}
             {cat7 ? (
-              <CategoryCard category={cat7} size="medium" className="h-[135px] lg:h-[145px] xl:h-[154px]" />
+              <CategoryCard category={cat7} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
             ) : (
-              <EmptySlotCard className="h-[135px] lg:h-[145px] xl:h-[154px]" />
+              <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
             )}
           </div>
         </div>
 
         {/* Mobile / Tablet Asymmetric Rhythmic Grid */}
-        <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-3.5">
+        <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-4">
           {categories.map((cat, index) => {
             const mobileConfigs: { height: string; size: CardSize; span?: string }[] = [
-              { height: 'h-[190px]', size: 'medium' },
-              { height: 'h-[150px]', size: 'compact' },
-              { height: 'h-[150px]', size: 'compact' },
-              { height: 'h-[190px]', size: 'medium' },
-              { height: 'h-[155px]', size: 'compact' },
-              { height: 'h-[155px]', size: 'compact' },
-              { height: 'h-[160px]', size: 'medium', span: 'col-span-2' },
+              { height: 'h-[220px] sm:h-[240px]', size: 'medium' },
+              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+              { height: 'h-[220px] sm:h-[240px]', size: 'medium' },
+              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+              { height: 'h-[190px] sm:h-[210px]', size: 'medium', span: 'col-span-2' },
             ]
-            const config = mobileConfigs[index] || { height: 'h-[160px]', size: 'compact' }
+            const config = mobileConfigs[index] || { height: 'h-[180px]', size: 'compact' }
 
             return (
               <CategoryCard
