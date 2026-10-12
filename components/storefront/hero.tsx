@@ -126,9 +126,9 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       <BambooPaperWatermark theme="dark" className="-right-10 top-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96" />
       <DriftingBambooLeaf theme="dark" className="left-8 sm:left-16 bottom-8 hidden sm:block" rotation={24} scale={1.2} />
 
-      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center py-9 sm:py-11 lg:py-14">
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center py-9 sm:py-11 lg:py-14">
         {/* Left: Story & Discovery */}
-        <div className="lg:col-span-7 max-w-2xl">
+        <div className="lg:col-span-7 max-w-2xl lg:pl-2 xl:pl-6 2xl:pl-8">
           {/* Stationery Eyebrow */}
           <div className="inline-flex items-center gap-2.5 mb-4">
             <span className="h-px w-6 bg-gold-400/60" />
@@ -138,11 +138,11 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           </div>
 
           <h1
-            className="mb-3.5 sm:mb-4 text-cream-50 font-display font-medium"
+            className="mb-3 sm:mb-3.5 text-cream-50 font-display font-medium"
             style={{
-              fontSize: 'clamp(2.35rem, 4.5vw, 4.15rem)',
+              fontSize: 'clamp(1.75rem, 3.2vw, 2.75rem)',
               letterSpacing: '-0.015em',
-              lineHeight: 1.08,
+              lineHeight: 1.1,
             }}
           >
             Craft your{' '}
@@ -154,25 +154,25 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           </h1>
 
           <p
-            className="mb-6 text-sm sm:text-base leading-relaxed text-forest-200/90 font-normal max-w-xl"
+            className="mb-5 text-xs sm:text-[13px] lg:text-sm leading-relaxed text-forest-200/85 font-normal max-w-xl"
           >
             Handpicked notebooks, artisanal pens, and bamboo paper goods from makers who believe
             writing is still the most intimate form of expression.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-6 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-semibold rounded-full bg-gold-500 text-forest-950 hover:bg-gold-400 transition-all shadow-md active:scale-98"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 sm:px-6 sm:py-2.5 text-xs font-semibold rounded-full bg-gold-500 text-forest-950 hover:bg-gold-400 transition-all shadow-md active:scale-98 font-sans"
             >
               Shop Collection
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
             <Link
               href="#aboutus"
-              className="inline-flex items-center px-6 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm rounded-full border border-forest-700/90 text-cream-200 hover:border-gold-400/80 hover:text-gold-300 transition-all active:scale-98"
+              className="inline-flex items-center px-5 py-2.5 sm:px-6 sm:py-2.5 text-xs font-medium rounded-full border border-forest-700/90 text-cream-200 hover:border-gold-400/80 hover:text-gold-300 transition-all active:scale-98 font-sans"
             >
               Our Story
             </Link>

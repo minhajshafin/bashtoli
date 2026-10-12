@@ -73,7 +73,7 @@ export function AboutSection() {
           </div>
 
           {/* Statement Display Headline with Fluid Scale & Italic Contrast */}
-          <h2 className="font-display font-medium text-forest-950 text-[clamp(2.1rem,4vw,3.6rem)] leading-[1.08] tracking-[-0.02em] text-balance mb-6">
+          <h2 className="font-display font-medium text-forest-950 text-[clamp(1.75rem,2.8vw,2.5rem)] leading-[1.12] tracking-[-0.015em] text-balance mb-5">
             Born from a love of{' '}
             <em className="font-editorial italic font-normal text-forest-900">
               beautiful things
@@ -82,18 +82,18 @@ export function AboutSection() {
           </h2>
 
           {/* Editorial Lead Hook */}
-          <p className="font-display text-forest-900 text-lg sm:text-xl lg:text-[1.35rem] leading-[1.5] font-normal text-pretty mb-5">
+          <p className="font-display text-forest-900 text-base sm:text-lg lg:text-[1.125rem] leading-[1.55] font-normal text-pretty mb-4">
             A quiet neighbourhood corner in Dhaka for anyone who still finds joy in the simple, tactile act of putting pen to paper.
           </p>
 
           {/* Body Narrative */}
-          <p className="text-sm sm:text-[15px] leading-[1.75] text-forest-800/90 font-sans font-normal text-pretty max-w-xl">
+          <p className="text-xs sm:text-[13px] lg:text-sm leading-[1.7] text-forest-800/85 font-sans font-normal text-pretty max-w-xl">
             বাঁশতলী began as a modest weekend stall — born from a fondness for fountain pens, honest bamboo paper, and stationery made with care. Every notebook, pencil, and paper pack is held, tested, and handwritten with before it earns a spot on our shelves.
           </p>
 
           {/* Editorial Epigraph Footnote */}
-          <div className="pt-6 sm:pt-8 mt-7 sm:mt-8 border-t border-forest-200/60 max-w-xl">
-            <blockquote className="font-display italic text-forest-900 text-base sm:text-lg leading-relaxed">
+          <div className="pt-5 sm:pt-6 mt-6 sm:mt-7 border-t border-forest-200/60 max-w-xl">
+            <blockquote className="font-display italic text-forest-900 text-sm sm:text-base leading-relaxed">
               &ldquo;A notebook is a letter to your future self.&rdquo;
             </blockquote>
           </div>

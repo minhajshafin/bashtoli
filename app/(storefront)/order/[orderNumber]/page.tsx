@@ -140,12 +140,11 @@ export default async function OrderConfirmationPage({
           </div>
 
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl font-light text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic', lineHeight: 1.15 }}
+            className="text-2xl sm:text-3xl lg:text-[2.1rem] font-medium text-forest-900 tracking-tight font-display"
           >
             Thank you, {order.customer_name.split(' ')[0]}!
           </h1>
-          <p className="text-sm sm:text-base text-forest-600 font-light max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-forest-600 font-normal max-w-md mx-auto">
             Your stationery goods are being carefully prepared and packaged with care.
           </p>
         </div>
@@ -158,7 +157,7 @@ export default async function OrderConfirmationPage({
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600">
                 Order Number
               </p>
-              <p className="text-xl font-bold text-forest-900 font-mono mt-0.5">
+              <p className="text-base sm:text-lg font-bold text-forest-900 font-mono mt-0.5">
                 {order.order_number}
               </p>
             </div>
@@ -275,8 +274,7 @@ export default async function OrderConfirmationPage({
             <div className="flex justify-between items-baseline pt-1">
               <span className="text-sm sm:text-base font-bold text-forest-900">Total (COD)</span>
               <span
-                className="text-2xl sm:text-3xl font-extrabold text-forest-950"
-                style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+                className="text-xl sm:text-2xl font-bold text-forest-950 font-price"
               >
                 ৳{order.total.toLocaleString()}
               </span>

@@ -84,12 +84,12 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
   return (
     <div className="w-full">
       {/* Header Row: Upright High-Contrast Serif + Minimal Navigation Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
         <div>
-          <h2 className="font-display font-medium text-forest-950 leading-tight text-3xl sm:text-4xl md:text-5xl tracking-[-0.015em]">
+          <h2 className="font-display font-medium text-forest-950 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
             Curated Essentials
           </h2>
-          <p className="text-sm sm:text-base text-forest-800 font-normal mt-2 font-sans max-w-lg">
+          <p className="text-xs sm:text-[13px] lg:text-sm text-forest-800/90 font-normal mt-1.5 font-sans max-w-lg leading-relaxed">
             Handpicked fountain pen journals, fine writing instruments, and bamboo paper goods.
           </p>
         </div>

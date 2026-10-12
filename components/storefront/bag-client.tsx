@@ -84,8 +84,7 @@ export function BagClient() {
             Your Selection
           </p>
           <h1
-            className="text-3xl font-normal text-forest-900 tracking-tight sm:text-4xl"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+            className="text-2xl sm:text-[1.75rem] font-medium text-forest-900 tracking-tight font-display"
           >
             Shopping Bag
           </h1>
@@ -161,12 +160,11 @@ export function BagClient() {
             </svg>
           </div>
           <h2
-            className="mt-4 text-xl font-normal text-forest-900"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+            className="mt-4 text-lg sm:text-xl font-medium text-forest-900 font-display"
           >
             Your shopping bag is empty
           </h2>
-          <p className="mt-2 text-sm text-forest-600 max-w-sm">
+          <p className="mt-2 text-xs sm:text-[13px] text-forest-600 max-w-sm leading-relaxed">
             Looks like you haven&apos;t added anything to your bag yet. Head back to the store to explore our beautiful stationery items.
           </p>
           <Link

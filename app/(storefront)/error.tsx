@@ -18,12 +18,11 @@ export default function StorefrontError({
         </svg>
       </div>
       <h2
-        className="text-2xl font-normal text-forest-900 mb-2"
-        style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+        className="text-xl sm:text-2xl font-medium text-forest-900 mb-2 font-display"
       >
         Something went wrong
       </h2>
-      <p className="text-sm text-forest-600 max-w-md mb-6">
+      <p className="text-xs sm:text-[13px] text-forest-600 max-w-md mb-6">
         We encountered an unexpected error. Please try again or return to the homepage.
       </p>
       <div className="flex gap-3">

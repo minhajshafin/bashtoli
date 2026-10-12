@@ -28,12 +28,11 @@ export function AddressesDashboard({ initialAddresses }: AddressesDashboardProps
             Shipping Book
           </p>
           <h1
-            className="text-2xl sm:text-3xl font-normal text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+            className="text-xl sm:text-2xl font-medium text-forest-900 tracking-tight font-display"
           >
             Saved Addresses
           </h1>
-          <p className="text-xs sm:text-sm text-forest-600 mt-1 font-light">
+          <p className="text-xs text-forest-600 mt-1 font-normal">
             Manage your default and backup shipping options for faster checkout.
           </p>
         </div>

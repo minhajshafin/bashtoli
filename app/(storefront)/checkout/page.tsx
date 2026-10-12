@@ -56,12 +56,11 @@ export default async function CheckoutPage() {
       {/* Title Header */}
       <div className="mb-8">
         <h1
-          className="text-3xl font-extrabold tracking-tight text-forest-900"
-          style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+          className="text-2xl sm:text-[1.75rem] font-medium tracking-tight text-forest-900 font-display"
         >
           Checkout
         </h1>
-        <p className="mt-2 text-sm text-forest-600">
+        <p className="mt-1.5 text-xs sm:text-[13px] text-forest-600">
           Confirm your order details and delivery address below.
         </p>
       </div>

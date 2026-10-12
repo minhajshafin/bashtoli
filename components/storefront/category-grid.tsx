@@ -12,16 +12,16 @@ type CardSize = 'hero' | 'medium' | 'compact'
 
 const SIZE_CONFIGS: Record<CardSize, { padding: string; title: string }> = {
   hero: {
-    padding: 'p-4 sm:p-5 lg:p-6',
-    title: 'text-lg sm:text-xl lg:text-2xl font-medium tracking-[-0.015em]',
+    padding: 'p-3.5 sm:p-4 lg:p-5',
+    title: 'text-base sm:text-lg lg:text-[19px] font-medium tracking-[-0.015em]',
   },
   medium: {
-    padding: 'p-3.5 sm:p-4 lg:p-4.5',
-    title: 'text-base sm:text-lg lg:text-xl font-medium tracking-[-0.01em]',
+    padding: 'p-3 sm:p-3.5 lg:p-4',
+    title: 'text-sm sm:text-[15px] lg:text-base font-medium tracking-[-0.01em]',
   },
   compact: {
-    padding: 'p-3 sm:p-3.5 lg:p-4',
-    title: 'text-sm sm:text-base lg:text-lg font-medium tracking-[-0.01em]',
+    padding: 'p-2.5 sm:p-3 lg:p-3.5',
+    title: 'text-xs sm:text-[13px] lg:text-sm font-medium tracking-[-0.01em]',
   },
 }
 
@@ -151,10 +151,10 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
         {/* Section Heading — Compact Editorial Header with Inline Text Link */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 sm:mb-6 lg:mb-7 gap-4">
           <div className="max-w-2xl">
-            <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-3xl lg:text-4xl tracking-[-0.015em]">
+            <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
               Curated Collections
             </h2>
-            <p className="text-xs sm:text-sm text-forest-200/90 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
+            <p className="text-xs sm:text-[13px] lg:text-sm text-forest-200/85 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
               Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
             </p>
           </div>

@@ -25,12 +25,11 @@ export default function OrderLookupPage() {
 
         <div>
           <h1
-            className="text-2xl sm:text-3xl font-light text-forest-900"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+            className="text-xl sm:text-2xl font-medium text-forest-900 font-display"
           >
             Track Your Order
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-forest-600 leading-relaxed max-w-xs mx-auto font-light">
+          <p className="mt-1.5 text-xs sm:text-[13px] text-forest-600 leading-relaxed max-w-xs mx-auto font-normal">
             Enter your order reference number and phone number to review real-time status and delivery updates.
           </p>
         </div>

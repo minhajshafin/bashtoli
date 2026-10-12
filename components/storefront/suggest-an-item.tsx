@@ -54,7 +54,7 @@ export function SuggestAnItem() {
   }
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-950 bg-laid-paper-dark">
+    <section className="relative overflow-hidden py-10 sm:py-12 lg:py-14 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-950 bg-laid-paper-dark">
       {/* Minimalist Drifting Sumi-e Leaf */}
       <DriftingBambooLeaf
         theme="dark"
@@ -63,19 +63,19 @@ export function SuggestAnItem() {
         scale={0.9}
       />
 
-      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-start">
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
         {/* Left Column: High-Legibility Editorial Copy (Max-w-xl) */}
         <div className="lg:col-span-5 max-w-xl text-left">
           {/* Overline Kicker */}
-          <div className="flex items-center gap-2.5 mb-4">
-            <span className="h-px w-6 sm:w-8 bg-gold-500/70" />
-            <span className="text-xs uppercase tracking-[0.2em] font-sans font-semibold text-gold-400">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="h-px w-5 sm:w-6 bg-gold-500/70" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-gold-400">
               Customer Requests · Dhaka
             </span>
           </div>
 
           {/* High-Contrast Display Headline */}
-          <h2 className="font-display font-medium text-cream-50 text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.12] tracking-[-0.015em] text-balance mb-5">
+          <h2 className="font-display font-medium text-cream-50 text-[clamp(1.4rem,2.2vw,1.95rem)] leading-[1.15] tracking-[-0.015em] text-balance mb-3">
             Looking for something{' '}
             <em className="font-editorial italic font-normal text-gold-300">
               in particular?
@@ -83,13 +83,13 @@ export function SuggestAnItem() {
           </h2>
 
           {/* Crisp, Highly Readable Sans Body Text */}
-          <p className="font-sans text-[15px] sm:text-base lg:text-[17px] leading-[1.75] text-cream-100/95 font-normal text-pretty mb-8">
+          <p className="font-sans text-xs sm:text-[13px] leading-relaxed text-cream-100/90 font-normal text-pretty mb-4">
             Tell us which fountain pen, notebook, or specialty paper you&apos;re searching for. We read every note and stock our shelves around what our community asks for most.
           </p>
 
           {/* Reassuring Community Note */}
-          <div className="pt-6 border-t border-forest-800">
-            <p className="text-xs sm:text-[13px] font-sans text-cream-300/80 leading-relaxed">
+          <div className="pt-3.5 border-t border-forest-800">
+            <p className="text-[10px] sm:text-[11px] font-sans text-cream-300/75 leading-relaxed">
               No account needed. Your suggestions directly guide what we bring in on our next stocking run.
             </p>
           </div>
@@ -99,11 +99,11 @@ export function SuggestAnItem() {
         <div className="lg:col-span-7 flex justify-start lg:justify-end w-full">
           <div className="w-full max-w-xl">
             {submitted ? (
-              <div className="py-10 sm:py-14 text-left animate-fade-in border-l-2 border-gold-500 pl-6 sm:pl-8">
-                <h3 className="font-display text-2xl sm:text-3xl text-cream-50 font-medium mb-2.5">
+              <div className="py-6 sm:py-8 text-left animate-fade-in border-l-2 border-gold-500 pl-4 sm:pl-6">
+                <h3 className="font-display text-lg sm:text-xl text-cream-50 font-medium mb-1.5">
                   Thank you — we&apos;ve noted it down.
                 </h3>
-                <p className="font-sans text-base sm:text-[17px] text-cream-200 mb-6 leading-relaxed max-w-md">
+                <p className="font-sans text-xs text-cream-200 mb-4 leading-relaxed max-w-md">
                   Your suggestion has been added to our shop logbook for the next stocking trip.
                 </p>
                 <button
@@ -115,7 +115,7 @@ export function SuggestAnItem() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-4.5">
                 {/* Honeypot field for bot suppression */}
                 <input
                   type="text"
@@ -132,7 +132,7 @@ export function SuggestAnItem() {
                 <div className="relative group">
                   <label
                     htmlFor="suggestion-message"
-                    className="block text-xs uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-2"
+                    className="block text-[10px] sm:text-[11px] uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-1.5"
                   >
                     The item you&apos;d like us to carry <span className="text-gold-400">*</span>
                   </label>
@@ -143,9 +143,9 @@ export function SuggestAnItem() {
                     placeholder="e.g. Midori MD A5 Notebook, Pilot Iroshizuku ink, brass ruler…"
                     aria-label="What item would you like us to carry?"
                     required
-                    rows={3}
+                    rows={2}
                     disabled={isSubmitting}
-                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-base font-sans focus:outline-none transition-colors duration-200 resize-none py-2 px-0 leading-relaxed"
+                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-xs sm:text-[13px] font-sans focus:outline-none transition-colors duration-200 resize-none py-1.5 px-0 leading-relaxed"
                   />
                 </div>
 
@@ -153,7 +153,7 @@ export function SuggestAnItem() {
                 <div className="relative group">
                   <label
                     htmlFor="suggestion-name"
-                    className="block text-xs uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-2"
+                    className="block text-[10px] sm:text-[11px] uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-1.5"
                   >
                     Your name <span className="text-forest-300 font-normal lowercase tracking-normal">(optional)</span>
                   </label>
@@ -165,7 +165,7 @@ export function SuggestAnItem() {
                     placeholder="How should we know you?"
                     aria-label="Your name (optional)"
                     disabled={isSubmitting}
-                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-base font-sans focus:outline-none transition-colors duration-200 py-2 px-0"
+                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-xs sm:text-[13px] font-sans focus:outline-none transition-colors duration-200 py-1.5 px-0"
                   />
                 </div>
 
@@ -173,7 +173,7 @@ export function SuggestAnItem() {
                 <div className="relative group">
                   <label
                     htmlFor="suggestion-contact"
-                    className="block text-xs uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-2"
+                    className="block text-[10px] sm:text-[11px] uppercase tracking-[0.16em] font-sans font-semibold text-cream-200 mb-1.5"
                   >
                     Contact <span className="text-forest-300 font-normal lowercase tracking-normal">(email or phone)</span>
                   </label>
@@ -185,25 +185,25 @@ export function SuggestAnItem() {
                     placeholder="If you'd like us to notify you (optional)"
                     aria-label="Email or phone (optional)"
                     disabled={isSubmitting}
-                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-base font-sans focus:outline-none transition-colors duration-200 py-2 px-0"
+                    className="w-full bg-transparent border-b border-forest-700/80 group-hover:border-forest-600 focus:border-gold-400 text-cream-50 placeholder:text-forest-400/75 text-xs sm:text-[13px] font-sans focus:outline-none transition-colors duration-200 py-1.5 px-0"
                   />
                 </div>
 
                 {errorMessage && (
-                  <p className="text-xs sm:text-sm text-rose-200 py-3 px-4 bg-rose-950/60 border border-rose-800/80 rounded-xl font-sans">
+                  <p className="text-xs text-rose-200 py-2.5 px-3.5 bg-rose-950/60 border border-rose-800/80 rounded-xl font-sans">
                     {errorMessage}
                   </p>
                 )}
 
                 {/* Action Row: Left-Aligned Microcopy + Right-Aligned Submit Button */}
-                <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <span className="text-xs font-sans text-forest-300/80">
+                <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <span className="text-[11px] font-sans text-forest-300/80">
                     Directly reviewed by our shopkeeper.
                   </span>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full text-xs font-sans uppercase tracking-[0.18em] font-bold bg-gold-500 text-forest-950 hover:bg-gold-400 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group shadow-subtle shrink-0"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-[11px] font-sans uppercase tracking-[0.16em] font-bold bg-gold-500 text-forest-950 hover:bg-gold-400 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group shadow-subtle shrink-0"
                   >
                     {isSubmitting ? (
                       <span>Sending to shop…</span>

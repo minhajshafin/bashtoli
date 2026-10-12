@@ -101,8 +101,7 @@ export default async function WishlistPage() {
     <div className="space-y-6">
       <div>
         <h1
-          className="text-2xl font-black text-forest-900 tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+          className="text-xl sm:text-2xl font-medium text-forest-900 tracking-tight font-display"
         >
           My Wishlist
         </h1>

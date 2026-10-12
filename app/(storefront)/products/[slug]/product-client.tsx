@@ -148,25 +148,25 @@ export function ProductDetailClient({
 
           {/* Title */}
           <h1
-            className="text-2xl md:text-3xl lg:text-4xl font-normal text-forest-950 tracking-tight font-editorial"
+            className="text-xl sm:text-2xl lg:text-[1.75rem] font-medium text-forest-950 tracking-[-0.015em] font-display"
           >
             {product.name}
           </h1>
 
           {/* Price Display */}
           <div
-            className="text-2xl md:text-3xl font-semibold my-4 pb-4 border-b border-cream-200 text-forest-950 font-price"
+            className="text-xl sm:text-2xl font-semibold my-3 pb-3 border-b border-cream-200 text-forest-950 font-price"
           >
             {renderPrice()}
           </div>
 
           {/* Product Description */}
           {product.description ? (
-            <div className="text-forest-600 leading-relaxed mb-6 text-sm">
+            <div className="text-forest-700 leading-relaxed mb-5 text-xs sm:text-[13px] font-sans">
               <p>{product.description}</p>
             </div>
           ) : (
-            <p className="text-forest-400 text-xs italic mb-6">No description provided for this product.</p>
+            <p className="text-forest-400 text-xs italic mb-5">No description provided for this product.</p>
           )}
 
           {/* Variant Selector */}

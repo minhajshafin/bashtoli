@@ -15,21 +15,19 @@ export default function TermsOfServicePage() {
           Legal
         </p>
         <h1
-          className="text-3xl sm:text-4xl text-forest-950 font-normal tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+          className="text-2xl sm:text-[1.75rem] text-forest-950 font-medium tracking-tight font-display"
         >
           Terms of Service
         </h1>
-        <p className="text-xs text-forest-600 mt-2 font-light">
+        <p className="text-xs text-forest-600 mt-2 font-normal">
           Last updated: September 2026
         </p>
       </div>
 
-      <div className="prose prose-forest max-w-none space-y-6 text-sm text-forest-800 leading-relaxed font-light">
+      <div className="prose prose-forest max-w-none space-y-6 text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
         <section className="space-y-2">
           <h2
-            className="text-xl font-normal text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
           >
             1. Acceptance of Terms
           </h2>
@@ -40,8 +38,7 @@ export default function TermsOfServicePage() {
 
         <section className="space-y-2">
           <h2
-            className="text-xl font-normal text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
           >
             2. Orders & Pricing
           </h2>
@@ -57,8 +54,7 @@ export default function TermsOfServicePage() {
 
         <section className="space-y-2">
           <h2
-            className="text-xl font-normal text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
           >
             3. Delivery & Fulfillment
           </h2>
@@ -74,8 +70,7 @@ export default function TermsOfServicePage() {
 
         <section className="space-y-2">
           <h2
-            className="text-xl font-normal text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
           >
             4. Returns & Defective Items
           </h2>
@@ -86,8 +81,7 @@ export default function TermsOfServicePage() {
 
         <section className="space-y-2">
           <h2
-            className="text-xl font-normal text-forest-900 tracking-tight"
-            style={{ fontFamily: "'Fraunces', Georgia, serif" }}
+            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
           >
             5. Intellectual Property
           </h2>

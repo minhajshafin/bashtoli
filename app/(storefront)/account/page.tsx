@@ -81,12 +81,11 @@ export default async function AccountPage() {
           Account Overview
         </p>
         <h1
-          className="text-3xl sm:text-4xl text-forest-900 font-normal tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+          className="text-2xl sm:text-[1.75rem] text-forest-900 font-medium tracking-tight font-display"
         >
           Welcome, {displayName}
         </h1>
-        <p className="text-sm sm:text-base text-forest-600 mt-2 font-light">
+        <p className="text-xs sm:text-[13px] text-forest-600 mt-1.5 font-normal">
           Manage your orders, saved addresses, wishlist, and profile information.
         </p>
       </div>
@@ -118,8 +117,7 @@ export default async function AccountPage() {
       <div className="pt-4">
         <div className="flex items-center justify-between mb-4">
           <h2
-            className="text-xl sm:text-2xl font-normal text-forest-900"
-            style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+            className="text-lg sm:text-xl font-medium text-forest-900 font-display"
           >
             Recent Orders
           </h2>

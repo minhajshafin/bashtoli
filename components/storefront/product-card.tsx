@@ -200,14 +200,14 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
       </div>
 
       {/* Tactile Info Canvas */}
-      <Link href={`/products/${product.slug}`} className="p-3.5 sm:p-4 block flex-1 bg-cream-50">
+      <Link href={`/products/${product.slug}`} className="p-3 sm:p-3.5 block flex-1 bg-cream-50">
         <h3
-          className="font-display font-medium text-sm sm:text-[15px] lg:text-base text-forest-950 line-clamp-1 group-hover:text-gold-700 transition-colors mb-1"
+          className="font-display font-medium text-xs sm:text-[13px] lg:text-sm text-forest-950 line-clamp-1 group-hover:text-gold-700 transition-colors mb-0.5"
         >
           {product.name}
         </h3>
         <p
-          className="font-price text-xs sm:text-sm font-semibold text-forest-900 flex items-baseline gap-1"
+          className="font-price text-xs sm:text-[13px] font-semibold text-forest-900 flex items-baseline gap-1"
         >
           <span className="tabular-nums">৳{lowestPrice.toLocaleString()}</span>
           {activeVariants.length > 1 && (

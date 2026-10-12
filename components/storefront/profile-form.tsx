@@ -109,8 +109,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
         <div className="space-y-1 min-w-0">
           <div className="flex items-center gap-2.5">
             <h2
-              className="text-lg sm:text-xl font-normal text-forest-900 truncate"
-              style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+              className="text-base sm:text-lg font-medium text-forest-900 font-display truncate"
             >
               {profile?.full_name || 'My Profile'}
             </h2>
@@ -490,8 +489,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
               </div>
               <div className="space-y-1 min-w-0">
                 <h3
-                  className="text-lg sm:text-xl font-normal text-forest-900"
-                  style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+                  className="text-base sm:text-lg font-medium text-forest-900 font-display"
                 >
                   Delete Account Permanently?
                 </h3>

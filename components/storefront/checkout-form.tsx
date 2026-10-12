@@ -149,7 +149,7 @@ export function CheckoutForm({
     <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
       {/* Left side: Information Form */}
       <div className="lg:col-span-2 space-y-6 bg-cream-50 border border-forest-200 rounded-3xl p-6 md:p-8">
-        <h2 className="text-xl font-bold tracking-tight text-forest-900 border-b border-forest-200 pb-4">
+        <h2 className="text-lg sm:text-xl font-medium tracking-tight text-forest-950 font-display border-b border-forest-200 pb-3.5">
           Delivery Details
         </h2>
 

@@ -55,14 +55,14 @@
 }
 
 :root {
-  /* Fluid Typography Scale */
-  --text-hero: clamp(2.6rem, 5.2vw + 1rem, 5rem);
-  --text-display: clamp(1.9rem, 3.6vw + 0.5rem, 3.25rem);
-  --text-heading: clamp(1.35rem, 2vw + 0.4rem, 1.95rem);
-  --text-subheading: clamp(1.05rem, 1vw + 0.4rem, 1.3rem);
-  --text-body: clamp(0.92rem, 0.2vw + 0.86rem, 1.05rem);
-  --text-body-sm: clamp(0.8rem, 0.15vw + 0.76rem, 0.88rem);
-  --text-label: clamp(0.68rem, 0.12vw + 0.64rem, 0.76rem);
+  /* Fluid Typography Scale — Restrained Editorial /awwwards Scale */
+  --text-hero: clamp(1.75rem, 3.2vw, 2.75rem);
+  --text-display: clamp(1.5rem, 2.5vw, 2.25rem);
+  --text-heading: clamp(1.2rem, 1.6vw, 1.65rem);
+  --text-subheading: clamp(0.95rem, 0.8vw, 1.15rem);
+  --text-body: clamp(0.85rem, 0.2vw + 0.8rem, 0.95rem);
+  --text-body-sm: clamp(0.75rem, 0.15vw + 0.72rem, 0.82rem);
+  --text-label: clamp(0.65rem, 0.12vw + 0.6rem, 0.72rem);
 
   /* Hairline Borders */
   --border-hairline-dark: rgba(246, 240, 228, 0.10);

@@ -81,15 +81,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </div>
 
             <div className="flex flex-wrap items-baseline gap-2.5 sm:gap-3">
-              <h1 className="font-display font-medium text-cream-50 leading-tight text-3xl sm:text-4xl lg:text-[2.6rem] tracking-[-0.015em]">
+              <h1 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
                 {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
               </h1>
-              <span className="text-forest-300/80 text-sm sm:text-base font-sans font-normal">
+              <span className="text-forest-300/80 text-xs sm:text-[13px] font-sans font-normal">
                 &mdash; {totalCount} {totalCount === 1 ? 'curated piece' : 'curated pieces'}
               </span>
             </div>
 
-            <p className="text-forest-200/80 text-xs sm:text-sm mt-2 font-sans font-normal leading-relaxed max-w-xl">
+            <p className="text-forest-200/80 text-xs sm:text-[13px] mt-1.5 font-sans font-normal leading-relaxed max-w-xl">
               {activeCategory
                 ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and reflection.`
                 : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily use.`}
@@ -179,11 +179,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </svg>
             </div>
 
-            <h3 className="relative z-10 font-display font-medium text-2xl text-forest-950 mb-2">
+            <h3 className="relative z-10 font-display font-medium text-xl sm:text-[1.35rem] text-forest-950 mb-2">
               No items in this collection
             </h3>
 
-            <p className="relative z-10 text-sm text-forest-700 max-w-sm mb-6 leading-relaxed font-sans">
+            <p className="relative z-10 text-xs sm:text-[13px] text-forest-700 max-w-sm mb-6 leading-relaxed font-sans">
               We could not find any active stationery pieces matching your current filters.
             </p>
 

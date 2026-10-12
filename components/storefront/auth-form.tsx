@@ -44,12 +44,11 @@ export function AuthForm({ type }: AuthFormProps) {
           </svg>
         </div>
         <h2
-          className="text-2xl font-normal text-cream-100 tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+          className="text-xl sm:text-2xl font-medium text-cream-100 tracking-tight font-display"
         >
           Check Your Inbox
         </h2>
-        <p className="text-xs sm:text-sm text-forest-300 max-w-sm mx-auto leading-relaxed font-light">
+        <p className="text-xs text-forest-300 max-w-sm mx-auto leading-relaxed font-normal">
           We have sent a verification link to your email. Please confirm your account to start shopping and tracking your orders.
         </p>
         <div className="pt-2">
@@ -72,8 +71,7 @@ export function AuthForm({ type }: AuthFormProps) {
           {type === 'login' ? 'Member Sign In' : 'New Account'}
         </p>
         <h1
-          className="text-2xl sm:text-3xl text-cream-100 font-normal tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic', lineHeight: 1.15 }}
+          className="text-xl sm:text-2xl text-cream-100 font-medium tracking-tight font-display"
         >
           {type === 'login' ? 'Welcome Back' : 'Join Bashtoli'}
         </h1>

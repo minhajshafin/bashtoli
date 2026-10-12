@@ -57,12 +57,11 @@ export default async function ProfilePage() {
           Preferences
         </p>
         <h1
-          className="text-2xl sm:text-3xl text-forest-900 font-normal tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic' }}
+          className="text-xl sm:text-2xl text-forest-900 font-medium tracking-tight font-display"
         >
           Profile Settings
         </h1>
-        <p className="text-xs text-forest-600 mt-1 font-light">
+        <p className="text-xs text-forest-600 mt-1 font-normal">
           Manage your account information, default checkout details, and password.
         </p>
       </div>

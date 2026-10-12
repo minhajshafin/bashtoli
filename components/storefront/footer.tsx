@@ -8,7 +8,7 @@ import { DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h4 className="text-[11px] tracking-[0.2em] uppercase text-gold-400 font-semibold mb-5 font-sans">
+    <h4 className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-gold-400 font-semibold mb-3 font-sans">
       {children}
     </h4>
   )
@@ -24,7 +24,7 @@ function FooterColumn({
   return (
     <div>
       <ColumnHeading>{title}</ColumnHeading>
-      <ul className="space-y-3.5">
+      <ul className="space-y-2 sm:space-y-2.5">
         {links.map(({ label, href, external }) => (
           <li key={label}>
             {external || href.startsWith('http') ? (
@@ -32,14 +32,14 @@ function FooterColumn({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs sm:text-sm font-light text-forest-300 hover:text-gold-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                className="text-xs font-light text-forest-300 hover:text-gold-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
               >
                 {label}
               </a>
             ) : (
               <Link
                 href={href}
-                className="text-xs sm:text-sm font-light text-forest-300 hover:text-cream-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                className="text-xs font-light text-forest-300 hover:text-cream-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
               >
                 {label}
               </Link>
@@ -90,9 +90,9 @@ export function Footer() {
       {/* Minimalist Drifting Sumi-e Leaf */}
       <DriftingBambooLeaf theme="dark" className="left-1/3 bottom-4 hidden sm:block opacity-60" rotation={14} scale={0.9} />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-12 pb-8 md:pt-14 md:pb-8">
+      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-8 pb-5 md:pt-10 md:pb-6">
         {/* Mobile Brand Header */}
-        <div className="md:hidden flex items-center gap-4 mb-8 pb-6 border-b border-forest-800/60">
+        <div className="md:hidden flex items-center gap-3.5 mb-6 pb-4 border-b border-forest-800/60">
           <Link
             href="/"
             className="inline-block rounded-full focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 shrink-0"
@@ -101,44 +101,44 @@ export function Footer() {
             <Image
               src="/logo-round.svg"
               alt="Bashtoli Stationery"
-              width={64}
-              height={64}
+              width={48}
+              height={48}
               loading="lazy"
-              className="h-16 w-16 object-contain"
+              className="h-12 w-12 object-contain"
             />
           </Link>
           <div>
-            <span className="font-display text-lg font-medium text-cream-100 block">
+            <span className="font-display text-base font-medium text-cream-100 block">
               Bashtoli Stationery
             </span>
-            <span className="text-[11px] uppercase tracking-wider text-gold-400 font-sans block mt-0.5">
+            <span className="text-[10px] uppercase tracking-wider text-gold-400 font-sans block mt-0.5">
               Dhaka · Est. 2026
             </span>
           </div>
         </div>
 
         {/* Meta Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-10 gap-y-10 md:gap-y-12">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-8 gap-y-6 md:gap-y-8">
           {/* Brand Logo & Shop Bio (Desktop only) */}
-          <div className="hidden md:flex md:col-span-3 flex-col items-start text-left max-w-[28ch]">
+          <div className="hidden md:flex md:col-span-3 flex-col items-start text-left max-w-[26ch]">
             <Link
               href="/"
-              className="relative inline-block mb-5 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full"
+              className="relative inline-block mb-3.5 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full"
               aria-label="Bashtoli Home"
             >
               <Image
                 src="/logo-round.svg"
                 alt="Bashtoli Stationery"
-                width={88}
-                height={88}
+                width={64}
+                height={64}
                 loading="lazy"
-                className="h-20 w-20 lg:h-22 lg:w-22 object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-14 w-14 lg:h-16 lg:w-16 object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
-            <p className="text-xs font-light text-forest-300 leading-relaxed">
+            <p className="text-[11px] sm:text-xs font-light text-forest-300/85 leading-relaxed">
               Curated everyday stationery, artisanal paper goods, and timeless desk companions woven for thoughtful writers.
             </p>
-            <p className="text-[10px] tracking-widest uppercase text-gold-400 font-semibold mt-4">
+            <p className="text-[9px] sm:text-[10px] tracking-widest uppercase text-gold-400 font-semibold mt-3">
               Dhaka, Bangladesh · Est. 2026
             </p>
           </div>
@@ -160,28 +160,28 @@ export function Footer() {
           <div className="col-span-1 md:col-span-3">
             <ColumnHeading>Visit &amp; Contact</ColumnHeading>
             <address className="not-italic">
-              <p className="text-xs sm:text-[0.92rem] font-light text-forest-300 leading-relaxed">
+              <p className="text-xs font-light text-forest-300 leading-relaxed">
                 Shajadpur, Bashtola
                 <br />
                 Gulshan-1212, Dhaka
               </p>
-              <p className="text-xs text-forest-400 mt-2">Open 7 days · 7am – 11pm</p>
-              <div className="mt-2.5 space-y-1">
+              <p className="text-[11px] text-forest-400 mt-1.5">Open 7 days · 7am – 11pm</p>
+              <div className="mt-2 space-y-0.5">
                 <a
                   href="tel:01320903666"
-                  className="text-xs sm:text-sm text-gold-400 hover:text-gold-300 transition-colors duration-200 block font-price font-medium"
+                  className="text-xs text-gold-400 hover:text-gold-300 transition-colors duration-200 block font-price font-medium"
                 >
                   01320-903666
                 </a>
                 <a
                   href="mailto:bashtoli.computer@gmail.com"
-                  className="text-[11px] sm:text-xs text-gold-400 hover:text-gold-300 transition-colors duration-200 block truncate"
+                  className="text-[11px] text-gold-400 hover:text-gold-300 transition-colors duration-200 block truncate"
                 >
                   bashtoli.computer@gmail.com
                 </a>
               </div>
 
-              <div className="flex items-center gap-2 sm:gap-3 mt-4 sm:mt-5">
+              <div className="flex items-center gap-2 sm:gap-2.5 mt-3 sm:mt-3.5">
                 {socials.map(({ label, href, color, icon }) => (
                   <a
                     key={label}
@@ -190,9 +190,9 @@ export function Footer() {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className={`inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
+                    className={`inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
                   >
-                    <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                       {icon}
                     </svg>
                   </a>
@@ -204,12 +204,12 @@ export function Footer() {
           {/* Location / Boutique Showcase Column */}
           <div className="col-span-2 md:col-span-4">
             <ColumnHeading>Our Location</ColumnHeading>
-            <div className="rounded-2xl overflow-hidden border border-forest-800 bg-forest-900 shadow-md">
+            <div className="rounded-xl overflow-hidden border border-forest-800 bg-forest-900 shadow-md">
               <iframe
                 title="Bashtoli Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d852.1068079492925!2d90.42298250636408!3d23.79462584364245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c78c486ded25%3A0x63964f79a60c5a7!2z4Kas4Ka-4KaB4Ka24Kak4Kay4KeAIOCmleCmruCnjeCmquCmv-CmieCmn-CmvuCmsCAtIEJhc2h0b2xpIENvbXB1dGVy!5e0!3m2!1sen!2sbd!4v1788283104370!5m2!1sen!2sbd"
                 width="100%"
-                height="160"
+                height="115"
                 style={{ border: 0, display: 'block', filter: 'brightness(0.9) contrast(1.05)' }}
                 allowFullScreen={false}
                 loading="lazy"
@@ -220,7 +220,7 @@ export function Footer() {
               href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[11px] tracking-wider uppercase text-forest-400 mt-2.5 inline-flex items-center gap-1.5 hover:text-gold-400 transition-colors duration-200"
+              className="text-[10px] sm:text-[11px] tracking-wider uppercase text-forest-400 mt-2 inline-flex items-center gap-1.5 hover:text-gold-400 transition-colors duration-200"
             >
               <span>Get Directions</span>
               <span>&rarr;</span>
@@ -229,16 +229,16 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 pb-2 border-t border-forest-800/80 flex flex-col-reverse md:flex-row items-center justify-between gap-6 mt-10 md:mt-12">
-          <div className="flex flex-col sm:flex-row items-center gap-x-6 gap-y-3 text-center sm:text-left">
-            <p className="text-xs font-light text-forest-400">
+        <div className="pt-5 pb-1 border-t border-forest-800/80 flex flex-col-reverse md:flex-row items-center justify-between gap-4 mt-6 md:mt-8">
+          <div className="flex flex-col sm:flex-row items-center gap-x-5 gap-y-2 text-center sm:text-left">
+            <p className="text-[11px] font-light text-forest-400">
               &copy; {currentYear} Bashtoli Stationery. Handcrafted in Dhaka.
             </p>
-            <div className="flex items-center gap-5">
-              <Link href="/privacy" className="text-xs text-forest-400 hover:text-gold-400 transition-colors duration-200">
+            <div className="flex items-center gap-4">
+              <Link href="/privacy" className="text-[11px] text-forest-400 hover:text-gold-400 transition-colors duration-200">
                 Privacy
               </Link>
-              <Link href="/terms" className="text-xs text-forest-400 hover:text-gold-400 transition-colors duration-200">
+              <Link href="/terms" className="text-[11px] text-forest-400 hover:text-gold-400 transition-colors duration-200">
                 Terms
               </Link>
             </div>
@@ -247,11 +247,11 @@ export function Footer() {
           <button
             type="button"
             onClick={scrollToTop}
-            className="group inline-flex items-center gap-3 text-xs tracking-wider uppercase text-forest-400 hover:text-gold-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full cursor-pointer"
+            className="group inline-flex items-center gap-2.5 text-[11px] tracking-wider uppercase text-forest-400 hover:text-gold-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full cursor-pointer"
           >
             <span>Back to top</span>
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:-translate-y-0.5 transition-all duration-200">
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:-translate-y-0.5 transition-all duration-200">
+              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <line x1="12" y1="19" x2="12" y2="5" />
                 <polyline points="6 11 12 5 18 11" />
               </svg>
