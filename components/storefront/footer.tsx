@@ -8,7 +8,7 @@ import { DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h4 className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-gold-400 font-semibold mb-3 font-sans">
+    <h4 className="text-[10px] sm:text-[11px] tracking-[0.22em] uppercase text-gold-400 font-semibold mb-3.5 font-sans">
       {children}
     </h4>
   )
@@ -24,7 +24,7 @@ function FooterColumn({
   return (
     <div>
       <ColumnHeading>{title}</ColumnHeading>
-      <ul className="space-y-2 sm:space-y-2.5">
+      <ul className="space-y-2.5">
         {links.map(({ label, href, external }) => (
           <li key={label}>
             {external || href.startsWith('http') ? (
@@ -86,102 +86,49 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden" id="contact">
-      {/* Minimalist Drifting Sumi-e Leaf */}
-      <DriftingBambooLeaf theme="dark" className="left-1/3 bottom-4 hidden sm:block opacity-60" rotation={14} scale={0.9} />
+    <footer
+      className="relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden"
+      id="contact"
+    >
+      {/* Minimalist Drifting Sumi-e Leaf Motif */}
+      <DriftingBambooLeaf
+        theme="dark"
+        className="left-1/4 bottom-4 hidden sm:block opacity-45 pointer-events-none"
+        rotation={14}
+        scale={0.8}
+      />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-8 pb-5 md:pt-10 md:pb-6">
-        {/* Mobile Brand Header */}
-        <div className="md:hidden flex items-center gap-3.5 mb-6 pb-4 border-b border-forest-800/60">
-          <Link
-            href="/"
-            className="inline-block rounded-full focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 shrink-0"
-            aria-label="Bashtoli Home"
-          >
-            <Image
-              src="/logo-round.svg"
-              alt="Bashtoli Stationery"
-              width={48}
-              height={48}
-              loading="lazy"
-              className="h-12 w-12 object-contain"
-            />
-          </Link>
-          <div>
-            <span className="font-display text-base font-medium text-cream-100 block">
-              Bashtoli Stationery
-            </span>
-            <span className="text-[10px] uppercase tracking-wider text-gold-400 font-sans block mt-0.5">
-              Dhaka · Est. 2026
-            </span>
-          </div>
-        </div>
+      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-9 pb-6 sm:pt-11 sm:pb-7">
+        {/* Main Architectural Colophon Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-10">
+          {/* Col 1: Brand & Atelier Identity (Desktop & Mobile) */}
+          <div className="col-span-2 md:col-span-4 flex flex-col items-center sm:items-start">
+            <div className="flex flex-col items-center text-center">
+              <Link
+                href="/"
+                className="flex flex-col items-center text-center gap-3 mb-3 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xl"
+                aria-label="Bashtoli Home"
+              >
+                <Image
+                  src="/logo-round.svg"
+                  alt="Bashtoli Stationery"
+                  width={88}
+                  height={88}
+                  loading="lazy"
+                  className="h-16 w-16 sm:h-20 sm:w-20 lg:h-22 lg:w-22 object-contain transition-transform duration-300 group-hover:scale-105 shrink-0"
+                />
+                <div className="flex items-baseline justify-center gap-1.5 sm:gap-2 whitespace-nowrap">
+                  <span className="font-display text-base sm:text-lg font-medium text-cream-100 leading-tight">
+                    Bashtoli Stationery
+                  </span>
+                  <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-gold-400 font-sans">
+                    &middot; Dhaka &middot; Est. 2026
+                  </span>
+                </div>
+              </Link>
 
-        {/* Meta Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-6 sm:gap-x-8 gap-y-6 md:gap-y-8">
-          {/* Brand Logo & Shop Bio (Desktop only) */}
-          <div className="hidden md:flex md:col-span-3 flex-col items-start text-left max-w-[26ch]">
-            <Link
-              href="/"
-              className="relative inline-block mb-3.5 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full"
-              aria-label="Bashtoli Home"
-            >
-              <Image
-                src="/logo-round.svg"
-                alt="Bashtoli Stationery"
-                width={64}
-                height={64}
-                loading="lazy"
-                className="h-14 w-14 lg:h-16 lg:w-16 object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-            </Link>
-            <p className="text-[11px] sm:text-xs font-light text-forest-300/85 leading-relaxed">
-              Curated everyday stationery, artisanal paper goods, and timeless desk companions woven for thoughtful writers.
-            </p>
-            <p className="text-[9px] sm:text-[10px] tracking-widest uppercase text-gold-400 font-semibold mt-3">
-              Dhaka, Bangladesh · Est. 2026
-            </p>
-          </div>
-
-          {/* Info Column */}
-          <div className="col-span-1 md:col-span-2">
-            <FooterColumn
-              title="Collection"
-              links={[
-                { label: 'All Products', href: '/products' },
-                { label: 'Our Story', href: '/#aboutus' },
-                { label: 'Track My Order', href: '/order/lookup' },
-                { label: 'Shopping Bag', href: '/bag' },
-              ]}
-            />
-          </div>
-
-          {/* Customer Care Column */}
-          <div className="col-span-1 md:col-span-3">
-            <ColumnHeading>Visit &amp; Contact</ColumnHeading>
-            <address className="not-italic">
-              <p className="text-xs font-light text-forest-300 leading-relaxed">
-                Shajadpur, Bashtola
-                <br />
-                Gulshan-1212, Dhaka
-              </p>
-              <p className="text-[11px] text-forest-400 mt-1.5">Open 7 days · 7am – 11pm</p>
-              <div className="mt-2 space-y-0.5">
-                <a
-                  href="tel:01320903666"
-                  className="text-xs text-gold-400 hover:text-gold-300 transition-colors duration-200 block font-price font-medium"
-                >
-                  01320-903666
-                </a>
-                <a
-                  href="mailto:bashtoli.computer@gmail.com"
-                  className="text-[11px] text-gold-400 hover:text-gold-300 transition-colors duration-200 block truncate"
-                >
-                  bashtoli.computer@gmail.com
-                </a>
-              </div>
-
-              <div className="flex items-center gap-2 sm:gap-2.5 mt-3 sm:mt-3.5">
+              {/* Social Icons Row */}
+              <div className="flex items-center justify-center gap-2 mt-1 sm:mt-2">
                 {socials.map(({ label, href, color, icon }) => (
                   <a
                     key={label}
@@ -190,68 +137,105 @@ export function Footer() {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className={`inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-forest-800 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
+                    className={`inline-flex h-7.5 w-7.5 items-center justify-center rounded-full border border-forest-800 bg-forest-900/60 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
                   >
-                    <svg className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                       {icon}
                     </svg>
                   </a>
                 ))}
               </div>
-            </address>
+            </div>
           </div>
 
-          {/* Location / Boutique Showcase Column */}
+          {/* Col 2: Collection Navigation */}
+          <div className="col-span-1 md:col-span-2">
+            <FooterColumn
+              title="Collection"
+              links={[
+                { label: 'All Products', href: '/products' },
+                { label: 'Curated Essentials', href: '/products?sort=featured' },
+                { label: 'Our Story', href: '/#aboutus' },
+                { label: 'Customer Requests', href: '/#suggest' },
+              ]}
+            />
+          </div>
+
+          {/* Col 3: Customer Care & Services */}
+          <div className="col-span-1 md:col-span-2">
+            <FooterColumn
+              title="Customer Care"
+              links={[
+                { label: 'Track My Order', href: '/order/lookup' },
+                { label: 'Shopping Bag', href: '/bag' },
+                { label: 'Privacy Policy', href: '/privacy' },
+                { label: 'Terms of Service', href: '/terms' },
+              ]}
+            />
+          </div>
+
+          {/* Col 4: Atelier Location & Visit Card */}
           <div className="col-span-2 md:col-span-4">
-            <ColumnHeading>Our Location</ColumnHeading>
-            <div className="rounded-xl overflow-hidden border border-forest-800 bg-forest-900 shadow-md">
-              <iframe
-                title="Bashtoli Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d852.1068079492925!2d90.42298250636408!3d23.79462584364245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c78c486ded25%3A0x63964f79a60c5a7!2z4Kas4Ka-4KaB4Ka24Kak4Kay4KeAIOCmleCmruCnjeCmquCmv-CmieCmn-CmvuCmsCAtIEJhc2h0b2xpIENvbXB1dGVy!5e0!3m2!1sen!2sbd!4v1788283104370!5m2!1sen!2sbd"
-                width="100%"
-                height="115"
-                style={{ border: 0, display: 'block', filter: 'brightness(0.9) contrast(1.05)' }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
+            <ColumnHeading>Visit Our Shop</ColumnHeading>
+
+            <div className="rounded-2xl border border-forest-800/80 bg-forest-900/50 p-4 space-y-3">
+              <div>
+                <p className="text-xs text-cream-100 font-medium">
+                  Shajadpur, Bashtola
+                </p>
+                <p className="text-xs text-forest-300 font-light mt-0.5">
+                  Gulshan-1212, Dhaka, Bangladesh
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-forest-800/70 text-xs">
+                <span className="text-forest-400 text-[11px]">Open 7 days &middot; 7am &ndash; 11pm</span>
+                <a
+                  href="tel:01320903666"
+                  className="text-gold-400 hover:text-gold-300 font-price font-medium text-xs transition-colors"
+                >
+                  01320-903666
+                </a>
+              </div>
+
+              <div className="pt-1">
+                <a
+                  href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors uppercase tracking-wider"
+                >
+                  <span>Open in Google Maps</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
             </div>
-            <a
-              href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] sm:text-[11px] tracking-wider uppercase text-forest-400 mt-2 inline-flex items-center gap-1.5 hover:text-gold-400 transition-colors duration-200"
-            >
-              <span>Get Directions</span>
-              <span>&rarr;</span>
-            </a>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-5 pb-1 border-t border-forest-800/80 flex flex-col-reverse md:flex-row items-center justify-between gap-4 mt-6 md:mt-8">
-          <div className="flex flex-col sm:flex-row items-center gap-x-5 gap-y-2 text-center sm:text-left">
-            <p className="text-[11px] font-light text-forest-400">
-              &copy; {currentYear} Bashtoli Stationery. Handcrafted in Dhaka.
-            </p>
-            <div className="flex items-center gap-4">
-              <Link href="/privacy" className="text-[11px] text-forest-400 hover:text-gold-400 transition-colors duration-200">
-                Privacy
-              </Link>
-              <Link href="/terms" className="text-[11px] text-forest-400 hover:text-gold-400 transition-colors duration-200">
-                Terms
-              </Link>
-            </div>
+        {/* Minimal Colophon Bottom Bar */}
+        <div className="pt-6 border-t border-forest-800/70 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 sm:mt-9 text-[11px] font-light text-forest-400">
+          <p>
+            &copy; {currentYear} Bashtoli Stationery. Handcrafted in Dhaka.
+          </p>
+
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:text-gold-400 transition-colors duration-200">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gold-400 transition-colors duration-200">
+              Terms
+            </Link>
           </div>
 
           <button
             type="button"
             onClick={scrollToTop}
-            className="group inline-flex items-center gap-2.5 text-[11px] tracking-wider uppercase text-forest-400 hover:text-gold-400 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-full cursor-pointer"
+            className="group inline-flex items-center gap-2 hover:text-gold-400 transition-colors duration-200 cursor-pointer"
           >
             <span>Back to top</span>
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:-translate-y-0.5 transition-all duration-200">
-              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 transition-colors">
+              <svg className="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <line x1="12" y1="19" x2="12" y2="5" />
                 <polyline points="6 11 12 5 18 11" />
               </svg>
