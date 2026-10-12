@@ -143,7 +143,7 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   const [cat1, cat2, cat3, cat4, cat5, cat6, cat7] = categories
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-900 bg-laid-paper-dark border-t border-forest-800/80">
+    <section className="relative overflow-hidden py-16 sm:py-20 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-900 bg-laid-paper-dark">
       {/* Minimalist Drifting Sumi-e Leaves Pair */}
       <DriftingLeavesPair theme="dark" className="left-8 sm:left-14 top-10 hidden sm:block opacity-75" />
 

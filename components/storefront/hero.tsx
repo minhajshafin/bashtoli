@@ -121,7 +121,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
 export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
   return (
-    <section className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark border-b border-forest-800/70">
+    <section className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark">
       {/* Blind-Debossed Pulp Watermark + Minimalist Drifting Leaf */}
       <BambooPaperWatermark theme="dark" className="-right-10 top-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96" />
       <DriftingBambooLeaf theme="dark" className="left-8 sm:left-16 bottom-8 hidden sm:block" rotation={24} scale={1.2} />

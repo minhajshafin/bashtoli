@@ -7,6 +7,7 @@ import { CategoryGrid } from '@/components/storefront/category-grid'
 import { AboutSection } from '@/components/storefront/about-section'
 import { SuggestAnItem } from '@/components/storefront/suggest-an-item'
 import { FeaturedProductsSkeleton } from '@/components/storefront/skeletons'
+import { WaveDivider } from '@/components/storefront/wave-divider'
 
 export const metadata = {
   title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
@@ -26,7 +27,8 @@ export const metadata = {
 
 /**
  * Storefront Homepage Route.
- * Full-bleed layout — sections own their own backgrounds and padding.
+ * Full-bleed layout — sections own their own backgrounds and padding,
+ * connected harmoniously by Direction 1: The Elevated "Sugeta" Layered Wave Dividers.
  */
 export default async function StorefrontHomePage() {
   const [heroSlides, featuredCategories] = await Promise.all([
@@ -36,21 +38,33 @@ export default async function StorefrontHomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* 1. Hero: Atelier Arrival */}
+      {/* 1. Hero: Welcome to Bashtoli */}
       <Hero slides={heroSlides} />
 
-      {/* 2. Featured Products: Curated Collection (Alabaster Paper) */}
+      {/* Wave 1: Hero (Forest) → Featured Products (Alabaster Cream) */}
+      <WaveDivider variant="hero-to-products" />
+
+      {/* 2. Featured Products: Curated Collection (Streams in behind Suspense) */}
       <Suspense fallback={<FeaturedProductsSkeleton />}>
         <FeaturedProducts />
       </Suspense>
 
-      {/* 3. Categories: Bento Grid (Atelier Moss) */}
+      {/* Wave 2: Featured Products (Alabaster Cream) → Categories (Forest Moss) */}
+      <WaveDivider variant="products-to-categories" />
+
+      {/* 3. Categories: Curated Collections Grid */}
       <CategoryGrid categories={featuredCategories} />
 
-      {/* 4. About: Atelier Heritage & Materiality (Alabaster Cotton) */}
+      {/* Wave 3: Categories (Forest Moss) → About Us (Alabaster Cream) */}
+      <WaveDivider variant="categories-to-about" />
+
+      {/* 4. About Us: Neighbourhood Heritage & Craft */}
       <AboutSection />
 
-      {/* 6. Suggest an item: Patron Collaboration Form (Deep Forest) */}
+      {/* Wave 4: About Us (Alabaster Cream) → Suggest an Item (Deep Forest) */}
+      <WaveDivider variant="about-to-suggest" />
+
+      {/* 5. Suggest an item: Community Suggestions */}
       <SuggestAnItem />
     </div>
   )

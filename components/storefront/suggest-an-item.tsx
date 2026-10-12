@@ -54,7 +54,7 @@ export function SuggestAnItem() {
   }
 
   return (
-    <section className="relative overflow-hidden py-18 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark border-t border-forest-800/80">
+    <section className="relative overflow-hidden py-18 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark">
       {/* Minimalist Drifting Sumi-e Leaf */}
       <DriftingBambooLeaf
         theme="dark"
