@@ -176,7 +176,6 @@ html {
 
 /* Traditional Laid Paper Materiality (Sugeta Bamboo Screen Wires) */
 .bg-laid-paper {
-  background-color: #f6f0e4;
   background-image: 
     repeating-linear-gradient(
       0deg,
@@ -193,7 +192,6 @@ html {
 }
 
 .bg-laid-paper-dark {
-  background-color: #0e1e17;
   background-image: 
     repeating-linear-gradient(
       0deg,
