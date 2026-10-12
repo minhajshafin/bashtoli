@@ -100,7 +100,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
                 alt={altText}
                 fill
                 loading={loading}
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 320px"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 360px"
                 className="object-cover transition-all duration-700 ease-out"
                 style={{
                   filter: isSoldOut ? 'grayscale(0.35) opacity(0.88)' : 'none',
@@ -115,7 +115,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
                   alt={secondaryAltText}
                   fill
                   loading="lazy"
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 320px"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 360px"
                   className="object-cover transition-all duration-700 ease-out"
                   style={{
                     opacity: hovered ? 1 : 0,
