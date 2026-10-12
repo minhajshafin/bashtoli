@@ -12,16 +12,16 @@ type CardSize = 'hero' | 'medium' | 'compact'
 
 const SIZE_CONFIGS: Record<CardSize, { padding: string; title: string }> = {
   hero: {
-    padding: 'p-5 sm:p-6 lg:p-7',
-    title: 'text-xl sm:text-2xl lg:text-[28px] font-medium tracking-[-0.015em]',
+    padding: 'p-4 sm:p-5 lg:p-6',
+    title: 'text-lg sm:text-xl lg:text-2xl font-medium tracking-[-0.015em]',
   },
   medium: {
-    padding: 'p-4 sm:p-5 lg:p-6',
-    title: 'text-lg sm:text-xl lg:text-2xl font-medium tracking-[-0.01em]',
+    padding: 'p-3.5 sm:p-4 lg:p-4.5',
+    title: 'text-base sm:text-lg lg:text-xl font-medium tracking-[-0.01em]',
   },
   compact: {
-    padding: 'p-4 sm:p-4.5 lg:p-5',
-    title: 'text-base sm:text-lg lg:text-xl font-medium tracking-[-0.01em]',
+    padding: 'p-3 sm:p-3.5 lg:p-4',
+    title: 'text-sm sm:text-base lg:text-lg font-medium tracking-[-0.01em]',
   },
 }
 
@@ -41,9 +41,9 @@ function CategoryCard({
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className={`group relative overflow-hidden cursor-pointer block w-full rounded-2xl sm:rounded-3xl border border-forest-800/70 hover:border-gold-500/60 focus-visible:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50 shadow-md hover:shadow-xl transition-all duration-500 ${className}`}
+      className={`group relative overflow-hidden cursor-pointer block w-full rounded-xl sm:rounded-2xl border border-forest-800/70 hover:border-gold-500/60 focus-visible:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50 shadow-md hover:shadow-xl transition-all duration-500 ${className}`}
       style={{
-        borderRadius: '24px',
+        borderRadius: '20px',
         ...style,
       }}
     >
@@ -124,8 +124,8 @@ function EmptySlotCard({
 }) {
   return (
     <div
-      style={{ borderRadius: '24px' }}
-      className={`w-full rounded-2xl sm:rounded-3xl border border-dashed border-forest-800/60 bg-forest-950/30 flex items-center justify-center p-5 text-center ${className}`}
+      style={{ borderRadius: '20px' }}
+      className={`w-full rounded-xl sm:rounded-2xl border border-dashed border-forest-800/60 bg-forest-950/30 flex items-center justify-center p-4 text-center ${className}`}
     >
       <span className="text-[10px] uppercase tracking-[0.2em] text-forest-400/70 font-sans font-medium">
         {label}
@@ -143,25 +143,25 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   const [cat1, cat2, cat3, cat4, cat5, cat6, cat7] = categories
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-900 bg-laid-paper-dark">
+    <section className="relative overflow-hidden py-8 sm:py-10 lg:py-12 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-900 bg-laid-paper-dark">
       {/* Minimalist Drifting Sumi-e Leaves Pair */}
-      <DriftingLeavesPair theme="dark" className="left-8 sm:left-14 top-10 hidden sm:block opacity-75" />
+      <DriftingLeavesPair theme="dark" className="left-8 sm:left-14 top-6 hidden sm:block opacity-75" />
 
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
-        {/* Section Heading — Editorial Header with Inline Text Link */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-14 gap-5">
+        {/* Section Heading — Compact Editorial Header with Inline Text Link */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 sm:mb-6 lg:mb-7 gap-4">
           <div className="max-w-2xl">
-            <h2 className="font-display font-medium text-cream-50 leading-tight text-3xl sm:text-4xl md:text-5xl tracking-[-0.015em]">
+            <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-3xl lg:text-4xl tracking-[-0.015em]">
               Curated Collections
             </h2>
-            <p className="text-sm sm:text-base text-forest-200/90 font-normal mt-2.5 leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-forest-200/90 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
               Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
             </p>
           </div>
 
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 self-start sm:self-end text-xs sm:text-[13px] uppercase tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-1"
+            className="inline-flex items-center gap-2 self-start sm:self-end text-xs sm:text-[13px] uppercase tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-0.5"
           >
             <span className="border-b border-gold-400/40 group-hover/link:border-gold-200 pb-0.5 transition-colors">
               Explore All Collections
@@ -172,52 +172,52 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
           </Link>
         </div>
 
-        {/* Desktop Wabi-Sabi Staggered 3-Column Masonry */}
-        <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
+        {/* Desktop Wabi-Sabi Staggered 3-Column Masonry (Calibrated to fit in a single viewport) */}
+        <div className="hidden md:grid md:grid-cols-3 gap-3.5 lg:gap-4.5 items-start">
           {/* Column 1 (Left): Tall Portrait (Hero) + Compact Landscape (Medium) */}
-          <div className="flex flex-col gap-4 lg:gap-5 w-full">
+          <div className="flex flex-col gap-3.5 lg:gap-4.5 w-full">
             {cat1 ? (
-              <CategoryCard category={cat1} size="hero" className="h-[380px] lg:h-[400px]" />
+              <CategoryCard category={cat1} size="hero" className="h-[250px] lg:h-[270px] xl:h-[285px]" />
             ) : (
-              <EmptySlotCard className="h-[380px] lg:h-[400px]" />
+              <EmptySlotCard className="h-[250px] lg:h-[270px] xl:h-[285px]" />
             )}
             {cat2 ? (
-              <CategoryCard category={cat2} size="medium" className="h-[210px] lg:h-[220px]" />
+              <CategoryCard category={cat2} size="medium" className="h-[145px] lg:h-[155px] xl:h-[165px]" />
             ) : (
-              <EmptySlotCard className="h-[210px] lg:h-[220px]" />
+              <EmptySlotCard className="h-[145px] lg:h-[155px] xl:h-[165px]" />
             )}
           </div>
 
           {/* Column 2 (Center): Medium Landscape + Tall Portrait (Hero) (Staggered Seams) */}
-          <div className="flex flex-col gap-4 lg:gap-5 w-full">
+          <div className="flex flex-col gap-3.5 lg:gap-4.5 w-full">
             {cat3 ? (
-              <CategoryCard category={cat3} size="medium" className="h-[230px] lg:h-[240px]" />
+              <CategoryCard category={cat3} size="medium" className="h-[155px] lg:h-[165px] xl:h-[175px]" />
             ) : (
-              <EmptySlotCard className="h-[230px] lg:h-[240px]" />
+              <EmptySlotCard className="h-[155px] lg:h-[165px] xl:h-[175px]" />
             )}
             {cat4 ? (
-              <CategoryCard category={cat4} size="hero" className="h-[360px] lg:h-[380px]" />
+              <CategoryCard category={cat4} size="hero" className="h-[240px] lg:h-[260px] xl:h-[275px]" />
             ) : (
-              <EmptySlotCard className="h-[360px] lg:h-[380px]" />
+              <EmptySlotCard className="h-[240px] lg:h-[260px] xl:h-[275px]" />
             )}
           </div>
 
           {/* Column 3 (Right): Three Artfully Stacked Compact/Medium Blocks */}
-          <div className="flex flex-col gap-4 lg:gap-5 w-full">
+          <div className="flex flex-col gap-3 lg:gap-3.5 w-full">
             {cat5 ? (
-              <CategoryCard category={cat5} size="compact" className="h-[185px] lg:h-[195px]" />
+              <CategoryCard category={cat5} size="compact" className="h-[125px] lg:h-[135px] xl:h-[142px]" />
             ) : (
-              <EmptySlotCard className="h-[185px] lg:h-[195px]" />
+              <EmptySlotCard className="h-[125px] lg:h-[135px] xl:h-[142px]" />
             )}
             {cat6 ? (
-              <CategoryCard category={cat6} size="compact" className="h-[185px] lg:h-[195px]" />
+              <CategoryCard category={cat6} size="compact" className="h-[125px] lg:h-[135px] xl:h-[142px]" />
             ) : (
-              <EmptySlotCard className="h-[185px] lg:h-[195px]" />
+              <EmptySlotCard className="h-[125px] lg:h-[135px] xl:h-[142px]" />
             )}
             {cat7 ? (
-              <CategoryCard category={cat7} size="medium" className="h-[205px] lg:h-[210px]" />
+              <CategoryCard category={cat7} size="medium" className="h-[135px] lg:h-[145px] xl:h-[154px]" />
             ) : (
-              <EmptySlotCard className="h-[205px] lg:h-[210px]" />
+              <EmptySlotCard className="h-[135px] lg:h-[145px] xl:h-[154px]" />
             )}
           </div>
         </div>
@@ -226,15 +226,15 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
         <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-3.5">
           {categories.map((cat, index) => {
             const mobileConfigs: { height: string; size: CardSize; span?: string }[] = [
-              { height: 'h-[230px]', size: 'medium' },
-              { height: 'h-[170px]', size: 'compact' },
-              { height: 'h-[170px]', size: 'compact' },
-              { height: 'h-[230px]', size: 'medium' },
-              { height: 'h-[180px]', size: 'compact' },
-              { height: 'h-[180px]', size: 'compact' },
-              { height: 'h-[190px]', size: 'medium', span: 'col-span-2' },
+              { height: 'h-[190px]', size: 'medium' },
+              { height: 'h-[150px]', size: 'compact' },
+              { height: 'h-[150px]', size: 'compact' },
+              { height: 'h-[190px]', size: 'medium' },
+              { height: 'h-[155px]', size: 'compact' },
+              { height: 'h-[155px]', size: 'compact' },
+              { height: 'h-[160px]', size: 'medium', span: 'col-span-2' },
             ]
-            const config = mobileConfigs[index] || { height: 'h-[180px]', size: 'compact' }
+            const config = mobileConfigs[index] || { height: 'h-[160px]', size: 'compact' }
 
             return (
               <CategoryCard

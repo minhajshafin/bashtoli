@@ -139,7 +139,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
 
       {/* Infinite Scroll Viewport with Narrow, Refined Edge Scrims */}
       <div
-        className="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-10 px-4 sm:px-6 lg:px-8 xl:px-10"
+        className="relative overflow-hidden -mx-6 sm:-mx-10 md:-mx-14 lg:-mx-20 xl:-mx-24 2xl:-mx-28 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

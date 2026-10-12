@@ -54,7 +54,7 @@ export function SuggestAnItem() {
   }
 
   return (
-    <section className="relative overflow-hidden py-18 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark">
+    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-950 bg-laid-paper-dark">
       {/* Minimalist Drifting Sumi-e Leaf */}
       <DriftingBambooLeaf
         theme="dark"
@@ -63,7 +63,7 @@ export function SuggestAnItem() {
         scale={0.9}
       />
 
-      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-24 items-start">
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-start">
         {/* Left Column: High-Legibility Editorial Copy (Max-w-xl) */}
         <div className="lg:col-span-5 max-w-xl text-left">
           {/* Overline Kicker */}

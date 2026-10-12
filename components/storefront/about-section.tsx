@@ -10,7 +10,7 @@ export function AboutSection() {
   return (
     <section
       id="aboutus"
-      className="relative overflow-hidden py-18 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 xl:px-10 bg-cream-100 bg-laid-paper scroll-mt-24"
+      className="relative overflow-hidden py-18 sm:py-24 lg:py-28 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-100 bg-laid-paper scroll-mt-24"
     >
       {/* Blind-Debossed Pulp Watermark + Minimalist Drifting Sumi-e Leaf */}
       <BambooPaperWatermark
