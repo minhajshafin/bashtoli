@@ -37,11 +37,11 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
       <button
         id="storefront-mobile-nav-toggle"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center p-2 rounded-xl text-gold-400 hover:text-gold-300 transition-colors cursor-pointer"
+        className="inline-flex items-center justify-center w-8.5 h-8.5 rounded-lg text-gold-400 hover:text-gold-300 hover:bg-forest-800/40 transition-colors cursor-pointer active:scale-95"
         aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
       >
-        <svg className="h-6 w-6 stroke-[1.75]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="h-5 w-5 stroke-[1.75]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           {isOpen ? (
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           ) : (
@@ -86,7 +86,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
             </div>
 
             {/* Navigation Links */}
-            <nav className="flex-1 py-6 space-y-1" aria-label="Mobile Navigation">
+            <nav className="flex-1 py-5 space-y-1" aria-label="Mobile Navigation">
               {[
                 { label: 'Home', href: '/' },
                 { label: 'Shop All Products', href: '/products' },
@@ -98,7 +98,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="block py-3 px-3.5 rounded-xl text-sm font-medium text-cream-100 hover:text-gold-400 hover:bg-forest-800/60 transition-all"
+                  className="block py-2.5 px-3.5 rounded-xl text-xs uppercase tracking-[0.14em] font-medium text-cream-100/90 hover:text-gold-400 hover:bg-forest-800/50 transition-all"
                 >
                   {item.label}
                 </Link>
@@ -110,21 +110,21 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               {isLoggedIn ? (
                 <>
                   <div className="px-3">
-                    <p className="text-[10px] text-forest-400 font-bold uppercase tracking-wider">Signed in as</p>
+                    <p className="text-[9px] text-forest-400/80 font-semibold uppercase tracking-[0.16em]">Signed in as</p>
                     <p className="text-xs font-semibold text-cream-100 truncate mt-0.5">
                       {fullName || 'Customer'}
                     </p>
                   </div>
                   <Link
                     href="/account"
-                    className="block text-center py-2.5 rounded-xl border border-forest-700 bg-forest-800/50 text-xs font-bold uppercase tracking-wider text-gold-400 hover:bg-forest-800 transition-colors"
+                    className="block text-center py-2.5 rounded-xl border border-forest-700/80 bg-forest-800/40 text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-400 hover:bg-forest-800 transition-colors"
                   >
                     Manage Account
                   </Link>
                   <form action={logoutAction} className="w-full">
                     <button
                       type="submit"
-                      className="w-full text-center py-2.5 rounded-xl bg-terracotta-500/20 text-xs font-bold uppercase tracking-wider text-terracotta-400 hover:bg-terracotta-500/30 transition-colors cursor-pointer"
+                      className="w-full text-center py-2.5 rounded-xl bg-terracotta-500/20 text-[11px] font-semibold uppercase tracking-[0.14em] text-terracotta-400 hover:bg-terracotta-500/30 transition-colors cursor-pointer"
                     >
                       Sign Out
                     </button>
@@ -133,7 +133,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               ) : (
                 <Link
                   href="/login"
-                  className="block text-center py-3 rounded-full bg-gold-500 text-xs font-bold uppercase tracking-wider text-forest-950 hover:bg-gold-400 transition-colors shadow-sm"
+                  className="block text-center py-2.5 rounded-full bg-gold-500 text-[11px] font-semibold uppercase tracking-[0.14em] text-forest-950 hover:bg-gold-400 transition-colors shadow-xs"
                 >
                   Sign In / Register
                 </Link>

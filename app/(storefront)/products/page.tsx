@@ -105,8 +105,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       </div>
 
       {/* 2. Collection Filter Ribbon (Deep Forest Ribbon — flush below sticky navbar) */}
-      <div className="w-full bg-forest-950/95 bg-laid-paper-dark border-b border-forest-800/80 backdrop-blur-md sticky top-18 sm:top-20 z-30 shadow-sm">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3.5 sm:py-4">
+      <div className="w-full bg-forest-950/98 bg-laid-paper-dark border-b border-forest-800/80 backdrop-blur-md sticky top-14 sm:top-16 z-30 shadow-sm">
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 sm:py-3">
           <Suspense>
             <CategoryFilter categories={categories} activeCategorySlug={activeCategorySlug} />
           </Suspense>

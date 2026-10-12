@@ -21,11 +21,11 @@ export function CartIcon() {
     <Link
       href="/bag"
       onClick={handleClick}
-      className="relative flex items-center justify-center w-10 h-10 text-gold-400 hover:text-gold-300 transition-colors rounded-full active:scale-95 cursor-pointer"
+      className="relative flex items-center justify-center w-8.5 h-8.5 sm:w-9 sm:h-9 text-gold-400 hover:text-gold-300 hover:bg-forest-800/40 transition-colors rounded-full active:scale-95 cursor-pointer"
       aria-label="View Shopping Bag"
     >
       <svg
-        className="h-5 w-5"
+        className="h-4.5 w-4.5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -41,7 +41,7 @@ export function CartIcon() {
       {/* Cart quantity badge */}
       {isLoaded && itemCount > 0 && (
         <span
-          className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full text-[10px] font-bold text-forest-950 font-price shadow-sm animate-fade-in bg-gold-500"
+          className="absolute -top-0.5 -right-0.5 flex h-3.5 min-w-3.5 px-0.5 items-center justify-center rounded-full text-[9px] font-bold text-forest-950 font-price shadow-xs animate-fade-in bg-gold-500"
         >
           {itemCount}
         </span>
