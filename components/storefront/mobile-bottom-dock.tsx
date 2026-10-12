@@ -12,8 +12,13 @@ export function MobileBottomDock() {
   const wishlistContext = useWishlist()
   const wishlistCount = wishlistContext?.wishlistIds?.length ?? 0
 
-  // Do not render bottom dock on checkout or admin pages
-  if (pathname === '/checkout' || pathname?.startsWith('/checkout/') || pathname?.startsWith('/admin')) {
+  // Do not render bottom dock on checkout, admin, or individual product detail pages
+  if (
+    pathname === '/checkout' ||
+    pathname?.startsWith('/checkout/') ||
+    pathname?.startsWith('/admin') ||
+    (pathname?.startsWith('/products/') && pathname !== '/products')
+  ) {
     return null
   }
 

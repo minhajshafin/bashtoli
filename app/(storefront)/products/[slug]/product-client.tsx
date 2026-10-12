@@ -118,55 +118,48 @@ export function ProductDetailClient({
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 mt-4 sm:mt-6 pb-16 md:pb-8 flex-1 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 pb-6 md:pb-0 items-center">
         {/* Left - Image Gallery */}
-        <div>
+        <div className="flex justify-center md:justify-start">
           <ImageGallery images={images} fallbackName={product.name} />
         </div>
 
         {/* Right - Product details & purchasing options */}
-        <div className="flex flex-col">
+        <div className="flex flex-col max-w-xl">
           {/* Category & Featured tag */}
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-1.5">
             {product.categories && (
-              <span
-                className="text-[11px] uppercase tracking-widest font-semibold"
-                style={{ color: '#6a9e7c', fontFamily: "'Source Sans 3', system-ui, sans-serif" }}
-              >
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-forest-600/90">
                 {product.categories.name}
               </span>
             )}
             {product.featured && (
-              <span
-                className="rounded-full px-3 py-0.5 text-[10px] font-bold"
-                style={{ backgroundColor: '#c9a96e', color: '#1a3326' }}
-              >
+              <span className="rounded-full px-2 py-0.5 text-[9px] font-sans font-semibold uppercase tracking-[0.1em] bg-gold-400/20 text-gold-700 border border-gold-400/35">
                 Featured
               </span>
             )}
           </div>
 
           {/* Title */}
-          <h1
-            className="text-xl sm:text-2xl lg:text-[1.75rem] font-medium text-forest-950 tracking-[-0.015em] font-display"
-          >
+          <h1 className="text-2xl sm:text-[1.75rem] lg:text-3xl font-medium text-forest-950 tracking-[-0.015em] font-display leading-[1.15]">
             {product.name}
           </h1>
 
           {/* Price Display */}
-          <div
-            className="text-xl sm:text-2xl font-semibold my-3 pb-3 border-b border-cream-200 text-forest-950 font-price"
-          >
-            {renderPrice()}
+          <div className="text-xl sm:text-2xl font-semibold my-2 pb-2.5 border-b border-forest-200/70 text-forest-950 font-price flex items-baseline gap-2">
+            <span>{renderPrice()}</span>
+            <span className="text-[11px] font-sans font-normal text-forest-500 uppercase tracking-wider">
+              (incl. VAT)
+            </span>
           </div>
 
           {/* Product Description */}
           {product.description ? (
-            <div className="text-forest-700 leading-relaxed mb-5 text-xs sm:text-[13px] font-sans">
+            <div className="text-forest-700/90 leading-relaxed mb-3.5 text-xs sm:text-[13px] font-sans text-pretty">
               <p>{product.description}</p>
             </div>
           ) : (
-            <p className="text-forest-400 text-xs italic mb-5">No description provided for this product.</p>
+            <p className="text-forest-400 text-xs italic mb-3.5">No description provided for this product.</p>
           )}
 
           {/* Variant Selector */}
@@ -178,7 +171,7 @@ export function ProductDetailClient({
           />
 
           {/* Qty Picker & Add to Bag & Buy Now & Wishlist */}
-          <div ref={mainActionsRef} className="mt-6 flex flex-col gap-4">
+          <div ref={mainActionsRef} className="mt-3 flex flex-col gap-3">
             <div className="flex items-end gap-3">
               <div className="flex-1">
                 <AddToCartButton
@@ -201,61 +194,43 @@ export function ProductDetailClient({
             </div>
           </div>
 
-          {/* Delivery & Trust Info Badges */}
-          <div className="mt-8 pt-6 flex flex-col gap-3 border-t border-cream-200">
-            {[
-              {
-                path: 'M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 1-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12',
-                text: 'Home delivery all across Bangladesh',
-              },
-              {
-                path: 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99',
-                text: 'Free returns within 7 days for defective goods',
-              },
-              {
-                path: 'M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
-                text: 'Hand-tested and inspected by the Bashtoli team',
-              },
-            ].map((item) => (
-              <div key={item.text} className="flex items-center gap-3">
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    flexShrink: 0,
-                    borderRadius: '10px',
-                    backgroundColor: '#ede3cf',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <svg width="16" height="16" fill="none" stroke="#3d6e54" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.path} />
-                  </svg>
-                </div>
-                <p style={{ fontSize: '0.8rem', color: '#3d6e54', fontFamily: "'Source Sans 3', system-ui, sans-serif" }}>
-                  {item.text}
-                </p>
-              </div>
-            ))}
+          {/* Minimal Shop Guarantees */}
+          <div className="mt-4 pt-3.5 border-t border-forest-200/60 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-sans text-forest-600/90">
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-forest-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              Cash on delivery nationwide
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-forest-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              24–48h delivery in Dhaka
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-forest-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              7-day exchange guarantee
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Mobile Sticky Bottom Purchase Bar */}
+      {/* Mobile Floating Frosted Glass Purchase Bar */}
       <div
-        className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-forest-900/95 backdrop-blur-md border-t border-forest-700 px-4 py-3 transition-transform duration-300 shadow-2xl ${
-          showStickyBar ? 'translate-y-0' : 'translate-y-full pointer-events-none'
+        style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
+        className={`md:hidden fixed inset-x-3 z-40 bg-forest-950/92 backdrop-blur-md border border-forest-800/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition-all duration-300 max-w-md mx-auto ${
+          showStickyBar ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0 pointer-events-none'
         }`}
-        style={{ paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 0px))' }}
       >
-        <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
+        <div className="flex items-center justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] text-gold-400 uppercase tracking-wider font-semibold truncate">
+            <p className="text-[10px] text-gold-400 uppercase tracking-wider font-semibold truncate font-mono">
               {variantName}
             </p>
-            <p className="text-sm sm:text-base font-bold text-cream-100 font-mono">
+            <p className="text-sm font-semibold text-cream-100 font-price">
               {renderPrice()}
             </p>
           </div>
@@ -265,9 +240,9 @@ export function ProductDetailClient({
               type="button"
               disabled={isSelectionComplete && selectedVariant?.stock_qty === 0}
               onClick={() => handleAddToCart(1)}
-              className="h-10 px-3.5 rounded-full bg-forest-700 text-cream-100 border border-forest-600 text-xs font-bold uppercase tracking-wider hover:bg-forest-600 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
+              className="h-9 px-3 rounded-xl bg-forest-900 text-cream-100 border border-forest-700 text-[11px] font-sans font-medium tracking-wider uppercase hover:bg-forest-800 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
               </svg>
               <span>Add</span>
@@ -277,9 +252,9 @@ export function ProductDetailClient({
               type="button"
               disabled={isSelectionComplete && selectedVariant?.stock_qty === 0}
               onClick={() => handleBuyNow(1)}
-              className="h-10 px-5 rounded-full bg-gold-500 text-forest-900 text-xs font-bold uppercase tracking-wider hover:bg-gold-400 active:scale-95 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
+              className="h-9 px-3.5 rounded-xl bg-gold-500 text-forest-950 text-[11px] font-sans font-bold tracking-wider uppercase hover:bg-gold-400 active:scale-95 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 text-forest-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>Buy Now</span>

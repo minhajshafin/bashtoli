@@ -1,11 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { CheckoutForm } from '@/components/storefront/checkout-form'
+import { CheckoutSteps } from '@/components/storefront/checkout-steps'
+import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 import type { Database } from '@/lib/supabase/database.types'
+import Link from 'next/link'
 import React from 'react'
 
 export const metadata = {
-  title: 'Checkout | Bashtoli Storefront',
-  description: 'Provide your shipping info and complete your order with Cash on Delivery.',
+  title: 'Checkout | Bashtoli Stationery',
+  description: 'Provide your delivery info and complete your order with Cash on Delivery.',
 }
 
 export const instant = false
@@ -13,6 +16,7 @@ export const instant = false
 /**
  * Checkout page route.
  * Server component loading user profile data and saved addresses to pre-fill the form.
+ * Harmonized with the rest of the storefront (laid-paper canvas, displays, and cards).
  */
 export default async function CheckoutPage() {
   const supabase = await createClient()
@@ -52,28 +56,41 @@ export default async function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 min-h-[calc(100dvh-4rem)]">
-      {/* Title Header */}
-      <div className="mb-8">
-        <h1
-          className="text-2xl sm:text-[1.75rem] font-medium tracking-tight text-forest-900 font-display"
-        >
-          Checkout
-        </h1>
-        <p className="mt-1.5 text-xs sm:text-[13px] text-forest-600">
-          Confirm your order details and delivery address below.
-        </p>
-      </div>
+    <div className="relative min-h-[calc(100dvh-5rem)] bg-cream-50 text-forest-900 overflow-hidden">
+      <CheckoutBackgroundArt />
 
-      {/* Interactive Form Component */}
-      <CheckoutForm
-        savedAddresses={savedAddresses}
-        userEmail={user?.email || null}
-        userFullName={userFullName}
-        userPhone={userPhone}
-        userAddress={userAddress}
-      />
+      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8 lg:py-10 flex flex-col justify-start">
+        {/* 3-Step Visual Progress Track */}
+        <CheckoutSteps currentStep={2} />
+
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b border-forest-200/80 gap-3">
+          <div>
+            <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
+              Step 2 · Cash on Delivery
+            </p>
+            <h1 className="text-2xl sm:text-3xl lg:text-[2rem] font-medium text-forest-950 tracking-[-0.02em] font-display">
+              Delivery Details
+            </h1>
+          </div>
+
+          <Link
+            href="/bag"
+            className="self-start sm:self-auto text-xs font-sans font-medium uppercase tracking-[0.14em] text-forest-500 hover:text-forest-900 transition-colors cursor-pointer"
+          >
+            ← Return to Shopping Bag
+          </Link>
+        </div>
+
+        {/* Interactive Form Component */}
+        <CheckoutForm
+          savedAddresses={savedAddresses}
+          userEmail={user?.email || null}
+          userFullName={userFullName}
+          userPhone={userPhone}
+          userAddress={userAddress}
+        />
+      </div>
     </div>
   )
 }
-

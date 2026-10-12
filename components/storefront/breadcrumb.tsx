@@ -11,22 +11,22 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ category, productName }: BreadcrumbProps) {
   return (
-    <nav className="flex items-center space-x-2 text-xs md:text-sm font-medium text-forest-600 py-4 mb-2">
+    <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-[11px] sm:text-xs font-sans uppercase tracking-[0.14em] text-forest-600/80 py-3 sm:py-4 mb-1">
       {/* Home */}
       <Link
         href="/products"
-        className="hover:text-gold-500 transition-colors"
+        className="hover:text-gold-600 transition-colors cursor-pointer"
       >
         Shop
       </Link>
 
       {/* Separator */}
       <svg
-        className="h-4 w-4 shrink-0 text-forest-300"
+        className="h-3 w-3 shrink-0 text-gold-500/60"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        strokeWidth="2.5"
+        strokeWidth="2"
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
       </svg>
@@ -36,17 +36,17 @@ export function Breadcrumb({ category, productName }: BreadcrumbProps) {
         <>
           <Link
             href={`/products?category=${category.slug}`}
-            className="hover:text-gold-500 transition-colors whitespace-nowrap"
+            className="hover:text-gold-600 transition-colors whitespace-nowrap cursor-pointer"
           >
             {category.name}
           </Link>
           {/* Separator */}
           <svg
-            className="h-4 w-4 shrink-0 text-forest-300"
+            className="h-3 w-3 shrink-0 text-gold-500/60"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            strokeWidth="2.5"
+            strokeWidth="2"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -54,7 +54,7 @@ export function Breadcrumb({ category, productName }: BreadcrumbProps) {
       ) : null}
 
       {/* Current Product */}
-      <span className="text-forest-900 font-semibold truncate" aria-current="page">
+      <span className="text-forest-950 font-medium normal-case tracking-normal truncate" aria-current="page">
         {productName}
       </span>
     </nav>

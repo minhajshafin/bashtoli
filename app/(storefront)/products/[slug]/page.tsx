@@ -1,10 +1,11 @@
 import { getProductDetail } from '@/lib/queries/product-detail'
 import { notFound } from 'next/navigation'
-import { Breadcrumb } from '@/components/storefront/breadcrumb'
+import Link from 'next/link'
 import { ProductDetailClient } from './product-client'
 import { createPublicClient } from '@/lib/supabase/server'
 import React from 'react'
 import { ProductJsonLd } from '@/components/storefront/json-ld'
+import { ProductBackgroundArt } from '@/components/storefront/product-background-art'
 
 interface ProductPageProps {
   params: Promise<{
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const primaryImage = data.images?.[0]
   const imageUrl = primaryImage?.url || `${baseUrl}/og-fallback.png`
   const title = `${data.product.name} | Bashtoli`
-  const description = data.product.description || 'Premium sustainable organic handicraft.'
+  const description = data.product.description || 'Quality handcrafted stationery and paper goods.'
 
   return {
     title,
@@ -87,22 +88,34 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] flex flex-col">
-      {/* JSON-LD Schema Structured Data */}
-      <ProductJsonLd
-        product={data.product}
-        images={data.images}
-        variants={data.variants}
-      />
+    <div className="relative w-full overflow-hidden bg-cream-50 bg-laid-paper">
+      {/* Edge-to-edge Handcrafted Botanical Background Art */}
+      <ProductBackgroundArt />
 
-      {/* Breadcrumbs */}
-      <Breadcrumb
-        category={data.product.categories}
-        productName={data.product.name}
-      />
+      <div className="relative z-10 mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-6 sm:pb-8 lg:min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center">
+        {/* JSON-LD Schema Structured Data */}
+        <ProductJsonLd
+          product={data.product}
+          images={data.images}
+          variants={data.variants}
+        />
 
-      {/* Main product view split */}
-      <ProductDetailClient detailData={data} />
+        {/* Back to shop navigation */}
+        <div className="mb-2 sm:mb-3">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 -ml-2.5 rounded-full text-xs font-sans font-medium text-forest-750 hover:text-forest-950 hover:bg-forest-900/5 transition-all group"
+          >
+            <svg className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            <span>Back to shop</span>
+          </Link>
+        </div>
+
+        {/* Main product view split */}
+        <ProductDetailClient detailData={data} />
+      </div>
     </div>
   )
 }
