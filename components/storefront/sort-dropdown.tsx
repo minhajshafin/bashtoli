@@ -5,7 +5,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const SORT_OPTIONS = [
   { value: 'new', label: 'New Arrivals First' },
-  { value: 'featured', label: 'Featured' },
+  { value: 'featured', label: 'Featured Selection' },
   { value: 'price-asc', label: 'Price: Low to High' },
   { value: 'price-desc', label: 'Price: High to Low' },
 ] as const
@@ -64,17 +64,9 @@ export function SortDropdown() {
     <div className="flex items-center gap-3">
       <span
         id="sort-label"
-        style={{
-          fontSize: '0.72rem',
-          color: '#a8c4b0',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          whiteSpace: 'nowrap',
-          fontWeight: 600,
-          fontFamily: "'Source Sans 3', system-ui, sans-serif",
-        }}
+        className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-forest-300/80 whitespace-nowrap"
       >
-        Sort
+        Sort by
       </span>
 
       <div ref={dropdownRef} className="relative">
@@ -85,12 +77,10 @@ export function SortDropdown() {
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-labelledby="sort-label"
-          className="flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200"
+          className="flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-sans font-medium transition-all duration-200 cursor-pointer bg-forest-900/90 text-cream-100 border border-forest-700/80 hover:border-gold-500/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-gold-400/40"
           style={{
-            backgroundColor: '#0f2318',
-            color: '#e2c99a',
-            border: isOpen ? '1px solid #c9a96e' : '1px solid #243d2e',
-            boxShadow: isOpen ? '0 0 16px rgba(201,169,110,0.15)' : 'none',
+            borderColor: isOpen ? 'rgba(196, 162, 101, 0.7)' : undefined,
+            boxShadow: isOpen ? '0 0 16px rgba(196, 162, 101, 0.15)' : undefined,
           }}
         >
           <span className="truncate">{activeOption.label}</span>
@@ -101,63 +91,44 @@ export function SortDropdown() {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth={2}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
 
-        {/* Custom Themed Options Menu */}
+        {/* Dropdown Menu */}
         {isOpen && (
           <div
             role="listbox"
             aria-labelledby="sort-label"
-            className="absolute right-0 top-[calc(100%+6px)] z-50 min-w-[200px] rounded-2xl p-1.5 shadow-2xl border transition-all animate-fade-in backdrop-blur-md"
-            style={{
-              backgroundColor: 'rgba(15, 35, 24, 0.96)',
-              borderColor: '#243d2e',
-              boxShadow: '0 16px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,169,110,0.1)',
-            }}
+            className="absolute right-0 mt-2 w-52 rounded-2xl bg-forest-950/95 backdrop-blur-md border border-gold-500/30 p-1.5 shadow-glass z-50 animate-fade-in"
           >
-            {SORT_OPTIONS.map(({ value, label }) => {
-              const isSelected = value === currentSort
-
+            {SORT_OPTIONS.map((opt) => {
+              const isSelected = opt.value === currentSort
               return (
                 <button
-                  key={value}
+                  key={opt.value}
                   type="button"
                   role="option"
                   aria-selected={isSelected}
-                  onClick={() => handleSelect(value)}
-                  className="flex items-center justify-between w-full px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all text-left"
-                  style={{
-                    backgroundColor: isSelected ? 'rgba(36, 61, 46, 0.9)' : 'transparent',
-                    color: isSelected ? '#c9a96e' : '#a8c4b0',
-                    border: isSelected ? '1px solid rgba(201, 169, 110, 0.35)' : '1px solid transparent',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.backgroundColor = 'rgba(26, 51, 38, 0.7)'
-                      e.currentTarget.style.color = '#e2c99a'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.backgroundColor = 'transparent'
-                      e.currentTarget.style.color = '#a8c4b0'
-                    }
-                  }}
+                  onClick={() => handleSelect(opt.value)}
+                  className={`flex items-center justify-between w-full px-3 py-2 text-xs rounded-xl font-sans text-left transition-colors cursor-pointer ${
+                    isSelected
+                      ? 'bg-gold-500 text-forest-950 font-semibold'
+                      : 'text-cream-200 hover:bg-forest-800/80 hover:text-gold-300'
+                  }`}
                 >
-                  <span>{label}</span>
+                  <span>{opt.label}</span>
                   {isSelected && (
                     <svg
-                      className="w-3.5 h-3.5 text-gold-400 shrink-0 ml-2"
+                      className="w-3.5 h-3.5 shrink-0"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      strokeWidth="2.5"
+                      strokeWidth={2.5}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </button>

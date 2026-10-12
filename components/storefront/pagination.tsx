@@ -29,26 +29,26 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
   }
 
   return (
-    <nav className="flex items-center justify-center gap-2 py-8" aria-label="Pagination">
-      {/* Previous button */}
+    <nav className="flex items-center justify-center gap-2 py-8 select-none" aria-label="Pagination">
+      {/* Previous page button */}
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-200 bg-cream-50 text-forest-600 transition-all hover:bg-cream-200 hover:text-forest-900 disabled:pointer-events-none disabled:opacity-50"
+        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-900/10 bg-cream-50 text-forest-700 transition-all hover:bg-cream-100 hover:border-gold-500/40 hover:text-forest-950 disabled:pointer-events-none disabled:opacity-40 cursor-pointer shadow-subtle active:scale-95"
         aria-label="Previous page"
       >
         <svg
-          className="h-5 w-5"
+          className="h-4 w-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth={2}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
 
-      {/* Page buttons */}
+      {/* Numbered page buttons */}
       <div className="flex items-center gap-1.5">
         {pages.map((page) => {
           const isActive = page === currentPage
@@ -57,10 +57,10 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
               key={page}
               onClick={() => handlePageChange(page)}
               aria-current={isActive ? 'page' : undefined}
-              className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-medium transition-all ${
+              className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-sans transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-gold-500 text-forest-800 shadow-md shadow-gold-500/20 font-bold'
-                  : 'border border-forest-200 bg-cream-50 text-forest-600 hover:bg-cream-200 hover:text-forest-900'
+                  ? 'bg-gold-500 text-forest-950 font-bold shadow-xs border border-gold-400/60'
+                  : 'border border-forest-900/10 bg-cream-50 text-forest-800 hover:bg-cream-100 hover:border-gold-500/40 hover:text-forest-950 shadow-subtle'
               }`}
             >
               {page}
@@ -69,19 +69,19 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
         })}
       </div>
 
-      {/* Next button */}
+      {/* Next page button */}
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-200 bg-cream-50 text-forest-600 transition-all hover:bg-cream-200 hover:text-forest-900 disabled:pointer-events-none disabled:opacity-50"
+        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-900/10 bg-cream-50 text-forest-700 transition-all hover:bg-cream-100 hover:border-gold-500/40 hover:text-forest-950 disabled:pointer-events-none disabled:opacity-40 cursor-pointer shadow-subtle active:scale-95"
         aria-label="Next page"
       >
         <svg
-          className="h-5 w-5"
+          className="h-4 w-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth={2}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
@@ -89,4 +89,3 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
     </nav>
   )
 }
-
