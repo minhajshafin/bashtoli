@@ -40,11 +40,6 @@ export default function AuthLayout({
           <div className="lg:col-span-5 flex flex-col items-center justify-center text-center py-6 lg:py-12">
             <Link href="/" aria-label="Bashtoli Home" className="group block focus:outline-none">
               <div className="relative flex items-center justify-center">
-                {/* Soft ambient back-glow */}
-                <div
-                  className="absolute inset-0 rounded-full blur-2xl opacity-25 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
-                  style={{ background: 'radial-gradient(circle, #c9a96e 0%, rgba(36,61,46,0.4) 70%)' }}
-                />
                 <Image
                   src="/logo-round.svg"
                   alt="Bashtoli Stationery"

@@ -9,6 +9,7 @@ import { WishlistProvider } from '@/lib/wishlist/wishlist-context'
 import { NavHeader } from '@/components/storefront/nav-header'
 import { CartDrawer } from '@/components/storefront/cart-drawer'
 import { MobileBottomDock } from '@/components/storefront/mobile-bottom-dock'
+import { RouteProgressBar } from '@/components/storefront/route-progress-bar'
 
 export const metadata: Metadata = {
   title: {
@@ -107,6 +108,7 @@ export default function StorefrontLayout({
   return (
     <ToastProvider>
       <ConfirmDialogProvider>
+        <RouteProgressBar />
         <Suspense fallback={<StorefrontLayoutFallback>{children}</StorefrontLayoutFallback>}>
           <AuthAwareShell>{children}</AuthAwareShell>
         </Suspense>

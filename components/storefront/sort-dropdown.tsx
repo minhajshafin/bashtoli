@@ -80,7 +80,6 @@ export function SortDropdown() {
           className="flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-sans font-medium transition-all duration-200 cursor-pointer bg-forest-900/90 text-cream-100 border border-forest-700/80 hover:border-gold-500/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-gold-400/40"
           style={{
             borderColor: isOpen ? 'rgba(196, 162, 101, 0.7)' : undefined,
-            boxShadow: isOpen ? '0 0 16px rgba(196, 162, 101, 0.15)' : undefined,
           }}
         >
           <span className="truncate">{activeOption.label}</span>

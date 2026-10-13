@@ -9,6 +9,7 @@ import { WishlistButton } from '@/components/storefront/wishlist-button'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 import { useCart } from '@/lib/cart/cart-context'
 import { useToast } from '@/components/ui/toast'
+import { startRouteProgress } from '@/components/storefront/route-progress-bar'
 
 interface ProductCardProps {
   product: ProductWithDetails
@@ -120,6 +121,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
     )
 
     setIsNavigating(true)
+    startRouteProgress()
     router.push('/checkout')
   }
 
