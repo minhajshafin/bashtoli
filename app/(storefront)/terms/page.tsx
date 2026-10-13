@@ -8,95 +8,186 @@ export const metadata: Metadata = {
 }
 
 export default function TermsOfServicePage() {
+  const sections = [
+    { id: 'acceptance', number: '01', title: 'Acceptance of Terms' },
+    { id: 'orders', number: '02', title: 'Orders & Pricing' },
+    { id: 'delivery', number: '03', title: 'Delivery & Fulfillment' },
+    { id: 'returns', number: '04', title: 'Returns & Replacements' },
+    { id: 'property', number: '05', title: 'Store Brand & Content' },
+  ]
+
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-      <div className="border-b border-forest-200 pb-6 mb-8">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-gold-500 font-bold mb-2">
-          Legal
-        </p>
-        <h1
-          className="text-2xl sm:text-[1.75rem] text-forest-950 font-medium tracking-tight font-display"
-        >
-          Terms of Service
-        </h1>
-        <p className="text-xs text-forest-600 mt-2 font-normal">
-          Last updated: September 2026
-        </p>
-      </div>
+    <main className="min-h-[calc(100dvh-5rem)] bg-cream-50 bg-laid-paper py-10 sm:py-16 px-4 sm:px-6 lg:px-8 selection:bg-gold-500/20 selection:text-forest-900">
+      <div className="max-w-5xl mx-auto">
+        {/* Header Banner */}
+        <div className="mb-10 sm:mb-14 border-b border-forest-200/80 pb-6 sm:pb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-900/5 border border-forest-200 text-[10px] font-bold uppercase tracking-[0.25em] text-forest-700 mb-3">
+              <span>Customer Care</span>
+              <span className="text-gold-600">·</span>
+              <span>Store Policies</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl text-forest-950 font-normal tracking-tight font-display">
+              Terms of Service
+            </h1>
+            <p className="mt-2 text-xs sm:text-[13px] text-forest-600 font-light">
+              Clear, transparent guidelines for purchasing stationary items and journals.
+            </p>
+          </div>
+          <div className="text-left sm:text-right">
+            <span className="inline-block text-[11px] font-mono text-forest-500 bg-cream-100/90 border border-forest-200/60 px-3 py-1 rounded-lg">
+              Updated · September 2026
+            </span>
+          </div>
+        </div>
 
-      <div className="prose prose-forest max-w-none space-y-6 text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
-        <section className="space-y-2">
-          <h2
-            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
-          >
-            1. Acceptance of Terms
-          </h2>
-          <p>
-            By accessing or ordering from বাঁশতলী (Bashtoli Stationery), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please refrain from using our website or placing orders.
-          </p>
-        </section>
+        {/* Editorial 2-Column Body */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Left Sticky Anchor Index & Policy Box */}
+          <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
+            <nav className="p-5 sm:p-6 rounded-2xl bg-cream-100/90 border border-forest-200/80 shadow-xs space-y-3" aria-label="Table of contents">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-forest-500 font-bold">
+                Table of Contents
+              </p>
+              <ul className="space-y-2 text-xs">
+                {sections.map((s) => (
+                  <li key={s.id}>
+                    <a
+                      href={`#${s.id}`}
+                      className="group flex items-center justify-between py-1 px-2 rounded-lg text-forest-700 hover:text-forest-950 hover:bg-forest-900/5 transition-all"
+                    >
+                      <span className="font-medium">{s.title}</span>
+                      <span className="font-mono text-[11px] text-gold-600 group-hover:translate-x-0.5 transition-transform">
+                        {s.number}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-        <section className="space-y-2">
-          <h2
-            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
-          >
-            2. Orders & Pricing
-          </h2>
-          <p>
-            All prices are listed in Bangladeshi Taka (৳ BDT) and are subject to availability.
-          </p>
-          <ul className="list-disc pl-5 space-y-1 text-forest-700">
-            <li><strong>Order Placement:</strong> When you place an order, you agree that your contact information and delivery address are accurate. Orders placed with invalid phone numbers may be canceled.</li>
-            <li><strong>Stock Verification:</strong> Prices and stock are authoritative at the moment of order processing. In the event of an inventory discrepancy, our staff will contact you before dispatch.</li>
-            <li><strong>Cancellations:</strong> Customers can cancel pending orders within 24 hours of placement directly through their order tracking page, provided the order has not already been packaged or dispatched.</li>
-          </ul>
-        </section>
+            {/* Reassurance Callout Card */}
+            <div className="p-5 rounded-2xl bg-forest-900 text-cream-100 border border-forest-800 shadow-sm space-y-2.5">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-gold-400 font-bold">
+                7-Day Replacement Promise
+              </p>
+              <p className="text-xs text-forest-300 font-light leading-relaxed">
+                If paper leaves arrive bent or pen nibs defective, notify us within 48 hours for a quick doorstep replacement.
+              </p>
+              <div className="pt-1 flex flex-col gap-1.5 text-xs">
+                <a
+                  href="mailto:contact@bashtoli.com"
+                  className="inline-flex items-center gap-1.5 font-medium text-gold-300 hover:text-gold-200 transition-colors"
+                >
+                  <span>✉</span> contact@bashtoli.com
+                </a>
+                <span className="text-[11px] text-forest-400">
+                  Dhaka, Bangladesh · Prompt customer support
+                </span>
+              </div>
+            </div>
 
-        <section className="space-y-2">
-          <h2
-            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
-          >
-            3. Delivery & Fulfillment
-          </h2>
-          <p>
-            We offer Cash on Delivery (COD) and store pickup across Bangladesh:
-          </p>
-          <ul className="list-disc pl-5 space-y-1 text-forest-700">
-            <li><strong>Inside Dhaka:</strong> Typical delivery timeframe is 24 to 48 hours from dispatch confirmation.</li>
-            <li><strong>Outside Dhaka:</strong> Deliveries are handled by partner courier networks and generally arrive within 3 to 5 business days.</li>
-            <li><strong>Delivery Fees:</strong> Standard shipping rates apply based on selected delivery zones and will be reflected during checkout.</li>
-          </ul>
-        </section>
+            <div>
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-forest-700 hover:text-forest-950 transition-colors py-2"
+              >
+                <span>&larr;</span> Return to Shop
+              </Link>
+            </div>
+          </aside>
 
-        <section className="space-y-2">
-          <h2
-            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
-          >
-            4. Returns & Defective Items
-          </h2>
-          <p>
-            We take pride in delivering curated, undamaged stationery. If your order arrives damaged, defective, or incorrect, please notify us within 48 hours of receipt with clear photographs via WhatsApp or email. We will arrange a replacement or refund promptly.
-          </p>
-        </section>
+          {/* Right Main Editorial Content Card */}
+          <div className="lg:col-span-8 p-6 sm:p-10 rounded-3xl bg-cream-100/90 border border-forest-200/80 shadow-xs space-y-10">
+            {/* Section 01 */}
+            <section id="acceptance" className="scroll-mt-28 space-y-3">
+              <div className="flex items-center gap-2.5">
+                <span className="font-mono text-xs font-bold text-gold-600">01</span>
+                <div className="h-px w-6 bg-forest-200" />
+                <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
+                  Acceptance of Terms
+                </h2>
+              </div>
+              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+                By browsing or ordering items from বাঁশতলী (Bashtoli Stationery), you agree to these standard store terms. If you do not agree with any part, please refrain from using the store or placing delivery orders.
+              </p>
+            </section>
 
-        <section className="space-y-2">
-          <h2
-            className="text-base sm:text-lg font-medium text-forest-900 tracking-tight font-display"
-          >
-            5. Intellectual Property
-          </h2>
-          <p>
-            All original photography, branding, logo assets, and custom text published on this website are the property of Bashtoli Stationery and may not be reproduced or distributed without explicit written permission.
-          </p>
-        </section>
+            {/* Section 02 */}
+            <section id="orders" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+              <div className="flex items-center gap-2.5">
+                <span className="font-mono text-xs font-bold text-gold-600">02</span>
+                <div className="h-px w-6 bg-forest-200" />
+                <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
+                  Orders & Pricing
+                </h2>
+              </div>
+              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+                All prices are stated clearly in Bangladeshi Taka (৳ BDT) and include applicable local taxes.
+              </p>
+              <div className="space-y-2.5 pt-1">
+                <div className="p-3.5 rounded-xl bg-cream-50/80 border border-forest-200/60 text-xs text-forest-800 space-y-1">
+                  <strong className="text-forest-950 block">Accuracy of Information:</strong>
+                  Orders require a valid mobile phone number and delivery address. Incomplete orders may be verified by our staff before parcel dispatch.
+                </div>
+                <div className="p-3.5 rounded-xl bg-cream-50/80 border border-forest-200/60 text-xs text-forest-800 space-y-1">
+                  <strong className="text-forest-950 block">Stock Verification:</strong>
+                  If an item goes out of stock prior to dispatch, we will contact you immediately to offer an alternative selection or prompt cancellation.
+                </div>
+                <div className="p-3.5 rounded-xl bg-cream-50/80 border border-forest-200/60 text-xs text-forest-800 space-y-1">
+                  <strong className="text-forest-950 block">Self-Service Cancellation:</strong>
+                  You may cancel any pending order directly from your order tracking page within 24 hours of placement prior to packing.
+                </div>
+              </div>
+            </section>
 
-        <div className="pt-6 border-t border-forest-200">
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-forest-800 hover:text-gold-600 transition-colors"
-          >
-            &larr; Return to shop
-          </Link>
+            {/* Section 03 */}
+            <section id="delivery" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+              <div className="flex items-center gap-2.5">
+                <span className="font-mono text-xs font-bold text-gold-600">03</span>
+                <div className="h-px w-6 bg-forest-200" />
+                <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
+                  Delivery & Fulfillment
+                </h2>
+              </div>
+              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+                We deliver nationwide across Bangladesh using trusted courier networks:
+              </p>
+              <ul className="space-y-2 text-xs sm:text-[13px] text-forest-700 pl-4 list-disc marker:text-gold-600">
+                <li><strong>Inside Dhaka (৳70):</strong> Typically delivered within 24 to 48 hours of dispatch.</li>
+                <li><strong>Outside Dhaka (৳120):</strong> Delivered within 3 to 5 business days across divisional and district hubs.</li>
+                <li><strong>Store Pickup (Free):</strong> Orders can be collected from our shop location in Dhaka at no shipping cost.</li>
+              </ul>
+            </section>
+
+            {/* Section 04 */}
+            <section id="returns" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+              <div className="flex items-center gap-2.5">
+                <span className="font-mono text-xs font-bold text-gold-600">04</span>
+                <div className="h-px w-6 bg-forest-200" />
+                <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
+                  Returns & Replacements
+                </h2>
+              </div>
+              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+                We inspect every notebook, pen, and desk accessory before packaging. If an item arrives physically damaged, torn, or non-functional, please send us photographs via WhatsApp within 48 hours of delivery. We will arrange a replacement or refund immediately.
+              </p>
+            </section>
+
+            {/* Section 05 */}
+            <section id="property" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+              <div className="flex items-center gap-2.5">
+                <span className="font-mono text-xs font-bold text-gold-600">05</span>
+                <div className="h-px w-6 bg-forest-200" />
+                <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
+                  Store Brand & Content
+                </h2>
+              </div>
+              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+                Original product photography, store copy, and branding marks belong to Bashtoli Stationery. Unauthorized reproduction or scraping for commercial resale is strictly prohibited.
+              </p>
+            </section>
+          </div>
         </div>
       </div>
     </main>

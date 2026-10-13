@@ -5,10 +5,10 @@ import React from 'react'
  * Renders handcrafted botanical bamboo artwork, archival laid-paper dot grid,
  * and warm ambient light matching the rest of the Bashtoli storefront.
  */
-export function CheckoutBackgroundArt() {
+export function CheckoutBackgroundArt({ className }: { className?: string } = {}) {
   return (
     <div
-      className="pointer-events-none absolute inset-0 overflow-hidden select-none z-0"
+      className={`pointer-events-none absolute inset-0 overflow-hidden select-none z-0 ${className || ''}`}
       aria-hidden="true"
     >
       {/* 1. Ambient Warm Laid-Paper Radial Light */}

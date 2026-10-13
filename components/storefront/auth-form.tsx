@@ -37,24 +37,22 @@ export function AuthForm({ type }: AuthFormProps) {
   // If user signed up successfully and needs email confirmation
   if (type === 'signup' && 'success' in state && state.success) {
     return (
-      <div className="w-full max-w-md bg-forest-900/90 border border-forest-700/80 rounded-3xl p-8 shadow-2xl backdrop-blur-md text-center space-y-5">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/20 text-gold-400 animate-pulse border border-gold-500/30">
-          <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-8 shadow-2xl text-center space-y-5 selection:bg-gold-500/20 selection:text-forest-900">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900/5 text-forest-800 border border-forest-200/80">
+          <svg className="h-7 w-7 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
-        <h2
-          className="text-xl sm:text-2xl font-medium text-cream-100 tracking-tight font-display"
-        >
+        <h2 className="text-xl sm:text-2xl font-medium text-forest-950 tracking-tight font-display">
           Check Your Inbox
         </h2>
-        <p className="text-xs text-forest-300 max-w-sm mx-auto leading-relaxed font-normal">
-          We have sent a verification link to your email. Please confirm your account to start shopping and tracking your orders.
+        <p className="text-xs text-forest-600 max-w-xs mx-auto leading-relaxed font-light">
+          We have sent a verification link to your email. Please confirm your account to start managing your orders and wishlist.
         </p>
         <div className="pt-2">
           <Link
             href="/login"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-gold-500 px-7 text-xs font-bold uppercase tracking-wider text-forest-950 shadow-md shadow-gold-500/20 hover:bg-gold-400 transition-all"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-forest-900 px-7 text-xs font-bold uppercase tracking-wider text-cream-100 shadow-sm hover:bg-forest-800 transition-all"
           >
             Go to Sign In
           </Link>
@@ -64,21 +62,19 @@ export function AuthForm({ type }: AuthFormProps) {
   }
 
   return (
-    <div className="w-full max-w-md bg-forest-900/90 border border-forest-700/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-md">
+    <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-6 sm:p-8 shadow-2xl selection:bg-gold-500/20 selection:text-forest-900">
       {/* Form Header */}
       <div className="mb-6">
-        <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold mb-1.5">
-          {type === 'login' ? 'Member Sign In' : 'New Account'}
+        <p className="text-[10px] uppercase tracking-[0.25em] text-forest-500 font-bold mb-1">
+          {type === 'login' ? 'Customer Sign In' : 'New Account'}
         </p>
-        <h1
-          className="text-xl sm:text-2xl text-cream-100 font-medium tracking-tight font-display"
-        >
-          {type === 'login' ? 'Welcome Back' : 'Join Bashtoli'}
+        <h1 className="text-xl sm:text-2xl text-forest-950 font-medium tracking-tight font-display">
+          {type === 'login' ? 'Welcome Back' : 'Create Account'}
         </h1>
-        <p className="mt-1.5 text-xs text-forest-400 font-light leading-relaxed">
+        <p className="mt-1.5 text-xs text-forest-600 font-light leading-relaxed">
           {type === 'login'
-            ? 'Sign in to access your orders, wishlist, and saved details.'
-            : 'Create your account to save your wishlist and track deliveries.'}
+            ? 'Sign in to access your saved addresses, past orders, and wishlist.'
+            : 'Join Bashtoli to save your delivery addresses and track orders.'}
         </p>
       </div>
 
@@ -92,9 +88,9 @@ export function AuthForm({ type }: AuthFormProps) {
         {state.error && (
           <div
             role="alert"
-            className="flex items-start gap-2.5 rounded-2xl bg-rose-950/50 border border-rose-800/80 px-4 py-3 text-xs font-semibold text-rose-300 animate-shake"
+            className="flex items-start gap-2.5 rounded-xl bg-rose-50 border border-rose-200 px-3.5 py-2.5 text-xs font-medium text-rose-800"
           >
-            <svg className="h-4 w-4 shrink-0 mt-0.5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+            <svg className="h-4 w-4 shrink-0 mt-0.5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>{state.error}</span>
@@ -103,8 +99,8 @@ export function AuthForm({ type }: AuthFormProps) {
 
         {/* Full Name field (Signup Only) */}
         {type === 'signup' && (
-          <div className="space-y-1.5">
-            <label htmlFor="fullName" className="block text-[10px] font-bold uppercase tracking-wider text-gold-400">
+          <div className="space-y-1">
+            <label htmlFor="fullName" className="block text-[10px] font-bold uppercase tracking-wider text-forest-700">
               Full Name
             </label>
             <input
@@ -113,18 +109,18 @@ export function AuthForm({ type }: AuthFormProps) {
               type="text"
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 px-4 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
               placeholder="e.g. Minhaj Shafin"
             />
             {state.fieldErrors?.fullName && (
-              <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.fullName[0]}</p>
+              <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.fullName[0]}</p>
             )}
           </div>
         )}
 
         {/* Email Address field */}
-        <div className="space-y-1.5">
-          <label htmlFor="email" className="block text-[10px] font-bold uppercase tracking-wider text-gold-400">
+        <div className="space-y-1">
+          <label htmlFor="email" className="block text-[10px] font-bold uppercase tracking-wider text-forest-700">
             Email Address
           </label>
           <input
@@ -134,24 +130,24 @@ export function AuthForm({ type }: AuthFormProps) {
             autoComplete="email"
             required
             disabled={isPending}
-            className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 px-4 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+            className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
             placeholder="e.g. shafin@example.com"
           />
           {state.fieldErrors?.email && (
-            <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.email[0]}</p>
+            <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.email[0]}</p>
           )}
         </div>
 
         {/* Password field */}
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <div className="flex justify-between items-baseline">
-            <label htmlFor="password" className="block text-[10px] font-bold uppercase tracking-wider text-gold-400">
+            <label htmlFor="password" className="block text-[10px] font-bold uppercase tracking-wider text-forest-700">
               Password
             </label>
             {type === 'login' && (
               <Link
                 href="/forgot-password"
-                className="text-[11px] font-medium text-forest-400 hover:text-gold-400 transition-colors"
+                className="text-[11px] font-medium text-forest-500 hover:text-forest-950 transition-colors"
               >
                 Forgot password?
               </Link>
@@ -165,13 +161,13 @@ export function AuthForm({ type }: AuthFormProps) {
               autoComplete={type === 'login' ? 'current-password' : 'new-password'}
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 pl-4 pr-10 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 pl-3.5 pr-10 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
             />
             <button
               type="button"
               tabIndex={-1}
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-forest-400 hover:text-gold-400 transition-colors p-1"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-forest-400 hover:text-forest-700 transition-colors p-1"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -187,14 +183,14 @@ export function AuthForm({ type }: AuthFormProps) {
             </button>
           </div>
           {state.fieldErrors?.password && (
-            <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.password[0]}</p>
+            <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.password[0]}</p>
           )}
         </div>
 
         {/* Confirm Password field (Signup Only) */}
         {type === 'signup' && (
-          <div className="space-y-1.5">
-            <label htmlFor="confirmPassword" className="block text-[10px] font-bold uppercase tracking-wider text-gold-400">
+          <div className="space-y-1">
+            <label htmlFor="confirmPassword" className="block text-[10px] font-bold uppercase tracking-wider text-forest-700">
               Confirm Password
             </label>
             <input
@@ -204,10 +200,10 @@ export function AuthForm({ type }: AuthFormProps) {
               autoComplete="new-password"
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 px-4 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
             />
             {state.fieldErrors?.confirmPassword && (
-              <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.confirmPassword[0]}</p>
+              <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
             )}
           </div>
         )}
@@ -217,7 +213,7 @@ export function AuthForm({ type }: AuthFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-forest-950 shadow-lg shadow-gold-500/20 hover:bg-gold-400 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-forest-900 text-cream-100 px-4 py-3 text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-forest-800 active:scale-[0.99] transition-all disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
           >
             {isPending ? (
               <>
@@ -234,18 +230,18 @@ export function AuthForm({ type }: AuthFormProps) {
         </div>
 
         {/* Divider */}
-        <div className="relative my-4 flex items-center justify-center">
-          <div className="w-full border-t border-forest-700/60" />
-          <span className="bg-forest-900 px-3 text-[10px] font-medium text-forest-400 uppercase tracking-wider">
+        <div className="relative my-3 flex items-center justify-center">
+          <div className="w-full border-t border-forest-200/80" />
+          <span className="bg-cream-100 px-3 text-[10px] font-medium text-forest-400 uppercase tracking-wider">
             or
           </span>
-          <div className="w-full border-t border-forest-700/60" />
+          <div className="w-full border-t border-forest-200/80" />
         </div>
 
         {/* Continue as Guest Button */}
         <Link
           href="/products"
-          className="flex w-full items-center justify-center gap-2 rounded-full border border-forest-700 bg-forest-950/40 px-4 py-3 text-xs font-semibold text-forest-300 hover:border-gold-500/60 hover:text-gold-400 hover:bg-forest-800/40 transition-all"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-forest-200 bg-cream-50/80 px-4 py-2.5 text-xs font-semibold text-forest-700 hover:bg-cream-200/60 hover:text-forest-950 transition-all"
         >
           Browse Shop as Guest &rarr;
         </Link>
@@ -253,21 +249,21 @@ export function AuthForm({ type }: AuthFormProps) {
         {/* Bottom Toggle links */}
         <div className="pt-2 text-center text-xs">
           {type === 'login' ? (
-            <p className="text-forest-400">
+            <p className="text-forest-600">
               Don&apos;t have an account?{' '}
               <Link
                 href="/signup"
-                className="font-bold text-gold-400 hover:text-gold-300 hover:underline transition-colors"
+                className="font-bold text-forest-900 hover:underline transition-colors"
               >
                 Sign up
               </Link>
             </p>
           ) : (
-            <p className="text-forest-400">
+            <p className="text-forest-600">
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="font-bold text-gold-400 hover:text-gold-300 hover:underline transition-colors"
+                className="font-bold text-forest-900 hover:underline transition-colors"
               >
                 Sign in
               </Link>

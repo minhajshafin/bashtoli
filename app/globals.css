@@ -264,6 +264,35 @@ input[type="search"]::-webkit-search-results-decoration {
   animation: delayedFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 400ms forwards;
 }
 
+/* Tactile Stationery Toast Animations */
+@keyframes toastEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastCountdown {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
+.animate-toast-enter {
+  animation: toastEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-toast-countdown {
+  animation: toastCountdown 3.5s linear forwards;
+}
+
 /* Shimmer animations for theme-aligned skeletons */
 @keyframes skeletonShimmer {
   0% {
@@ -277,23 +306,23 @@ input[type="search"]::-webkit-search-results-decoration {
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(237, 227, 207, 0.7) 0%,
-    rgba(250, 246, 239, 0.95) 50%,
-    rgba(237, 227, 207, 0.7) 100%
+    rgba(237, 227, 207, 0.65) 0%,
+    rgba(252, 249, 244, 0.95) 50%,
+    rgba(237, 227, 207, 0.65) 100%
   );
   background-size: 200% 100%;
-  animation: skeletonShimmer 1.8s infinite linear;
+  animation: skeletonShimmer 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .skeleton-shimmer-dark {
   background: linear-gradient(
     90deg,
-    rgba(26, 51, 38, 0.8) 0%,
-    rgba(45, 82, 64, 0.9) 50%,
-    rgba(26, 51, 38, 0.8) 100%
+    rgba(22, 45, 34, 0.8) 0%,
+    rgba(40, 75, 58, 0.92) 50%,
+    rgba(22, 45, 34, 0.8) 100%
   );
   background-size: 200% 100%;
-  animation: skeletonShimmer 1.8s infinite linear;
+  animation: skeletonShimmer 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 

@@ -18,30 +18,27 @@ export default function ForgotPasswordPage() {
   )
 
   return (
-    <div className="w-full max-w-md bg-forest-900/90 border border-forest-700/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-md">
+    <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-6 sm:p-8 shadow-2xl selection:bg-gold-500/20 selection:text-forest-900">
       <div className="mb-6">
-        <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold mb-1.5">
+        <p className="text-[10px] uppercase tracking-[0.25em] text-forest-500 font-bold mb-1">
           Account Recovery
         </p>
-        <h1
-          className="text-2xl sm:text-3xl text-cream-100 font-normal tracking-tight"
-          style={{ fontFamily: "'Fraunces', Georgia, serif", fontStyle: 'italic', lineHeight: 1.15 }}
-        >
+        <h1 className="text-xl sm:text-2xl text-forest-950 font-medium tracking-tight font-display">
           Forgot Password
         </h1>
-        <p className="mt-1.5 text-xs text-forest-400 font-light leading-relaxed">
+        <p className="mt-1.5 text-xs text-forest-600 font-light leading-relaxed">
           Enter your email address and we will send you a secure link to reset your password.
         </p>
       </div>
 
       {state.success ? (
         <div className="space-y-5 text-center">
-          <div className="rounded-2xl bg-emerald-950/40 border border-emerald-800/80 p-4 text-xs font-semibold text-emerald-300 leading-relaxed">
+          <div className="rounded-xl bg-forest-900/5 border border-forest-200 p-4 text-xs font-medium text-forest-800 leading-relaxed">
             If a matching account exists, a password reset link has been sent to your email. Please check your inbox and spam folders.
           </div>
           <Link
             href="/login"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-gold-500 px-6 text-xs font-bold uppercase tracking-wider text-forest-950 shadow-md shadow-gold-500/20 hover:bg-gold-400 transition-all"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-forest-900 px-6 text-xs font-bold uppercase tracking-wider text-cream-100 shadow-sm hover:bg-forest-800 transition-all"
           >
             Return to Sign In
           </Link>
@@ -51,17 +48,17 @@ export default function ForgotPasswordPage() {
           {state.error && (
             <div
               role="alert"
-              className="flex items-start gap-2.5 rounded-2xl bg-rose-950/50 border border-rose-800/80 px-4 py-3 text-xs font-semibold text-rose-300 animate-shake"
+              className="flex items-start gap-2.5 rounded-xl bg-rose-50 border border-rose-200 px-3.5 py-2.5 text-xs font-medium text-rose-800"
             >
-              <svg className="h-4 w-4 shrink-0 mt-0.5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg className="h-4 w-4 shrink-0 mt-0.5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <span>{state.error}</span>
             </div>
           )}
 
-          <div className="space-y-1.5">
-            <label htmlFor="email" className="block text-[10px] font-bold uppercase tracking-wider text-gold-400">
+          <div className="space-y-1">
+            <label htmlFor="email" className="block text-[10px] font-bold uppercase tracking-wider text-forest-700">
               Email Address
             </label>
             <input
@@ -70,11 +67,11 @@ export default function ForgotPasswordPage() {
               type="email"
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-700 bg-forest-950/70 px-4 py-3 text-sm text-cream-100 placeholder-forest-500 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all"
+              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
               placeholder="you@example.com"
             />
             {state.fieldErrors?.email && (
-              <p className="text-[11px] font-bold text-rose-400 mt-1">{state.fieldErrors.email[0]}</p>
+              <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.email[0]}</p>
             )}
           </div>
 
@@ -82,18 +79,18 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-gold-500 px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-forest-950 shadow-lg shadow-gold-500/20 hover:bg-gold-400 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-forest-900 text-cream-100 px-4 py-3 text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-forest-800 active:scale-[0.99] transition-all disabled:opacity-60 cursor-pointer"
             >
               {isPending ? 'Sending Link...' : 'Send Reset Link'}
             </button>
           </div>
 
-          <div className="text-center pt-3 border-t border-forest-800/80">
-            <p className="text-xs text-forest-400">
+          <div className="text-center pt-3 border-t border-forest-200/80">
+            <p className="text-xs text-forest-600">
               Remembered your password?{' '}
               <Link
                 href="/login"
-                className="font-bold text-gold-400 hover:text-gold-300 hover:underline transition-colors"
+                className="font-bold text-forest-900 hover:underline transition-colors"
               >
                 Sign in
               </Link>
