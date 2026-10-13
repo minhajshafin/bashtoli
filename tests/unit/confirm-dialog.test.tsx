@@ -110,4 +110,85 @@ describe('ConfirmDialog System', () => {
     })
     expect(screen.queryByText('Clear Shopping Bag?')).not.toBeInTheDocument()
   })
+
+  it('resolves false when corner close button is clicked', async () => {
+    const handleResult = vi.fn()
+
+    render(
+      <ConfirmDialogProvider>
+        <TestConsumer onResult={handleResult} />
+      </ConfirmDialogProvider>
+    )
+
+    fireEvent.click(screen.getByTestId('trigger-btn'))
+    const closeBtn = screen.getByRole('button', { name: 'Close dialog' })
+    fireEvent.click(closeBtn)
+
+    await waitFor(() => {
+      expect(handleResult).toHaveBeenCalledWith(false)
+    })
+    expect(screen.queryByText('Clear Shopping Bag?')).not.toBeInTheDocument()
+  })
+
+  it('renders warning variant eyebrow and styling correctly', async () => {
+    function WarningConsumer() {
+      const confirm = useConfirm()
+      return (
+        <button
+          onClick={() =>
+            confirm({
+              title: 'Discard Changes?',
+              description: 'Your unsaved edits will be discarded.',
+              variant: 'warning',
+            })
+          }
+          data-testid="warning-btn"
+        >
+          Warn
+        </button>
+      )
+    }
+
+    render(
+      <ConfirmDialogProvider>
+        <WarningConsumer />
+      </ConfirmDialogProvider>
+    )
+
+    fireEvent.click(screen.getByTestId('warning-btn'))
+    expect(screen.getByText('Discard Changes?')).toBeInTheDocument()
+    expect(screen.getByText('Attention')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+  })
+
+  it('renders default variant eyebrow and defaults correctly', async () => {
+    function DefaultConsumer() {
+      const confirm = useConfirm()
+      return (
+        <button
+          onClick={() =>
+            confirm({
+              title: 'Save Address to Book?',
+            })
+          }
+          data-testid="default-btn"
+        >
+          Default
+        </button>
+      )
+    }
+
+    render(
+      <ConfirmDialogProvider>
+        <DefaultConsumer />
+      </ConfirmDialogProvider>
+    )
+
+    fireEvent.click(screen.getByTestId('default-btn'))
+    expect(screen.getByText('Save Address to Book?')).toBeInTheDocument()
+    expect(screen.getByText('Notice')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+  })
 })
