@@ -6,18 +6,25 @@ import React from 'react'
 export function ProductCardSkeleton() {
   return (
     <div
-      className="overflow-hidden rounded-2xl bg-cream-50 shadow-xs border border-forest-900/10"
+      className="relative overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] bg-forest-950/90 border border-forest-800/40 p-3 sm:p-3.5 flex flex-col justify-end"
       aria-hidden="true"
     >
-      {/* 4/5 Aspect Ratio Image Shimmer */}
-      <div className="relative w-full skeleton-shimmer" style={{ aspectRatio: '4/5' }} />
+      {/* Top wishlist button shimmer */}
+      <div className="absolute top-3 right-3 flex justify-end">
+        <div className="h-8 w-8 rounded-full skeleton-shimmer-dark" />
+      </div>
 
-      {/* Info Section */}
-      <div className="p-3 sm:p-4 space-y-2">
-        {/* Title placeholder */}
-        <div className="h-4 w-3/4 rounded-md skeleton-shimmer" />
-        {/* Price placeholder */}
-        <div className="h-4 w-1/3 rounded-md skeleton-shimmer" />
+      {/* Lower Scrim Section Shimmer */}
+      <div className="relative z-10 w-full pt-4 space-y-2">
+        {/* Title & Price row placeholder */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="h-4 w-3/5 rounded-md skeleton-shimmer-dark" />
+          <div className="h-4 w-1/4 rounded-md skeleton-shimmer-dark shrink-0" />
+        </div>
+        {/* Subtitle placeholder */}
+        <div className="h-3 w-2/5 rounded-md skeleton-shimmer-dark" />
+        {/* Full-width Buy button placeholder */}
+        <div className="h-8 sm:h-8.5 w-full rounded-xl skeleton-shimmer-dark mt-2.5 sm:mt-3" />
       </div>
     </div>
   )
@@ -99,8 +106,8 @@ export function ProductsPageSkeleton() {
         <div className="flex items-center justify-between mb-6 pb-3 border-b border-forest-900/10">
           <div className="h-3.5 w-32 rounded-md skeleton-shimmer" />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-          {Array.from({ length: 8 }).map((_, i) => (
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {Array.from({ length: 10 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
         </div>

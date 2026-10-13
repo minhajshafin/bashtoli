@@ -160,7 +160,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
           {infiniteItems.map((p, index) => (
             <div
               key={`${p.id}-${index}`}
-              className="shrink-0 w-[230px] sm:w-[260px] md:w-[280px]"
+              className="shrink-0 w-[190px] sm:w-[220px] md:w-[240px]"
             >
               <ProductCard product={p} />
             </div>

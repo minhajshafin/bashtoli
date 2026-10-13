@@ -47,18 +47,18 @@ export function WishlistButton({
         type="button"
         onClick={handleToggle}
         disabled={isPending}
-        className={`group/wishlist flex h-9 w-9 items-center justify-center rounded-full bg-forest-900/70 backdrop-blur-xs text-cream-100 hover:bg-forest-900 hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer ${className}`}
+        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-black/35 hover:bg-black/55 backdrop-blur-md text-white border border-white/20 hover:border-white/40 active:scale-90 transition-all duration-200 shadow-sm cursor-pointer ${className}`}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
       >
         <svg
-          className={`h-4.5 w-4.5 transition-colors ${
+          className={`h-4 w-4 transition-transform duration-200 group-hover/wishlist:scale-110 ${
             isWishlisted
-              ? 'fill-rose-500 text-rose-500'
-              : 'fill-none stroke-cream-100 group-hover/wishlist:stroke-gold-400'
+              ? 'fill-rose-500 text-rose-500 stroke-rose-500'
+              : 'fill-none stroke-white/90 group-hover/wishlist:stroke-white'
           }`}
           viewBox="0 0 24 24"
-          strokeWidth="2"
+          strokeWidth="1.8"
           stroke="currentColor"
         >
           <path

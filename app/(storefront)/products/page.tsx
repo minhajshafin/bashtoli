@@ -138,10 +138,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           )}
         </div>
 
-        {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col desktop) */}
+        {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col laptop, 5-col desktop) */}
         {products.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-3.5 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {products.map((product, idx) => (
                 <ProductCard
                   key={product.id}

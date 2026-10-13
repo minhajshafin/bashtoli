@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import type { ProductWithDetails } from '@/lib/queries/products'
 import { WishlistButton } from '@/components/storefront/wishlist-button'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
@@ -15,7 +16,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
+  const router = useRouter()
   const [hovered, setHovered] = useState(false)
+  const [isNavigating, setIsNavigating] = useState(false)
   const { addItem } = useCart()
   const { toast } = useToast()
 
@@ -42,6 +45,12 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
   const secondaryImageUrl = secondaryImage?.url || null
   const secondaryAltText = secondaryImage?.alt_text || `${product.name} alternate view`
 
+  // Helper to resolve target variant for cart operations
+  const getTargetVariant = () => {
+    return activeVariants.find((v) => v.stock_qty > 0) || activeVariants[0]
+  }
+
+  // Quick Add to Bag (keeps user on current page and shows toast memo)
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -51,7 +60,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
       return
     }
 
-    const targetVariant = activeVariants.find((v) => v.stock_qty > 0) || activeVariants[0]
+    const targetVariant = getTargetVariant()
     if (!targetVariant) {
       toast('No available variants for this item.', 'error')
       return
@@ -77,117 +86,148 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
     toast(`Added "${product.name}" to your bag!`, 'success')
   }
 
+  // Direct Buy / Purchase (adds to bag and redirects immediately to checkout)
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (isSoldOut) {
+      toast('This product is currently sold out.', 'info')
+      return
+    }
+
+    const targetVariant = getTargetVariant()
+    if (!targetVariant) {
+      toast('No available variants for this item.', 'error')
+      return
+    }
+
+    const variantLabel =
+      targetVariant.option_values && Object.keys(targetVariant.option_values).length > 0
+        ? Object.values(targetVariant.option_values).join(' / ')
+        : 'Standard'
+
+    addItem(
+      {
+        variant_id: targetVariant.id,
+        product_id: product.id,
+        name: product.name,
+        variant_name: variantLabel,
+        price: targetVariant.price,
+        image_url: imageUrl,
+      },
+      1
+    )
+
+    setIsNavigating(true)
+    router.push('/checkout')
+  }
+
   return (
     <div
-      className="group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-[22px] bg-cream-50 border border-forest-900/10 hover:border-gold-500/40 transition-all duration-400"
+      className="group relative flex flex-col justify-end overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] bg-forest-950 border border-forest-800/50 hover:border-gold-500/60 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_40px_-8px_rgba(16,34,24,0.35)]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        boxShadow: hovered
-          ? '0 18px 42px -8px rgba(16,34,24,0.12), 0 2px 6px rgba(16,34,24,0.04)'
-          : '0 1px 3px rgba(16,34,24,0.04)',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-      }}
     >
-      {/* 4:5 Aspect Ratio Image Canvas with Dual-Angle Crossfade */}
-      <div className="relative overflow-hidden bg-cream-100/70" style={{ aspectRatio: '4/5' }}>
-        <Link href={`/products/${product.slug}`} className="relative block w-full h-full">
-          {imageUrl ? (
-            <>
-              {/* Primary Product Image */}
+      {/* 1. Full-Bleed Product Image Canvas */}
+      <Link
+        href={`/products/${product.slug}`}
+        className="absolute inset-0 block w-full h-full overflow-hidden"
+        tabIndex={-1}
+        aria-hidden="true"
+      >
+        {imageUrl ? (
+          <>
+            <Image
+              src={imageUrl}
+              alt={altText}
+              fill
+              loading={loading}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 20vw, 320px"
+              className="object-cover transition-all duration-700 ease-out"
+              style={{
+                filter: isSoldOut ? 'grayscale(0.4) opacity(0.8)' : 'none',
+                transform: hovered && !secondaryImageUrl ? 'scale(1.08)' : 'scale(1)',
+              }}
+            />
+            {secondaryImageUrl && (
               <Image
-                src={imageUrl}
-                alt={altText}
+                src={secondaryImageUrl}
+                alt={secondaryAltText}
                 fill
-                loading={loading}
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 360px"
-                className="object-cover transition-all duration-700 ease-out"
+                loading="lazy"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 20vw, 320px"
+                className="object-cover transition-opacity duration-500 ease-out"
                 style={{
-                  filter: isSoldOut ? 'grayscale(0.35) opacity(0.88)' : 'none',
-                  transform: hovered && !secondaryImageUrl ? 'scale(1.05)' : 'scale(1)',
+                  opacity: hovered ? 1 : 0,
+                  filter: isSoldOut ? 'grayscale(0.4) opacity(0.8)' : 'none',
                 }}
               />
-
-              {/* Secondary Alternate Angle Preview (smooth cross-dissolve on hover) */}
-              {secondaryImageUrl && (
-                <Image
-                  src={secondaryImageUrl}
-                  alt={secondaryAltText}
-                  fill
-                  loading="lazy"
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 360px"
-                  className="object-cover transition-all duration-700 ease-out"
-                  style={{
-                    opacity: hovered ? 1 : 0,
-                    transform: hovered ? 'scale(1.03)' : 'scale(1)',
-                    filter: isSoldOut ? 'grayscale(0.35) opacity(0.88)' : 'none',
-                  }}
-                />
-              )}
-            </>
-          ) : (
-            <ProductImageSkeleton size="md" />
-          )}
-        </Link>
-
-        {/* Understated Terracotta Sienna "Sold Out" Status Pill */}
-        {isSoldOut && (
-          <div className="absolute top-2.5 left-2.5 z-20 pointer-events-none">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-terracotta-500/95 backdrop-blur-xs px-2.5 py-0.5 sm:px-3 sm:py-0.5 text-[10px] sm:text-xs font-semibold tracking-wider text-cream-50 uppercase shadow-md border border-terracotta-400/35 font-sans">
-              <span className="h-1.5 w-1.5 rounded-full bg-cream-50/80" />
-              Sold Out
+            )}
+          </>
+        ) : (
+          <div className="relative flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-forest-900 via-forest-950 to-forest-900 text-cream-200/30">
+            <svg
+              className="h-12 w-12 stroke-[1.2] opacity-40"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+              />
+            </svg>
+            <span className="text-[10px] tracking-widest uppercase mt-2 opacity-50 font-sans">
+              Handcrafted
             </span>
           </div>
         )}
+      </Link>
 
-        {/* Refined Category Chip (desktop only, shown when in-stock) */}
-        {!isSoldOut && product.categories && (
-          <span
-            className="hidden sm:inline-block absolute top-2.5 left-2.5 px-2.5 py-0.5 text-[9px] uppercase tracking-[0.2em] font-medium z-10 pointer-events-none rounded-full bg-cream-50/90 backdrop-blur-xs text-forest-900/80 border border-gold-500/25 shadow-xs font-sans"
-          >
-            {product.categories.name}
-          </span>
-        )}
+      {/* 2. Top Bar: Status Badge (Sold Out only) & Refined Wishlist Button */}
+      <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 z-20 flex items-center justify-between pointer-events-none">
+        <div>
+          {isSoldOut && (
+            <span className="inline-flex items-center rounded-full bg-terracotta-600/95 backdrop-blur-md px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-sm border border-terracotta-400/30 font-sans pointer-events-auto">
+              Sold Out
+            </span>
+          )}
+        </div>
 
-        {/* Wishlist toggle heart button */}
-        <div className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-30">
+        <div className="pointer-events-auto ml-auto">
           <WishlistButton
             productId={product.id}
             productName={product.name}
             variant="card"
           />
         </div>
+      </div>
 
-        {/* Desktop: Add to bag bar (smooth reveal on hover) */}
-        {!isSoldOut && (
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            className="hidden sm:block absolute inset-x-0 bottom-0 py-2.5 text-center cursor-pointer active:scale-98 transition-all z-20 bg-forest-950/95 backdrop-blur-xs text-cream-100 hover:bg-gold-500 hover:text-forest-950 font-sans text-[11px] uppercase tracking-[0.2em] font-medium"
-            style={{
-              transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease',
-              transform: hovered ? 'translateY(0)' : 'translateY(100%)',
-            }}
-          >
-            + Add to Bag
-          </button>
-        )}
-
-        {/* Mobile: Quick Add to Bag floating touch button */}
-        {!isSoldOut && (
+      {/* 3. Hover Center Action: Floating "+ Add to Bag" Pill (Centered in image canvas) */}
+      {!isSoldOut && (
+        <div
+          className="absolute inset-x-0 top-[42%] z-25 flex justify-center transition-all duration-300 pointer-events-none"
+          style={{
+            opacity: hovered ? 1 : 0,
+            transform: hovered ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(6px)',
+            pointerEvents: hovered ? 'auto' : 'none',
+          }}
+        >
           <button
             type="button"
             onClick={handleAddToCart}
             aria-label={`Add ${product.name} to bag`}
-            title={`Add ${product.name} to bag`}
-            className="sm:hidden absolute bottom-2 right-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-forest-950/90 backdrop-blur-xs text-cream-100 border border-gold-500/30 hover:bg-gold-500 hover:text-forest-950 active:scale-95 transition-all shadow-md cursor-pointer"
+            title="+ Add to Bag"
+            className="py-2 px-3.5 sm:px-4 rounded-full bg-forest-950/90 hover:bg-gold-500 hover:text-forest-950 backdrop-blur-md text-cream-50 text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 shadow-2xl border border-gold-500/40 active:scale-95 transition-all cursor-pointer pointer-events-auto"
           >
             <svg
-              className="h-4 w-4"
+              className="h-3.5 w-3.5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1.75}
+              strokeWidth={2}
             >
               <path
                 strokeLinecap="round"
@@ -195,26 +235,79 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
                 d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
               />
             </svg>
+            <span>+ Add to Bag</span>
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Tactile Info Canvas */}
-      <Link href={`/products/${product.slug}`} className="p-3 sm:p-3.5 block flex-1 bg-cream-50">
-        <h3
-          className="font-display font-medium text-xs sm:text-[13px] lg:text-sm text-forest-950 line-clamp-1 group-hover:text-gold-700 transition-colors mb-0.5"
-        >
-          {product.name}
-        </h3>
-        <p
-          className="font-price text-xs sm:text-[13px] font-semibold text-forest-900 flex items-baseline gap-1"
-        >
-          <span className="tabular-nums">৳{lowestPrice.toLocaleString()}</span>
-          {activeVariants.length > 1 && (
-            <span className="text-[10px] font-normal text-forest-500/80 font-sans tracking-tight">onwards</span>
-          )}
+      {/* 4. Feathered Progressive Blur Layer (Smooth transition from sharp to blur) */}
+      <div
+        className="absolute inset-x-0 bottom-0 top-[28%] pointer-events-none z-10"
+        style={{
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,1) 75%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,1) 75%)',
+        }}
+      />
+
+      {/* 5. Atmospheric Dark Gradient Scrim (Smooth fade from transparent to forest-950) */}
+      <div className="absolute inset-x-0 bottom-0 top-[25%] pointer-events-none z-11 bg-gradient-to-t from-forest-950 via-forest-950/80 to-transparent" />
+
+      {/* 6. Card Info & Actions Content Layer */}
+      <div className="relative z-15 w-full mt-auto pb-2.5 sm:pb-3 px-3 sm:px-3.5">
+        {/* Title & Price Row */}
+        <div className="flex items-baseline justify-between gap-1.5">
+          <h3 className="font-display font-semibold text-[13px] sm:text-[15px] text-cream-50 tracking-tight leading-snug truncate flex-1">
+            <Link
+              href={`/products/${product.slug}`}
+              className="hover:text-gold-300 transition-colors"
+            >
+              {product.name}
+            </Link>
+          </h3>
+          <span className="font-price text-xs sm:text-[14px] font-bold text-gold-400 tabular-nums shrink-0 ml-1">
+            ৳{lowestPrice.toLocaleString()}
+          </span>
+        </div>
+
+        {/* Subtitle / Category / Location Line (like "254 Highland Ave, Los..." in reference) */}
+        <p className="text-[10px] sm:text-[11px] text-cream-200/65 font-sans truncate mt-0.5">
+          {product.categories?.name ? `${product.categories.name} · Dhaka` : 'Handcrafted in Dhaka'}
         </p>
-      </Link>
+
+        {/* Action Footer: Resting Buy Now Button */}
+        <div className="mt-2.5 sm:mt-3">
+          {!isSoldOut ? (
+            <button
+              type="button"
+              onClick={handleBuyNow}
+              disabled={isNavigating}
+              aria-label={`Buy ${product.name} now`}
+              className="w-full h-8 sm:h-8.5 rounded-xl bg-cream-100 hover:bg-gold-400 text-forest-950 font-sans text-xs font-bold tracking-wider uppercase active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+            >
+              <span>{isNavigating ? 'Going to checkout...' : 'Buy Now'}</span>
+              <svg
+                className="h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="w-full h-8 sm:h-8.5 rounded-xl bg-forest-900/60 text-cream-200/40 text-[11px] font-semibold tracking-wider uppercase cursor-not-allowed text-center border border-white/5"
+            >
+              Sold Out
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

@@ -17,9 +17,11 @@ vi.mock('next/image', () => ({
   },
 }))
 
+const mockPush = vi.fn()
+
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
+  useRouter: () => ({ push: mockPush, refresh: vi.fn() }),
   usePathname: () => '/',
 }))
 
@@ -101,7 +103,7 @@ describe('ProductCard Quick Actions', () => {
     expect(saved).toContain('prod-123')
   })
 
-  it('adds product to bag on desktop button click without leaving page and shows toast', async () => {
+  it('adds product to bag on quick add button click without leaving page and shows toast', async () => {
     render(
       <ToastProvider>
         <WishlistProvider isLoggedIn={false}>
@@ -112,8 +114,10 @@ describe('ProductCard Quick Actions', () => {
       </ToastProvider>
     )
 
-    // Click desktop "+ Add to Bag" button
-    const addToBagBtn = screen.getByRole('button', { name: /\+ Add to Bag/i })
+    // Click Quick Add to Bag button
+    const addToBagBtn = screen.getByRole('button', {
+      name: 'Add Artisan Bamboo Basket to bag',
+    })
     fireEvent.click(addToBagBtn)
 
     // Verify toast appears
@@ -129,9 +133,12 @@ describe('ProductCard Quick Actions', () => {
     expect(savedCart[0].product_id).toBe('prod-123')
     expect(savedCart[0].variant_id).toBe('var-123')
     expect(savedCart[0].qty).toBe(1)
+
+    // Verify router push was NOT called (stayed on page)
+    expect(mockPush).not.toHaveBeenCalled()
   })
 
-  it('adds product to bag on mobile button click without leaving page and shows toast', async () => {
+  it('adds product to bag and navigates directly to checkout on Buy Now button click', async () => {
     render(
       <ToastProvider>
         <WishlistProvider isLoggedIn={false}>
@@ -142,17 +149,20 @@ describe('ProductCard Quick Actions', () => {
       </ToastProvider>
     )
 
-    // Click mobile quick add button
-    const mobileAddBtn = screen.getByRole('button', {
-      name: 'Add Artisan Bamboo Basket to bag',
+    // Click Buy Now button
+    const buyNowBtn = screen.getByRole('button', {
+      name: 'Buy Artisan Bamboo Basket now',
     })
-    fireEvent.click(mobileAddBtn)
+    fireEvent.click(buyNowBtn)
 
-    // Verify toast appears
-    await waitFor(() => {
-      expect(
-        screen.getByText('Added "Artisan Bamboo Basket" to your bag!')
-      ).toBeInTheDocument()
-    })
+    // Verify guest cart updated in localStorage
+    const savedCart = JSON.parse(localStorage.getItem('bashtoli_guest_cart') || '[]')
+    expect(savedCart).toHaveLength(1)
+    expect(savedCart[0].product_id).toBe('prod-123')
+    expect(savedCart[0].variant_id).toBe('var-123')
+    expect(savedCart[0].qty).toBe(1)
+
+    // Verify instant direct navigation to checkout
+    expect(mockPush).toHaveBeenCalledWith('/checkout')
   })
 })
