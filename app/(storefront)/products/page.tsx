@@ -70,37 +70,34 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <div className="relative min-h-screen bg-cream-100 bg-laid-paper flex flex-col">
       {/* 1. Gallery Header (Deep Forest Canvas) */}
       <div className="w-full bg-forest-950 bg-laid-paper-dark border-b border-forest-800/80">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8 flex flex-col md:flex-row md:items-end justify-between gap-5">
-          <div className="max-w-2xl">
-            {/* Stationery Eyebrow Kicker */}
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="h-px w-4 bg-gold-400/60" />
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-gold-400 font-sans font-medium">
-                Catalogue &middot; Dhaka
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-baseline gap-2.5 sm:gap-3">
-              <h1 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
-                {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
-              </h1>
-              <span className="text-forest-300/80 text-xs sm:text-[13px] font-sans font-normal">
-                &mdash; {totalCount} {totalCount === 1 ? 'curated piece' : 'curated pieces'}
-              </span>
-            </div>
-
-            <p className="text-forest-200/80 text-xs sm:text-[13px] mt-1.5 font-sans font-normal leading-relaxed max-w-xl">
-              {activeCategory
-                ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and reflection.`
-                : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily use.`}
-            </p>
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 pb-5 sm:pt-8 sm:pb-7 lg:pt-9 lg:pb-8">
+          {/* Eyebrow */}
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-2.5">
+            <span className="h-px w-3.5 bg-gold-400/60" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-gold-400/90 font-sans font-medium">
+              Catalogue
+            </span>
           </div>
 
-          <div className="self-start md:self-end">
-            <Suspense>
-              <SortDropdown />
-            </Suspense>
+          {/* Main Title Row: Title on Left, Sort on Right */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6">
+            <h1 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em]">
+              {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
+            </h1>
+
+            <div className="self-start sm:self-auto shrink-0">
+              <Suspense>
+                <SortDropdown />
+              </Suspense>
+            </div>
           </div>
+
+          {/* Subtitle */}
+          <p className="text-forest-200/75 text-xs sm:text-[13px] mt-2 font-sans font-normal leading-relaxed max-w-2xl lg:max-w-3xl text-pretty">
+            {activeCategory
+              ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and\u00A0reflection.`
+              : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily\u00A0use.`}
+          </p>
         </div>
       </div>
 

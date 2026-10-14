@@ -188,13 +188,45 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
         )}
       </Link>
 
-      {/* 2. Top Bar: Status Badge (Sold Out only) & Refined Wishlist Button */}
-      <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 z-20 flex items-center justify-between pointer-events-none">
+      {/* 2. Top Bar: Status Badge (Sold Out) / Hover Action ("+ Add to Bag") & Wishlist Button */}
+      <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 z-25 flex items-center justify-between pointer-events-none">
         <div>
-          {isSoldOut && (
+          {isSoldOut ? (
             <span className="inline-flex items-center rounded-full bg-terracotta-600/95 backdrop-blur-md px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-sm border border-terracotta-400/30 font-sans pointer-events-auto">
               Sold Out
             </span>
+          ) : (
+            <div
+              className="transition-all duration-300 pointer-events-none"
+              style={{
+                opacity: hovered ? 1 : 0,
+                transform: hovered ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(-4px)',
+                pointerEvents: hovered ? 'auto' : 'none',
+              }}
+            >
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                aria-label={`Add ${product.name} to bag`}
+                title="+ Add to Bag"
+                className="h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full bg-forest-950/90 hover:bg-gold-500 hover:text-forest-950 backdrop-blur-md text-cream-50 text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 shadow-md border border-gold-500/40 active:scale-95 transition-all cursor-pointer pointer-events-auto"
+              >
+                <svg
+                  className="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+                <span>+ Add to Bag</span>
+              </button>
+            </div>
           )}
         </div>
 
@@ -206,41 +238,6 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
           />
         </div>
       </div>
-
-      {/* 3. Hover Center Action: Floating "+ Add to Bag" Pill (Centered in image canvas) */}
-      {!isSoldOut && (
-        <div
-          className="absolute inset-x-0 top-[42%] z-25 flex justify-center transition-all duration-300 pointer-events-none"
-          style={{
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(6px)',
-            pointerEvents: hovered ? 'auto' : 'none',
-          }}
-        >
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            aria-label={`Add ${product.name} to bag`}
-            title="+ Add to Bag"
-            className="py-2 px-3.5 sm:px-4 rounded-full bg-forest-950/90 hover:bg-gold-500 hover:text-forest-950 backdrop-blur-md text-cream-50 text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 shadow-2xl border border-gold-500/40 active:scale-95 transition-all cursor-pointer pointer-events-auto"
-          >
-            <svg
-              className="h-3.5 w-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-              />
-            </svg>
-            <span>+ Add to Bag</span>
-          </button>
-        </div>
-      )}
 
       {/* 4. Feathered Progressive Blur Layer (Smooth transition from sharp to blur) */}
       <div
@@ -273,9 +270,9 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
           </span>
         </div>
 
-        {/* Subtitle / Category / Location Line (like "254 Highland Ave, Los..." in reference) */}
+        {/* Subtitle / Category Line */}
         <p className="text-[10px] sm:text-[11px] text-cream-200/65 font-sans truncate mt-0.5">
-          {product.categories?.name ? `${product.categories.name} · Dhaka` : 'Handcrafted in Dhaka'}
+          {product.categories?.name || 'Artisanal Stationery'}
         </p>
 
         {/* Action Footer: Resting Buy Now Button */}
