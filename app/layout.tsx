@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     default: "Bashtoli | Artisanal Stationery & Paper Goods",
   },
   description: "Handcrafted stationery, artisanal paper goods, journals, and desktop crafts from Bashtoli.",
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
