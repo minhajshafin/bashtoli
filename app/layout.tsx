@@ -21,8 +21,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Bashtoli",
-    default: "Bashtoli | Artisanal Stationery & Paper Goods",
+    template: "%s | Bashtoli Stationery",
+    default: "Bashtoli Stationery",
   },
   description: "Handcrafted stationery, artisanal paper goods, journals, and desktop crafts from Bashtoli.",
   manifest: "/site.webmanifest",

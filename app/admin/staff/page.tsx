@@ -7,7 +7,7 @@ import { PromoteUserForm } from '@/components/admin/promote-user-form'
 import { StaffList } from '@/components/admin/staff-list'
 
 export const metadata: Metadata = {
-  title: 'Staff Management | Bashtoli Admin',
+  title: 'Staff Management',
   description: 'Manage staff accounts and administrative authorization roles.',
 }
 

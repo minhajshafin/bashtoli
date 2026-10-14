@@ -7,7 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export const metadata = {
-  title: 'Checkout | Bashtoli Stationery',
+  title: 'Checkout',
   description: 'Provide your delivery info and complete your order with Cash on Delivery.',
 }
 

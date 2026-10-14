@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 
 export const metadata = {
-  title: 'Page Not Found | Bashtoli Stationery',
+  title: 'Page Not Found',
   description: 'The requested page seems to have escaped between the margins.',
 }
 

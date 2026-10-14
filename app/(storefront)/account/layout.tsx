@@ -6,7 +6,6 @@ import { CheckoutBackgroundArt } from '@/components/storefront/checkout-backgrou
 
 export async function generateMetadata() {
   return {
-    title: 'My Account | Bashtoli',
     description: 'Manage your Bashtoli customer account settings, saved addresses, and orders.',
   }
 }

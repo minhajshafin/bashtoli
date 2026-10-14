@@ -10,13 +10,15 @@ import { FeaturedProductsSkeleton } from '@/components/storefront/skeletons'
 import { WaveDivider } from '@/components/storefront/wave-divider'
 
 export const metadata = {
-  title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
+  title: {
+    absolute: 'Bashtoli Stationery',
+  },
   description: 'Pens, pencils, notebooks, pouches, key rings & more. Shop everything you need at Bashtoli Stationery, Dhaka.',
   alternates: {
     canonical: 'https://bashtoli.com',
   },
   openGraph: {
-    title: 'Bashtoli Stationery | Your Neighbourhood Stationery Shop',
+    title: 'Bashtoli Stationery',
     description: 'Pens, pencils, notebooks, pouches, key rings & more. Shop everything you need at Bashtoli Stationery, Dhaka.',
     url: 'https://bashtoli.com',
     siteName: 'Bashtoli Stationery',

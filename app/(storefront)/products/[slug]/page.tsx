@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bashtoli.com'
   const primaryImage = data.images?.[0]
   const imageUrl = primaryImage?.url || `${baseUrl}/og-fallback.png`
-  const title = `${data.product.name} | Bashtoli`
+  const title = data.product.name
   const description = data.product.description || 'Quality handcrafted stationery and paper goods.'
 
   return {
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
       title,
       description,
       url: `${baseUrl}/products/${data.product.slug}`,
-      siteName: 'Bashtoli',
+      siteName: 'Bashtoli Stationery',
       images: [
         {
           url: imageUrl,

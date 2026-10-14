@@ -3,7 +3,7 @@ import { fetchAdminOrders, ORDERS_PAGE_SIZE } from '@/lib/queries/orders'
 import { OrderList } from '@/components/admin/order-list'
 
 export const metadata = {
-  title: 'Order Management | Bashtoli Admin',
+  title: 'Order Management',
   description: 'View and filter all incoming storefront checkouts.',
 }
 

@@ -8,7 +8,7 @@ import { OrderHistoryList } from '@/components/storefront/order-history-list'
 
 export async function generateMetadata() {
   return {
-    title: 'Order History | Bashtoli',
+    title: 'Order History',
     description: 'View and track all your past Bashtoli orders.',
   }
 }

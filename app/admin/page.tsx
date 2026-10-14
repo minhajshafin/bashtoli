@@ -8,7 +8,7 @@ import { DashboardStats } from '@/components/admin/dashboard-stats'
 import { LowStockList } from '@/components/admin/low-stock-list'
 
 export const metadata: Metadata = {
-  title: 'Dashboard | Bashtoli Admin',
+  title: 'Dashboard',
   description: 'Bashtoli store management metrics dashboard',
 }
 

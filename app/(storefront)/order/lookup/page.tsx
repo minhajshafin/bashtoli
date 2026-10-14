@@ -3,7 +3,7 @@ import { CheckoutBackgroundArt } from '@/components/storefront/checkout-backgrou
 import React from 'react'
 
 export const metadata = {
-  title: 'Track Order | Bashtoli',
+  title: 'Track Order',
   description: 'Enter your order details to check real-time status and delivery progress.',
 }
 

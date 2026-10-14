@@ -22,7 +22,7 @@ interface OrderPageProps {
 export async function generateMetadata({ params }: OrderPageProps) {
   const resolvedParams = await params
   return {
-    title: `Order ${resolvedParams.orderNumber} | Bashtoli`,
+    title: `Order #${resolvedParams.orderNumber}`,
     description: 'Track your Bashtoli order status and purchase details.',
     robots: { index: false, follow: false },
   }

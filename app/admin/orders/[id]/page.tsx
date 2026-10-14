@@ -4,7 +4,7 @@ import { fetchAdminOrderDetail } from '@/lib/queries/orders'
 import { OrderDetail } from '@/components/admin/order-detail'
 
 export const metadata = {
-  title: 'Order Details | Bashtoli Admin',
+  title: 'Order Details',
   description: 'Manage and review order customer particulars.',
 }
 

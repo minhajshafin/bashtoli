@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Bashtoli Stationery',
+  title: 'Terms of Service',
   description: 'Read the Terms of Service governing orders, deliveries, and browsing on Bashtoli Stationery.',
 }
 

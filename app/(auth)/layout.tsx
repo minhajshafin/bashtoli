@@ -7,7 +7,7 @@ import { CheckoutBackgroundArt } from '@/components/storefront/checkout-backgrou
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Bashtoli',
+    template: '%s | Bashtoli Stationery',
     default: 'Account | Bashtoli Stationery',
   },
   description: 'Sign in or create your Bashtoli Stationery account.',

@@ -11,7 +11,7 @@ interface LoginPageProps {
 
 export async function generateMetadata() {
   return {
-    title: 'Sign In | Bashtoli',
+    title: 'Sign In',
     description: 'Sign in to your Bashtoli account to view orders and manage saved details.',
     alternates: {
       canonical: 'https://bashtoli.com/login',

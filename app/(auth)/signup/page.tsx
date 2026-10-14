@@ -5,7 +5,7 @@ import { AuthForm } from '@/components/storefront/auth-form'
 
 export async function generateMetadata() {
   return {
-    title: 'Create Account | Bashtoli',
+    title: 'Create Account',
     description: 'Join Bashtoli to save addresses, build wishlists, and track orders.',
     alternates: {
       canonical: 'https://bashtoli.com/signup',

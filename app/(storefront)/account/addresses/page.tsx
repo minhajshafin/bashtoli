@@ -4,7 +4,7 @@ import React from 'react'
 
 export async function generateMetadata() {
   return {
-    title: 'Saved Addresses | Bashtoli',
+    title: 'Saved Addresses',
     description: 'Add, update, and manage default shipping and billing address records.',
   }
 }

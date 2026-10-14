@@ -14,7 +14,7 @@ import { RouteProgressBar } from '@/components/storefront/route-progress-bar'
 export const metadata: Metadata = {
   title: {
     template: '%s | Bashtoli Stationery',
-    default: 'Bashtoli Stationery | Your Neighborhood Stationery Shop',
+    default: 'Bashtoli Stationery',
   },
   description: 'Pens, pencils, paper, pouches & more — everything you need to write, create, and organise. Visit Bashtoli Stationery today.',
 }

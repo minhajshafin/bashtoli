@@ -6,7 +6,7 @@ import { fetchCustomerOrders } from '@/lib/queries/customer-orders'
 
 export async function generateMetadata() {
   return {
-    title: 'Account Overview | Bashtoli',
+    title: 'Account Overview',
     description: 'Manage your Bashtoli orders, wishlist, and customer profile.',
   }
 }

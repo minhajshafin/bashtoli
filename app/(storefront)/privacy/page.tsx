@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Bashtoli Stationery',
+  title: 'Privacy Policy',
   description: 'Learn how Bashtoli Stationery collects, protects, and manages your personal information.',
 }
 

@@ -5,7 +5,7 @@ import { WishlistItem } from '@/components/storefront/wishlist-item'
 
 export async function generateMetadata() {
   return {
-    title: 'My Wishlist | Bashtoli',
+    title: 'My Wishlist',
     description: 'View products you have saved for later in your Bashtoli wishlist.',
   }
 }

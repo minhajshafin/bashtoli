@@ -5,7 +5,7 @@ import React from 'react'
 
 export async function generateMetadata() {
   return {
-    title: 'Profile Settings | Bashtoli',
+    title: 'Profile Settings',
     description: 'Manage your personal name, phone number, shipping address, and password settings.',
   }
 }

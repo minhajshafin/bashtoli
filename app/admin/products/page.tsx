@@ -15,7 +15,7 @@ import {
 import { ProductList } from '@/components/admin/product-list'
 
 export const metadata: Metadata = {
-  title: 'Products | Bashtoli Admin',
+  title: 'Products',
   description: 'Manage store catalog, prices, and status.',
 }
 

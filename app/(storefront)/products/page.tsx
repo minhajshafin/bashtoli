@@ -17,13 +17,13 @@ interface ProductsPageProps {
 }
 
 export const metadata = {
-  title: 'Stationery Catalog & Goods | Bashtoli',
+  title: 'Stationery Catalog & Goods',
   description: 'Explore handpicked notebooks, artisanal pens, and paper goods crafted with care at Bashtoli Stationery, Dhaka.',
   alternates: {
     canonical: 'https://bashtoli.com/products',
   },
   openGraph: {
-    title: 'Stationery Catalog & Goods | Bashtoli',
+    title: 'Stationery Catalog & Goods',
     description: 'Explore handpicked notebooks, artisanal pens, and paper goods crafted with care at Bashtoli Stationery, Dhaka.',
     url: 'https://bashtoli.com/products',
     siteName: 'Bashtoli Stationery',
