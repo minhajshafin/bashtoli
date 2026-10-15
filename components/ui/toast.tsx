@@ -48,14 +48,14 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="group relative flex items-start gap-3 p-3.5 sm:p-4 rounded-2xl bg-cream-100/95 text-forest-950 border border-forest-200/90 shadow-xl backdrop-blur-md pointer-events-auto overflow-hidden animate-toast-enter selection:bg-gold-500/20 selection:text-forest-900"
+            className="group relative flex items-start gap-3 p-3.5 sm:p-4 rounded-2xl bg-cream-100/95 text-forest-950 border border-forest-200/90 shadow-sm pointer-events-auto overflow-hidden animate-toast-enter selection:bg-gold-500/20 selection:text-forest-900"
             role="alert"
           >
             {/* Wax-Seal Status Micro-Badge */}
             <div
-              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-xl shadow-xs border ${
+              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border ${
                 t.type === 'error'
-                  ? 'bg-rose-950 text-rose-300 border-rose-800'
+                  ? 'bg-terracotta-800 text-terracotta-100 border-terracotta-600'
                   : t.type === 'info'
                   ? 'bg-forest-800 text-cream-200 border-forest-700'
                   : 'bg-forest-900 text-gold-400 border-forest-800'
@@ -87,7 +87,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <button
               type="button"
               onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
-              className="shrink-0 -mr-1 -mt-0.5 p-1 rounded-lg text-forest-400 hover:text-forest-950 hover:bg-forest-900/5 transition-colors cursor-pointer"
+              className="shrink-0 -mr-1 -mt-0.5 p-1 rounded-lg text-forest-400 hover:text-forest-950 hover:bg-forest-900/10 active:scale-95 transition-all cursor-pointer"
               aria-label="Dismiss alert"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -100,7 +100,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               <div
                 className={`h-full animate-toast-countdown ${
                   t.type === 'error'
-                    ? 'bg-rose-500'
+                    ? 'bg-terracotta-500'
                     : t.type === 'info'
                     ? 'bg-forest-600'
                     : 'bg-gold-500'

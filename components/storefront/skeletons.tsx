@@ -50,7 +50,7 @@ export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
 export function CategorySidebarSkeleton() {
   return (
     <div
-      className="w-full rounded-3xl border border-forest-700 bg-forest-800 p-5 shadow-xl space-y-3"
+      className="w-full rounded-3xl border border-forest-700 bg-forest-800 p-5 space-y-3"
       aria-hidden="true"
     >
       {/* Eyebrow header */}

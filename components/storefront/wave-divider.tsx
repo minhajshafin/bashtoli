@@ -13,36 +13,36 @@ interface WaveConfig {
 }
 
 const WAVE_CONFIGS: Record<WaveDividerVariant, WaveConfig> = {
-  // 1. Hero (Deep Forest #0a160f) → Featured Products (Alabaster Cream #f6f0e4)
+  // 1. Hero (Deep Forest) → Featured Products (Alabaster Cream)
   'hero-to-products': {
-    containerBg: 'bg-forest-950',
+    containerBg: 'bg-bg-surface-dark',
     primaryWave:
       'M0,50 C260,26 420,76 720,52 C980,24 1160,14 1440,48 L1440,97 L0,97 Z',
-    primaryWaveFill: '#f6f0e4',
+    primaryWaveFill: 'var(--color-bg-surface)',
   },
 
-  // 2. Featured Products (Alabaster Cream #f6f0e4) → Categories (Forest Moss #102218)
+  // 2. Featured Products (Alabaster Cream) → Categories (Forest Moss)
   'products-to-categories': {
-    containerBg: 'bg-cream-100',
+    containerBg: 'bg-bg-surface',
     primaryWave:
       'M0,44 C320,80 580,26 920,74 C1160,92 1340,50 1440,56 L1440,97 L0,97 Z',
-    primaryWaveFill: '#102218',
+    primaryWaveFill: 'var(--color-bg-surface-dark-elevated)',
   },
 
-  // 3. Categories (Forest Moss #102218) → About Section (Alabaster Cream #f6f0e4)
+  // 3. Categories (Forest Moss) → About Section (Alabaster Cream)
   'categories-to-about': {
-    containerBg: 'bg-forest-900',
+    containerBg: 'bg-bg-surface-dark-elevated',
     primaryWave:
       'M0,52 C340,84 660,28 1000,68 C1180,84 1340,46 1440,54 L1440,97 L0,97 Z',
-    primaryWaveFill: '#f6f0e4',
+    primaryWaveFill: 'var(--color-bg-surface)',
   },
 
-  // 4. About Section (Alabaster Cream #f6f0e4) → Suggest an Item (Deep Forest #0a160f)
+  // 4. About Section (Alabaster Cream) → Suggest an Item (Deep Forest)
   'about-to-suggest': {
-    containerBg: 'bg-cream-100',
+    containerBg: 'bg-bg-surface',
     primaryWave:
       'M0,42 C280,20 540,78 860,48 C1120,24 1320,72 1440,58 L1440,97 L0,97 Z',
-    primaryWaveFill: '#0a160f',
+    primaryWaveFill: 'var(--color-bg-surface-dark)',
   },
 }
 

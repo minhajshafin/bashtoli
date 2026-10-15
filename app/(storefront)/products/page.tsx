@@ -102,7 +102,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       </div>
 
       {/* 2. Collection Filter Ribbon (Deep Forest Ribbon — flush below sticky navbar) */}
-      <div className="w-full bg-forest-950/98 bg-laid-paper-dark border-b border-forest-800/80 backdrop-blur-md sticky top-14 sm:top-16 z-30 shadow-sm">
+      <div className="w-full bg-forest-950/98 bg-laid-paper-dark border-b border-forest-800/80 backdrop-blur-md sticky top-14 sm:top-16 z-30">
         <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 sm:py-3">
           <Suspense>
             <CategoryFilter categories={categories} activeCategorySlug={activeCategorySlug} />
@@ -155,13 +155,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </>
         ) : (
           /* Tactile Stationery Empty State */
-          <div className="relative overflow-hidden flex flex-col items-center justify-center rounded-3xl border border-forest-900/15 bg-cream-50/80 py-18 px-6 text-center shadow-subtle my-6">
+          <div className="relative overflow-hidden flex flex-col items-center justify-center rounded-3xl border border-forest-900/15 bg-cream-50/80 py-18 px-6 text-center my-6">
             <BambooPaperWatermark
               theme="light"
               className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 opacity-30"
             />
 
-            <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-cream-200 border border-gold-500/30 text-gold-700 mb-4 shadow-xs">
+            <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-cream-200 border border-gold-500/30 text-gold-700 mb-4">
               <svg
                 className="h-7 w-7 stroke-[1.5]"
                 fill="none"
@@ -187,7 +187,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             <div className="relative z-10 flex flex-wrap gap-2.5 justify-center">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-950 text-cream-100 text-xs font-sans font-medium hover:bg-gold-500 hover:text-forest-950 transition-colors shadow-sm"
+                className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-sans font-medium"
               >
                 View All Collections
               </Link>

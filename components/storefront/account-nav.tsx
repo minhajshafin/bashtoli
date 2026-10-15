@@ -69,20 +69,20 @@ export function AccountNav() {
             <Link
               key={href}
               href={href}
-              className={`shrink-0 flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-sans transition-all duration-200 ${
+              className={`shrink-0 flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-sans transition-all duration-200 active:scale-[0.99] ${
                 isActive
                   ? 'bg-forest-950 text-cream-50 font-semibold shadow-xs'
-                  : 'text-forest-800 hover:bg-cream-200/70 hover:text-forest-950'
+                  : 'text-forest-800 hover:bg-cream-200/70 hover:text-forest-950 hover:-translate-y-0.5'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <span className={isActive ? 'text-gold-400' : 'text-forest-500'}>
+                <span className={isActive ? 'text-text-accent' : 'text-forest-500'}>
                   {icon}
                 </span>
                 <span>{label}</span>
               </div>
               {isActive && (
-                <span className="hidden lg:inline-block w-1.5 h-1.5 rounded-full bg-gold-400 ml-2 shrink-0" />
+                <span className="hidden lg:inline-block w-1.5 h-1.5 rounded-full bg-btn-accent-bg ml-2 shrink-0" />
               )}
             </Link>
           )
@@ -93,9 +93,9 @@ export function AccountNav() {
         <form action={logoutAction}>
           <button
             type="submit"
-            className="flex items-center gap-2 text-xs sm:text-sm font-medium text-rose-700 hover:text-rose-800 px-3.5 py-2 rounded-xl hover:bg-rose-50 transition-colors w-full text-left cursor-pointer"
+            className="flex items-center gap-2 text-xs sm:text-sm font-medium text-terracotta-700 hover:text-terracotta-800 px-3.5 py-2 rounded-xl hover:bg-terracotta-100 transition-colors w-full text-left cursor-pointer active:scale-[0.99]"
           >
-            <svg className="w-4 h-4 shrink-0 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="w-4 h-4 shrink-0 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
             </svg>
             Sign Out

@@ -77,10 +77,11 @@ export function SortDropdown() {
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-labelledby="sort-label"
-          className="flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-sans font-medium transition-all duration-200 cursor-pointer bg-forest-900/90 text-cream-100 border border-forest-700/80 hover:border-gold-500/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-gold-400/40"
-          style={{
-            borderColor: isOpen ? 'rgba(196, 162, 101, 0.7)' : undefined,
-          }}
+          className={`flex items-center gap-2.5 rounded-full px-4 py-2 text-xs font-sans font-medium transition-all duration-200 cursor-pointer text-cream-100 border focus:outline-none focus:ring-2 focus:ring-focus-ring ${
+            isOpen
+              ? 'border-border-gold bg-forest-800 text-gold-300'
+              : 'border-border-dark bg-forest-900/90 hover:border-border-gold hover:text-gold-200 hover:bg-forest-800/80'
+          }`}
         >
           <span className="truncate">{activeOption.label}</span>
           <svg
@@ -101,7 +102,7 @@ export function SortDropdown() {
           <div
             role="listbox"
             aria-labelledby="sort-label"
-            className="absolute right-0 mt-2 w-52 rounded-2xl bg-forest-950/98 backdrop-blur-md border border-gold-500/30 p-1.5 shadow-glass z-50 animate-fade-in"
+            className="absolute right-0 mt-2 w-52 rounded-2xl bg-forest-950/98 backdrop-blur-md border border-border-gold p-1.5 shadow-sm z-50 animate-fade-in"
           >
             {SORT_OPTIONS.map((opt) => {
               const isSelected = opt.value === currentSort
@@ -114,8 +115,8 @@ export function SortDropdown() {
                   onClick={() => handleSelect(opt.value)}
                   className={`flex items-center justify-between w-full px-3 py-2 text-xs rounded-xl font-sans text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-gold-500 text-forest-950 font-semibold'
-                      : 'text-cream-200 hover:bg-forest-800/80 hover:text-gold-300'
+                      ? 'bg-btn-accent-bg text-btn-accent-text font-semibold'
+                      : 'text-cream-200 hover:bg-forest-800 hover:text-gold-300 active:bg-forest-700'
                   }`}
                 >
                   <span>{opt.label}</span>

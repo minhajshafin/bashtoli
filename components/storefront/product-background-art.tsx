@@ -144,7 +144,7 @@ export function ProductBackgroundArt() {
             width="72"
             height="72"
             rx="12"
-            stroke="#a33327"
+            stroke="var(--color-terracotta-500)"
             strokeWidth="1.5"
             strokeDasharray="60 2 40 2"
             className="opacity-40"
@@ -153,7 +153,7 @@ export function ProductBackgroundArt() {
             x="40"
             y="36"
             textAnchor="middle"
-            fill="#a33327"
+            fill="var(--color-terracotta-500)"
             fillOpacity="0.45"
             fontSize="15"
             fontFamily="serif"
@@ -165,7 +165,7 @@ export function ProductBackgroundArt() {
             x="40"
             y="56"
             textAnchor="middle"
-            fill="#a33327"
+            fill="var(--color-terracotta-500)"
             fillOpacity="0.35"
             fontSize="7"
             fontFamily="sans-serif"
@@ -183,7 +183,7 @@ export function ProductBackgroundArt() {
       >
         <svg viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-forest-900/10">
           <path d="M2 16 C16 6, 42 6, 62 16 C42 22, 16 22, 2 16 Z" fill="currentColor" />
-          <path d="M2 16 C20 15, 40 15, 58 16" stroke="#f6f0e4" strokeWidth="0.75" strokeOpacity="0.6" strokeLinecap="round" />
+          <path d="M2 16 C20 15, 40 15, 58 16" stroke="var(--color-cream-100)" strokeWidth="0.75" strokeOpacity="0.6" strokeLinecap="round" />
         </svg>
       </div>
       <div
@@ -192,7 +192,7 @@ export function ProductBackgroundArt() {
       >
         <svg viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-forest-900/10">
           <path d="M2 16 C16 6, 42 6, 62 16 C42 22, 16 22, 2 16 Z" fill="currentColor" />
-          <path d="M2 16 C20 15, 40 15, 58 16" stroke="#f6f0e4" strokeWidth="0.75" strokeOpacity="0.6" strokeLinecap="round" />
+          <path d="M2 16 C20 15, 40 15, 58 16" stroke="var(--color-cream-100)" strokeWidth="0.75" strokeOpacity="0.6" strokeLinecap="round" />
         </svg>
       </div>
     </div>

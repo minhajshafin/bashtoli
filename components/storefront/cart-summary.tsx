@@ -57,7 +57,7 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
 
       {/* Warnings block */}
       {hasUnavailableItems && (
-        <div className="rounded-xl bg-rose-50 border border-rose-200/80 p-3 text-xs text-rose-700">
+        <div className="rounded-xl bg-terracotta-100 border border-terracotta-400/40 p-3 text-xs text-terracotta-700">
           <p className="font-semibold">Checkout Unavailable</p>
           <p className="mt-0.5 text-[11px]">Please remove any unavailable items from your shopping bag before proceeding.</p>
         </div>
@@ -75,7 +75,7 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
         ) : (
           <Link
             href="/checkout"
-            className="w-full flex h-11 sm:h-12 items-center justify-center rounded-xl bg-gold-500 text-xs font-sans font-bold uppercase tracking-[0.14em] text-forest-950 shadow-xs shadow-gold-500/20 hover:bg-gold-400 active:scale-[0.98] transition-all duration-200 cursor-pointer"
+            className="btn-accent rounded-xl w-full flex h-11 sm:h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer"
           >
             Proceed to Delivery Details &rarr;
           </Link>

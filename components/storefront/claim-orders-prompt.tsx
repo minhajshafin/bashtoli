@@ -79,7 +79,7 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
           type="button"
           onClick={handleClaim}
           disabled={isPending}
-          className="inline-flex h-10 items-center justify-center rounded-xl bg-forest-900 px-5 text-xs font-sans font-semibold text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 active:scale-[0.98] disabled:opacity-50 transition-all cursor-pointer"
+          className="btn-primary inline-flex h-10 items-center justify-center rounded-xl px-5 text-xs font-sans font-semibold disabled:opacity-50"
         >
           {isPending ? 'Linking Orders...' : 'Link Orders to My Account'}
         </button>

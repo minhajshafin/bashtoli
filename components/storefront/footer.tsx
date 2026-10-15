@@ -32,14 +32,14 @@ function FooterColumn({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-light text-forest-300 hover:text-gold-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                className="text-xs font-light text-text-inverse-secondary hover:text-text-accent transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
               >
                 {label}
               </a>
             ) : (
               <Link
                 href={href}
-                className="text-xs font-light text-forest-300 hover:text-cream-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-sm"
+                className="text-xs font-light text-text-inverse-secondary hover:text-text-accent transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
               >
                 {label}
               </Link>
@@ -137,7 +137,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={label}
-                    className={`inline-flex h-7.5 w-7.5 items-center justify-center rounded-full border border-forest-800 bg-forest-900/60 ${color} transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60`}
+                    className={`inline-flex h-7.5 w-7.5 items-center justify-center rounded-full border border-forest-800 bg-forest-900/60 ${color} hover:bg-forest-800/80 active:scale-95 transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60`}
                   >
                     <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                       {icon}
@@ -192,7 +192,7 @@ export function Footer() {
                 <span className="text-forest-400 text-[11px]">Open 7 days &middot; 7am &ndash; 11pm</span>
                 <a
                   href="tel:01320903666"
-                  className="text-gold-400 hover:text-gold-300 font-price font-medium text-xs transition-colors"
+                  className="text-text-accent hover:text-text-accent-hover font-price font-medium text-xs transition-colors"
                 >
                   01320-903666
                 </a>
@@ -203,7 +203,7 @@ export function Footer() {
                   href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors uppercase tracking-wider"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors uppercase tracking-wider"
                 >
                   <span>Open in Google Maps</span>
                   <span aria-hidden="true">&rarr;</span>
@@ -220,10 +220,10 @@ export function Footer() {
           </p>
 
           <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-gold-400 transition-colors duration-200">
+            <Link href="/privacy" className="hover:text-text-accent transition-colors duration-200">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-gold-400 transition-colors duration-200">
+            <Link href="/terms" className="hover:text-text-accent transition-colors duration-200">
               Terms
             </Link>
           </div>
@@ -231,10 +231,10 @@ export function Footer() {
           <button
             type="button"
             onClick={scrollToTop}
-            className="group inline-flex items-center gap-2 hover:text-gold-400 transition-colors duration-200 cursor-pointer"
+            className="group inline-flex items-center gap-2 hover:text-text-accent transition-colors duration-200 cursor-pointer active:scale-95"
           >
             <span>Back to top</span>
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 transition-colors">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:bg-forest-800/60 transition-colors">
               <svg className="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <line x1="12" y1="19" x2="12" y2="5" />
                 <polyline points="6 11 12 5 18 11" />

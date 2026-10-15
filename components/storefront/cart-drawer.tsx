@@ -66,7 +66,7 @@ export function CartDrawer() {
       {/* Slide-out Drawer Panel */}
       <div
         ref={drawerRef}
-        className="relative flex h-full w-full max-w-md flex-col bg-cream-50 text-forest-900 shadow-2xl animate-slide-in-right border-l border-forest-200/80 z-10"
+        className="relative flex h-full w-full max-w-md flex-col bg-cream-50 text-forest-900 shadow-sm animate-slide-in-right border-l border-forest-200/80 z-10"
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between border-b border-forest-200/80 bg-cream-100/60 px-6 py-4.5">
@@ -87,7 +87,7 @@ export function CartDrawer() {
             type="button"
             onClick={closeDrawer}
             aria-label="Close Shopping Bag"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-forest-500 hover:bg-forest-200/60 hover:text-forest-900 transition-colors cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-text-muted hover:bg-btn-ghost-hover-bg hover:text-btn-ghost-hover-text transition-colors cursor-pointer"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -138,7 +138,7 @@ export function CartDrawer() {
               <Link
                 href="/products"
                 onClick={closeDrawer}
-                className="inline-flex items-center justify-center rounded-full bg-forest-900 px-6 py-2.5 text-xs font-semibold text-cream-100 hover:bg-gold-500 hover:text-forest-950 transition-all shadow-sm active:scale-95"
+                className="btn-primary inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide"
               >
                 Browse Collection
               </Link>
@@ -183,7 +183,7 @@ export function CartDrawer() {
                         type="button"
                         onClick={() => updateQty(item.variant_id, item.qty - 1)}
                         disabled={item.qty <= 1}
-                        className="flex h-full w-6.5 items-center justify-center text-forest-400 hover:text-forest-900 disabled:opacity-30 cursor-pointer"
+                        className="flex h-full w-6.5 items-center justify-center text-forest-400 hover:text-forest-900 hover:bg-cream-200/80 disabled:opacity-30 cursor-pointer active:scale-95 transition-colors"
                         aria-label="Decrease quantity"
                       >
                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -191,14 +191,14 @@ export function CartDrawer() {
                         </svg>
                       </button>
 
-                      <span className="font-price w-6 text-center text-xs font-bold text-forest-900 select-none">
+                      <span className="font-price w-6 text-center text-xs font-bold text-forest-950 select-none">
                         {item.qty}
                       </span>
 
                       <button
                         type="button"
                         onClick={() => updateQty(item.variant_id, item.qty + 1)}
-                        className="flex h-full w-6.5 items-center justify-center text-forest-400 hover:text-forest-900 cursor-pointer"
+                        className="flex h-full w-6.5 items-center justify-center text-forest-400 hover:text-forest-900 hover:bg-cream-200/80 cursor-pointer active:scale-95 transition-colors"
                         aria-label="Increase quantity"
                       >
                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -210,7 +210,7 @@ export function CartDrawer() {
                     <button
                       type="button"
                       onClick={() => removeItem(item.variant_id)}
-                      className="text-[11px] text-forest-400 hover:text-terracotta-500 transition-colors ml-auto p-1 cursor-pointer"
+                      className="text-[11px] text-text-muted hover:text-btn-danger-bg transition-colors ml-auto p-1 cursor-pointer active:scale-90"
                       title="Remove item"
                       aria-label={`Remove ${item.name}`}
                     >
@@ -242,7 +242,7 @@ export function CartDrawer() {
             <Link
               href="/checkout"
               onClick={closeDrawer}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gold-500 px-6 text-xs font-bold uppercase tracking-wider text-forest-950 hover:bg-gold-400 active:scale-98 transition-all shadow-md shadow-gold-500/20"
+              className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-xs font-bold uppercase tracking-wider"
             >
               <span>Proceed to Checkout</span>
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,7 +254,7 @@ export function CartDrawer() {
               <Link
                 href="/bag"
                 onClick={closeDrawer}
-                className="text-xs text-forest-600 hover:text-forest-950 underline underline-offset-4 transition-colors"
+                className="link-editorial text-xs font-medium"
               >
                 View Full Shopping Bag
               </Link>

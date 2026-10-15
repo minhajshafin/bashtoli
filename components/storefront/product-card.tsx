@@ -127,7 +127,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
 
   return (
     <div
-      className="group relative flex flex-col justify-end overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] bg-forest-950 border border-forest-800/50 hover:border-gold-500/60 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_40px_-8px_rgba(16,34,24,0.35)]"
+      className="group relative flex flex-col justify-end overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] bg-forest-950 border border-forest-800/50 hover:border-gold-500/60 transition-all duration-300 hover:-translate-y-1"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -209,7 +209,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
                 onClick={handleAddToCart}
                 aria-label={`Add ${product.name} to bag`}
                 title="+ Add to Bag"
-                className="h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full bg-forest-950/90 hover:bg-gold-500 hover:text-forest-950 backdrop-blur-md text-cream-50 text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 shadow-md border border-gold-500/40 active:scale-95 transition-all cursor-pointer pointer-events-auto"
+                className="h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full bg-forest-950/90 hover:bg-btn-accent-bg hover:text-btn-accent-text hover:border-btn-accent-border backdrop-blur-md text-cream-50 text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 border border-border-gold active:scale-95 transition-all cursor-pointer pointer-events-auto"
               >
                 <svg
                   className="h-3.5 w-3.5"
@@ -260,7 +260,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
           <h3 className="font-display font-semibold text-[13px] sm:text-[15px] text-cream-50 tracking-tight leading-snug truncate flex-1">
             <Link
               href={`/products/${product.slug}`}
-              className="hover:text-gold-300 transition-colors"
+              className="hover:text-text-accent transition-colors"
             >
               {product.name}
             </Link>
@@ -283,7 +283,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
               onClick={handleBuyNow}
               disabled={isNavigating}
               aria-label={`Buy ${product.name} now`}
-              className="w-full h-8 sm:h-8.5 rounded-xl bg-cream-100 hover:bg-gold-400 text-forest-950 font-sans text-xs font-bold tracking-wider uppercase active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+              className="w-full h-8 sm:h-8.5 rounded-xl btn-dark font-sans text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>{isNavigating ? 'Going to checkout...' : 'Buy Now'}</span>
               <svg

@@ -221,7 +221,7 @@ export function ProductDetailClient({
       {/* Mobile Floating Frosted Glass Purchase Bar */}
       <div
         style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
-        className={`md:hidden fixed inset-x-3 z-40 bg-forest-950/92 backdrop-blur-md border border-forest-800/80 rounded-2xl p-2.5 sm:p-3 shadow-2xl transition-all duration-300 max-w-md mx-auto ${
+        className={`md:hidden fixed inset-x-3 z-40 bg-forest-950/92 backdrop-blur-md border border-forest-800/80 rounded-2xl p-2.5 sm:p-3 shadow-sm transition-all duration-300 max-w-md mx-auto ${
           showStickyBar ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0 pointer-events-none'
         }`}
       >
@@ -240,7 +240,7 @@ export function ProductDetailClient({
               type="button"
               disabled={isSelectionComplete && selectedVariant?.stock_qty === 0}
               onClick={() => handleAddToCart(1)}
-              className="h-9 px-3 rounded-xl bg-forest-900 text-cream-100 border border-forest-700 text-[11px] font-sans font-medium tracking-wider uppercase hover:bg-forest-800 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="btn-dark h-9 px-3 rounded-xl text-[11px] font-sans font-medium tracking-wider uppercase flex items-center gap-1.5 disabled:opacity-50"
             >
               <svg className="w-3.5 h-3.5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
@@ -252,9 +252,9 @@ export function ProductDetailClient({
               type="button"
               disabled={isSelectionComplete && selectedVariant?.stock_qty === 0}
               onClick={() => handleBuyNow(1)}
-              className="h-9 px-3.5 rounded-xl bg-gold-500 text-forest-950 text-[11px] font-sans font-bold tracking-wider uppercase hover:bg-gold-400 active:scale-95 transition-all shadow-sm flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="btn-accent h-9 px-3.5 rounded-xl text-[11px] font-sans font-bold tracking-wider uppercase flex items-center gap-1.5 disabled:opacity-50"
             >
-              <svg className="w-3.5 h-3.5 text-forest-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 text-btn-accent-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>Buy Now</span>

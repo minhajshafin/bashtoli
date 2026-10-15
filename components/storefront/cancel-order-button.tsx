@@ -43,11 +43,11 @@ export function CancelOrderButton({ orderId }: CancelOrderButtonProps) {
       type="button"
       onClick={handleCancel}
       disabled={isPending}
-      className="inline-flex h-11 items-center justify-center rounded-xl border border-rose-200/80 bg-rose-50/80 px-5 text-xs sm:text-sm font-sans font-semibold text-rose-700 shadow-2xs hover:bg-rose-100 hover:text-rose-800 disabled:opacity-50 transition-all cursor-pointer"
+      className="btn-danger inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
     >
       {isPending ? (
         <span className="flex items-center gap-2">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-rose-600 border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
           Cancelling...
         </span>
       ) : (

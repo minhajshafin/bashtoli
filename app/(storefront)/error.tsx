@@ -33,13 +33,13 @@ export default function StorefrontError({
           <button
             type="button"
             onClick={reset}
-            className="h-10 px-5 rounded-xl bg-forest-900 border border-forest-800 text-cream-100 text-xs font-bold uppercase tracking-wider hover:bg-forest-800 active:scale-[0.99] transition-all cursor-pointer"
+            className="btn-primary h-10 px-5 rounded-xl text-xs font-bold uppercase tracking-wider"
           >
             Try Again
           </button>
           <Link
             href="/products"
-            className="h-10 px-5 rounded-xl bg-cream-50/90 border border-forest-200 text-forest-800 text-xs font-semibold hover:bg-cream-200/60 active:scale-[0.99] transition-all inline-flex items-center justify-center"
+            className="btn-secondary h-10 px-5 rounded-xl text-xs font-semibold inline-flex items-center justify-center"
           >
             Return to Shop
           </Link>

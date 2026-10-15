@@ -15,7 +15,7 @@ export function Breadcrumb({ category, productName }: BreadcrumbProps) {
       {/* Home */}
       <Link
         href="/products"
-        className="hover:text-gold-600 transition-colors cursor-pointer"
+        className="hover:text-text-accent transition-colors cursor-pointer"
       >
         Shop
       </Link>
@@ -36,7 +36,7 @@ export function Breadcrumb({ category, productName }: BreadcrumbProps) {
         <>
           <Link
             href={`/products?category=${category.slug}`}
-            className="hover:text-gold-600 transition-colors whitespace-nowrap cursor-pointer"
+            className="hover:text-text-accent transition-colors whitespace-nowrap cursor-pointer"
           >
             {category.name}
           </Link>

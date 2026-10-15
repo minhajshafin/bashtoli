@@ -101,7 +101,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
               type="button"
               onClick={() => scrollManual('left')}
               aria-label="Scroll left"
-              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-forest-900/15 bg-cream-50/90 text-forest-900 hover:bg-forest-950 hover:text-cream-50 hover:border-forest-950 transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+              className="btn-secondary inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full"
             >
               <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 19l-7-7 7-7" />
@@ -111,7 +111,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
               type="button"
               onClick={() => scrollManual('right')}
               aria-label="Scroll right"
-              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-forest-900/15 bg-cream-50/90 text-forest-900 hover:bg-forest-950 hover:text-cream-50 hover:border-forest-950 transition-all duration-200 cursor-pointer shadow-xs active:scale-95"
+              className="btn-secondary inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full"
             >
               <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5l7 7-7 7" />
@@ -122,7 +122,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
           <Link
             id="featured-view-all-link"
             href="/products"
-            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.16em] font-semibold text-forest-950 hover:text-gold-700 transition-colors group font-sans pl-3 border-l border-forest-900/15"
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.16em] font-semibold text-text-primary hover:text-text-accent transition-colors group font-sans pl-3 border-l border-forest-900/15"
           >
             <span>View All</span>
             <svg
@@ -145,10 +145,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       >
         {/* Subtle, narrow left edge fade */}
         <div
-          className="absolute left-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to right, rgba(246, 240, 228, 0.75) 0%, transparent 100%)',
-          }}
+          className="absolute left-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none bg-gradient-to-r from-bg-surface/80 to-transparent"
         />
 
         {/* Horizontal Carousel Track with Native Scroll & Auto-Gliding */}
@@ -169,10 +166,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
 
         {/* Subtle, narrow right edge fade */}
         <div
-          className="absolute right-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to left, rgba(246, 240, 228, 0.75) 0%, transparent 100%)',
-          }}
+          className="absolute right-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none bg-gradient-to-l from-bg-surface/80 to-transparent"
         />
       </div>
     </div>

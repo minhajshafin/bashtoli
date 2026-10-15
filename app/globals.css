@@ -31,6 +31,8 @@
   --color-cream-300: #ded0b9;
 
   /* Terracotta — Muted Artisanal Rust */
+  --color-terracotta-800: #5e1c0d;
+  --color-terracotta-700: #742413;
   --color-terracotta-600: #8f3621;
   --color-terracotta-500: #b54a2e;
   --color-terracotta-400: #d46e50;
@@ -41,11 +43,144 @@
   --color-sage-100: #e5ece7;
   --color-sage-200: #cbdcd0;
 
-  /* Shadows — Multi-layered Diffuse Elevations */
-  --shadow-subtle: 0 1px 2px rgba(16, 34, 24, 0.04), 0 2px 6px rgba(16, 34, 24, 0.02);
-  --shadow-atelier: 0 2px 4px rgba(16, 34, 24, 0.03), 0 12px 28px -4px rgba(16, 34, 24, 0.07);
-  --shadow-lifted: 0 8px 24px -4px rgba(16, 34, 24, 0.08), 0 24px 48px -8px rgba(16, 34, 24, 0.12);
-  --shadow-glass: 0 20px 50px rgba(10, 22, 15, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  /* ==========================================================================
+     Semantic Interactive Color Tokens (Tailwind CSS v4 @theme)
+     ========================================================================== */
+
+  /* Button Tokens: Primary (Deep Forest Atelier Action) */
+  --color-btn-primary-bg: #0a160f;
+  --color-btn-primary-text: #fbf8f2;
+  --color-btn-primary-border: #162e21;
+  --color-btn-primary-hover-bg: #1e3d2c;
+  --color-btn-primary-hover-text: #ffffff;
+  --color-btn-primary-hover-border: #c4a265;
+  --color-btn-primary-active-bg: #102218;
+
+  /* Button Tokens: Accent / Gold CTA (Celebrated Brass Action) */
+  --color-btn-accent-bg: #c4a265;
+  --color-btn-accent-text: #0a160f;
+  --color-btn-accent-border: #9a7833;
+  --color-btn-accent-hover-bg: #ddc391;
+  --color-btn-accent-hover-text: #07100b;
+  --color-btn-accent-hover-border: #c4a265;
+  --color-btn-accent-active-bg: #9a7833;
+
+  /* Button Tokens: Secondary / Parchment Outline */
+  --color-btn-secondary-bg: #faf6ee;
+  --color-btn-secondary-text: #102218;
+  --color-btn-secondary-border: #d8caa8;
+  --color-btn-secondary-hover-bg: #ede3ce;
+  --color-btn-secondary-hover-text: #0a160f;
+  --color-btn-secondary-hover-border: #9a7833;
+  --color-btn-secondary-active-bg: #ded0b9;
+
+  /* Button Tokens: Danger / Destructive (Terracotta Rust) */
+  --color-btn-danger-bg: #8f3621;
+  --color-btn-danger-text: #fbf8f2;
+  --color-btn-danger-border: #742413;
+  --color-btn-danger-hover-bg: #742413;
+  --color-btn-danger-hover-text: #ffffff;
+  --color-btn-danger-hover-border: #5e1c0d;
+  --color-btn-danger-active-bg: #5e1c0d;
+
+  /* Button Tokens: Warning (Burnished Amber) */
+  --color-btn-warning-bg: #b47a1e;
+  --color-btn-warning-text: #fbf8f2;
+  --color-btn-warning-border: #9a6616;
+  --color-btn-warning-hover-bg: #9a6616;
+  --color-btn-warning-hover-text: #ffffff;
+  --color-btn-warning-hover-border: #7d510e;
+  --color-btn-warning-active-bg: #7d510e;
+
+  /* Button Tokens: Dark Inverted (For dark forest backgrounds) */
+  --color-btn-dark-bg: #f6f0e4;
+  --color-btn-dark-text: #0a160f;
+  --color-btn-dark-border: #c4a265;
+  --color-btn-dark-hover-bg: #ddc391;
+  --color-btn-dark-hover-text: #07100b;
+  --color-btn-dark-hover-border: #9a7833;
+  --color-btn-dark-active-bg: #c4a265;
+
+  /* Button Tokens: Ghost / Icon (Light Surface) */
+  --color-btn-ghost-text: #1e3d2c;
+  --color-btn-ghost-hover-bg: #ede3ce;
+  --color-btn-ghost-hover-text: #0a160f;
+  --color-btn-ghost-active-bg: #ded0b9;
+
+  /* Button Tokens: Ghost / Icon (Dark Surface) */
+  --color-btn-ghost-dark-text: #eee0bf;
+  --color-btn-ghost-dark-hover-bg: rgba(246, 240, 228, 0.12);
+  --color-btn-ghost-dark-hover-text: #ddc391;
+  --color-btn-ghost-dark-active-bg: rgba(246, 240, 228, 0.20);
+
+  /* Interactive Links */
+  --color-link-default: #1e3d2c;
+  --color-link-hover: #c4a265;
+  --color-link-active: #9a7833;
+  --color-link-dark-default: #ece3d2;
+  --color-link-dark-hover: #ddc391;
+  --color-link-dark-active: #c4a265;
+  --color-link-muted: #386b4f;
+  --color-link-muted-hover: #0a160f;
+  --color-link-muted-dark: #90bfa3;
+  --color-link-muted-dark-hover: #eee0bf;
+
+  /* Interactive Filter Chips */
+  --color-chip-active-bg: #c4a265;
+  --color-chip-active-text: #0a160f;
+  --color-chip-active-border: #9a7833;
+  --color-chip-inactive-bg: #102218;
+  --color-chip-inactive-text: #ece3d2;
+  --color-chip-inactive-border: #1e3d2c;
+  --color-chip-inactive-hover-bg: #1e3d2c;
+  --color-chip-inactive-hover-text: #eee0bf;
+  --color-chip-inactive-hover-border: #c4a265;
+
+  /* Semantic Form Inputs */
+  --color-input-bg: #fbf8f2;
+  --color-input-text: #0a160f;
+  --color-input-border: #ded0b9;
+  --color-input-border-hover: #5c9674;
+  --color-input-border-focus: #c4a265;
+  --color-input-focus-ring: rgba(196, 162, 101, 0.25);
+  --color-input-dark-bg: rgba(10, 22, 15, 0.65);
+  --color-input-dark-text: #fbf8f2;
+  --color-input-dark-border: rgba(30, 61, 44, 0.80);
+  --color-input-dark-border-hover: rgba(92, 150, 116, 0.85);
+  --color-input-dark-border-focus: #c4a265;
+
+  /* Semantic Surfaces & Backgrounds */
+  --color-bg-canvas: #fbf8f2;
+  --color-bg-surface: #f6f0e4;
+  --color-bg-surface-elevated: #faf6ee;
+  --color-bg-surface-sunken: #ede3ce;
+  --color-bg-surface-dark: #0a160f;
+  --color-bg-surface-dark-elevated: #102218;
+  --color-bg-surface-dark-card: #162e21;
+
+  /* Semantic Text Hierarchy */
+  --color-text-primary: #0a160f;
+  --color-text-secondary: #29503b;
+  --color-text-muted: #5c9674;
+  --color-text-inverse: #fbf8f2;
+  --color-text-inverse-secondary: #ece3d2;
+  --color-text-inverse-muted: #90bfa3;
+  --color-text-accent: #c4a265;
+  --color-text-accent-hover: #ddc391;
+
+  /* Semantic Borders */
+  --color-border-primary: rgba(16, 34, 24, 0.12);
+  --color-border-subtle: rgba(16, 34, 24, 0.06);
+  --color-border-dark: rgba(246, 240, 228, 0.12);
+  --color-border-dark-subtle: rgba(246, 240, 228, 0.06);
+  --color-border-gold: rgba(196, 162, 101, 0.40);
+  --color-border-gold-subtle: rgba(196, 162, 101, 0.20);
+
+  /* Shadows — Restrained Paper Boundaries (Minimal, Crisp, Zero Glow) */
+  --shadow-subtle: 0 1px 2px rgba(16, 34, 24, 0.04);
+  --shadow-atelier: 0 1px 3px rgba(16, 34, 24, 0.05);
+  --shadow-lifted: 0 2px 8px rgba(16, 34, 24, 0.06);
+  --shadow-glass: 0 4px 12px rgba(10, 22, 15, 0.12);
 
   /* Animations */
   --animate-shake: shake 0.35s ease-in-out;
@@ -68,6 +203,10 @@
   --border-hairline-dark: rgba(246, 240, 228, 0.10);
   --border-hairline-light: rgba(16, 34, 24, 0.08);
   --border-hairline-gold: rgba(196, 162, 101, 0.24);
+
+  /* Focus Rings & Interactive States */
+  --color-focus-ring: var(--color-gold-500);
+  --color-focus-ring-offset: var(--color-cream-50);
 
   /* Motion Timing Defaults */
   --ease-atelier: cubic-bezier(0.16, 1, 0.3, 1);
@@ -105,8 +244,8 @@
 }
 
 body {
-  background: #fbf8f2;
-  color: #102218;
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
   font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -205,7 +344,7 @@ html {
 @layer base {
   button:focus-visible,
   a:focus-visible {
-    outline: 2px solid #c9a96e;
+    outline: 2px solid var(--color-focus-ring);
     outline-offset: 2px;
   }
   input:focus-visible,
@@ -234,17 +373,236 @@ input[type="search"]::-webkit-search-results-decoration {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2d5240;
+  background: var(--color-forest-600);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d6e54;
+  background: var(--color-forest-500);
 }
 
 /* Text selection */
 ::selection {
-  background: #c9a96e;
-  color: #1a3326;
+  background: var(--color-btn-accent-bg);
+  color: var(--color-forest-950);
+}
+
+/* ==========================================================================
+   Semantic Interactive Component Classes (Tactile Old Dhaka Stationery)
+   ========================================================================== */
+
+/* Primary Button: Grounding dark forest action with clear hover shift */
+.btn-primary {
+  background-color: var(--color-btn-primary-bg);
+  color: var(--color-btn-primary-text);
+  border: 1px solid var(--color-btn-primary-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-btn-primary-hover-bg);
+  color: var(--color-btn-primary-hover-text);
+  border-color: var(--color-btn-primary-hover-border);
+  transform: translateY(-1px);
+}
+.btn-primary:active:not(:disabled) {
+  background-color: var(--color-btn-primary-active-bg);
+  transform: translateY(0) scale(0.98);
+}
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Accent Button: Celebrated warm brass CTA */
+.btn-accent {
+  background-color: var(--color-btn-accent-bg);
+  color: var(--color-btn-accent-text);
+  border: 1px solid var(--color-btn-accent-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-accent:hover:not(:disabled) {
+  background-color: var(--color-btn-accent-hover-bg);
+  color: var(--color-btn-accent-hover-text);
+  border-color: var(--color-btn-accent-hover-border);
+  transform: translateY(-1px);
+}
+.btn-accent:active:not(:disabled) {
+  background-color: var(--color-btn-accent-active-bg);
+  transform: translateY(0) scale(0.98);
+}
+.btn-accent:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Secondary Button: Tactile warm parchment action */
+.btn-secondary {
+  background-color: var(--color-btn-secondary-bg);
+  color: var(--color-btn-secondary-text);
+  border: 1px solid var(--color-btn-secondary-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-btn-secondary-hover-bg);
+  color: var(--color-btn-secondary-hover-text);
+  border-color: var(--color-btn-secondary-hover-border);
+  transform: translateY(-1px);
+}
+.btn-secondary:active:not(:disabled) {
+  background-color: var(--color-btn-secondary-active-bg);
+  transform: translateY(0) scale(0.98);
+}
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Danger Button: Muted terracotta destructive action */
+.btn-danger {
+  background-color: var(--color-btn-danger-bg);
+  color: var(--color-btn-danger-text);
+  border: 1px solid var(--color-btn-danger-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-btn-danger-hover-bg);
+  color: var(--color-btn-danger-hover-text);
+  border-color: var(--color-btn-danger-hover-border);
+  transform: translateY(-1px);
+}
+.btn-danger:active:not(:disabled) {
+  background-color: var(--color-btn-danger-active-bg);
+  transform: translateY(0) scale(0.98);
+}
+.btn-danger:focus-visible {
+  outline: 2px solid var(--color-btn-danger-bg);
+  outline-offset: 2px;
+}
+
+/* Warning Button: Burnished amber notice action */
+.btn-warning {
+  background-color: var(--color-btn-warning-bg);
+  color: var(--color-btn-warning-text);
+  border: 1px solid var(--color-btn-warning-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-warning:hover:not(:disabled) {
+  background-color: var(--color-btn-warning-hover-bg);
+  color: var(--color-btn-warning-hover-text);
+  border-color: var(--color-btn-warning-hover-border);
+  transform: translateY(-1px);
+}
+.btn-warning:active:not(:disabled) {
+  background-color: var(--color-btn-warning-active-bg);
+  transform: translateY(0) scale(0.98);
+}
+.btn-warning:focus-visible {
+  outline: 2px solid var(--color-btn-warning-bg);
+  outline-offset: 2px;
+}
+
+/* Dark Canvas Button: Light cream card button on dark forest canvas */
+.btn-dark {
+  background-color: var(--color-btn-dark-bg);
+  color: var(--color-btn-dark-text);
+  border: 1px solid var(--color-btn-dark-border);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-dark:hover:not(:disabled) {
+  background-color: var(--color-btn-dark-hover-bg);
+  color: var(--color-btn-dark-hover-text);
+  border-color: var(--color-btn-dark-hover-border);
+  transform: translateY(-1px);
+}
+.btn-dark:active:not(:disabled) {
+  background-color: var(--color-btn-dark-active-bg);
+  transform: translateY(0) scale(0.98);
+}
+.btn-dark:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Ghost Button (Light Surface) */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-btn-ghost-text);
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-btn-ghost-hover-bg);
+  color: var(--color-btn-ghost-hover-text);
+}
+.btn-ghost:active:not(:disabled) {
+  background-color: var(--color-btn-ghost-active-bg);
+  transform: scale(0.98);
+}
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Ghost Button (Dark Surface) */
+.btn-ghost-dark {
+  background-color: transparent;
+  color: var(--color-btn-ghost-dark-text);
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn-ghost-dark:hover:not(:disabled) {
+  background-color: var(--color-btn-ghost-dark-hover-bg);
+  color: var(--color-btn-ghost-dark-hover-text);
+}
+.btn-ghost-dark:active:not(:disabled) {
+  background-color: var(--color-btn-ghost-dark-active-bg);
+  transform: scale(0.98);
+}
+.btn-ghost-dark:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Interactive Text Links */
+.link-editorial {
+  color: var(--color-link-default);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(30, 61, 44, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-editorial:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
+}
+.link-editorial:active {
+  color: var(--color-link-active);
+}
+
+.link-dark {
+  color: var(--color-link-dark-default);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-dark:hover {
+  color: var(--color-link-dark-hover);
+}
+.link-dark:active {
+  color: var(--color-link-dark-active);
+}
+
+.link-muted {
+  color: var(--color-link-muted);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-muted:hover {
+  color: var(--color-link-muted-hover);
 }
 
 /* Delayed Skeleton Reveal (prevents flash of loading state on fast responses) */

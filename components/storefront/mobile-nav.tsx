@@ -37,7 +37,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
       <button
         id="storefront-mobile-nav-toggle"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center w-8.5 h-8.5 rounded-lg text-gold-400 hover:text-gold-300 hover:bg-forest-800/40 transition-colors cursor-pointer active:scale-95"
+        className="inline-flex items-center justify-center w-8.5 h-8.5 rounded-lg text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 transition-all cursor-pointer active:scale-95"
         aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
       >
@@ -60,7 +60,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
             aria-hidden="true"
           />
           {/* Panel - Slides from Left */}
-          <div className="relative mr-auto flex h-full w-80 max-w-[85vw] flex-col bg-forest-900 border-r border-forest-800/80 p-6 shadow-2xl animate-slide-in-left overflow-y-auto">
+          <div className="relative mr-auto flex h-full w-80 max-w-[85vw] flex-col bg-forest-900 border-r border-forest-800/80 p-6 shadow-sm animate-slide-in-left overflow-y-auto">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-forest-800 pb-4">
               <Link href="/" onClick={() => setIsOpen(false)} aria-label="Home" className="shrink-0">
@@ -76,7 +76,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               <button
                 id="storefront-mobile-nav-close"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1.5 text-forest-400 hover:text-gold-400 transition-colors cursor-pointer"
+                className="rounded-lg p-1.5 text-forest-400 hover:text-gold-300 hover:bg-forest-800/60 active:scale-95 transition-all cursor-pointer"
                 aria-label="Close menu"
               >
                 <svg className="h-5 w-5 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,7 +98,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="block py-2.5 px-3.5 rounded-xl text-xs uppercase tracking-[0.14em] font-medium text-cream-100/90 hover:text-gold-400 hover:bg-forest-800/50 transition-all"
+                  className="block py-2.5 px-3.5 rounded-xl text-xs uppercase tracking-[0.14em] font-medium text-cream-100/90 hover:text-gold-300 hover:bg-forest-800/60 active:scale-98 transition-all"
                 >
                   {item.label}
                 </Link>
@@ -117,14 +117,14 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                   </div>
                   <Link
                     href="/account"
-                    className="block text-center py-2.5 rounded-xl border border-forest-700/80 bg-forest-800/40 text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-400 hover:bg-forest-800 transition-colors"
+                    className="block text-center py-2.5 rounded-xl border border-forest-700/80 bg-forest-800/40 text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-400 hover:bg-forest-800 hover:text-gold-300 transition-all active:scale-98"
                   >
                     Manage Account
                   </Link>
                   <form action={logoutAction} className="w-full">
                     <button
                       type="submit"
-                      className="w-full text-center py-2.5 rounded-xl bg-terracotta-500/20 text-[11px] font-semibold uppercase tracking-[0.14em] text-terracotta-400 hover:bg-terracotta-500/30 transition-colors cursor-pointer"
+                      className="btn-danger w-full text-center py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-[0.14em]"
                     >
                       Sign Out
                     </button>
@@ -133,7 +133,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
               ) : (
                 <Link
                   href="/login"
-                  className="block text-center py-2.5 rounded-full bg-gold-500 text-[11px] font-semibold uppercase tracking-[0.14em] text-forest-950 hover:bg-gold-400 transition-colors shadow-xs"
+                  className="btn-accent block text-center py-2.5 rounded-full text-[11px] font-semibold uppercase tracking-[0.14em]"
                 >
                   Sign In / Register
                 </Link>

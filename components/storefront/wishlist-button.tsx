@@ -47,14 +47,14 @@ export function WishlistButton({
         type="button"
         onClick={handleToggle}
         disabled={isPending}
-        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-black/35 hover:bg-black/55 backdrop-blur-md text-white border border-white/20 hover:border-white/40 active:scale-90 transition-all duration-200 shadow-sm cursor-pointer ${className}`}
+        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-forest-950/70 hover:bg-forest-950/95 backdrop-blur-md text-text-inverse border border-border-gold-subtle hover:border-border-gold active:scale-90 transition-all duration-200 cursor-pointer ${className}`}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
       >
         <svg
           className={`h-4 w-4 transition-transform duration-200 group-hover/wishlist:scale-110 ${
             isWishlisted
-              ? 'fill-rose-500 text-rose-500 stroke-rose-500'
+              ? 'fill-terracotta-500 text-terracotta-500 stroke-terracotta-500'
               : 'fill-none stroke-white/90 group-hover/wishlist:stroke-white'
           }`}
           viewBox="0 0 24 24"
@@ -76,16 +76,16 @@ export function WishlistButton({
       type="button"
       onClick={handleToggle}
       disabled={isPending}
-      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer shadow-xs ${
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer ${
         isWishlisted
-          ? 'border-rose-300 bg-rose-50 text-rose-600 shadow-sm'
-          : 'border-forest-200 bg-cream-100 text-forest-500 hover:border-gold-500 hover:text-gold-600'
+          ? 'border-terracotta-400 bg-terracotta-100 text-terracotta-600'
+          : 'border-border-primary bg-bg-surface text-text-secondary hover:border-border-gold hover:text-text-accent hover:bg-bg-surface-elevated'
       } ${className}`}
       aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
       title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
     >
       <svg
-        className={`h-5 w-5 transition-transform ${isWishlisted ? 'fill-rose-600 scale-110' : 'fill-none stroke-current'}`}
+        className={`h-5 w-5 transition-transform ${isWishlisted ? 'fill-terracotta-600 scale-110' : 'fill-none stroke-current'}`}
         viewBox="0 0 24 24"
         strokeWidth="2"
         stroke="currentColor"

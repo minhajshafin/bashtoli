@@ -34,8 +34,8 @@ export function DeliveryZoneSelect({
             onClick={() => onChange('delivery', deliveryZone || 'inside_dhaka')}
             className={`flex items-center justify-between rounded-xl px-2.5 sm:px-4 py-2.5 border text-left transition-all cursor-pointer ${
               fulfillmentType === 'delivery'
-                ? 'bg-forest-950 text-cream-50 border-forest-950 ring-1 ring-forest-950/20 shadow-xs'
-                : 'bg-white border-forest-200/80 text-forest-800 hover:border-forest-400 hover:bg-cream-50/50 shadow-2xs'
+                ? 'bg-btn-primary-bg text-btn-primary-text border-btn-primary-border ring-1 ring-forest-950/20 shadow-xs'
+                : 'btn-secondary border border-border-primary text-text-primary shadow-2xs'
             }`}
           >
             <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
@@ -62,8 +62,8 @@ export function DeliveryZoneSelect({
             onClick={() => onChange('pickup', null)}
             className={`flex items-center justify-between rounded-xl px-2.5 sm:px-4 py-2.5 border text-left transition-all cursor-pointer ${
               fulfillmentType === 'pickup'
-                ? 'bg-forest-950 text-cream-50 border-forest-950 ring-1 ring-forest-950/20 shadow-xs'
-                : 'bg-white border-forest-200/80 text-forest-800 hover:border-forest-400 hover:bg-cream-50/50 shadow-2xs'
+                ? 'bg-btn-primary-bg text-btn-primary-text border-btn-primary-border ring-1 ring-forest-950/20 shadow-xs'
+                : 'btn-secondary border border-border-primary text-text-primary shadow-2xs'
             }`}
           >
             <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
@@ -106,8 +106,8 @@ export function DeliveryZoneSelect({
               onClick={() => onChange('delivery', 'inside_dhaka')}
               className={`flex items-center justify-between rounded-xl px-2.5 sm:px-4 py-2.5 border text-left transition-all cursor-pointer gap-1.5 ${
                 deliveryZone === 'inside_dhaka'
-                  ? 'bg-cream-100 border-forest-800 text-forest-950 font-medium ring-1 ring-forest-800/20 shadow-2xs'
-                  : 'bg-white border-forest-200/80 text-forest-800 hover:border-forest-300 shadow-2xs'
+                  ? 'bg-cream-200/90 border-border-gold text-forest-950 font-medium ring-1 ring-border-gold/40 shadow-2xs'
+                  : 'btn-secondary border border-border-primary text-forest-800 shadow-2xs'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -131,8 +131,8 @@ export function DeliveryZoneSelect({
               onClick={() => onChange('delivery', 'outside_dhaka')}
               className={`flex items-center justify-between rounded-xl px-2.5 sm:px-4 py-2.5 border text-left transition-all cursor-pointer gap-1.5 ${
                 deliveryZone === 'outside_dhaka'
-                  ? 'bg-cream-100 border-forest-800 text-forest-950 font-medium ring-1 ring-forest-800/20 shadow-2xs'
-                  : 'bg-white border-forest-200/80 text-forest-800 hover:border-forest-300 shadow-2xs'
+                  ? 'bg-cream-200/90 border-border-gold text-forest-950 font-medium ring-1 ring-border-gold/40 shadow-2xs'
+                  : 'btn-secondary border border-border-primary text-forest-800 shadow-2xs'
               }`}
             >
               <div className="flex items-center gap-1.5 min-w-0">
@@ -150,7 +150,7 @@ export function DeliveryZoneSelect({
               </span>
             </button>
           </div>
-          {error && <p className="text-rose-600 text-xs mt-1 font-medium">{error[0]}</p>}
+          {error && <p className="text-terracotta-600 text-xs mt-1 font-medium">{error[0]}</p>}
         </div>
       )}
 

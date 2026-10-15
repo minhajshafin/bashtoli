@@ -136,7 +136,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
             <button
               type="button"
               onClick={() => setIsEditingPersonal(true)}
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2 text-xs font-sans font-semibold text-forest-800 hover:bg-cream-200/60 transition-all cursor-pointer"
+              className="btn-secondary shrink-0 inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-sans font-semibold"
             >
               <svg className="h-3.5 w-3.5 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -154,9 +154,9 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
           {profileState.error && (
             <div
               role="alert"
-              className="flex items-start gap-2 rounded-xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 font-sans"
+              className="flex items-start gap-2 rounded-xl bg-terracotta-100 border border-terracotta-500/30 p-4 text-xs font-semibold text-terracotta-800 font-sans"
             >
-              <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <span>{profileState.error}</span>
@@ -179,10 +179,10 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                     defaultValue={profile?.full_name || ''}
                     disabled={isProfilePending}
                     placeholder="e.g. Shafi Rahman"
-                    className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-sans"
+                    className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
                   />
                   {profileState.fieldErrors?.fullName && (
-                    <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{profileState.fieldErrors.fullName[0]}</p>
+                    <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{profileState.fieldErrors.fullName[0]}</p>
                   )}
                 </>
               ) : (
@@ -228,10 +228,10 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   defaultValue={profile?.phone || ''}
                   disabled={isProfilePending}
                   placeholder="e.g. 01712345678"
-                  className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
+                  className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono"
                 />
                 {profileState.fieldErrors?.phone && (
-                  <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{profileState.fieldErrors.phone[0]}</p>
+                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{profileState.fieldErrors.phone[0]}</p>
                 )}
               </>
             ) : (
@@ -258,10 +258,10 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   defaultValue={profile?.address || ''}
                   disabled={isProfilePending}
                   placeholder="e.g. House #12, Road #4, Uttara, Dhaka"
-                  className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-sans leading-relaxed"
+                  className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans leading-relaxed"
                 />
                 {profileState.fieldErrors?.address && (
-                  <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{profileState.fieldErrors.address[0]}</p>
+                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{profileState.fieldErrors.address[0]}</p>
                 )}
               </>
             ) : (
@@ -277,7 +277,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
               <button
                 type="submit"
                 disabled={isProfilePending}
-                className="inline-flex h-11 items-center justify-center rounded-xl bg-forest-900 px-6 text-xs sm:text-sm font-sans font-semibold text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 active:scale-[0.98] transition-all disabled:opacity-60 cursor-pointer"
+                className="btn-primary inline-flex h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-60"
               >
                 {isProfilePending ? (
                   <div className="flex items-center gap-2">
@@ -292,7 +292,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                 type="button"
                 onClick={() => setIsEditingPersonal(false)}
                 disabled={isProfilePending}
-                className="inline-flex h-11 items-center justify-center rounded-xl border border-forest-200/80 bg-cream-50 px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:bg-cream-200/60 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+                className="btn-secondary inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -321,7 +321,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                 setPasswordState({ error: null })
                 setIsChangingPassword(true)
               }}
-              className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-forest-900 px-5 py-2.5 text-xs sm:text-sm font-sans font-semibold text-cream-50 hover:bg-gold-500 hover:text-forest-950 transition-all cursor-pointer shadow-2xs"
+              className="btn-primary shrink-0 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs sm:text-sm font-sans font-semibold"
             >
               <svg className="w-4 h-4 text-gold-400 group-hover:text-forest-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -341,7 +341,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
             {passwordState.error && (
               <div
                 role="alert"
-                className="flex items-start gap-2 rounded-xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 font-sans"
+                className="flex items-start gap-2 rounded-xl bg-terracotta-100 border border-terracotta-500/30 p-4 text-xs font-semibold text-terracotta-800 font-sans"
               >
                 <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -364,7 +364,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                     required
                     disabled={isPasswordPending}
                     placeholder="At least 8 characters"
-                    className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 pr-10 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-sans"
+                    className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 pr-10 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
                   />
                   <button
                     type="button"
@@ -385,7 +385,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   </button>
                 </div>
                 {passwordState.fieldErrors?.newPassword && (
-                  <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{passwordState.fieldErrors.newPassword[0]}</p>
+                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{passwordState.fieldErrors.newPassword[0]}</p>
                 )}
               </div>
 
@@ -401,10 +401,10 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   required
                   disabled={isPasswordPending}
                   placeholder="Re-enter password"
-                  className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-sans"
+                  className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
                 />
                 {passwordState.fieldErrors?.confirmPassword && (
-                  <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{passwordState.fieldErrors.confirmPassword[0]}</p>
+                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{passwordState.fieldErrors.confirmPassword[0]}</p>
                 )}
               </div>
             </div>
@@ -413,7 +413,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
               <button
                 type="submit"
                 disabled={isPasswordPending}
-                className="inline-flex h-11 items-center justify-center rounded-xl bg-forest-900 px-6 text-xs sm:text-sm font-sans font-semibold text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 active:scale-[0.98] transition-all disabled:opacity-60 cursor-pointer"
+                className="btn-primary inline-flex h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-60"
               >
                 {isPasswordPending ? (
                   <div className="flex items-center gap-2">
@@ -431,7 +431,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   setPasswordState({ error: null })
                 }}
                 disabled={isPasswordPending}
-                className="inline-flex h-11 items-center justify-center rounded-xl border border-forest-200/80 bg-cream-50 px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:bg-cream-200/60 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+                className="btn-secondary inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -441,16 +441,16 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
       </div>
 
       {/* 3. Danger Zone Section */}
-      <div className="rounded-2xl border border-rose-200/80 bg-rose-50/40 p-5 sm:p-7 shadow-2xs">
+      <div className="rounded-2xl border border-terracotta-500/30 bg-terracotta-100/50 p-5 sm:p-7 shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-base font-semibold text-rose-950 tracking-tight flex items-center gap-2 font-sans">
-              <svg className="h-4 w-4 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+            <h2 className="text-base font-semibold text-terracotta-800 tracking-tight flex items-center gap-2 font-sans">
+              <svg className="h-4 w-4 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               Danger Zone
             </h2>
-            <p className="text-xs sm:text-[13px] text-rose-800/80 mt-1 max-w-xl font-sans leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-terracotta-800/80 mt-1 max-w-xl font-sans leading-relaxed">
               Permanently delete your account and all associated profile details from the database. Past completed and in-progress orders are preserved securely in store records.
             </p>
           </div>
@@ -461,7 +461,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
               setDeleteError(null)
               setIsDeleteModalOpen(true)
             }}
-            className="shrink-0 inline-flex h-10 items-center justify-center rounded-xl bg-rose-600 px-5 text-xs sm:text-sm font-sans font-semibold text-white shadow-2xs hover:bg-rose-700 active:scale-[0.98] transition-all cursor-pointer"
+            className="btn-danger shrink-0 inline-flex h-10 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold"
           >
             Delete Account
           </button>
@@ -476,9 +476,9 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
             onClick={() => !isDeletePending && setIsDeleteModalOpen(false)}
           />
 
-          <div className="relative w-full max-w-lg rounded-2xl border border-forest-200/80 bg-cream-50 p-6 sm:p-8 shadow-2xl animate-fade-in z-10 space-y-6">
+          <div className="relative w-full max-w-lg rounded-2xl border border-forest-200/80 bg-cream-50 p-6 sm:p-8 shadow-sm animate-fade-in z-10 space-y-6">
             <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-600 border border-rose-200/80">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-terracotta-100 text-terracotta-600 border border-terracotta-500/30">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
@@ -507,7 +507,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
             {deleteError && (
               <div
                 role="alert"
-                className="flex items-start gap-2 rounded-xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 font-sans"
+                className="flex items-start gap-2 rounded-xl bg-terracotta-100 border border-terracotta-500/30 p-4 text-xs font-semibold text-terracotta-800 font-sans"
               >
                 <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -519,7 +519,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
             <form onSubmit={handleDeleteSubmit} className="space-y-4">
               <div className="space-y-2">
                 <label htmlFor="deleteConfirmation" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                  Type <span className="font-mono font-black text-rose-600 select-all">DELETE</span> to confirm:
+                  Type <span className="font-mono font-black text-terracotta-600 select-all">DELETE</span> to confirm:
                 </label>
                 <input
                   id="deleteConfirmation"
@@ -528,7 +528,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   onChange={(e) => setDeleteConfirmation(e.target.value)}
                   disabled={isDeletePending}
                   placeholder="DELETE"
-                  className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm font-mono font-bold text-forest-950 placeholder-forest-400 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500/20 transition-all"
+                  className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm font-mono font-bold text-forest-950 placeholder-forest-400 focus:border-terracotta-500 focus:outline-hidden focus:ring-2 focus:ring-terracotta-500/20 transition-all"
                   autoComplete="off"
                 />
               </div>
@@ -542,14 +542,14 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                     setDeleteError(null)
                   }}
                   disabled={isDeletePending}
-                  className="inline-flex h-11 items-center justify-center rounded-xl border border-forest-200/80 bg-cream-100 px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:bg-cream-200/60 transition-all disabled:opacity-50 cursor-pointer"
+                  className="btn-secondary inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={deleteConfirmation !== 'DELETE' || isDeletePending}
-                  className="inline-flex h-11 items-center justify-center rounded-xl bg-rose-600 px-6 text-xs sm:text-sm font-sans font-semibold text-white shadow-2xs hover:bg-rose-700 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  className="btn-danger inline-flex h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {isDeletePending ? (
                     <div className="flex items-center gap-2">

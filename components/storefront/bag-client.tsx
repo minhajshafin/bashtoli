@@ -103,7 +103,7 @@ export function BagClient() {
                 clearCart()
               }
             }}
-            className="self-start sm:self-auto text-xs font-sans font-medium uppercase tracking-[0.14em] text-forest-500 hover:text-rose-600 transition-colors cursor-pointer"
+            className="self-start sm:self-auto text-xs font-sans font-medium uppercase tracking-[0.14em] text-forest-500 hover:text-btn-danger-bg transition-colors cursor-pointer"
           >
             Clear Bag
           </button>
@@ -165,7 +165,7 @@ export function BagClient() {
           </p>
           <Link
             href="/products"
-            className="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-gold-500 px-6 text-xs font-sans font-bold uppercase tracking-[0.14em] text-forest-950 hover:bg-gold-400 shadow-xs shadow-gold-500/20 active:scale-[0.98] transition-all cursor-pointer"
+            className="btn-accent rounded-xl mt-6 inline-flex h-11 items-center justify-center px-6 text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer"
           >
             Explore Catalogue &rarr;
           </Link>

@@ -47,7 +47,7 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
     <form onSubmit={handleSubmit} className="space-y-4 text-left">
       {/* Top error banner */}
       {topError && (
-        <div className="rounded-xl bg-rose-50 border border-rose-200 p-4 text-xs font-semibold text-rose-700 animate-fade-in font-sans">
+        <div className="rounded-xl bg-terracotta-100 border border-terracotta-500/30 p-4 text-xs font-semibold text-terracotta-800 animate-fade-in font-sans">
           {topError}
         </div>
       )}
@@ -63,11 +63,11 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
           value={orderNumber}
           onChange={(e) => setOrderNumber(e.target.value)}
           placeholder="e.g. ORD-20260703-0042"
-          className="w-full rounded-xl border border-forest-200/80 bg-cream-50 py-3 px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
+          className="w-full rounded-xl border border-input-border bg-input-bg py-3 px-4 text-sm text-input-text placeholder:text-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono"
           required
         />
         {fieldErrors.order_number && (
-          <p className="text-rose-600 text-xs mt-1 font-semibold pl-1 font-sans">{fieldErrors.order_number[0]}</p>
+          <p className="text-terracotta-600 text-xs mt-1 font-semibold pl-1 font-sans">{fieldErrors.order_number[0]}</p>
         )}
       </div>
 
@@ -82,11 +82,11 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="e.g. 017XXXXXXXX"
-          className="w-full rounded-xl border border-forest-200/80 bg-cream-50 py-3 px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
+          className="w-full rounded-xl border border-input-border bg-input-bg py-3 px-4 text-sm text-input-text placeholder:text-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono"
           required
         />
         {fieldErrors.phone && (
-          <p className="text-rose-600 text-xs mt-1 font-semibold pl-1 font-sans">{fieldErrors.phone[0]}</p>
+          <p className="text-terracotta-600 text-xs mt-1 font-semibold pl-1 font-sans">{fieldErrors.phone[0]}</p>
         )}
       </div>
 
@@ -94,7 +94,7 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full flex h-11 items-center justify-center rounded-xl text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider bg-forest-900 text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 disabled:opacity-50 transition-all active:scale-[0.98] cursor-pointer mt-2"
+        className="btn-primary w-full flex h-11 items-center justify-center rounded-xl text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider disabled:opacity-50 mt-2"
       >
         {isSubmitting ? (
           <span className="flex items-center gap-2">

@@ -40,7 +40,7 @@ function CategoryCard({
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className={`group relative overflow-hidden cursor-pointer block w-full rounded-2xl border border-forest-800/60 hover:border-gold-400/60 focus-visible:border-gold-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/40 shadow-sm hover:shadow-xl transition-all duration-500 ${className}`}
+      className={`group relative overflow-hidden cursor-pointer block w-full rounded-2xl border border-forest-800/60 hover:border-gold-400/80 focus-visible:border-gold-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500/50 shadow-2xs transition-all duration-300 hover:-translate-y-1 ${className}`}
       style={style}
     >
       {/* Background Image / Fallback Gradient */}
@@ -54,7 +54,7 @@ function CategoryCard({
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-forest-850 via-forest-900 to-forest-950 flex flex-col items-center justify-center p-6 text-center pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-forest-800 via-forest-900 to-forest-950 flex flex-col items-center justify-center p-6 text-center pointer-events-none">
           <svg
             className="w-8 h-8 text-gold-500/20 mb-2 stroke-[1.2]"
             fill="none"
@@ -73,14 +73,8 @@ function CategoryCard({
         </div>
       )}
 
-      {/* Atmospheric Luminous Vignette Scrim */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(to top, rgba(10,22,15,0.92) 0%, rgba(10,22,15,0.38) 42%, transparent 72%)',
-        }}
-      />
+      {/* Atmospheric Vignette Scrim */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-forest-950/95 via-forest-950/40 to-transparent" />
 
       {/* Subtle Golden Sheen on Hover */}
       <div className="absolute inset-0 bg-gold-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

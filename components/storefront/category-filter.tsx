@@ -194,10 +194,10 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
         <button
           type="button"
           onClick={() => handleCategorySelect(null)}
-          className={`shrink-0 inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-sans transition-all cursor-pointer ${
+          className={`shrink-0 inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
             !activeCategorySlug
-              ? 'bg-gold-500 text-forest-950 font-semibold shadow-sm border border-gold-400/60'
-              : 'bg-forest-900/80 text-cream-200/90 border border-forest-700/70 hover:border-gold-500/50 hover:text-gold-200 hover:bg-forest-800/90 shadow-xs'
+              ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+              : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg hover:text-chip-inactive-hover-text hover:border-chip-inactive-hover-border active:scale-95'
           }`}
         >
           All Collections
@@ -211,10 +211,10 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
               key={category.id}
               type="button"
               onClick={() => handleCategorySelect(category.slug)}
-              className={`shrink-0 inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-sans transition-all cursor-pointer ${
+              className={`shrink-0 inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
                 isActive
-                  ? 'bg-gold-500 text-forest-950 font-semibold shadow-sm border border-gold-400/60'
-                  : 'bg-forest-900/80 text-cream-200/90 border border-forest-700/70 hover:border-gold-500/50 hover:text-gold-200 hover:bg-forest-800/90 shadow-xs'
+                  ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+                  : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg hover:text-chip-inactive-hover-text hover:border-chip-inactive-hover-border active:scale-95'
               }`}
             >
               {category.name}
@@ -233,10 +233,10 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
                 ? 'Collapse categories to single row'
                 : `Show ${remainingCount} more categories`
             }
-            className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-sans font-medium transition-all duration-200 cursor-pointer active:scale-95 ${
+            className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-sans font-medium transition-colors duration-200 cursor-pointer active:scale-95 ${
               isExpanded
-                ? 'bg-gold-500 text-forest-950 font-semibold shadow-sm border border-gold-400/60'
-                : 'bg-forest-900/95 text-gold-300 border border-gold-500/40 hover:border-gold-400 hover:text-gold-200 hover:bg-forest-800 shadow-xs'
+                ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+                : 'bg-chip-inactive-bg text-gold-300 border border-border-gold hover:bg-chip-inactive-hover-bg hover:text-gold-200 hover:border-gold-400'
             }`}
           >
             <span>{isExpanded ? 'Collapse' : `+${remainingCount} more`}</span>

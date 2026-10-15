@@ -9,13 +9,13 @@ interface OrderStatusProps {
 export function OrderStatus({ status }: OrderStatusProps) {
   if (status === 'cancelled') {
     return (
-      <div className="rounded-2xl bg-rose-50/80 border border-rose-200 p-4 flex items-start gap-3 animate-fade-in">
-        <svg className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <div className="rounded-2xl bg-terracotta-100 border border-terracotta-500/30 p-4 flex items-start gap-3 animate-fade-in">
+        <svg className="h-5 w-5 text-terracotta-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <div>
-          <h4 className="text-sm font-bold text-rose-800">Order Cancelled</h4>
-          <p className="text-xs text-rose-700 mt-0.5 leading-relaxed">
+          <h4 className="text-sm font-bold text-terracotta-800">Order Cancelled</h4>
+          <p className="text-xs text-terracotta-700 mt-0.5 leading-relaxed">
             This order has been cancelled. If you believe this is a mistake, please reach out to our team.
           </p>
         </div>

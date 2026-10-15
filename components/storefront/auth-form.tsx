@@ -37,7 +37,7 @@ export function AuthForm({ type }: AuthFormProps) {
   // If user signed up successfully and needs email confirmation
   if (type === 'signup' && 'success' in state && state.success) {
     return (
-      <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-8 shadow-2xl text-center space-y-5 selection:bg-gold-500/20 selection:text-forest-900">
+      <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-8 shadow-sm text-center space-y-5 selection:bg-gold-500/20 selection:text-forest-900">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900/5 text-forest-800 border border-forest-200/80">
           <svg className="h-7 w-7 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -52,7 +52,7 @@ export function AuthForm({ type }: AuthFormProps) {
         <div className="pt-2">
           <Link
             href="/login"
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-forest-900 px-7 text-xs font-bold uppercase tracking-wider text-cream-100 shadow-sm hover:bg-forest-800 transition-all"
+            className="btn-primary inline-flex h-11 items-center justify-center rounded-xl px-7 text-xs font-bold uppercase tracking-wider"
           >
             Go to Sign In
           </Link>
@@ -62,7 +62,7 @@ export function AuthForm({ type }: AuthFormProps) {
   }
 
   return (
-    <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-6 sm:p-8 shadow-2xl selection:bg-gold-500/20 selection:text-forest-900">
+    <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-6 sm:p-8 shadow-sm selection:bg-gold-500/20 selection:text-forest-900">
       {/* Form Header */}
       <div className="mb-6">
         <p className="text-[10px] uppercase tracking-[0.25em] text-forest-500 font-bold mb-1">
@@ -88,9 +88,9 @@ export function AuthForm({ type }: AuthFormProps) {
         {state.error && (
           <div
             role="alert"
-            className="flex items-start gap-2.5 rounded-xl bg-rose-50 border border-rose-200 px-3.5 py-2.5 text-xs font-medium text-rose-800"
+            className="flex items-start gap-2.5 rounded-xl bg-terracotta-100 border border-terracotta-500/30 px-3.5 py-2.5 text-xs font-medium text-terracotta-800"
           >
-            <svg className="h-4 w-4 shrink-0 mt-0.5 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>{state.error}</span>
@@ -109,11 +109,11 @@ export function AuthForm({ type }: AuthFormProps) {
               type="text"
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
+              className="block w-full rounded-xl border border-input-border bg-input-bg px-3.5 py-2.5 text-xs sm:text-[13px] text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all"
               placeholder="e.g. Minhaj Shafin"
             />
             {state.fieldErrors?.fullName && (
-              <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.fullName[0]}</p>
+              <p className="text-[11px] font-bold text-terracotta-600 mt-0.5">{state.fieldErrors.fullName[0]}</p>
             )}
           </div>
         )}
@@ -130,11 +130,11 @@ export function AuthForm({ type }: AuthFormProps) {
             autoComplete="email"
             required
             disabled={isPending}
-            className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
+            className="block w-full rounded-xl border border-input-border bg-input-bg px-3.5 py-2.5 text-xs sm:text-[13px] text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all"
             placeholder="e.g. shafin@example.com"
           />
           {state.fieldErrors?.email && (
-            <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.email[0]}</p>
+            <p className="text-[11px] font-bold text-terracotta-600 mt-0.5">{state.fieldErrors.email[0]}</p>
           )}
         </div>
 
@@ -147,7 +147,7 @@ export function AuthForm({ type }: AuthFormProps) {
             {type === 'login' && (
               <Link
                 href="/forgot-password"
-                className="text-[11px] font-medium text-forest-500 hover:text-forest-950 transition-colors"
+                className="text-[11px] font-medium link-muted"
               >
                 Forgot password?
               </Link>
@@ -161,13 +161,13 @@ export function AuthForm({ type }: AuthFormProps) {
               autoComplete={type === 'login' ? 'current-password' : 'new-password'}
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 pl-3.5 pr-10 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
+              className="block w-full rounded-xl border border-input-border bg-input-bg pl-3.5 pr-10 py-2.5 text-xs sm:text-[13px] text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all"
             />
             <button
               type="button"
               tabIndex={-1}
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-forest-400 hover:text-forest-700 transition-colors p-1"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-forest-400 hover:text-forest-700 transition-colors p-1 cursor-pointer"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -183,7 +183,7 @@ export function AuthForm({ type }: AuthFormProps) {
             </button>
           </div>
           {state.fieldErrors?.password && (
-            <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.password[0]}</p>
+            <p className="text-[11px] font-bold text-terracotta-600 mt-0.5">{state.fieldErrors.password[0]}</p>
           )}
         </div>
 
@@ -200,10 +200,10 @@ export function AuthForm({ type }: AuthFormProps) {
               autoComplete="new-password"
               required
               disabled={isPending}
-              className="block w-full rounded-xl border border-forest-200 bg-cream-50/90 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-900 placeholder-forest-400 focus:border-forest-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-800/10 transition-all"
+              className="block w-full rounded-xl border border-input-border bg-input-bg px-3.5 py-2.5 text-xs sm:text-[13px] text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all"
             />
             {state.fieldErrors?.confirmPassword && (
-              <p className="text-[11px] font-bold text-rose-600 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
+              <p className="text-[11px] font-bold text-terracotta-600 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
             )}
           </div>
         )}
@@ -213,7 +213,7 @@ export function AuthForm({ type }: AuthFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-forest-900 text-cream-100 px-4 py-3 text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-forest-800 active:scale-[0.99] transition-all disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+            className="btn-primary flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isPending ? (
               <>
@@ -241,7 +241,7 @@ export function AuthForm({ type }: AuthFormProps) {
         {/* Continue as Guest Button */}
         <Link
           href="/products"
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-forest-200 bg-cream-50/80 px-4 py-2.5 text-xs font-semibold text-forest-700 hover:bg-cream-200/60 hover:text-forest-950 transition-all"
+          className="btn-secondary flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold"
         >
           Browse Shop as Guest &rarr;
         </Link>
@@ -253,7 +253,7 @@ export function AuthForm({ type }: AuthFormProps) {
               Don&apos;t have an account?{' '}
               <Link
                 href="/signup"
-                className="font-bold text-forest-900 hover:underline transition-colors"
+                className="font-bold link-editorial"
               >
                 Sign up
               </Link>
@@ -263,7 +263,7 @@ export function AuthForm({ type }: AuthFormProps) {
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="font-bold text-forest-900 hover:underline transition-colors"
+                className="font-bold link-editorial"
               >
                 Sign in
               </Link>

@@ -59,7 +59,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
           type="button"
           onClick={handleRemove}
           disabled={isPending}
-          className="absolute top-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-cream-50/95 backdrop-blur-xs text-forest-600 hover:text-rose-600 hover:bg-rose-50 border border-forest-200/60 shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          className="absolute top-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-cream-50/95 backdrop-blur-xs text-forest-600 hover:text-btn-danger-bg hover:bg-terracotta-100 hover:border-terracotta-500/30 border border-forest-200/60 hover:scale-105 active:scale-95 transition-all cursor-pointer"
           title="Remove from Wishlist"
         >
           {isPending ? (
@@ -80,11 +80,11 @@ export function WishlistItem({ product }: WishlistItemProps) {
       <div className="p-4 flex flex-col justify-between flex-1">
         <div>
           {product.categoryName && (
-            <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-600">
+            <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-text-accent">
               {product.categoryName}
             </span>
           )}
-          <h3 className="mt-1 text-sm font-medium text-forest-950 truncate group-hover:text-gold-600 transition-colors font-display">
+          <h3 className="mt-1 text-sm font-medium text-forest-950 truncate group-hover:text-text-accent transition-colors font-display">
             {product.name}
           </h3>
         </div>

@@ -173,7 +173,7 @@ function ProgressBarInner() {
         className="h-[2px] transition-all duration-200 ease-out"
         style={{
           width: `${progress}%`,
-          backgroundColor: '#c9a96e',
+          backgroundColor: 'var(--color-btn-accent-bg)',
         }}
       />
     </div>

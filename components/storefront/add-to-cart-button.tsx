@@ -49,7 +49,7 @@ export function AddToCartButton({
             type="button"
             onClick={handleDecrement}
             disabled={isButtonDisabled || quantity <= 1}
-            className="flex w-8 sm:w-9 h-full items-center justify-center text-forest-700 hover:text-forest-950 disabled:opacity-25 cursor-pointer transition-colors"
+            className="flex w-8 sm:w-9 h-full items-center justify-center rounded-lg text-forest-700 hover:text-forest-950 hover:bg-cream-200/80 active:scale-95 disabled:opacity-25 disabled:hover:bg-transparent cursor-pointer transition-all"
             aria-label="Decrease quantity"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -65,7 +65,7 @@ export function AddToCartButton({
             type="button"
             onClick={handleIncrement}
             disabled={isButtonDisabled || (stockQty !== undefined && quantity >= stockQty)}
-            className="flex w-8 sm:w-9 h-full items-center justify-center text-forest-700 hover:text-forest-950 disabled:opacity-25 cursor-pointer transition-colors"
+            className="flex w-8 sm:w-9 h-full items-center justify-center rounded-lg text-forest-700 hover:text-forest-950 hover:bg-cream-200/80 active:scale-95 disabled:opacity-25 disabled:hover:bg-transparent cursor-pointer transition-all"
             aria-label="Increase quantity"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -78,13 +78,13 @@ export function AddToCartButton({
         {!isNoVariantSelected && (
           <div>
             {isOutOfStock ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-sans font-medium bg-rose-500/10 text-rose-800 border border-rose-500/25">
-                <span className="h-1.5 w-1.5 rounded-full bg-rose-600" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-sans font-medium bg-btn-danger-bg/10 text-btn-danger-bg border border-btn-danger-border/30">
+                <span className="h-1.5 w-1.5 rounded-full bg-btn-danger-bg" />
                 Sold Out
               </span>
             ) : stockQty !== undefined && stockQty <= 3 ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-sans font-medium bg-amber-500/10 text-amber-800 border border-amber-500/25">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-600 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-sans font-medium bg-btn-warning-bg/10 text-btn-warning-border border border-btn-warning-border/30">
+                <span className="h-1.5 w-1.5 rounded-full bg-btn-warning-border animate-pulse" />
                 Only {stockQty} left in stock
               </span>
             ) : (
@@ -104,12 +104,12 @@ export function AddToCartButton({
           type="button"
           disabled={isButtonDisabled}
           onClick={handleAdd}
-          className={`h-11 sm:h-12 rounded-xl text-xs font-sans font-medium tracking-[0.14em] uppercase transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
+          className={`h-11 sm:h-12 rounded-xl text-xs font-sans font-medium tracking-[0.14em] uppercase flex items-center justify-center gap-2 ${
             isButtonDisabled
               ? 'bg-cream-200/60 border border-forest-200/60 text-forest-400 cursor-not-allowed opacity-60'
               : isJustAdded
               ? 'bg-forest-800 text-gold-300 border border-forest-700 shadow-xs'
-              : 'bg-forest-900 text-cream-50 border border-forest-800 shadow-xs hover:bg-forest-850 active:scale-[0.98]'
+              : 'btn-primary'
           }`}
         >
           {isJustAdded ? (
@@ -135,13 +135,13 @@ export function AddToCartButton({
             type="button"
             disabled={isButtonDisabled}
             onClick={() => onBuyNow(quantity)}
-            className={`h-11 sm:h-12 rounded-xl text-xs font-sans font-semibold tracking-[0.14em] uppercase transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
+            className={`h-11 sm:h-12 rounded-xl text-xs font-sans font-semibold tracking-[0.14em] uppercase flex items-center justify-center gap-2 ${
               isButtonDisabled
                 ? 'bg-cream-200/60 border border-forest-200/60 text-forest-400 cursor-not-allowed opacity-60'
-                : 'bg-gold-500 text-forest-950 border border-gold-400/80 shadow-xs shadow-gold-500/20 hover:bg-gold-400 active:scale-[0.98]'
+                : 'btn-accent'
             }`}
           >
-            <svg className="w-3.5 h-3.5 text-forest-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5 text-forest-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             <span>{isNoVariantSelected ? 'Select Options' : isOutOfStock ? 'Sold Out' : 'Buy Now'}</span>

@@ -34,7 +34,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-900/10 bg-cream-50 text-forest-700 transition-all hover:bg-cream-100 hover:border-gold-500/40 hover:text-forest-950 disabled:pointer-events-none disabled:opacity-40 cursor-pointer shadow-subtle active:scale-95"
+        className="btn-secondary flex h-10 w-10 items-center justify-center rounded-xl text-forest-700 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Previous page"
       >
         <svg
@@ -59,8 +59,8 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
               aria-current={isActive ? 'page' : undefined}
               className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-sans transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-gold-500 text-forest-950 font-bold shadow-xs border border-gold-400/60'
-                  : 'border border-forest-900/10 bg-cream-50 text-forest-800 hover:bg-cream-100 hover:border-gold-500/40 hover:text-forest-950 shadow-subtle'
+                  ? 'btn-accent font-bold pointer-events-none'
+                  : 'btn-secondary font-medium'
               }`}
             >
               {page}
@@ -73,7 +73,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-forest-900/10 bg-cream-50 text-forest-700 transition-all hover:bg-cream-100 hover:border-gold-500/40 hover:text-forest-950 disabled:pointer-events-none disabled:opacity-40 cursor-pointer shadow-subtle active:scale-95"
+        className="btn-secondary flex h-10 w-10 items-center justify-center rounded-xl text-forest-700 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Next page"
       >
         <svg

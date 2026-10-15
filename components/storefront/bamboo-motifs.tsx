@@ -36,7 +36,7 @@ export function AtelierChopSeal({
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full transform -rotate-2 drop-shadow-xs"
+        className="w-full h-full transform -rotate-2"
       >
         {/* Softly weathered vermilion ink background */}
         <rect
@@ -45,7 +45,7 @@ export function AtelierChopSeal({
           width="88"
           height="88"
           rx="12"
-          className="fill-[#a33327]/90"
+          className="fill-btn-danger-bg/90"
         />
 
         {/* Hand-carved inner seal border line */}
@@ -55,7 +55,7 @@ export function AtelierChopSeal({
           width="76"
           height="76"
           rx="8"
-          stroke="#fbf8f2"
+          stroke="var(--color-cream-50)"
           strokeWidth="2"
           strokeOpacity="0.85"
           strokeDasharray="90 2 60 2"
@@ -66,7 +66,7 @@ export function AtelierChopSeal({
           x="50"
           y="38"
           textAnchor="middle"
-          fill="#fbf8f2"
+          fill="var(--color-cream-50)"
           fillOpacity="0.95"
           fontSize="17"
           fontFamily="serif"
@@ -77,7 +77,7 @@ export function AtelierChopSeal({
         </text>
 
         {/* Center: Minimalist Bamboo Icon Stamp */}
-        <g stroke="#fbf8f2" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.9" fill="#fbf8f2">
+        <g stroke="var(--color-cream-50)" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.9" fill="var(--color-cream-50)">
           {/* Bamboo stalk */}
           <line x1="50" y1="46" x2="50" y2="68" />
           <line x1="47" y1="56" x2="53" y2="56" strokeWidth="2.2" />
@@ -92,7 +92,7 @@ export function AtelierChopSeal({
           x="50"
           y="80"
           textAnchor="middle"
-          fill="#fbf8f2"
+          fill="var(--color-cream-50)"
           fillOpacity="0.85"
           fontSize="8.5"
           fontFamily="sans-serif"
@@ -220,7 +220,7 @@ export function DriftingBambooLeaf({
         {/* Delicate center vein line */}
         <path
           d="M2 16 C20 15, 40 15, 58 16"
-          stroke={isLight ? '#f6f0e4' : '#0e1e17'}
+          stroke={isLight ? 'var(--color-cream-100)' : 'var(--color-forest-950)'}
           strokeWidth="0.75"
           strokeOpacity="0.5"
           strokeLinecap="round"

@@ -39,14 +39,14 @@ export default function NotFoundPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <Link
             href="/products"
-            className="inline-flex h-11 items-center justify-center gap-2 px-6 rounded-xl bg-forest-900 border border-forest-800 text-cream-100 text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-forest-800 active:scale-[0.99] transition-all"
+            className="btn-primary inline-flex h-11 items-center justify-center gap-2 px-6 rounded-xl text-xs font-bold uppercase tracking-wider"
           >
             Return to Shop &rarr;
           </Link>
 
           <Link
             href="/"
-            className="inline-flex h-11 items-center justify-center px-6 rounded-xl bg-cream-50/90 border border-forest-200 text-forest-800 text-xs font-semibold hover:bg-cream-200/60 active:scale-[0.99] transition-all"
+            className="btn-secondary inline-flex h-11 items-center justify-center px-6 rounded-xl text-xs font-semibold"
           >
             Visit Homepage
           </Link>

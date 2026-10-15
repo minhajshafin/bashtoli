@@ -65,7 +65,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
         {state.error && (
           <div
             role="alert"
-            className="flex items-start gap-2 rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-xs font-semibold text-rose-700 font-sans"
+            className="flex items-start gap-2 rounded-xl bg-terracotta-100 border border-terracotta-500/30 px-4 py-3 text-xs font-semibold text-terracotta-800 font-sans"
           >
             <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -86,11 +86,11 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.label || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-sans"
+            className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
             placeholder="e.g. Home, Office, Studio"
           />
           {state.fieldErrors?.label && (
-            <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{state.fieldErrors.label[0]}</p>
+            <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{state.fieldErrors.label[0]}</p>
           )}
         </div>
 
@@ -106,11 +106,11 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.phone || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-mono"
+            className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono"
             placeholder="e.g. 01712345678"
           />
           {state.fieldErrors?.phone && (
-            <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{state.fieldErrors.phone[0]}</p>
+            <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{state.fieldErrors.phone[0]}</p>
           )}
         </div>
 
@@ -126,11 +126,11 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.full_address || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-forest-200/80 bg-cream-50 px-4 py-2.5 text-sm sm:text-base text-forest-950 placeholder-forest-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20 transition-all font-sans leading-relaxed"
+            className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans leading-relaxed"
             placeholder="House, Flat, Road, Area name, City / District"
           />
           {state.fieldErrors?.full_address && (
-            <p className="text-xs font-semibold text-rose-600 mt-1 font-sans">{state.fieldErrors.full_address[0]}</p>
+            <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{state.fieldErrors.full_address[0]}</p>
           )}
         </div>
 
@@ -157,7 +157,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="inline-flex h-11 items-center justify-center rounded-xl border border-forest-200/80 bg-cream-50 px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:bg-cream-200/60 transition-colors disabled:opacity-50 cursor-pointer"
+              className="btn-secondary inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
             >
               Cancel
             </button>
@@ -165,7 +165,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-forest-900 px-6 text-xs sm:text-sm font-sans font-semibold text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 transition-all disabled:opacity-60 cursor-pointer"
+            className="btn-primary inline-flex h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-60"
           >
             {isPending ? (
               <div className="flex items-center gap-2">

@@ -46,7 +46,7 @@ export default function AuthLayout({
                   width={280}
                   height={280}
                   priority
-                  className="relative z-10 w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain transition-transform duration-500 group-hover:scale-105 filter drop-shadow-[0_12px_32px_rgba(0,0,0,0.4)]"
+                  className="relative z-10 w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain transition-transform duration-500 group-hover:scale-105"
                   style={{ width: 'auto', height: 'auto' }}
                 />
               </div>

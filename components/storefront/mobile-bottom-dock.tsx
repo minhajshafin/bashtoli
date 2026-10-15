@@ -31,15 +31,15 @@ export function MobileBottomDock() {
   return (
     <nav
       aria-label="Mobile Navigation Dock"
-      className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-forest-950/92 backdrop-blur-md border-t border-forest-800/80 shadow-[0_-8px_30px_rgba(10,22,15,0.25)]"
+      className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-forest-950/92 backdrop-blur-md border-t border-forest-800"
       style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)' }}
     >
       <div className="flex items-center justify-around px-2 pt-2 pb-1 max-w-md mx-auto">
         {/* 1. Home */}
         <Link
           href="/"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            isHome ? 'text-gold-400 font-semibold' : 'text-forest-400 hover:text-cream-100'
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+            isHome ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
           }`}
         >
           <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,8 +51,8 @@ export function MobileBottomDock() {
         {/* 2. Shop / Catalog */}
         <Link
           href="/products"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            isShop ? 'text-gold-400 font-semibold' : 'text-forest-400 hover:text-cream-100'
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+            isShop ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
           }`}
         >
           <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,8 +64,8 @@ export function MobileBottomDock() {
         {/* 3. Wishlist */}
         <Link
           href="/account/wishlist"
-          className={`relative flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            isWishlist ? 'text-gold-400 font-semibold' : 'text-forest-400 hover:text-cream-100'
+          className={`relative flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+            isWishlist ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
           }`}
         >
           <div className="relative">
@@ -73,7 +73,7 @@ export function MobileBottomDock() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
             </svg>
             {wishlistCount > 0 && (
-              <span className="absolute -top-1 -right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-gold-500 text-[9px] font-bold text-forest-950 font-price">
+              <span className="absolute -top-1 -right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price animate-fade-in">
                 {wishlistCount}
               </span>
             )}
@@ -85,8 +85,8 @@ export function MobileBottomDock() {
         <button
           type="button"
           onClick={openDrawer}
-          className={`relative flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            isBag ? 'text-gold-400 font-semibold' : 'text-forest-400 hover:text-cream-100'
+          className={`relative flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+            isBag ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
           }`}
           aria-label="Open Shopping Bag"
         >
@@ -95,7 +95,7 @@ export function MobileBottomDock() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
             </svg>
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-gold-500 text-[9px] font-bold text-forest-950 font-price animate-fade-in">
+              <span className="absolute -top-1 -right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price animate-fade-in">
                 {itemCount}
               </span>
             )}
@@ -106,8 +106,8 @@ export function MobileBottomDock() {
         {/* 5. Account */}
         <Link
           href="/account"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            isAccount ? 'text-gold-400 font-semibold' : 'text-forest-400 hover:text-cream-100'
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+            isAccount ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
           }`}
         >
           <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

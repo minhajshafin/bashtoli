@@ -7,13 +7,13 @@ const ITEMS = 'বাঁশতলী Bamboo Atelier ✦ Fountain Pen Journals �
 export function MarqueeBand() {
   return (
     <div
-      className="relative overflow-hidden py-3 sm:py-3.5 bg-[#f3ede2] border-y border-gold-500/30 shadow-[inset_0_1px_3px_rgba(16,34,24,0.03)]"
+      className="relative overflow-hidden py-3 sm:py-3.5 bg-bg-surface border-y border-border-gold"
       style={{ overflowAnchor: 'none' }}
       aria-hidden="true"
     >
       {/* Left/Right Edge Fade Scrims */}
-      <div className="absolute left-0 inset-y-0 w-12 sm:w-24 bg-gradient-to-r from-[#f3ede2] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 inset-y-0 w-12 sm:w-24 bg-gradient-to-l from-[#f3ede2] to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 inset-y-0 w-12 sm:w-24 bg-gradient-to-r from-bg-surface to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 inset-y-0 w-12 sm:w-24 bg-gradient-to-l from-bg-surface to-transparent z-10 pointer-events-none" />
 
       <div
         className="flex whitespace-nowrap"

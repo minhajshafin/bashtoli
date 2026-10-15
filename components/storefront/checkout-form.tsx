@@ -221,7 +221,7 @@ export function CheckoutForm({
         <div className="lg:col-span-2 space-y-5">
           {/* Top Error Alert */}
           {topError && (
-            <div className="rounded-2xl border border-rose-300 bg-rose-50 p-4 text-xs font-sans font-medium text-rose-800">
+            <div className="rounded-2xl border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700">
               {topError}
             </div>
           )}
@@ -252,8 +252,8 @@ export function CheckoutForm({
                         }}
                         className={`px-3 py-1.5 rounded-xl border text-xs truncate shrink-0 transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-forest-950 text-cream-50 border-forest-950 font-medium shadow-xs'
-                            : 'bg-white border-forest-200/80 text-forest-800 hover:border-forest-400'
+                            ? 'btn-primary font-medium shadow-xs'
+                            : 'btn-secondary text-forest-800'
                         }`}
                       >
                         {addr.label || 'Saved'} ({addr.phone || 'No phone'})
@@ -280,7 +280,7 @@ export function CheckoutForm({
                   required
                 />
                 {fieldErrors.customer_name && (
-                  <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.customer_name[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.customer_name[0]}</p>
                 )}
               </div>
 
@@ -301,7 +301,7 @@ export function CheckoutForm({
                   required
                 />
                 {fieldErrors.phone && (
-                  <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.phone[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.phone[0]}</p>
                 )}
               </div>
             </div>
@@ -321,7 +321,7 @@ export function CheckoutForm({
                 required
               />
               {fieldErrors.address && (
-                <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.address[0]}</p>
+                <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.address[0]}</p>
               )}
             </div>
           </div>
@@ -361,7 +361,7 @@ export function CheckoutForm({
                   className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-sans"
                 />
                 {fieldErrors.guest_email && (
-                  <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.guest_email[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.guest_email[0]}</p>
                 )}
               </div>
 
@@ -381,7 +381,7 @@ export function CheckoutForm({
                   className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-sans"
                 />
                 {fieldErrors.notes && (
-                  <p className="text-rose-600 text-xs mt-1 font-medium">{fieldErrors.notes[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.notes[0]}</p>
                 )}
               </div>
             </div>
@@ -469,7 +469,7 @@ export function CheckoutForm({
             <button
               type="submit"
               disabled={isSubmitting || cart.length === 0 || hasUnavailable}
-              className={`w-full flex h-12 items-center justify-center rounded-xl bg-gold-500 text-xs font-sans font-bold uppercase tracking-[0.14em] text-forest-950 shadow-xs shadow-gold-500/20 hover:bg-gold-400 active:scale-[0.98] transition-all duration-200 cursor-pointer ${
+              className={`btn-accent rounded-xl w-full flex h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer ${
                 isSubmitting || cart.length === 0 || hasUnavailable
                   ? 'opacity-60 cursor-not-allowed'
                   : ''

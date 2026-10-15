@@ -19,7 +19,7 @@ function getStatusBadgeStyle(status: string) {
     case 'delivered':
       return 'bg-emerald-800/10 text-emerald-800 border-emerald-300/80'
     case 'cancelled':
-      return 'bg-rose-800/10 text-rose-800 border-rose-300/80'
+      return 'bg-terracotta-100 text-terracotta-800 border-terracotta-500/30'
     default:
       return 'bg-forest-200/80 text-forest-800 border-forest-300/60'
   }
@@ -44,7 +44,7 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
               <div className="space-y-1">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-sm sm:text-base font-bold text-forest-950 font-mono group-hover:text-gold-600 transition-colors">
+                  <span className="text-sm sm:text-base font-bold text-forest-950 font-mono group-hover:text-text-accent transition-colors">
                     {o.order_number}
                   </span>
                   <span
@@ -64,7 +64,7 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
                 <span className="text-base sm:text-lg font-bold text-forest-950 font-price">
                   ৳{o.total.toLocaleString()}
                 </span>
-                <span className="text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 group-hover:text-gold-500 flex items-center gap-1">
+                <span className="text-xs font-sans font-semibold uppercase tracking-wider text-text-accent group-hover:text-text-accent-hover flex items-center gap-1">
                   View invoice &rarr;
                 </span>
               </div>

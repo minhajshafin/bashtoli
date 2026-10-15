@@ -104,7 +104,7 @@ export function AddressList({ addresses }: AddressListProps) {
                   {address.label || 'Saved Address'}
                 </span>
                 {address.is_default && (
-                  <span className="inline-flex items-center rounded-full bg-gold-500 px-2.5 py-0.5 text-[10px] font-bold text-forest-950 font-mono uppercase tracking-wider">
+                  <span className="inline-flex items-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 px-2.5 py-0.5 text-[10px] font-bold font-mono uppercase tracking-wider">
                     Default
                   </span>
                 )}
@@ -122,7 +122,7 @@ export function AddressList({ addresses }: AddressListProps) {
                   <button
                     onClick={() => handleSetDefault(address.id)}
                     disabled={isPending}
-                    className="text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 disabled:opacity-50 transition-colors cursor-pointer"
+                    className="text-xs font-sans font-semibold uppercase tracking-wider text-text-accent hover:text-text-accent-hover disabled:opacity-50 transition-colors cursor-pointer"
                   >
                     Set as Default
                   </button>
@@ -132,14 +132,14 @@ export function AddressList({ addresses }: AddressListProps) {
                 <button
                   onClick={() => setEditingAddressId(address.id)}
                   disabled={isPending}
-                  className="text-xs font-sans font-semibold text-forest-700 hover:text-forest-950 disabled:opacity-50 transition-colors cursor-pointer"
+                  className="text-xs font-sans font-semibold text-forest-700 hover:text-text-primary disabled:opacity-50 transition-colors cursor-pointer"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(address.id)}
                   disabled={isPending}
-                  className="text-xs font-sans font-semibold text-rose-600 hover:text-rose-700 disabled:opacity-50 transition-colors cursor-pointer"
+                  className="text-xs font-sans font-semibold text-terracotta-600 hover:text-terracotta-500 disabled:opacity-50 transition-colors cursor-pointer"
                 >
                   Delete
                 </button>

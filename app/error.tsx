@@ -58,7 +58,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           <button
             type="button"
             onClick={() => reset()}
-            className="inline-flex h-11 items-center justify-center gap-2 px-6 rounded-xl bg-forest-900 border border-forest-800 text-cream-100 text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-forest-800 active:scale-[0.99] transition-all cursor-pointer"
+            className="btn-primary inline-flex h-11 items-center justify-center gap-2 px-6 rounded-xl text-xs font-bold uppercase tracking-wider"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -68,7 +68,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
           <Link
             href="/products"
-            className="inline-flex h-11 items-center justify-center px-6 rounded-xl bg-cream-50/90 border border-forest-200 text-forest-800 text-xs font-semibold hover:bg-cream-200/60 active:scale-[0.99] transition-all"
+            className="btn-secondary inline-flex h-11 items-center justify-center px-6 rounded-xl text-xs font-semibold"
           >
             Return to Shop
           </Link>

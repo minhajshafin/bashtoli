@@ -97,7 +97,7 @@ export function SuggestAnItem() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="text-xs uppercase tracking-[0.16em] font-sans font-medium text-gold-400 hover:text-gold-300 transition-colors cursor-pointer border-b border-gold-400/50 pb-0.5"
+                className="text-xs uppercase tracking-[0.16em] font-sans font-medium text-text-accent hover:text-text-accent-hover transition-colors cursor-pointer border-b border-gold-400/50 pb-0.5"
               >
                 Suggest another item &rarr;
               </button>
@@ -105,7 +105,7 @@ export function SuggestAnItem() {
           </div>
         ) : (
           /* Minimal Form Card */
-          <div className="rounded-2xl bg-forest-900/40 border border-forest-800/80 p-4 sm:p-5.5 backdrop-blur-xs shadow-sm">
+          <div className="rounded-2xl bg-forest-900/40 border border-forest-800/80 p-4 sm:p-5.5 backdrop-blur-xs">
             <form onSubmit={handleSubmit} className="space-y-3">
               {/* Bot Honeypot Trap */}
               <input
@@ -130,7 +130,7 @@ export function SuggestAnItem() {
                   required
                   rows={2}
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2.5 text-xs sm:text-[13px] text-cream-50 placeholder:text-forest-400/70 font-sans resize-none leading-relaxed transition-all shadow-inner"
+                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2.5 text-xs sm:text-[13px] text-cream-50 placeholder:text-forest-400/70 font-sans resize-none leading-relaxed transition-all"
                 />
               </div>
 
@@ -144,7 +144,7 @@ export function SuggestAnItem() {
                   placeholder="Your name (optional)"
                   aria-label="Your name (optional)"
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2 text-xs text-cream-50 placeholder:text-forest-400/70 font-sans transition-all shadow-inner"
+                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2 text-xs text-cream-50 placeholder:text-forest-400/70 font-sans transition-all"
                 />
 
                 <input
@@ -155,13 +155,13 @@ export function SuggestAnItem() {
                   placeholder="Email or WhatsApp (optional)"
                   aria-label="Email or phone (optional)"
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2 text-xs text-cream-50 placeholder:text-forest-400/70 font-sans transition-all shadow-inner"
+                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2 text-xs text-cream-50 placeholder:text-forest-400/70 font-sans transition-all"
                 />
               </div>
 
               {/* Error Alert */}
               {errorMessage && (
-                <p className="text-xs text-rose-200 py-2 px-3 bg-rose-950/60 border border-rose-800/80 rounded-xl font-sans">
+                <p className="text-xs text-terracotta-400 py-2 px-3 bg-terracotta-800/40 border border-terracotta-600/60 rounded-xl font-sans">
                   {errorMessage}
                 </p>
               )}
@@ -175,7 +175,7 @@ export function SuggestAnItem() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-full text-xs font-sans uppercase tracking-[0.16em] font-semibold bg-gold-500 text-forest-950 hover:bg-gold-400 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group shadow-xs shrink-0"
+                  className="btn-accent inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-full text-xs font-sans uppercase tracking-[0.16em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed group shrink-0"
                 >
                   {isSubmitting ? (
                     <span>Sending…</span>

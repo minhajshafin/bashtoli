@@ -37,11 +37,11 @@ export function SearchInput() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search products..."
-          className="w-full rounded-2xl border border-zinc-200 bg-white py-3 pr-12 pl-4 text-sm text-zinc-900 shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+          className="w-full rounded-2xl border border-input-border bg-input-bg py-3 pr-12 pl-4 text-sm text-input-text transition-all focus:border-input-border-focus focus:outline-none focus:ring-2 focus:ring-input-focus-ring"
         />
         <button
           type="submit"
-          className="absolute inset-y-0 right-0 flex items-center pr-4 text-zinc-400 hover:text-amber-500 transition-colors"
+          className="absolute inset-y-0 right-0 flex items-center pr-4 text-text-muted hover:text-btn-accent-bg transition-colors cursor-pointer"
           aria-label="Submit search"
         >
           <svg

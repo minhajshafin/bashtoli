@@ -47,7 +47,7 @@ export function VariantSelector({
               </span>
               {currentValue && (
                 <span className="font-sans text-xs text-forest-900 font-medium">
-                  Selected: <span className="text-gold-600 font-semibold">{currentValue}</span>
+                  Selected: <span className="text-text-accent font-semibold">{currentValue}</span>
                 </span>
               )}
             </div>
@@ -63,12 +63,12 @@ export function VariantSelector({
                     type="button"
                     disabled={isUnavailable}
                     onClick={() => onChange(opt.name, val.value)}
-                    className={`rounded-xl px-3.5 py-2 text-xs sm:text-[13px] font-sans font-medium transition-all border cursor-pointer ${
+                    className={`rounded-xl px-3.5 py-2 text-xs sm:text-[13px] font-sans font-medium transition-all duration-200 border cursor-pointer ${
                       isSelected
-                        ? 'bg-forest-900 border-forest-900 text-cream-50 shadow-xs ring-1 ring-gold-400/50'
+                        ? 'bg-forest-950 border-gold-500 text-cream-50 shadow-xs ring-1 ring-gold-500 pointer-events-none'
                         : isUnavailable
                         ? 'bg-forest-100/30 border-dashed border-forest-200/60 text-forest-300 line-through cursor-not-allowed opacity-60'
-                        : 'bg-cream-50/80 hover:bg-white border-forest-200/80 text-forest-800 hover:border-gold-500/80 active:scale-[0.98]'
+                        : 'btn-secondary'
                     }`}
                   >
                     {val.value}

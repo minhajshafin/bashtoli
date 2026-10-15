@@ -100,15 +100,15 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
           />
 
           {/* Tactile Stationery Document Card */}
-          <div className="relative w-full max-w-md sm:max-w-[450px] rounded-[26px] border border-forest-900/15 bg-cream-100 bg-laid-paper p-6 sm:p-7 shadow-[0_24px_60px_-12px_rgba(10,22,15,0.45),0_0_0_1px_rgba(201,169,110,0.15)] z-10 text-forest-900 animate-in zoom-in-95 duration-200 overflow-hidden">
+          <div className="relative w-full max-w-md sm:max-w-[450px] rounded-[26px] border border-forest-900/15 bg-cream-100 bg-laid-paper p-6 sm:p-7 shadow-sm z-10 text-forest-900 animate-in zoom-in-95 duration-200 overflow-hidden">
             {/* Top Gilded Accent Hairline */}
             <div
               className={`absolute top-0 inset-x-0 h-[2px] ${
                 variant === 'danger'
-                  ? 'bg-gradient-to-r from-transparent via-[#8c2d19]/45 to-transparent'
+                  ? 'bg-gradient-to-r from-transparent via-btn-danger-bg/45 to-transparent'
                   : variant === 'warning'
-                  ? 'bg-gradient-to-r from-transparent via-amber-600/40 to-transparent'
-                  : 'bg-gradient-to-r from-transparent via-gold-500/40 to-transparent'
+                  ? 'bg-gradient-to-r from-transparent via-btn-warning-bg/40 to-transparent'
+                  : 'bg-gradient-to-r from-transparent via-btn-accent-bg/40 to-transparent'
               }`}
             />
 
@@ -117,7 +117,7 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
               type="button"
               onClick={handleCancel}
               aria-label="Close dialog"
-              className="absolute right-3.5 top-3.5 sm:right-4 sm:top-4 h-8 w-8 rounded-full flex items-center justify-center text-forest-400 hover:text-forest-950 hover:bg-forest-900/5 transition-all cursor-pointer outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-900/20"
+              className="absolute right-3.5 top-3.5 sm:right-4 sm:top-4 h-8 w-8 rounded-full flex items-center justify-center text-forest-400 hover:text-forest-950 hover:bg-cream-200/50 transition-all cursor-pointer outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -126,7 +126,7 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
 
             {/* Eyebrow Accent Tag */}
             <div className="flex items-center gap-2 mb-3">
-              <span className="h-px w-5 bg-gold-500/60" />
+              <span className="h-px w-5 bg-btn-accent-bg/60" />
               <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
                 {variant === 'danger' ? 'Action Notice' : variant === 'warning' ? 'Attention' : 'Notice'}
               </span>
@@ -137,10 +137,10 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
               <div
                 className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border shadow-2xs transition-colors ${
                   variant === 'danger'
-                    ? 'border-[#8c2d19]/35 bg-[#8c2d19]/10 text-[#8c2d19] ring-4 ring-[#8c2d19]/8'
+                    ? 'border-btn-danger-border/35 bg-btn-danger-bg/10 text-btn-danger-bg ring-4 ring-btn-danger-bg/8'
                     : variant === 'warning'
-                    ? 'border-amber-600/35 bg-amber-500/10 text-amber-700 ring-4 ring-amber-500/8'
-                    : 'border-gold-500/40 bg-forest-900/10 text-forest-900 ring-4 ring-gold-400/10'
+                    ? 'border-btn-warning-border/35 bg-btn-warning-bg/10 text-btn-warning-bg ring-4 ring-btn-warning-bg/8'
+                    : 'border-btn-accent-border/40 bg-forest-900/10 text-forest-900 ring-4 ring-btn-accent-bg/10'
                 }`}
               >
                 {variant === 'danger' ? (
@@ -179,14 +179,14 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
             )}
 
             {/* Subtle Parchment Divider Hairline */}
-            <div className="h-px bg-[#dfd2ba]/80 mb-5" />
+            <div className="h-px bg-border-primary mb-5" />
 
             {/* Action Buttons */}
             <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={handleCancel}
-                className="w-full sm:w-auto rounded-full border border-[#d8caa8] bg-[#faf6ee] hover:bg-[#ede3ce] text-forest-900 px-5 sm:px-6 h-10 sm:h-10.5 text-xs font-sans font-semibold uppercase tracking-[0.12em] transition-all duration-150 cursor-pointer active:scale-[0.98] shadow-2xs outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-900/30"
+                className="btn-secondary w-full sm:w-auto rounded-full px-5 sm:px-6 h-10 sm:h-10.5 text-xs font-sans font-semibold uppercase tracking-[0.12em] outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
               >
                 {options.cancelText || 'Cancel'}
               </button>
@@ -195,12 +195,12 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
                 ref={confirmButtonRef}
                 type="button"
                 onClick={handleConfirm}
-                className={`w-full sm:w-auto rounded-full px-6 sm:px-7 h-10 sm:h-10.5 text-xs font-sans font-bold uppercase tracking-[0.12em] transition-all duration-150 cursor-pointer active:scale-[0.98] shadow-sm flex items-center justify-center gap-1.5 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                className={`w-full sm:w-auto rounded-full px-6 sm:px-7 h-10 sm:h-10.5 text-xs font-sans font-bold uppercase tracking-[0.12em] flex items-center justify-center gap-1.5 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
                   variant === 'danger'
-                    ? 'bg-[#8c2d19] hover:bg-[#742413] text-cream-50 border border-[#742413]/40 shadow-[#8c2d19]/25 focus-visible:ring-[#8c2d19] focus-visible:ring-offset-cream-100'
+                    ? 'btn-danger focus-visible:ring-btn-danger-border'
                     : variant === 'warning'
-                    ? 'bg-[#b47a1e] hover:bg-[#9a6616] text-cream-50 border border-[#9a6616]/40 shadow-[#b47a1e]/25 focus-visible:ring-[#b47a1e] focus-visible:ring-offset-cream-100'
-                    : 'bg-forest-950 hover:bg-forest-900 text-gold-400 hover:text-gold-300 border border-gold-500/35 shadow-forest-950/25 focus-visible:ring-forest-900 focus-visible:ring-offset-cream-100'
+                    ? 'btn-warning focus-visible:ring-btn-warning-border'
+                    : 'btn-primary border-btn-accent-border/40 text-gold-400 hover:text-white focus-visible:ring-focus-ring'
                 }`}
               >
                 <span>{options.confirmText || 'Confirm'}</span>

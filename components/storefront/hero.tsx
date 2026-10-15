@@ -29,7 +29,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
   return (
     <div className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[350px] mx-auto">
       {/* Tactile Frame Glint */}
-      <div className="relative p-2 rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-2xl backdrop-blur-xs">
+      <div className="relative p-2 rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-sm backdrop-blur-xs">
         {/* Slides Viewport */}
         <div className="relative aspect-[4/5] rounded-[22px] overflow-hidden bg-forest-950 shadow-inner">
           {activeSlides.map((s, i) => {
@@ -76,11 +76,11 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Floating Curation Pill Badge */}
           <div
-            className="absolute top-3.5 left-3.5 px-3 py-1 text-[10px] sm:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md shadow-md transition-all duration-400 font-sans tracking-wide"
+            className="absolute top-3.5 left-3.5 px-3 py-1 text-[10px] sm:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md transition-all duration-400 font-sans tracking-wide"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,
-              border: '1px solid rgba(255,255,255,0.15)',
+              border: '1px solid var(--color-border-dark)',
             }}
           >
             {currentSlide.badge_text}
@@ -95,7 +95,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                   onClick={() => setSlide(i)}
                   aria-label={`Slide ${i + 1}`}
                   className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    i === slide ? 'w-4 bg-gold-400' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/60'
+                    i === slide ? 'w-4 bg-btn-accent-bg' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/80'
                   }`}
                 />
               ))}
@@ -161,7 +161,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <Link
               href="/products"
-              className="group inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-semibold rounded-full bg-gold-500 text-forest-950 hover:bg-gold-400 transition-all shadow-md hover:shadow-lg active:scale-[0.98] font-sans tracking-wide"
+              className="btn-accent rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group"
             >
               <span>Shop Collection</span>
               <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,7 +170,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
             </Link>
             <Link
               href="#aboutus"
-              className="inline-flex items-center px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-medium rounded-full border border-forest-700/80 text-cream-200 hover:border-gold-400/80 hover:text-gold-300 hover:bg-forest-900/40 backdrop-blur-xs transition-all active:scale-[0.98] font-sans tracking-wide"
+              className="btn-ghost-dark rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-medium tracking-wide border border-border-gold-subtle hover:border-border-gold inline-flex items-center transition-all"
             >
               Our Story
             </Link>
