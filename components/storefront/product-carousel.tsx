@@ -1,119 +1,146 @@
 'use client'
 
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { ProductCard } from '@/components/storefront/product-card'
 import type { ProductWithDetails } from '@/lib/queries/products'
+import { gsap, isReducedMotion, horizontalLoop, type HorizontalLoopTimeline } from '@/lib/motion'
 
 export function ProductCarousel({ products }: { products: ProductWithDetails[] }) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [isHovered, setIsHovered] = useState(false)
-  const isInteractingRef = useRef(false)
-  const interactionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const loopRef = useRef<HorizontalLoopTimeline | null>(null)
+  const isHoveredRef = useRef(false)
 
-  // Ensure there are enough items to loop seamlessly across all desktop viewports
-  const baseItems =
-    products.length >= 6
-      ? products
-      : products.length >= 3
-      ? [...products, ...products]
-      : [...products, ...products, ...products, ...products]
+  // Ensure enough items to span any viewport seamlessly
+  const displayProducts = useMemo(() => {
+    if (!products || products.length === 0) return []
+    let list = [...products]
+    while (list.length < 12) {
+      list = [...list, ...products]
+    }
+    return list
+  }, [products])
 
-  const infiniteItems = [...baseItems, ...baseItems]
-
-  // Continuous auto-gliding motion with hover & manual interaction pause
+  // Initialize GSAP Hardware-Accelerated Horizontal Loop
   useEffect(() => {
-    const container = scrollContainerRef.current
-    if (!container) return
+    if (!trackRef.current || displayProducts.length === 0) return
 
-    // Honor users who prefer reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    const reduced = isReducedMotion()
+    const items = gsap.utils.toArray<HTMLElement>('.carousel-card-item', trackRef.current)
+    if (items.length === 0) return
 
-    let rafId: number
-    const speed = 0.65 // subtle, luxurious glide speed
+    // Exact responsive gap between items (16px on mobile, 24px on sm+)
+    const gap = window.innerWidth >= 640 ? 24 : 16
 
-    const step = () => {
-      if (!isHovered && !isInteractingRef.current && container) {
-        container.scrollLeft += speed
-        const halfWidth = container.scrollWidth / 2
-        if (container.scrollLeft >= halfWidth) {
-          container.scrollLeft -= halfWidth
-        }
-      }
-      rafId = requestAnimationFrame(step)
+    const loop = horizontalLoop(items, {
+      speed: reduced ? 0 : 0.45, // Gentle, silky-smooth continuous glide
+      paused: reduced,
+      repeat: -1,
+      paddingRight: gap,
+    })
+
+    loopRef.current = loop
+
+    // Resize handler to adjust layout if window changes
+    let resizeTimer: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        loop.kill()
+        gsap.set(items, { clearProps: 'all' })
+        const newGap = window.innerWidth >= 640 ? 24 : 16
+        loopRef.current = horizontalLoop(items, {
+          speed: reduced ? 0 : 0.45,
+          paused: reduced || isHoveredRef.current,
+          repeat: -1,
+          paddingRight: newGap,
+        })
+      }, 200)
     }
 
-    rafId = requestAnimationFrame(step)
+    window.addEventListener('resize', handleResize)
+
     return () => {
-      cancelAnimationFrame(rafId)
-      if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current)
+      clearTimeout(resizeTimer)
+      window.removeEventListener('resize', handleResize)
+      loop.kill()
+      gsap.set(items, { clearProps: 'all' })
     }
-  }, [isHovered])
+  }, [displayProducts])
 
-  // Handle seamless wrap when scrolling manually
-  const handleScroll = () => {
-    const container = scrollContainerRef.current
-    if (!container) return
-    const halfWidth = container.scrollWidth / 2
-
-    if (container.scrollLeft <= 0) {
-      container.scrollLeft += halfWidth
-    } else if (container.scrollLeft >= halfWidth * 1.95) {
-      container.scrollLeft -= halfWidth
-    }
+  // Next / Previous buttons: smoothly glide by 1 card without stopping the continuous motion
+  const handleNext = () => {
+    if (!loopRef.current) return
+    loopRef.current.next({
+      duration: 0.65,
+      ease: 'power2.out',
+      onComplete: () => {
+        if (!isHoveredRef.current && !isReducedMotion()) {
+          loopRef.current?.play()
+        }
+      },
+    })
   }
 
-  // Manual scroll with Left / Right buttons
-  const scrollManual = (direction: 'left' | 'right') => {
-    const container = scrollContainerRef.current
-    if (!container) return
+  const handlePrevious = () => {
+    if (!loopRef.current) return
+    loopRef.current.previous({
+      duration: 0.65,
+      ease: 'power2.out',
+      onComplete: () => {
+        if (!isHoveredRef.current && !isReducedMotion()) {
+          loopRef.current?.play()
+        }
+      },
+    })
+  }
 
-    isInteractingRef.current = true
-    if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current)
+  const handleMouseEnter = () => {
+    isHoveredRef.current = true
+    loopRef.current?.pause()
+  }
 
-    const scrollDelta = direction === 'left' ? -310 : 310
-    container.scrollBy({ left: scrollDelta, behavior: 'smooth' })
-
-    // Resume subtle auto-drift after 4s of idle time
-    interactionTimeoutRef.current = setTimeout(() => {
-      isInteractingRef.current = false
-    }, 4000)
+  const handleMouseLeave = () => {
+    isHoveredRef.current = false
+    if (!isReducedMotion()) {
+      loopRef.current?.play()
+    }
   }
 
   return (
     <div className="w-full">
-      {/* Header Row: Upright High-Contrast Serif + Minimal Navigation Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 lg:mb-6 gap-4">
+      {/* Minimal Header: High-contrast title, quiet subtitle, and restrained controls */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 lg:mb-6 gap-3">
         <div>
-          <h2 className="font-display font-medium text-forest-950 leading-tight text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-[-0.015em]">
-            Curated Essentials
+          <h2 className="font-display font-medium text-forest-950 text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-tight leading-tight">
+            The Writing Desk
           </h2>
-          <p className="text-xs sm:text-[13px] lg:text-sm text-forest-800/90 font-normal mt-1.5 font-sans max-w-lg leading-relaxed">
-            Handpicked fountain pen journals, fine writing instruments, and bamboo paper goods.
+          <p className="text-xs sm:text-[13px] lg:text-sm text-forest-700/80 mt-1 font-sans">
+            Everyday notebooks, pens, and paper goods crafted for daily rituals.
           </p>
         </div>
 
-        {/* Minimal Controls: Manual Navigation Arrows + View All */}
-        <div className="flex items-center gap-3.5 self-start sm:self-auto">
+        {/* Minimal Controls: Previous / Next + View All */}
+        <div className="flex items-center gap-3 self-start sm:self-auto">
           <div className="flex items-center gap-1.5" role="group" aria-label="Carousel navigation">
             <button
               type="button"
-              onClick={() => scrollManual('left')}
-              aria-label="Scroll left"
-              className="btn-secondary inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full"
+              onClick={handlePrevious}
+              aria-label="Previous products"
+              className="btn-secondary inline-flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full cursor-pointer"
             >
-              <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <button
               type="button"
-              onClick={() => scrollManual('right')}
-              aria-label="Scroll right"
-              className="btn-secondary inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full"
+              onClick={handleNext}
+              aria-label="Next products"
+              className="btn-secondary inline-flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full cursor-pointer"
             >
-              <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -122,7 +149,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
           <Link
             id="featured-view-all-link"
             href="/products"
-            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.16em] font-semibold text-text-primary hover:text-text-accent transition-colors group font-sans pl-3 border-l border-forest-900/15"
+            className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.16em] font-medium text-text-primary hover:text-text-accent transition-colors font-sans pl-2.5 border-l border-forest-900/15"
           >
             <span>View All</span>
             <svg
@@ -137,37 +164,26 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
         </div>
       </div>
 
-      {/* Infinite Scroll Viewport with Narrow, Refined Edge Scrims */}
+      {/* Contained Track Viewport: Aligned strictly with section header & content grid */}
       <div
-        className="relative overflow-hidden -mx-6 sm:-mx-10 md:-mx-14 lg:-mx-20 xl:-mx-24 2xl:-mx-28 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        ref={containerRef}
+        className="relative overflow-hidden w-full py-2"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {/* Subtle, narrow left edge fade */}
         <div
-          className="absolute left-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none bg-gradient-to-r from-bg-surface/80 to-transparent"
-        />
-
-        {/* Horizontal Carousel Track with Native Scroll & Auto-Gliding */}
-        <div
-          ref={scrollContainerRef}
-          onScroll={handleScroll}
-          className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-none py-2 select-none"
+          ref={trackRef}
+          className="flex gap-4 sm:gap-6 will-change-transform"
         >
-          {infiniteItems.map((p, index) => (
+          {displayProducts.map((p, index) => (
             <div
               key={`${p.id}-${index}`}
-              className="shrink-0 w-[190px] sm:w-[220px] md:w-[240px]"
+              className="carousel-card-item shrink-0 w-[190px] sm:w-[220px] md:w-[240px]"
             >
               <ProductCard product={p} />
             </div>
           ))}
         </div>
-
-        {/* Subtle, narrow right edge fade */}
-        <div
-          className="absolute right-0 top-0 bottom-0 w-4 sm:w-8 z-10 pointer-events-none bg-gradient-to-l from-bg-surface/80 to-transparent"
-        />
       </div>
     </div>
   )
