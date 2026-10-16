@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/lib/cart/cart-context'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
+import { gsap, isReducedMotion } from '@/lib/motion'
 
 export function CartDrawer() {
   const {
@@ -18,21 +19,67 @@ export function CartDrawer() {
     removeItem,
   } = useCart()
 
+  const [isClosing, setIsClosing] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
+  const backdropRef = useRef<HTMLDivElement>(null)
+  const itemListRef = useRef<HTMLDivElement>(null)
+
+  // Smooth closing animation handler
+  const handleClose = useCallback(() => {
+    if (isClosing) return
+    if (isReducedMotion()) {
+      closeDrawer()
+      return
+    }
+
+    setIsClosing(true)
+    setTimeout(() => {
+      setIsClosing(false)
+      closeDrawer()
+    }, 240)
+  }, [isClosing, closeDrawer])
+
+  // Reset closing state when drawer opens
+  useEffect(() => {
+    if (isDrawerOpen) {
+      setIsClosing(false)
+    }
+  }, [isDrawerOpen])
+
+  // Subtle stagger reveal of drawer items when opened
+  useEffect(() => {
+    if (!isDrawerOpen || isClosing || isReducedMotion() || !itemListRef.current) return
+
+    const items = itemListRef.current.querySelectorAll('.cart-drawer-item')
+    if (items.length > 0) {
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.28,
+          stagger: 0.035,
+          ease: 'power2.out',
+          clearProps: 'transform,opacity',
+        }
+      )
+    }
+  }, [isDrawerOpen, isClosing, cart.length])
 
   // Close on Escape key
   useEffect(() => {
     if (!isDrawerOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeDrawer()
+      if (e.key === 'Escape') handleClose()
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isDrawerOpen, closeDrawer])
+  }, [isDrawerOpen, handleClose])
 
   // Prevent background body scroll when drawer is open
   useEffect(() => {
-    if (isDrawerOpen) {
+    if (isDrawerOpen && !isClosing) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
@@ -40,9 +87,9 @@ export function CartDrawer() {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [isDrawerOpen])
+  }, [isDrawerOpen, isClosing])
 
-  if (!isDrawerOpen) return null
+  if (!isDrawerOpen && !isClosing) return null
 
   // Packaging / Delivery milestone target
   const milestoneTarget = 1500
@@ -58,15 +105,20 @@ export function CartDrawer() {
     >
       {/* Dimmed Backdrop with Gaussian Blur */}
       <div
-        onClick={closeDrawer}
+        ref={backdropRef}
+        onClick={handleClose}
         aria-hidden="true"
-        className="fixed inset-0 bg-forest-950/70 backdrop-blur-xs transition-opacity duration-300 animate-fade-in"
+        className={`fixed inset-0 bg-forest-950/70 backdrop-blur-xs transition-opacity duration-200 ${
+          isClosing ? 'animate-fade-out pointer-events-none' : 'animate-fade-in'
+        }`}
       />
 
       {/* Slide-out Drawer Panel */}
       <div
         ref={drawerRef}
-        className="relative flex h-full w-full max-w-md flex-col bg-cream-50 text-forest-900 shadow-sm animate-slide-in-right border-l border-forest-200/80 z-10"
+        className={`relative flex h-full w-full max-w-md flex-col bg-cream-50 text-forest-900 shadow-sm border-l border-forest-200/80 z-10 ${
+          isClosing ? 'animate-slide-out-right pointer-events-none' : 'animate-slide-in-right'
+        }`}
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between border-b border-forest-200/80 bg-cream-100/60 px-6 py-4.5">
@@ -85,7 +137,7 @@ export function CartDrawer() {
 
           <button
             type="button"
-            onClick={closeDrawer}
+            onClick={handleClose}
             aria-label="Close Shopping Bag"
             className="flex h-9 w-9 items-center justify-center rounded-full text-text-muted hover:bg-btn-ghost-hover-bg hover:text-btn-ghost-hover-text transition-colors cursor-pointer"
           >
@@ -121,7 +173,7 @@ export function CartDrawer() {
         </div>
 
         {/* Drawer Item List */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+        <div ref={itemListRef} className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           {cart.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center py-12">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-cream-200/80 text-forest-400 mb-4">
@@ -137,7 +189,7 @@ export function CartDrawer() {
               </p>
               <Link
                 href="/products"
-                onClick={closeDrawer}
+                onClick={handleClose}
                 className="btn-primary inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide"
               >
                 Browse Collection
@@ -147,7 +199,7 @@ export function CartDrawer() {
             cart.map((item) => (
               <div
                 key={item.variant_id}
-                className="flex items-center gap-3.5 rounded-2xl border border-forest-200/70 bg-cream-100/40 p-3 hover:border-gold-500/40 transition-colors"
+                className="cart-drawer-item flex items-center gap-3.5 rounded-2xl border border-forest-200/70 bg-cream-100/40 p-3 hover:border-gold-500/40 transition-colors"
               >
                 {/* Thumbnail */}
                 <div className="relative h-18 w-18 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-cream-200">
@@ -241,7 +293,7 @@ export function CartDrawer() {
 
             <Link
               href="/checkout"
-              onClick={closeDrawer}
+              onClick={handleClose}
               className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-xs font-bold uppercase tracking-wider"
             >
               <span>Proceed to Checkout</span>
@@ -253,7 +305,7 @@ export function CartDrawer() {
             <div className="text-center pt-1">
               <Link
                 href="/bag"
-                onClick={closeDrawer}
+                onClick={handleClose}
                 className="link-editorial text-xs font-medium"
               >
                 View Full Shopping Bag

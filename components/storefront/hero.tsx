@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { gsap, isReducedMotion } from '@/lib/motion'
 
 import {
   BADGE_COLOR_PRESETS,
@@ -120,8 +121,60 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 }
 
 export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
+  const containerRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (isReducedMotion() || !containerRef.current) return
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+      // Subtle eyebrow entrance
+      tl.fromTo(
+        '.hero-eyebrow',
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+        0.05
+      )
+
+      // Masked typography lines reveal: slides upward from overflow mask
+      tl.fromTo(
+        '.hero-title-line',
+        { yPercent: 110 },
+        { yPercent: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out' },
+        0.12
+      )
+
+      // Subtitle paragraph
+      tl.fromTo(
+        '.hero-subtext',
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' },
+        0.4
+      )
+
+      // CTA buttons
+      tl.fromTo(
+        '.hero-cta',
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+        0.55
+      )
+
+      // Slideshow frame gentle entrance
+      tl.fromTo(
+        '.hero-frame',
+        { opacity: 0, scale: 0.97 },
+        { opacity: 1, scale: 1, duration: 0.85, ease: 'power2.out' },
+        0.2
+      )
+    }, containerRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark">
+    <section ref={containerRef} className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark">
       {/* Blind-Debossed Pulp Watermark + Minimalist Drifting Leaf */}
       <BambooPaperWatermark theme="dark" className="-right-10 top-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96" />
       <DriftingBambooLeaf theme="dark" className="left-8 sm:left-16 bottom-8 hidden sm:block" rotation={24} scale={1.2} />
@@ -130,7 +183,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
         {/* Left: Story & Discovery */}
         <div className="lg:col-span-7 max-w-2xl lg:pl-2 xl:pl-6 2xl:pl-8">
           {/* Stationery Eyebrow */}
-          <div className="inline-flex items-center gap-3 mb-4 sm:mb-5">
+          <div className="hero-eyebrow inline-flex items-center gap-3 mb-4 sm:mb-5">
             <span className="h-px w-7 sm:w-8 bg-gold-400/70" />
             <span className="text-[11px] sm:text-xs uppercase tracking-[0.24em] text-gold-400 font-sans font-semibold">
               Bamboo Stationery &amp; Gifts &mdash; Est. 2026
@@ -145,20 +198,27 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
               lineHeight: 1.06,
             }}
           >
-            Craft your{' '}
-            <em className="font-editorial text-gold-300 font-normal">story</em>,
-            <br />
-            one page at a time.
+            <span className="block overflow-hidden py-0.5">
+              <span className="hero-title-line block">
+                Craft your{' '}
+                <em className="font-editorial text-gold-300 font-normal">story</em>,
+              </span>
+            </span>
+            <span className="block overflow-hidden py-0.5">
+              <span className="hero-title-line block">
+                one page at a time.
+              </span>
+            </span>
           </h1>
 
           <p
-            className="mb-7 sm:mb-8 text-sm sm:text-[15px] lg:text-base leading-relaxed text-forest-200/90 font-light sm:font-normal max-w-xl text-pretty"
+            className="hero-subtext mb-7 sm:mb-8 text-sm sm:text-[15px] lg:text-base leading-relaxed text-forest-200/90 font-light sm:font-normal max-w-xl text-pretty"
           >
             Handpicked notebooks, artisanal pens, and bamboo paper goods from makers who believe
             writing is still the most intimate form of expression.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <div className="hero-cta flex flex-wrap items-center gap-3 sm:gap-4">
             <Link
               href="/products"
               className="btn-accent rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group"
@@ -178,7 +238,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
         </div>
 
         {/* Right: slideshow (accessible across all viewports) */}
-        <div className="flex lg:col-span-5 justify-center lg:justify-end w-full">
+        <div className="hero-frame flex lg:col-span-5 justify-center lg:justify-end w-full">
           <HeroSlideshow slides={slides} />
         </div>
       </div>

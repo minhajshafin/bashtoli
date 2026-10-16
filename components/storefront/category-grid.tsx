@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
+import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
 interface CategoryGridProps {
   categories?: FeaturedCategoryItem[]
@@ -135,34 +136,36 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
     <section className="relative overflow-hidden py-12 sm:py-14 lg:py-16 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-900 bg-laid-paper-dark">
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
         {/* Section Heading — Minimal Editorial Header with Inline Text Link */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 lg:mb-9 gap-4">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="h-px w-4 bg-gold-400/60" />
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-gold-400/90 font-sans font-medium">
-                Collections &middot; Archive
-              </span>
+        <ScrollReveal>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 lg:mb-9 gap-4">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 mb-2">
+                <span className="h-px w-4 bg-gold-400/60" />
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-gold-400/90 font-sans font-medium">
+                  Collections &middot; Archive
+                </span>
+              </div>
+              <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em]">
+                Curated Collections
+              </h2>
+              <p className="text-xs sm:text-[13px] lg:text-sm text-forest-200/80 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
+                Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
+              </p>
             </div>
-            <h2 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em]">
-              Curated Collections
-            </h2>
-            <p className="text-xs sm:text-[13px] lg:text-sm text-forest-200/80 font-normal mt-1.5 leading-relaxed font-sans max-w-xl">
-              Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
-            </p>
-          </div>
 
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 self-start sm:self-end text-[11px] sm:text-xs uppercase tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-1"
-          >
-            <span className="border-b border-gold-400/40 group-hover/link:border-gold-200 pb-0.5 transition-colors">
-              Explore All Collections
-            </span>
-            <span className="text-sm transition-transform duration-300 group-hover/link:translate-x-1">
-              →
-            </span>
-          </Link>
-        </div>
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 self-start sm:self-end text-[11px] sm:text-xs uppercase tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-1"
+            >
+              <span className="border-b border-gold-400/40 group-hover/link:border-gold-200 pb-0.5 transition-colors">
+                Explore All Collections
+              </span>
+              <span className="text-sm transition-transform duration-300 group-hover/link:translate-x-1">
+                →
+              </span>
+            </Link>
+          </div>
+        </ScrollReveal>
 
         {/* Desktop Wabi-Sabi Staggered 3-Column Masonry (Increased height & harmonious proportions) */}
         <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">

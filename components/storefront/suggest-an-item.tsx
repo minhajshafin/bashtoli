@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { submitSuggestionAction } from '@/lib/actions/suggestions'
+import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
 export function SuggestAnItem() {
   const [name, setName] = useState('')
@@ -59,22 +60,24 @@ export function SuggestAnItem() {
     >
       <div className="relative z-10 max-w-xl mx-auto">
         {/* Minimal Header */}
-        <div className="text-center mb-5 sm:mb-6">
-          <div className="inline-flex items-center gap-2 mb-2">
-            <span className="h-px w-4 bg-gold-400/60" />
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans font-medium text-gold-400/90">
-              Special Requests
-            </span>
+        <ScrollReveal>
+          <div className="text-center mb-5 sm:mb-6">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="h-px w-4 bg-gold-400/60" />
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans font-medium text-gold-400/90">
+                Special Requests
+              </span>
+            </div>
+
+            <h2 className="font-display font-medium text-cream-50 text-xl sm:text-2xl lg:text-[1.75rem] leading-snug tracking-[-0.015em] mb-2">
+              Looking for something in particular?
+            </h2>
+
+            <p className="font-sans text-xs sm:text-[13px] leading-relaxed text-cream-200/75 max-w-md mx-auto text-pretty">
+              Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
+            </p>
           </div>
-
-          <h2 className="font-display font-medium text-cream-50 text-xl sm:text-2xl lg:text-[1.75rem] leading-snug tracking-[-0.015em] mb-2">
-            Looking for something in particular?
-          </h2>
-
-          <p className="font-sans text-xs sm:text-[13px] leading-relaxed text-cream-200/75 max-w-md mx-auto text-pretty">
-            Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
-          </p>
-        </div>
+        </ScrollReveal>
 
         {submitted ? (
           /* Confirmation State */

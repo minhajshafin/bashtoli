@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
 export function AboutSection() {
   return (
@@ -9,7 +10,7 @@ export function AboutSection() {
     >
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
         {/* Left: Minimal Archival Photo */}
-        <div className="lg:col-span-5 flex justify-center lg:justify-end">
+        <ScrollReveal className="lg:col-span-5 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-[240px] sm:max-w-[260px] lg:max-w-[280px]">
             <div className="p-2 sm:p-2.5 rounded-2xl bg-cream-50 border border-forest-900/10 shadow-sm">
               <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-cream-200 shadow-inner">
@@ -23,10 +24,10 @@ export function AboutSection() {
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Right: Minimal Editorial Narrative */}
-        <div className="lg:col-span-7 text-left max-w-xl">
+        <ScrollReveal delay={0.12} className="lg:col-span-7 text-left max-w-xl">
           {/* Subtle Overline Kicker */}
           <div className="flex items-center gap-2 mb-2.5">
             <span className="h-px w-4 bg-gold-500/60" />
@@ -60,7 +61,7 @@ export function AboutSection() {
               &ldquo;A notebook is a letter to your future self.&rdquo;
             </blockquote>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   )

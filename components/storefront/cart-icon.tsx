@@ -1,13 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useCart } from '@/lib/cart/cart-context'
+import { gsap, isReducedMotion } from '@/lib/motion'
 
 export function CartIcon() {
   const { itemCount, isLoaded, openDrawer } = useCart()
   const pathname = usePathname()
+  const badgeRef = useRef<HTMLSpanElement>(null)
+  const prevCountRef = useRef(itemCount)
+
+  useEffect(() => {
+    if (badgeRef.current && itemCount > prevCountRef.current && !isReducedMotion()) {
+      gsap.fromTo(
+        badgeRef.current,
+        { scale: 0.6 },
+        { scale: 1, duration: 0.35, ease: 'back.out(2.5)', overwrite: 'auto' }
+      )
+    }
+    prevCountRef.current = itemCount
+  }, [itemCount])
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // If not already on checkout or bag page, smoothly open drawer instead of page navigation
@@ -41,7 +55,8 @@ export function CartIcon() {
       {/* Cart quantity badge */}
       {isLoaded && itemCount > 0 && (
         <span
-          className="absolute -top-0.5 -right-0.5 flex h-3.5 min-w-3.5 px-0.5 items-center justify-center rounded-full text-[9px] font-bold bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 font-price shadow-xs animate-fade-in"
+          ref={badgeRef}
+          className="absolute -top-0.5 -right-0.5 flex h-3.5 min-w-3.5 px-0.5 items-center justify-center rounded-full text-[9px] font-bold bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 font-price shadow-2xs"
         >
           {itemCount}
         </span>

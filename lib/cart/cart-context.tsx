@@ -92,7 +92,7 @@ export function CartProvider({ children, isLoggedIn }: { children: ReactNode; is
   const isLoaded = state.isLoaded
 
   // Add Item operation (optimistic local state update + persistent storage action)
-  const addItem = useCallback((item: Omit<CartItem, 'qty'>, qty: number, openDrawerOnAdd: boolean = true) => {
+  const addItem = useCallback((item: Omit<CartItem, 'qty'>, qty: number, openDrawerOnAdd: boolean = false) => {
     setState((prev) => {
       const updated = [...prev.cart]
       const existing = updated.find((i) => i.variant_id === item.variant_id)
