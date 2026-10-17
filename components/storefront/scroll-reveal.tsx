@@ -31,28 +31,27 @@ export function ScrollReveal({
     const el = elRef.current
     gsap.registerPlugin(ScrollTrigger)
 
-    const trigger = ScrollTrigger.create({
-      trigger: el,
-      start: 'top 90%',
-      once: true,
-      onEnter: () => {
-        gsap.fromTo(
-          el,
-          { opacity: 0, y },
-          {
-            opacity: 1,
-            y: 0,
-            duration,
-            delay,
-            ease: 'power3.out',
-            clearProps: 'transform,opacity',
-          }
-        )
-      },
-    })
+    const tween = gsap.fromTo(
+      el,
+      { opacity: 0, y },
+      {
+        opacity: 1,
+        y: 0,
+        duration,
+        delay,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          once: true,
+        },
+      }
+    )
 
     return () => {
-      trigger.kill()
+      tween.scrollTrigger?.kill()
+      tween.kill()
     }
   }, [y, duration, delay])
 

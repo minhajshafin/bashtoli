@@ -168,79 +168,81 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
         </ScrollReveal>
 
         {/* Desktop Wabi-Sabi Staggered 3-Column Masonry (Increased height & harmonious proportions) */}
-        <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
-          {/* Column 1 (Left): Tall Portrait (Hero) + Balanced Landscape (Medium) */}
-          <div className="flex flex-col gap-4 lg:gap-5 w-full">
-            {cat1 ? (
-              <CategoryCard category={cat1} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-            ) : (
-              <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-            )}
-            {cat2 ? (
-              <CategoryCard category={cat2} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-            ) : (
-              <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-            )}
+        <ScrollReveal delay={0.06} y={16}>
+          <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
+            {/* Column 1 (Left): Tall Portrait (Hero) + Balanced Landscape (Medium) */}
+            <div className="flex flex-col gap-4 lg:gap-5 w-full">
+              {cat1 ? (
+                <CategoryCard category={cat1} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
+              ) : (
+                <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
+              )}
+              {cat2 ? (
+                <CategoryCard category={cat2} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
+              ) : (
+                <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
+              )}
+            </div>
+
+            {/* Column 2 (Center): Balanced Landscape (Medium) + Tall Portrait (Hero) */}
+            <div className="flex flex-col gap-4 lg:gap-5 w-full">
+              {cat3 ? (
+                <CategoryCard category={cat3} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
+              ) : (
+                <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
+              )}
+              {cat4 ? (
+                <CategoryCard category={cat4} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
+              ) : (
+                <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
+              )}
+            </div>
+
+            {/* Column 3 (Right): Three Artfully Stacked Blocks */}
+            <div className="flex flex-col gap-3.5 lg:gap-4 w-full">
+              {cat5 ? (
+                <CategoryCard category={cat5} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
+              ) : (
+                <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
+              )}
+              {cat6 ? (
+                <CategoryCard category={cat6} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
+              ) : (
+                <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
+              )}
+              {cat7 ? (
+                <CategoryCard category={cat7} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
+              ) : (
+                <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
+              )}
+            </div>
           </div>
 
-          {/* Column 2 (Center): Balanced Landscape (Medium) + Tall Portrait (Hero) */}
-          <div className="flex flex-col gap-4 lg:gap-5 w-full">
-            {cat3 ? (
-              <CategoryCard category={cat3} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-            ) : (
-              <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-            )}
-            {cat4 ? (
-              <CategoryCard category={cat4} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-            ) : (
-              <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-            )}
+          {/* Mobile / Tablet Asymmetric Rhythmic Grid */}
+          <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-4">
+            {categories.map((cat, index) => {
+              const mobileConfigs: { height: string; size: CardSize; span?: string }[] = [
+                { height: 'h-[220px] sm:h-[240px]', size: 'medium' },
+                { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+                { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+                { height: 'h-[220px] sm:h-[240px]', size: 'medium' },
+                { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+                { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
+                { height: 'h-[190px] sm:h-[210px]', size: 'medium', span: 'col-span-2' },
+              ]
+              const config = mobileConfigs[index] || { height: 'h-[180px]', size: 'compact' }
+
+              return (
+                <CategoryCard
+                  key={cat.id}
+                  category={cat}
+                  size={config.size}
+                  className={`${config.height} ${config.span || ''}`}
+                />
+              )
+            })}
           </div>
-
-          {/* Column 3 (Right): Three Artfully Stacked Blocks */}
-          <div className="flex flex-col gap-3.5 lg:gap-4 w-full">
-            {cat5 ? (
-              <CategoryCard category={cat5} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-            ) : (
-              <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-            )}
-            {cat6 ? (
-              <CategoryCard category={cat6} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-            ) : (
-              <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-            )}
-            {cat7 ? (
-              <CategoryCard category={cat7} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-            ) : (
-              <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-            )}
-          </div>
-        </div>
-
-        {/* Mobile / Tablet Asymmetric Rhythmic Grid */}
-        <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-4">
-          {categories.map((cat, index) => {
-            const mobileConfigs: { height: string; size: CardSize; span?: string }[] = [
-              { height: 'h-[220px] sm:h-[240px]', size: 'medium' },
-              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
-              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
-              { height: 'h-[220px] sm:h-[240px]', size: 'medium' },
-              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
-              { height: 'h-[175px] sm:h-[190px]', size: 'compact' },
-              { height: 'h-[190px] sm:h-[210px]', size: 'medium', span: 'col-span-2' },
-            ]
-            const config = mobileConfigs[index] || { height: 'h-[180px]', size: 'compact' }
-
-            return (
-              <CategoryCard
-                key={cat.id}
-                category={cat}
-                size={config.size}
-                className={`${config.height} ${config.span || ''}`}
-              />
-            )
-          })}
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   )

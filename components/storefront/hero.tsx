@@ -133,7 +133,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       tl.fromTo(
         '.hero-eyebrow',
         { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'opacity,transform' },
         0.05
       )
 
@@ -141,7 +141,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       tl.fromTo(
         '.hero-title-line',
         { yPercent: 110 },
-        { yPercent: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out' },
+        { yPercent: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out', clearProps: 'transform' },
         0.12
       )
 
@@ -149,7 +149,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       tl.fromTo(
         '.hero-subtext',
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', clearProps: 'opacity,transform' },
         0.4
       )
 
@@ -157,7 +157,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       tl.fromTo(
         '.hero-cta',
         { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out', clearProps: 'opacity,transform' },
         0.55
       )
 
@@ -165,7 +165,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       tl.fromTo(
         '.hero-frame',
         { opacity: 0, scale: 0.97 },
-        { opacity: 1, scale: 1, duration: 0.85, ease: 'power2.out' },
+        { opacity: 1, scale: 1, duration: 0.85, ease: 'power2.out', clearProps: 'opacity,transform' },
         0.2
       )
     }, containerRef)
