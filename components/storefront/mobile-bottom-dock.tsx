@@ -21,11 +21,10 @@ export function MobileBottomDock() {
   const itemRefs = useRef<(HTMLAnchorElement | HTMLButtonElement | null)[]>([])
   const isFirstRender = useRef(true)
 
-  // Do not render bottom dock on checkout, bag, admin, order receipt, or individual product detail pages
+  // Do not render bottom dock on checkout, admin, order receipt, or individual product detail pages
   const isHiddenRoute =
     pathname === '/checkout' ||
     pathname?.startsWith('/checkout/') ||
-    pathname === '/bag' ||
     pathname?.startsWith('/admin') ||
     (pathname?.startsWith('/order/') && pathname !== '/order/lookup') ||
     (pathname?.startsWith('/products/') && pathname !== '/products')
@@ -182,13 +181,12 @@ export function MobileBottomDock() {
           )}
         </Link>
 
-        {/* 4. Bag Drawer Trigger */}
-        <button
+        {/* 4. Bag Link */}
+        <Link
           ref={(el) => {
             itemRefs.current[3] = el
           }}
-          type="button"
-          onClick={openDrawer}
+          href="/bag"
           aria-label={`Shopping Bag (${itemCount})`}
           aria-current={isBag ? 'page' : undefined}
           className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
@@ -203,7 +201,7 @@ export function MobileBottomDock() {
               {itemCount}
             </span>
           )}
-        </button>
+        </Link>
 
         {/* 5. Account */}
         <Link

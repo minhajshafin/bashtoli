@@ -9,14 +9,12 @@ import { CartSummary } from '@/components/storefront/cart-summary'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { checkCartItemsAvailability } from '@/lib/actions/cart'
 import type { ValidatedCartItem } from '@/lib/queries/cart'
-import { ChevronUp, ChevronDown, Gift, Truck } from 'lucide-react'
 
 export function BagClient() {
   const confirm = useConfirm()
   const { cart, isLoaded, updateQty, removeItem, clearCart } = useCart()
   const [dbStatuses, setDbStatuses] = useState<Record<string, ValidatedCartItem>>({})
   const [isValidating, setIsValidating] = useState(false)
-  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false)
 
   // Stable key that changes whenever the set of variant IDs changes (not just the count).
   const cartKey = cart
@@ -189,75 +187,6 @@ export function BagClient() {
           >
             Explore Catalogue &rarr;
           </Link>
-        </div>
-      )}
-
-      {/* Sticky Mobile Thumb-Zone Checkout Bar */}
-      {cart.length > 0 && (
-        <div className="fixed bottom-0 inset-x-0 z-40 bg-forest-950/95 backdrop-blur-xl border-t border-forest-800/80 shadow-2xl sm:hidden">
-          {/* Expandable Order Breakdown Sheet */}
-          {isBreakdownOpen && (
-            <div className="p-4 bg-forest-900/90 border-b border-forest-800 space-y-2.5 text-xs text-cream-200/90 font-sans animate-in slide-in-from-bottom duration-200">
-              <div className="flex items-center justify-between">
-                <span className="text-forest-400">Items Subtotal ({totalQuantity} items)</span>
-                <span className="font-semibold text-cream-50 font-price">৳{validatedSubtotal.toLocaleString()}</span>
-              </div>
-              <div className="flex items-center justify-between text-[11px] text-forest-300">
-                <span className="inline-flex items-center gap-1.5">
-                  <Truck className="h-3.5 w-3.5 text-gold-400" />
-                  Estimated Delivery Fee
-                </span>
-                <span>Calculated next step</span>
-              </div>
-              <div className="flex items-center justify-between text-[11px] text-gold-300">
-                <span className="inline-flex items-center gap-1.5">
-                  <Gift className="h-3.5 w-3.5" />
-                  Gift Wrap & Laid Ribbon
-                </span>
-                <span className="font-semibold uppercase tracking-wider text-[10px] bg-gold-400/20 px-2 py-0.5 rounded-full border border-gold-400/30">Free</span>
-              </div>
-            </div>
-          )}
-
-          {/* Primary Action Dock */}
-          <div className="p-3.5 px-4 pb-[calc(env(safe-area-inset-bottom,0px)+12px)] flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={() => setIsBreakdownOpen(!isBreakdownOpen)}
-              className="min-w-0 flex flex-col text-left cursor-pointer active:opacity-75 transition-opacity"
-            >
-              <div className="inline-flex items-center gap-1 text-[10px] font-sans font-medium uppercase tracking-wider text-cream-200/70">
-                <span>Estimated Total</span>
-                {isBreakdownOpen ? (
-                  <ChevronDown className="h-3 w-3 text-gold-400" />
-                ) : (
-                  <ChevronUp className="h-3 w-3 text-gold-400" />
-                )}
-              </div>
-              <span className="font-price text-lg font-bold text-cream-50 leading-tight">
-                ৳{validatedSubtotal.toLocaleString()}
-              </span>
-            </button>
-
-            {hasUnavailableItems ? (
-              <button
-                disabled
-                className="flex h-12 items-center justify-center rounded-xl bg-cream-200/20 border border-forest-700 text-xs font-sans font-medium uppercase tracking-wider text-cream-200/40 px-5 cursor-not-allowed"
-              >
-                Unavailable
-              </button>
-            ) : (
-              <Link
-                href="/checkout"
-                className="btn-accent flex h-12 items-center justify-center gap-2 rounded-xl px-6 text-xs font-sans font-bold uppercase tracking-wider cursor-pointer active:scale-95 shadow-md flex-1 max-w-[220px]"
-              >
-                <span>Checkout</span>
-                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            )}
-          </div>
         </div>
       )}
     </div>

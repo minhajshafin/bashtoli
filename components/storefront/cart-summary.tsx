@@ -63,8 +63,8 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
         </div>
       )}
 
-      {/* Checkout CTA (Desktop only - Mobile uses floating dock) */}
-      <div className="pt-2 hidden sm:block">
+      {/* Checkout CTA */}
+      <div className="pt-2">
         {isCheckoutDisabled ? (
           <button
             disabled

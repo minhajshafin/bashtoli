@@ -87,7 +87,9 @@ export function Footer() {
 
   return (
     <footer
-      className="relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden"
+      className={`relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden ${
+        pathname === '/' ? 'block' : 'hidden md:block'
+      }`}
       id="contact"
     >
       {/* Minimalist Drifting Sumi-e Leaf Motif */}
