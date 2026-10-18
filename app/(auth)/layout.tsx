@@ -35,10 +35,36 @@ export default function AuthLayout({
         />
 
         {/* 2-Column Main Stage */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-          {/* Left Column: Brand Emblem & Tagline */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center text-center py-6 lg:py-12">
-            <Link href="/" aria-label="Bashtoli Home" className="group block focus:outline-none">
+        <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col lg:grid lg:grid-cols-12 gap-5 lg:gap-14 items-center">
+          {/* Mobile Brand Header (Compact, visible only on < lg) */}
+          <div className="lg:hidden flex items-center justify-center text-center pt-1 pb-1">
+            <Link
+              href="/"
+              aria-label="Bashtoli Home"
+              className="group inline-flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-2xl px-3 py-1.5"
+            >
+              <Image
+                src="/logo-round.svg"
+                alt="Bashtoli Stationery"
+                width={40}
+                height={40}
+                priority
+                className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-md shrink-0"
+              />
+              <div className="text-left">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold leading-none">
+                  বাঁশতলী &nbsp;·&nbsp; Est. 2026
+                </p>
+                <h2 className="text-sm font-medium text-cream-100 font-display tracking-tight mt-0.5">
+                  Bashtoli Stationery
+                </h2>
+              </div>
+            </Link>
+          </div>
+
+          {/* Desktop Left Column: Brand Emblem & Tagline (hidden on mobile, lg:flex on desktop) */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center text-center py-12">
+            <Link href="/" aria-label="Bashtoli Home" className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-3xl p-2">
               <div className="relative flex items-center justify-center">
                 <Image
                   src="/logo-round.svg"
@@ -46,7 +72,7 @@ export default function AuthLayout({
                   width={280}
                   height={280}
                   priority
-                  className="relative z-10 w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain transition-transform duration-500 group-hover:scale-105"
+                  className="relative z-10 w-48 h-48 md:w-56 md:h-56 object-contain transition-transform duration-500 group-hover:scale-105"
                   style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
@@ -66,7 +92,7 @@ export default function AuthLayout({
           </div>
 
           {/* Right Column: Auth Card Box */}
-          <div className="lg:col-span-7 flex items-center justify-center w-full">
+          <div className="w-full lg:col-span-7 flex items-center justify-center">
             {children}
           </div>
         </div>

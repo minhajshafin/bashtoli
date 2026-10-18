@@ -4,7 +4,11 @@ import { z } from 'zod'
  * Validation schema for customer and admin logins.
  */
 export const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email('Please enter a valid email address'),
   password: z.string().min(1, 'Password is required'),
 })
 
@@ -16,13 +20,14 @@ export const signupSchema = z
   .object({
     fullName: z
       .string()
+      .trim()
       .min(2, 'Full name must be at least 2 characters long')
-      .max(64, 'Full name is too long')
-      .transform((val) => val.trim()),
+      .max(64, 'Full name is too long'),
     email: z
       .string()
-      .email('Please enter a valid email address')
-      .transform((val) => val.trim().toLowerCase()),
+      .trim()
+      .toLowerCase()
+      .email('Please enter a valid email address'),
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters long')
@@ -40,8 +45,9 @@ export const signupSchema = z
 export const forgotPasswordSchema = z.object({
   email: z
     .string()
-    .email('Please enter a valid email address')
-    .transform((val) => val.trim().toLowerCase()),
+    .trim()
+    .toLowerCase()
+    .email('Please enter a valid email address'),
 })
 
 /**
