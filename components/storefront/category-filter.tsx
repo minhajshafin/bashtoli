@@ -30,6 +30,7 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
 
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLDivElement>(null)
+  const activePillRef = useRef<HTMLButtonElement | null>(null)
 
   const handleCategorySelect = (slug: string | null) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -42,6 +43,17 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
     router.push(`${pathname}?${params.toString()}`)
     setIsExpanded(false)
   }
+
+  // Auto-scroll active category into view on mobile ribbon
+  useEffect(() => {
+    if (activePillRef.current) {
+      activePillRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      })
+    }
+  }, [activeCategorySlug])
 
   // Calculate how many categories can fit across the available width
   const calculateVisibleCount = useCallback(() => {
@@ -182,9 +194,43 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
         </button>
       </div>
 
-      {/* Rendered Category Pills */}
+      {/* Mobile: Smooth Horizontal Swipe Ribbon (Full Bleed Touch Experience) */}
+      <div className="flex sm:hidden items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth -mx-4 px-4 py-0.5">
+        <button
+          type="button"
+          ref={!activeCategorySlug ? activePillRef : null}
+          onClick={() => handleCategorySelect(null)}
+          className={`shrink-0 inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
+            !activeCategorySlug
+              ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border shadow-2xs'
+              : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg active:scale-95'
+          }`}
+        >
+          All Collections
+        </button>
+        {categories.map((category) => {
+          const isActive = category.slug === activeCategorySlug
+          return (
+            <button
+              key={category.id}
+              ref={isActive ? activePillRef : null}
+              type="button"
+              onClick={() => handleCategorySelect(category.slug)}
+              className={`shrink-0 inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
+                isActive
+                  ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border shadow-2xs'
+                  : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg active:scale-95'
+              }`}
+            >
+              {category.name}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Desktop & Tablet: Dynamic Width-Filling Ribbon with Inline Counter */}
       <div
-        className={`flex items-center gap-2 transition-all duration-300 ${
+        className={`hidden sm:flex items-center gap-2 transition-all duration-300 ${
           isExpanded
             ? 'flex-wrap animate-fade-in'
             : 'flex-nowrap'

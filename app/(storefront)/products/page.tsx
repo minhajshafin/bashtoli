@@ -70,30 +70,30 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <div className="relative min-h-screen bg-cream-100 bg-laid-paper flex flex-col">
       {/* 1. Gallery Header (Deep Forest Canvas) */}
       <div className="w-full bg-forest-950 bg-laid-paper-dark border-b border-forest-800/80">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 pb-5 sm:pt-8 sm:pb-7 lg:pt-9 lg:pb-8">
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-4 pb-3.5 sm:pt-8 sm:pb-7 lg:pt-9 lg:pb-8">
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 mb-2 sm:mb-2.5">
-            <span className="h-px w-3.5 bg-gold-400/60" />
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-gold-400/90 font-sans font-medium">
+          <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2.5">
+            <span className="h-px w-3 sm:w-3.5 bg-gold-400/60" />
+            <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.24em] text-gold-400/90 font-sans font-medium">
               Catalogue
             </span>
           </div>
 
-          {/* Main Title Row: Title on Left, Sort on Right */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-6">
-            <h1 className="font-display font-medium text-cream-50 leading-tight text-2xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em]">
+          {/* Main Title Row: Title on Left, Sort on Right — balanced on mobile */}
+          <div className="flex items-center justify-between gap-3">
+            <h1 className="font-display font-medium text-cream-50 leading-tight text-xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em] truncate">
               {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
             </h1>
 
-            <div className="self-start sm:self-auto shrink-0">
+            <div className="shrink-0">
               <Suspense>
                 <SortDropdown />
               </Suspense>
             </div>
           </div>
 
-          {/* Subtitle */}
-          <p className="text-forest-200/75 text-xs sm:text-[13px] mt-2 font-sans font-normal leading-relaxed max-w-2xl lg:max-w-3xl text-pretty">
+          {/* Subtitle: hidden on mobile to maximize product visibility */}
+          <p className="hidden sm:block text-forest-200/75 text-xs sm:text-[13px] mt-2 font-sans font-normal leading-relaxed max-w-2xl lg:max-w-3xl text-pretty">
             {activeCategory
               ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and\u00A0reflection.`
               : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily\u00A0use.`}
@@ -102,8 +102,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       </div>
 
       {/* 2. Collection Filter Ribbon (Deep Forest Ribbon — flush below sticky navbar) */}
-      <div className="w-full bg-forest-950/98 bg-laid-paper-dark border-b border-forest-800/80 backdrop-blur-md sticky top-14 sm:top-16 z-30">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 sm:py-3">
+      <div className="w-full bg-forest-950/98 bg-laid-paper-dark border-b border-forest-800/80 backdrop-blur-md sticky top-11 sm:top-16 z-30">
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2 sm:py-3">
           <Suspense>
             <CategoryFilter categories={categories} activeCategorySlug={activeCategorySlug} />
           </Suspense>
@@ -111,10 +111,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       </div>
 
       {/* 3. Main Full-Width Product Gallery Canvas */}
-      <div className="flex-1 max-w-[1440px] xl:max-w-[1520px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-7 sm:py-9 lg:py-12">
+      <div className="flex-1 max-w-[1440px] xl:max-w-[1520px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-4 sm:py-9 lg:py-12 pb-28 sm:pb-16">
         {/* Results status bar */}
-        <div className="flex items-center justify-between mb-6 pb-3 border-b border-forest-900/10">
-          <p className="text-xs font-sans text-forest-700">
+        <div className="flex items-center justify-between mb-3.5 sm:mb-6 pb-2 sm:pb-3 border-b border-forest-900/10">
+          <p className="text-[11px] sm:text-xs font-sans text-forest-700">
             Showing <span className="font-semibold text-forest-950">{products.length}</span> of{' '}
             <span className="font-semibold text-forest-950">{totalCount}</span> pieces
             {searchQuery && (
@@ -128,7 +128,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           {(activeCategorySlug || searchQuery) && (
             <Link
               href="/products"
-              className="text-xs font-sans font-medium text-forest-600 hover:text-gold-700 transition-colors"
+              className="text-[11px] sm:text-xs font-sans font-medium text-forest-600 hover:text-gold-700 transition-colors"
             >
               Reset filters &rarr;
             </Link>
@@ -138,7 +138,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col laptop, 5-col desktop) */}
         {products.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {products.map((product, idx) => (
                 <ProductCard
                   key={product.id}
@@ -149,7 +149,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </div>
 
             {/* Tactile Pagination */}
-            <div className="mt-12 sm:mt-16">
+            <div className="mt-8 sm:mt-16">
               <Pagination currentPage={currentPage} totalPages={totalPages} />
             </div>
           </>

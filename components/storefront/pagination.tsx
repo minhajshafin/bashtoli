@@ -29,16 +29,16 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
   }
 
   return (
-    <nav className="flex items-center justify-center gap-2 py-8 select-none" aria-label="Pagination">
+    <nav className="flex items-center justify-center gap-1.5 sm:gap-2 py-4 sm:py-8 select-none" aria-label="Pagination">
       {/* Previous page button */}
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="btn-secondary flex h-10 w-10 items-center justify-center rounded-xl text-forest-700 disabled:pointer-events-none disabled:opacity-40"
+        className="btn-secondary flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl text-forest-700 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Previous page"
       >
         <svg
-          className="h-4 w-4"
+          className="h-3.5 w-3.5 sm:h-4 sm:w-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -49,7 +49,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       </button>
 
       {/* Numbered page buttons */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1 sm:gap-1.5">
         {pages.map((page) => {
           const isActive = page === currentPage
           return (
@@ -57,7 +57,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
               key={page}
               onClick={() => handlePageChange(page)}
               aria-current={isActive ? 'page' : undefined}
-              className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-sans transition-all cursor-pointer ${
+              className={`flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl text-xs font-sans transition-all cursor-pointer ${
                 isActive
                   ? 'btn-accent font-bold pointer-events-none'
                   : 'btn-secondary font-medium'
@@ -73,11 +73,11 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="btn-secondary flex h-10 w-10 items-center justify-center rounded-xl text-forest-700 disabled:pointer-events-none disabled:opacity-40"
+        className="btn-secondary flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl text-forest-700 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Next page"
       >
         <svg
-          className="h-4 w-4"
+          className="h-3.5 w-3.5 sm:h-4 sm:w-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

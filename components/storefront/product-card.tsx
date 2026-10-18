@@ -196,14 +196,14 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
       <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 z-25 flex items-center justify-between pointer-events-none">
         <div>
           {isSoldOut ? (
-            <span className="inline-flex items-center rounded-full bg-terracotta-600/95 backdrop-blur-md px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-sm border border-terracotta-400/30 font-sans pointer-events-auto">
+            <span className="inline-flex items-center rounded-full bg-terracotta-600/95 backdrop-blur-md px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-sm border border-terracotta-400/30 font-sans pointer-events-auto truncate max-w-[100px] sm:max-w-none">
               Sold Out
             </span>
           ) : (
             <div className="relative flex items-center">
               {/* Resting Curation Badge (visible when not hovered / on mobile touch) */}
               <span
-                className={`inline-flex items-center rounded-full bg-forest-950/80 backdrop-blur-md px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-gold-300 uppercase shadow-xs border border-gold-400/30 font-sans transition-opacity duration-300 ${
+                className={`inline-flex items-center rounded-full bg-forest-950/80 backdrop-blur-md px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-gold-300 uppercase shadow-xs border border-gold-400/30 font-sans transition-opacity duration-300 truncate max-w-[95px] sm:max-w-[140px] ${
                   hovered || isJustAdded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
                 }`}
               >
