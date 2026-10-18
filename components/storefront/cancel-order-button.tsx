@@ -7,12 +7,13 @@ import { useToast } from '@/components/ui/toast'
 
 interface CancelOrderButtonProps {
   orderId: string
+  className?: string
 }
 
 /**
  * Cancel Order Button with theme-aligned styling.
  */
-export function CancelOrderButton({ orderId }: CancelOrderButtonProps) {
+export function CancelOrderButton({ orderId, className = '' }: CancelOrderButtonProps) {
   const confirm = useConfirm()
   const { toast } = useToast()
   const [isPending, startTransition] = useTransition()
@@ -43,7 +44,7 @@ export function CancelOrderButton({ orderId }: CancelOrderButtonProps) {
       type="button"
       onClick={handleCancel}
       disabled={isPending}
-      className="btn-danger inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
+      className={`btn-danger inline-flex h-12 sm:h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50 active:scale-[0.98] transition-all cursor-pointer ${className}`}
     >
       {isPending ? (
         <span className="flex items-center gap-2">

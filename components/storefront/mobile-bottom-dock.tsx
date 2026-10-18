@@ -21,12 +21,13 @@ export function MobileBottomDock() {
   const itemRefs = useRef<(HTMLAnchorElement | HTMLButtonElement | null)[]>([])
   const isFirstRender = useRef(true)
 
-  // Do not render bottom dock on checkout, bag, admin, or individual product detail pages
+  // Do not render bottom dock on checkout, bag, admin, order receipt, or individual product detail pages
   const isHiddenRoute =
     pathname === '/checkout' ||
     pathname?.startsWith('/checkout/') ||
     pathname === '/bag' ||
     pathname?.startsWith('/admin') ||
+    (pathname?.startsWith('/order/') && pathname !== '/order/lookup') ||
     (pathname?.startsWith('/products/') && pathname !== '/products')
 
   const isBag = isDrawerOpen || pathname === '/bag'
