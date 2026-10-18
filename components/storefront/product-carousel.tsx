@@ -31,8 +31,8 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
     const items = gsap.utils.toArray<HTMLElement>('.carousel-card-item', trackRef.current)
     if (items.length === 0) return
 
-    // Exact responsive gap between items (16px on mobile, 24px on sm+)
-    const gap = window.innerWidth >= 640 ? 24 : 16
+    // Exact responsive gap between items (12px on mobile, 24px on sm+)
+    const gap = window.innerWidth >= 640 ? 24 : 12
 
     const loop = horizontalLoop(items, {
       speed: reduced ? 0 : 0.45, // Gentle, silky-smooth continuous glide
@@ -50,7 +50,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       resizeTimer = setTimeout(() => {
         loop.kill()
         gsap.set(items, { clearProps: 'all' })
-        const newGap = window.innerWidth >= 640 ? 24 : 16
+        const newGap = window.innerWidth >= 640 ? 24 : 12
         loopRef.current = horizontalLoop(items, {
           speed: reduced ? 0 : 0.45,
           paused: reduced || isHoveredRef.current,
@@ -111,21 +111,21 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
 
   return (
     <div className="w-full">
-      {/* Minimal Header: High-contrast title, quiet subtitle, and restrained controls */}
+      {/* Minimal Header: High-contrast title and restrained controls */}
       <ScrollReveal>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 lg:mb-6 gap-3">
-          <div>
-            <h2 className="font-display font-medium text-forest-950 text-2xl sm:text-[1.75rem] lg:text-[2.1rem] tracking-tight leading-tight">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2 px-4 sm:px-0">
+          <div className="min-w-0 pr-2">
+            <h2 className="font-display font-medium text-forest-950 text-lg sm:text-[1.75rem] lg:text-[2.1rem] tracking-tight leading-tight truncate">
               The Writing Desk
             </h2>
-            <p className="text-xs sm:text-[13px] lg:text-sm text-forest-700/80 mt-1 font-sans">
+            <p className="hidden sm:block text-xs sm:text-[13px] lg:text-sm text-forest-700/80 mt-0.5 font-sans">
               Everyday notebooks, pens, and paper goods crafted for daily rituals.
             </p>
           </div>
 
-          {/* Minimal Controls: Previous / Next + View All */}
-          <div className="flex items-center gap-3 self-start sm:self-auto">
-            <div className="flex items-center gap-1.5" role="group" aria-label="Carousel navigation">
+          {/* Minimal Controls: Previous / Next (desktop only) + View All */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="hidden sm:flex items-center gap-1.5" role="group" aria-label="Carousel navigation">
               <button
                 type="button"
                 onClick={handlePrevious}
@@ -151,7 +151,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
             <Link
               id="featured-view-all-link"
               href="/products"
-              className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.16em] font-medium text-text-primary hover:text-text-accent transition-colors font-sans pl-2.5 border-l border-forest-900/15"
+              className="inline-flex items-center gap-1 text-[11px] sm:text-xs uppercase tracking-[0.14em] sm:tracking-[0.16em] font-medium text-text-primary hover:text-text-accent transition-colors font-sans sm:pl-2.5 sm:border-l sm:border-forest-900/15"
             >
               <span>View All</span>
               <svg
@@ -170,18 +170,18 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       {/* Contained Track Viewport: Aligned strictly with section header & content grid */}
       <div
         ref={containerRef}
-        className="relative overflow-hidden w-full py-2"
+        className="relative overflow-hidden w-full py-1 sm:py-2"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <div
           ref={trackRef}
-          className="flex gap-4 sm:gap-6 will-change-transform"
+          className="flex gap-3 sm:gap-6 will-change-transform"
         >
           {displayProducts.map((p, index) => (
             <div
               key={`${p.id}-${index}`}
-              className="carousel-card-item shrink-0 w-[190px] sm:w-[220px] md:w-[240px]"
+              className="carousel-card-item shrink-0 w-[150px] sm:w-[220px] md:w-[240px]"
             >
               <ProductCard product={p} />
             </div>

@@ -98,58 +98,71 @@ export function Footer() {
         scale={0.8}
       />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-9 pb-6 sm:pt-11 sm:pb-7">
-        {/* Main Architectural Colophon Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-10">
+      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 pb-20 sm:pt-11 sm:pb-7">
+        {/* Main Architectural Colophon Grid (Desktop multi-column, Mobile centered compact) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
           {/* Col 1: Brand & Atelier Identity (Desktop & Mobile) */}
-          <div className="col-span-2 md:col-span-4 flex flex-col items-center sm:items-start">
-            <div className="flex flex-col items-center text-center">
-              <Link
-                href="/"
-                className="flex flex-col items-center text-center gap-3 mb-3 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xl"
-                aria-label="Bashtoli Home"
-              >
-                <Image
-                  src="/logo-round.svg"
-                  alt="Bashtoli Stationery"
-                  width={88}
-                  height={88}
-                  loading="lazy"
-                  className="h-16 w-16 sm:h-20 sm:w-20 lg:h-22 lg:w-22 object-contain transition-transform duration-300 group-hover:scale-105 shrink-0"
-                />
-                <div className="flex items-baseline justify-center gap-1.5 sm:gap-2 whitespace-nowrap">
-                  <span className="font-display text-base sm:text-lg font-medium text-cream-100 leading-tight">
-                    Bashtoli Stationery
-                  </span>
-                  <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-gold-400 font-sans">
-                    &middot; Dhaka &middot; Est. 2026
-                  </span>
-                </div>
-              </Link>
-
-              {/* Social Icons Row */}
-              <div className="flex items-center justify-center gap-2 mt-1 sm:mt-2">
-                {socials.map(({ label, href, color, icon }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    title={label}
-                    className={`inline-flex h-7.5 w-7.5 items-center justify-center rounded-full border border-forest-800 bg-forest-900/60 ${color} hover:bg-forest-800/80 active:scale-95 transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60`}
-                  >
-                    <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                      {icon}
-                    </svg>
-                  </a>
-                ))}
+          <div className="col-span-1 md:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
+            <Link
+              href="/"
+              className="flex flex-col items-center md:items-start gap-2 sm:gap-3 mb-2 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xl"
+              aria-label="Bashtoli Home"
+            >
+              <Image
+                src="/logo-round.svg"
+                alt="Bashtoli Stationery"
+                width={88}
+                height={88}
+                loading="lazy"
+                className="h-12 w-12 sm:h-20 sm:w-20 lg:h-22 lg:w-22 object-contain transition-transform duration-300 group-hover:scale-105 shrink-0"
+              />
+              <div className="flex items-baseline justify-center md:justify-start gap-1.5 sm:gap-2 whitespace-nowrap">
+                <span className="font-display text-sm sm:text-base lg:text-lg font-medium text-cream-100 leading-tight">
+                  Bashtoli Stationery
+                </span>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-gold-400 font-sans">
+                  &middot; Dhaka &middot; Est. 2026
+                </span>
               </div>
+            </Link>
+
+            {/* Social Icons Row */}
+            <div className="flex items-center justify-center md:justify-start gap-2 mt-1 sm:mt-2">
+              {socials.map(({ label, href, color, icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className={`inline-flex h-7 w-7 sm:h-7.5 sm:w-7.5 items-center justify-center rounded-full border border-forest-800 bg-forest-900/60 ${color} hover:bg-forest-800/80 active:scale-95 transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60`}
+                >
+                  <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                    {icon}
+                  </svg>
+                </a>
+              ))}
+            </div>
+
+            {/* Mobile Only: Minimal Inline Navigation Links */}
+            <div className="md:hidden flex items-center justify-center gap-3 text-[11px] text-forest-300 font-light mt-4 pt-3.5 border-t border-forest-800/60 w-full max-w-xs">
+              <Link href="/order/lookup" className="hover:text-text-accent transition-colors">
+                Track Order
+              </Link>
+              <span className="text-forest-700">&middot;</span>
+              <Link href="/privacy" className="hover:text-text-accent transition-colors">
+                Privacy
+              </Link>
+              <span className="text-forest-700">&middot;</span>
+              <Link href="/terms" className="hover:text-text-accent transition-colors">
+                Terms
+              </Link>
             </div>
           </div>
 
-          {/* Col 2: Collection Navigation */}
-          <div className="col-span-1 md:col-span-2">
+          {/* Col 2: Collection Navigation (Desktop only) */}
+          <div className="hidden md:block col-span-1 md:col-span-2">
             <FooterColumn
               title="Collection"
               links={[
@@ -161,8 +174,8 @@ export function Footer() {
             />
           </div>
 
-          {/* Col 3: Customer Care & Services */}
-          <div className="col-span-1 md:col-span-2">
+          {/* Col 3: Customer Care & Services (Desktop only) */}
+          <div className="hidden md:block col-span-1 md:col-span-2">
             <FooterColumn
               title="Customer Care"
               links={[
@@ -174,8 +187,8 @@ export function Footer() {
             />
           </div>
 
-          {/* Col 4: Atelier Location & Visit Card */}
-          <div className="col-span-2 md:col-span-4">
+          {/* Col 4: Atelier Location & Visit Card (Desktop only) */}
+          <div className="hidden md:block col-span-2 md:col-span-4">
             <ColumnHeading>Visit Our Shop</ColumnHeading>
 
             <div className="rounded-2xl border border-forest-800/80 bg-forest-900/50 p-4 space-y-3">
@@ -214,12 +227,12 @@ export function Footer() {
         </div>
 
         {/* Minimal Colophon Bottom Bar */}
-        <div className="pt-6 border-t border-forest-800/70 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 sm:mt-9 text-[11px] font-light text-forest-400">
+        <div className="pt-3.5 sm:pt-6 border-t border-forest-800/70 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 mt-4 sm:mt-9 text-[10px] sm:text-[11px] font-light text-forest-400 text-center sm:text-left">
           <p>
             &copy; {currentYear} Bashtoli Stationery. Handcrafted in Dhaka.
           </p>
 
-          <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-4">
             <Link href="/privacy" className="hover:text-text-accent transition-colors duration-200">
               Privacy
             </Link>
@@ -231,7 +244,7 @@ export function Footer() {
           <button
             type="button"
             onClick={scrollToTop}
-            className="group inline-flex items-center gap-2 hover:text-text-accent transition-colors duration-200 cursor-pointer active:scale-95"
+            className="hidden sm:inline-flex group items-center gap-2 hover:text-text-accent transition-colors duration-200 cursor-pointer active:scale-95"
           >
             <span>Back to top</span>
             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:bg-forest-800/60 transition-colors">

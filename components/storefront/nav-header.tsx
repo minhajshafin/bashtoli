@@ -65,14 +65,13 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           : 'bg-forest-950 border-b border-forest-800/70'
       }`}
     >
-      <div className="mx-auto flex h-14 sm:h-16 max-w-[1440px] xl:max-w-[1520px] items-center justify-between gap-4 md:gap-8 px-4 sm:px-6 lg:px-8 xl:px-10">
+      <div className="mx-auto flex h-11 sm:h-16 max-w-[1440px] xl:max-w-[1520px] items-center justify-center md:justify-between gap-4 md:gap-8 px-3 sm:px-6 lg:px-8 xl:px-10">
 
-        {/* Mobile: Hamburger Toggle + Prominent Brand Logo */}
-        <div className="md:hidden flex items-center gap-2 sm:gap-2.5">
-          <MobileNav isLoggedIn={isLoggedIn} fullName={fullName} />
+        {/* Mobile: Brand Logo + Search Trigger (Clean & functional) */}
+        <div className="md:hidden flex items-center justify-between w-full h-full px-1">
           <Link
             href="/"
-            className="relative block h-7 sm:h-7.5 w-22 sm:w-24 shrink-0 active:scale-95 transition-transform"
+            className="relative block h-6 w-24 shrink-0 active:scale-95 transition-transform"
             aria-label="Bashtoli Home"
           >
             <Image
@@ -83,6 +82,18 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
               className="object-contain object-left"
             />
           </Link>
+
+          {/* Search Trigger Button */}
+          <button
+            type="button"
+            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+            aria-label="Search products"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-cream-200/90 hover:text-gold-300 active:scale-95 transition-all"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </button>
         </div>
 
         {/* Desktop Left: Brand Logo + Primary Nav Links */}
@@ -160,8 +171,8 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           </div>
         </form>
 
-        {/* Right Action Icons (Balanced Spacing) */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* Right Action Icons (Desktop Only - Mobile actions consolidated in bottom dock) */}
+        <div className="hidden md:flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Admin shortcut badge (Staff only) */}
           {isStaffOrAdmin && (
             <Link

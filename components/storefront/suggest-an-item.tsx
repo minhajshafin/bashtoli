@@ -56,24 +56,24 @@ export function SuggestAnItem() {
   return (
     <section
       id="suggest"
-      className="relative overflow-hidden py-8 sm:py-10 lg:py-12 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark"
+      className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark"
     >
       <div className="relative z-10 max-w-xl mx-auto">
         {/* Minimal Header */}
         <ScrollReveal>
-          <div className="text-center mb-5 sm:mb-6">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="h-px w-4 bg-gold-400/60" />
-              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans font-medium text-gold-400/90">
+          <div className="text-center mb-4 sm:mb-6">
+            <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+              <span className="h-px w-3 sm:w-4 bg-gold-400/60" />
+              <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] font-sans font-medium text-gold-400/90">
                 Special Requests
               </span>
             </div>
 
-            <h2 className="font-display font-medium text-cream-50 text-xl sm:text-2xl lg:text-[1.75rem] leading-snug tracking-[-0.015em] mb-2">
+            <h2 className="font-display font-medium text-cream-50 text-lg sm:text-2xl lg:text-[1.75rem] leading-snug tracking-tight mb-1 sm:mb-2">
               Looking for something in particular?
             </h2>
 
-            <p className="font-sans text-xs sm:text-[13px] leading-relaxed text-cream-200/75 max-w-md mx-auto text-pretty">
+            <p className="hidden sm:block font-sans text-xs sm:text-[13px] leading-relaxed text-cream-200/75 max-w-md mx-auto text-pretty">
               Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
             </p>
           </div>
@@ -108,7 +108,7 @@ export function SuggestAnItem() {
           </div>
         ) : (
           /* Minimal Form Card */
-          <div className="rounded-2xl bg-forest-900/40 border border-forest-800/80 p-4 sm:p-5.5 backdrop-blur-xs">
+          <div className="rounded-xl sm:rounded-2xl bg-forest-900/40 border border-forest-800/80 p-3 sm:p-5.5 backdrop-blur-xs">
             <form onSubmit={handleSubmit} className="space-y-3">
               {/* Bot Honeypot Trap */}
               <input
@@ -178,7 +178,7 @@ export function SuggestAnItem() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-accent inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-full text-xs font-sans uppercase tracking-[0.16em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed group shrink-0"
+                  className="btn-accent inline-flex items-center justify-center gap-1.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-xs font-sans uppercase tracking-[0.14em] sm:tracking-[0.16em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed group shrink-0"
                 >
                   {isSubmitting ? (
                     <span>Sending…</span>

@@ -131,7 +131,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
 
   return (
     <div
-      className="group relative flex flex-col justify-end overflow-hidden rounded-2xl sm:rounded-3xl aspect-[3/4] bg-forest-950 border border-forest-800/50 hover:border-gold-500/60 transition-all duration-300 hover:-translate-y-1"
+      className="group relative flex flex-col justify-end overflow-hidden rounded-xl sm:rounded-3xl aspect-[3/4] bg-forest-950 border border-forest-800/50 hover:border-gold-500/60 transition-all duration-300 hover:-translate-y-1"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -273,10 +273,10 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
       <div className="absolute inset-x-0 bottom-0 top-[25%] pointer-events-none z-11 bg-gradient-to-t from-forest-950 via-forest-950/80 to-transparent" />
 
       {/* 6. Card Info & Actions Content Layer */}
-      <div className="relative z-15 w-full mt-auto pb-2.5 sm:pb-3 px-3 sm:px-3.5">
+      <div className="relative z-15 w-full mt-auto pb-2 sm:pb-3 px-2 sm:px-3.5">
         {/* Title & Price Row */}
-        <div className="flex items-baseline justify-between gap-1.5">
-          <h3 className="font-display font-semibold text-[13px] sm:text-[15px] text-cream-50 tracking-tight leading-snug truncate flex-1">
+        <div className="flex items-baseline justify-between gap-1">
+          <h3 className="font-display font-semibold text-xs sm:text-[15px] text-cream-50 tracking-tight leading-snug truncate flex-1">
             <Link
               href={`/products/${product.slug}`}
               className="hover:text-text-accent transition-colors"
@@ -284,29 +284,29 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
               {product.name}
             </Link>
           </h3>
-          <span className="font-price text-xs sm:text-[14px] font-bold text-gold-400 tabular-nums shrink-0 ml-1">
+          <span className="font-price text-[11px] sm:text-[14px] font-bold text-gold-400 tabular-nums shrink-0 ml-0.5">
             ৳{lowestPrice.toLocaleString()}
           </span>
         </div>
 
         {/* Subtitle / Category Line */}
-        <p className="text-[10px] sm:text-[11px] text-cream-200/65 font-sans truncate mt-0.5">
+        <p className="hidden sm:block text-[9px] sm:text-[11px] text-cream-200/65 font-sans truncate mt-0.5">
           {product.categories?.name || 'Artisanal Stationery'}
         </p>
 
         {/* Action Footer: Resting Buy Now Button */}
-        <div className="mt-2.5 sm:mt-3">
+        <div className="mt-1.5 sm:mt-3">
           {!isSoldOut ? (
             <button
               type="button"
               onClick={handleBuyNow}
               disabled={isNavigating}
               aria-label={`Buy ${product.name} now`}
-              className="w-full h-8 sm:h-8.5 rounded-xl btn-dark font-sans text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full h-7 sm:h-8.5 rounded-lg sm:rounded-xl btn-dark font-sans text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-1 cursor-pointer"
             >
-              <span>{isNavigating ? 'Going to checkout...' : 'Buy Now'}</span>
+              <span>{isNavigating ? 'Wait…' : 'Buy Now'}</span>
               <svg
-                className="h-3 w-3"
+                className="h-2.5 w-2.5 sm:h-3 sm:w-3"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -319,7 +319,7 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
             <button
               type="button"
               disabled
-              className="w-full h-8 sm:h-8.5 rounded-xl bg-forest-900/60 text-cream-200/40 text-[11px] font-semibold tracking-wider uppercase cursor-not-allowed text-center border border-white/5"
+              className="w-full h-7 sm:h-8.5 rounded-lg sm:rounded-xl bg-forest-900/60 text-cream-200/40 text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase cursor-not-allowed text-center border border-white/5"
             >
               Sold Out
             </button>

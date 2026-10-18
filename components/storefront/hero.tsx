@@ -28,11 +28,11 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
     BADGE_COLOR_PRESETS[currentSlide.badge_color_preset] || BADGE_COLOR_PRESETS.gold
 
   return (
-    <div className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[350px] mx-auto">
+    <div className="relative w-full max-w-[320px] sm:max-w-[320px] lg:max-w-[350px] mx-auto">
       {/* Tactile Frame Glint */}
-      <div className="relative p-2 rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-sm backdrop-blur-xs">
-        {/* Slides Viewport */}
-        <div className="relative aspect-[4/5] rounded-[22px] overflow-hidden bg-forest-950 shadow-inner">
+      <div className="relative p-1.5 sm:p-2 rounded-2xl sm:rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-sm backdrop-blur-xs">
+        {/* Slides Viewport: 16:10 cinematic on mobile, 4:5 on sm+ */}
+        <div className="relative aspect-[16/10] sm:aspect-[4/5] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-forest-950 shadow-inner">
           {activeSlides.map((s, i) => {
             const isCurrent = i === slide
             const isNext = (slide + 1) % activeSlides.length === i
@@ -46,7 +46,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 fill
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : 'low'}
-                sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 360px"
+                sizes="(max-width: 640px) 320px, (max-width: 1024px) 320px, 360px"
                 className="object-cover transition-transform duration-1000 ease-out"
                 style={{
                   filter: 'brightness(0.94) saturate(1.08)',
@@ -75,9 +75,9 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
             )
           })}
 
-          {/* Floating Curation Pill Badge */}
+          {/* Floating Curation Pill Badge (Desktop / Tablet only) */}
           <div
-            className="absolute top-3.5 left-3.5 px-3 py-1 text-[10px] sm:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md transition-all duration-400 font-sans tracking-wide"
+            className="hidden sm:block absolute top-3.5 left-3.5 px-3 py-1 text-[10px] sm:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md transition-all duration-400 font-sans tracking-wide"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,
@@ -179,23 +179,24 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
       <BambooPaperWatermark theme="dark" className="-right-10 top-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96" />
       <DriftingBambooLeaf theme="dark" className="left-8 sm:left-16 bottom-8 hidden sm:block" rotation={24} scale={1.2} />
 
-      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center py-10 sm:py-14 lg:py-16 xl:py-18">
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28 w-full grid lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-14 items-center py-7 sm:py-12 lg:py-16 xl:py-18">
         {/* Left: Story & Discovery */}
-        <div className="lg:col-span-7 max-w-2xl lg:pl-2 xl:pl-6 2xl:pl-8">
+        <div className="lg:col-span-7 max-w-2xl lg:pl-2 xl:pl-6 2xl:pl-8 text-center lg:text-left">
           {/* Stationery Eyebrow */}
-          <div className="hero-eyebrow inline-flex items-center gap-3 mb-4 sm:mb-5">
-            <span className="h-px w-7 sm:w-8 bg-gold-400/70" />
-            <span className="text-[11px] sm:text-xs uppercase tracking-[0.24em] text-gold-400 font-sans font-semibold">
-              Bamboo Stationery &amp; Gifts &mdash; Est. 2026
+          <div className="hero-eyebrow inline-flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+            <span className="h-px w-4 sm:w-8 bg-gold-400/70" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.24em] text-gold-400 font-sans font-medium">
+              Bamboo Stationery &middot; Dhaka &middot; Est. 2026
             </span>
+            <span className="h-px w-4 sm:w-8 bg-gold-400/70 lg:hidden" />
           </div>
 
           <h1
-            className="mb-4 sm:mb-5 text-cream-50 font-display font-medium"
+            className="mb-3 sm:mb-4 text-cream-50 font-display font-medium"
             style={{
-              fontSize: 'clamp(2.35rem, 4.6vw, 4.15rem)',
+              fontSize: 'clamp(1.75rem, 4.4vw, 4.15rem)',
               letterSpacing: '-0.025em',
-              lineHeight: 1.06,
+              lineHeight: 1.1,
             }}
           >
             <span className="block overflow-hidden py-0.5">
@@ -211,34 +212,34 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
             </span>
           </h1>
 
+          {/* Subtext: hidden on mobile to eliminate clutter, shown on sm+ */}
           <p
-            className="hero-subtext mb-7 sm:mb-8 text-sm sm:text-[15px] lg:text-base leading-relaxed text-forest-200/90 font-light sm:font-normal max-w-xl text-pretty"
+            className="hero-subtext hidden sm:block mb-4 sm:mb-7 text-xs sm:text-[15px] lg:text-base leading-relaxed text-forest-200/90 font-normal max-w-xl text-pretty"
           >
-            Handpicked notebooks, artisanal pens, and bamboo paper goods from makers who believe
-            writing is still the most intimate form of expression.
+            Handpicked notebooks, artisanal pens, and bamboo paper goods crafted for thoughtful daily rituals.
           </p>
 
-          <div className="hero-cta flex flex-wrap items-center gap-3 sm:gap-4">
+          <div className="hero-cta flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-2 lg:mb-0">
             <Link
               href="/products"
-              className="btn-accent rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group"
+              className="btn-accent rounded-full px-6 py-2.5 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group cursor-pointer active:scale-95"
             >
               <span>Shop Collection</span>
-              <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
             <Link
               href="#aboutus"
-              className="btn-ghost-dark rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-medium tracking-wide border border-border-gold-subtle hover:border-border-gold inline-flex items-center transition-all"
+              className="hidden sm:inline-flex btn-ghost-dark rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-medium tracking-wide border border-border-gold-subtle hover:border-border-gold items-center transition-all"
             >
               Our Story
             </Link>
           </div>
         </div>
 
-        {/* Right: slideshow (accessible across all viewports) */}
-        <div className="hero-frame flex lg:col-span-5 justify-center lg:justify-end w-full">
+        {/* Right: slideshow (compact mobile frame) */}
+        <div className="hero-frame flex lg:col-span-5 justify-center lg:justify-end w-full mt-2 sm:mt-0">
           <HeroSlideshow slides={slides} />
         </div>
       </div>

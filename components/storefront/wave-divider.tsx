@@ -61,7 +61,7 @@ export function WaveDivider({
 
   return (
     <div
-      className={`relative w-full overflow-hidden select-none pointer-events-none -mb-px z-10 ${config.containerBg} ${className}`}
+      className={`hidden sm:block relative w-full overflow-hidden select-none pointer-events-none -mb-px z-10 ${config.containerBg} ${className}`}
       style={{
         height: 'clamp(60px, 8vw, 120px)',
         marginBottom: '-1px',

@@ -32,8 +32,8 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
             isStaffOrAdmin={false}
           />
 
-          {/* Main Content Area (padding-bottom for mobile bottom dock) */}
-          <main className="flex-1 pb-16 md:pb-0">
+          {/* Main Content Area */}
+          <main className="flex-1">
             {children}
           </main>
 
@@ -82,8 +82,8 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
             isStaffOrAdmin={isStaffOrAdmin}
           />
 
-          {/* Main Content Area (padding-bottom for mobile bottom dock) */}
-          <main className="flex-1 pb-16 md:pb-0">
+          {/* Main Content Area */}
+          <main className="flex-1">
             {children}
           </main>
 
