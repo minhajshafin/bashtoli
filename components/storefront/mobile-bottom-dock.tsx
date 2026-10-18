@@ -1,16 +1,25 @@
 'use client'
 
-import React from 'react'
+import React, { useRef, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Home, Store, Heart, ShoppingBag, User } from 'lucide-react'
+import { gsap, isReducedMotion } from '@/lib/motion'
 import { useCart } from '@/lib/cart/cart-context'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
 export function MobileBottomDock() {
   const pathname = usePathname()
-  const { itemCount, openDrawer } = useCart()
+  const { itemCount, openDrawer, isDrawerOpen } = useCart()
   const wishlistContext = useWishlist()
   const wishlistCount = wishlistContext?.wishlistIds?.length ?? 0
+
+  const dockRef = useRef<HTMLDivElement>(null)
+  const indicatorRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<(HTMLAnchorElement | HTMLButtonElement | null)[]>([])
+  const isFirstRender = useRef(true)
 
   // Do not render bottom dock on checkout, admin, or individual product detail pages
   if (
@@ -22,98 +31,188 @@ export function MobileBottomDock() {
     return null
   }
 
-  const isHome = pathname === '/'
-  const isShop = pathname.startsWith('/products')
-  const isWishlist = pathname === '/account/wishlist'
-  const isAccount = pathname.startsWith('/account') && !isWishlist
-  const isBag = pathname === '/bag'
+  const isBag = isDrawerOpen || pathname === '/bag'
+  const isHome = pathname === '/' && !isBag
+  const isShop = pathname.startsWith('/products') && !isBag
+  const isWishlist = pathname === '/account/wishlist' && !isBag
+  const isAccount = pathname.startsWith('/account') && !isWishlist && !isBag
+
+  let activeIndex = -1
+  if (isHome) activeIndex = 0
+  else if (isShop) activeIndex = 1
+  else if (isWishlist) activeIndex = 2
+  else if (isBag) activeIndex = 3
+  else if (isAccount) activeIndex = 4
+
+  useIsomorphicLayoutEffect(() => {
+    const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
+    const indicator = indicatorRef.current
+    if (!indicator) return
+
+    if (!targetEl) {
+      gsap.to(indicator, { opacity: 0, duration: 0.25, ease: 'power2.out' })
+      return
+    }
+
+    const targetX = targetEl.offsetLeft
+    const targetY = targetEl.offsetTop
+    const targetW = targetEl.offsetWidth
+    const targetH = targetEl.offsetHeight
+
+    if (isFirstRender.current || isReducedMotion()) {
+      isFirstRender.current = false
+      gsap.set(indicator, {
+        x: targetX,
+        y: targetY,
+        width: targetW,
+        height: targetH,
+        opacity: 1,
+      })
+      return
+    }
+
+    // Smooth spring physics slide to target button position
+    gsap.to(indicator, {
+      x: targetX,
+      y: targetY,
+      width: targetW,
+      height: targetH,
+      opacity: 1,
+      duration: 0.45,
+      ease: 'power3.out',
+      overwrite: 'auto',
+    })
+  }, [activeIndex])
+
+  // Reposition indicator immediately on window resize / orientation change
+  useEffect(() => {
+    function handleResize() {
+      const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
+      const indicator = indicatorRef.current
+      if (!indicator || !targetEl) return
+      gsap.set(indicator, {
+        x: targetEl.offsetLeft,
+        y: targetEl.offsetTop,
+        width: targetEl.offsetWidth,
+        height: targetEl.offsetHeight,
+      })
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [activeIndex])
 
   return (
     <nav
       aria-label="Mobile Navigation Dock"
-      className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-forest-950/92 backdrop-blur-md border-t border-forest-800"
-      style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)' }}
+      className="md:hidden fixed inset-x-0 z-40 flex justify-center pointer-events-none px-4"
+      style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)' }}
     >
-      <div className="flex items-center justify-around px-2 pt-2 pb-1 max-w-md mx-auto">
+      <div
+        ref={dockRef}
+        className="relative pointer-events-auto flex items-center justify-between gap-1 px-3 py-1.5 rounded-full bg-forest-950/90 backdrop-blur-xl border border-gold-500/30 shadow-2xl shadow-forest-950/90 ring-1 ring-white/10 max-w-[310px] w-full"
+      >
+        {/* Sliding Active Indicator (GSAP Animated) */}
+        <div
+          ref={indicatorRef}
+          aria-hidden="true"
+          className="absolute top-0 left-0 w-10 h-10 rounded-full bg-gold-400/15 border border-gold-400/35 shadow-xs pointer-events-none z-0 flex items-center justify-center opacity-0"
+        />
+
         {/* 1. Home */}
         <Link
+          ref={(el) => {
+            itemRefs.current[0] = el
+          }}
           href="/"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
-            isHome ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
+          aria-label="Home"
+          aria-current={isHome ? 'page' : undefined}
+          className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
+            isHome
+              ? 'text-gold-300'
+              : 'text-cream-100/60 hover:text-cream-100'
           }`}
         >
-          <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-          </svg>
-          <span className="text-[10px] tracking-wider uppercase">Home</span>
+          <Home className="h-5 w-5 stroke-[1.8]" />
         </Link>
 
         {/* 2. Shop / Catalog */}
         <Link
+          ref={(el) => {
+            itemRefs.current[1] = el
+          }}
           href="/products"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
-            isShop ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
+          aria-label="Shop Catalog"
+          aria-current={isShop ? 'page' : undefined}
+          className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
+            isShop
+              ? 'text-gold-300'
+              : 'text-cream-100/60 hover:text-cream-100'
           }`}
         >
-          <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-          </svg>
-          <span className="text-[10px] tracking-wider uppercase">Shop</span>
+          <Store className="h-5 w-5 stroke-[1.8]" />
         </Link>
 
         {/* 3. Wishlist */}
         <Link
+          ref={(el) => {
+            itemRefs.current[2] = el
+          }}
           href="/account/wishlist"
-          className={`relative flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
-            isWishlist ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
+          aria-label={`Wishlist (${wishlistCount})`}
+          aria-current={isWishlist ? 'page' : undefined}
+          className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
+            isWishlist
+              ? 'text-gold-300'
+              : 'text-cream-100/60 hover:text-cream-100'
           }`}
         >
-          <div className="relative">
-            <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
-            {wishlistCount > 0 && (
-              <span className="absolute -top-1 -right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price animate-fade-in">
-                {wishlistCount}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] tracking-wider uppercase">Wishlist</span>
+          <Heart className="h-5 w-5 stroke-[1.8]" />
+          {wishlistCount > 0 && (
+            <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price leading-none animate-fade-in z-20">
+              {wishlistCount}
+            </span>
+          )}
         </Link>
 
         {/* 4. Bag Drawer Trigger */}
         <button
+          ref={(el) => {
+            itemRefs.current[3] = el
+          }}
           type="button"
           onClick={openDrawer}
-          className={`relative flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
-            isBag ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
+          aria-label={`Shopping Bag (${itemCount})`}
+          aria-current={isBag ? 'page' : undefined}
+          className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
+            isBag
+              ? 'text-gold-300'
+              : 'text-cream-100/60 hover:text-cream-100'
           }`}
-          aria-label="Open Shopping Bag"
         >
-          <div className="relative">
-            <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-            </svg>
-            {itemCount > 0 && (
-              <span className="absolute -top-1 -right-2 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price animate-fade-in">
-                {itemCount}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] tracking-wider uppercase">Bag</span>
+          <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
+          {itemCount > 0 && (
+            <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price leading-none animate-fade-in z-20">
+              {itemCount}
+            </span>
+          )}
         </button>
 
         {/* 5. Account */}
         <Link
+          ref={(el) => {
+            itemRefs.current[4] = el
+          }}
           href="/account"
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
-            isAccount ? 'text-text-accent font-semibold' : 'text-forest-400 hover:text-gold-300 hover:bg-forest-900/60'
+          aria-label="Account"
+          aria-current={isAccount ? 'page' : undefined}
+          className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
+            isAccount
+              ? 'text-gold-300'
+              : 'text-cream-100/60 hover:text-cream-100'
           }`}
         >
-          <svg className="h-5 w-5 stroke-[1.6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-          </svg>
-          <span className="text-[10px] tracking-wider uppercase">Account</span>
+          <User className="h-5 w-5 stroke-[1.8]" />
         </Link>
       </div>
     </nav>

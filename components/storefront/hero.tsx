@@ -75,9 +75,9 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
             )
           })}
 
-          {/* Floating Curation Pill Badge (Desktop / Tablet only) */}
+          {/* Floating Curation Pill Badge */}
           <div
-            className="hidden sm:block absolute top-3.5 left-3.5 px-3 py-1 text-[10px] sm:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md transition-all duration-400 font-sans tracking-wide"
+            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] lg:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md transition-all duration-400 font-sans tracking-wider uppercase shadow-xs"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,

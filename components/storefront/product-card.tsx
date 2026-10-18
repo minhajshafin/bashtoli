@@ -200,51 +200,63 @@ export function ProductCard({ product, loading = 'lazy' }: ProductCardProps) {
               Sold Out
             </span>
           ) : (
-            <div
-              className="transition-all duration-300 pointer-events-none"
-              style={{
-                opacity: hovered || isJustAdded ? 1 : 0,
-                transform: hovered || isJustAdded ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(-4px)',
-                pointerEvents: hovered || isJustAdded ? 'auto' : 'none',
-              }}
-            >
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                aria-label={`Add ${product.name} to bag`}
-                title={isJustAdded ? 'Added to Bag' : '+ Add to Bag'}
-                className={`h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full backdrop-blur-md text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer pointer-events-auto ${
-                  isJustAdded
-                    ? 'bg-forest-900 text-gold-300 border border-gold-400/70 shadow-2xs'
-                    : 'bg-forest-950/90 hover:bg-btn-accent-bg hover:text-btn-accent-text hover:border-btn-accent-border text-cream-50 border border-border-gold'
+            <div className="relative flex items-center">
+              {/* Resting Curation Badge (visible when not hovered / on mobile touch) */}
+              <span
+                className={`inline-flex items-center rounded-full bg-forest-950/80 backdrop-blur-md px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-gold-300 uppercase shadow-xs border border-gold-400/30 font-sans transition-opacity duration-300 ${
+                  hovered || isJustAdded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
                 }`}
               >
-                {isJustAdded ? (
-                  <>
-                    <svg className="h-3.5 w-3.5 text-gold-300" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>Added ✓</span>
-                  </>
-                ) : (
-                  <>
-                    <svg
-                      className="h-3.5 w-3.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                      />
-                    </svg>
-                    <span>+ Add to Bag</span>
-                  </>
-                )}
-              </button>
+                {product.featured ? 'Featured' : (product.categories?.name || 'Artisanal')}
+              </span>
+
+              {/* Hover Action ("+ Add to Bag") */}
+              <div
+                className="absolute top-0 left-0 transition-all duration-300 pointer-events-none"
+                style={{
+                  opacity: hovered || isJustAdded ? 1 : 0,
+                  transform: hovered || isJustAdded ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(-4px)',
+                  pointerEvents: hovered || isJustAdded ? 'auto' : 'none',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  aria-label={`Add ${product.name} to bag`}
+                  title={isJustAdded ? 'Added to Bag' : '+ Add to Bag'}
+                  className={`h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full backdrop-blur-md text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap ${
+                    isJustAdded
+                      ? 'bg-forest-900 text-gold-300 border border-gold-400/70 shadow-2xs'
+                      : 'bg-forest-950/90 hover:bg-btn-accent-bg hover:text-btn-accent-text hover:border-btn-accent-border text-cream-50 border border-border-gold'
+                  }`}
+                >
+                  {isJustAdded ? (
+                    <>
+                      <svg className="h-3.5 w-3.5 text-gold-300" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span>Added ✓</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="h-3.5 w-3.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                        />
+                      </svg>
+                      <span>+ Add to Bag</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           )}
         </div>
