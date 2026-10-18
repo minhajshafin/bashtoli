@@ -2,21 +2,30 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import Link from 'next/link'
-import { WishlistItem } from '@/components/storefront/wishlist-item'
-import { Heart, ArrowRight } from 'lucide-react'
+import { WishlistItem, type MappedWishlistItem } from '@/components/storefront/wishlist-item'
+import { WishlistHeaderActions } from '@/components/storefront/wishlist-header-actions'
+import { Heart, ArrowRight, BookOpen, PenTool, Feather, Compass } from 'lucide-react'
 
 export async function generateMetadata() {
   return {
     title: 'My Wishlist',
-    description: 'View products you have saved for later in your Bashtoli wishlist.',
+    description: 'View and manage handcrafted stationery goods you have saved for later in your Bashtoli wishlist.',
   }
 }
 
 export const instant = false
 
+const QUICK_CATEGORIES = [
+  { label: 'Notebooks', href: '/products?category=notebooks', icon: BookOpen },
+  { label: 'Writing Tools', href: '/products?category=writing-tools', icon: PenTool },
+  { label: 'Calligraphy Ink', href: '/products?category=calligraphy-ink', icon: Feather },
+  { label: 'Desk Goods', href: '/products', icon: Compass },
+]
+
 /**
  * Customer Wishlist Page.
- * Server component that retrieves and lists all saved product listings.
+ * Server component that retrieves saved product listings, maps active default variants
+ * with live stock levels, and renders mobile-first cards with 1-tap Add to Bag capability.
  */
 export default async function WishlistPage() {
   const supabase = await createClient()
@@ -49,19 +58,10 @@ export default async function WishlistPage() {
 
   const productIds = (wishlistEntries || []).map((entry) => entry.product_id)
 
-  interface MappedWishlistItem {
-    id: string
-    name: string
-    slug: string
-    base_price: number
-    imageUrl: string | null
-    categoryName: string | null
-  }
-
   let wishlistProducts: MappedWishlistItem[] = []
 
   if (productIds.length > 0) {
-    // 2. Fetch products details sequentially for maximum type-safety
+    // 2. Fetch products details sequentially
     const { data: products, error: prodError } = await supabase
       .from('products')
       .select('*')
@@ -77,7 +77,13 @@ export default async function WishlistPage() {
       .select('*')
       .in('product_id', productIds)
 
-    // 4. Fetch all categories to map category names
+    // 4. Fetch variants for stock checks and 1-tap Add to Bag
+    const { data: variants } = await supabase
+      .from('product_variants')
+      .select('*')
+      .in('product_id', productIds)
+
+    // 5. Fetch all categories to map category names
     const { data: categories } = await supabase
       .from('categories')
       .select('*')
@@ -88,6 +94,30 @@ export default async function WishlistPage() {
       const primaryImage = prodImages.sort((a, b) => a.sort_order - b.sort_order)[0]
       const category = (categories || []).find((cat) => cat.id === prod.category_id)
 
+      const prodVariants = (variants || []).filter((v) => v.product_id === prod.id && v.active)
+      const inStockVariant = prodVariants.find((v) => v.stock_qty > 0)
+      const defaultVariantRow = inStockVariant || prodVariants[0] || null
+      const isSoldOut = prodVariants.length > 0 ? prodVariants.every((v) => v.stock_qty === 0) : false
+      const totalStock = prodVariants.reduce((sum, v) => sum + (v.stock_qty || 0), 0)
+
+      let variantLabel = 'Standard'
+      if (
+        defaultVariantRow?.option_values &&
+        typeof defaultVariantRow.option_values === 'object' &&
+        Object.keys(defaultVariantRow.option_values).length > 0
+      ) {
+        variantLabel = Object.values(defaultVariantRow.option_values).join(' / ')
+      }
+
+      const defaultVariant = defaultVariantRow
+        ? {
+            id: defaultVariantRow.id,
+            name: variantLabel,
+            price: Number(defaultVariantRow.price),
+            stock_qty: Number(defaultVariantRow.stock_qty),
+          }
+        : null
+
       return {
         id: prod.id,
         name: prod.name,
@@ -95,52 +125,89 @@ export default async function WishlistPage() {
         base_price: Number(prod.base_price),
         imageUrl: primaryImage?.url || null,
         categoryName: category?.name || null,
+        defaultVariant,
+        isSoldOut,
+        stockQty: totalStock,
       }
     })
   }
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-forest-200/80 pb-5">
-        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
-          Saved Items
-        </p>
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
-            My Wishlist
-          </h1>
-          {wishlistProducts.length > 0 && (
-            <span className="text-xs font-mono font-bold text-gold-600 bg-gold-400/20 px-2.5 py-0.5 rounded-full border border-gold-500/30">
-              {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
-            </span>
-          )}
+      {/* Header with Title, Count, & Add All CTA */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-forest-200/80 pb-5">
+        <div>
+          <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
+            Saved Items
+          </p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
+              My Wishlist
+            </h1>
+            {wishlistProducts.length > 0 && (
+              <span className="text-xs font-mono font-bold text-gold-600 bg-gold-400/20 px-2.5 py-0.5 rounded-full border border-gold-500/30">
+                {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
+              </span>
+            )}
+          </div>
+          <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
+            Handcrafted notebooks and stationeries you have saved to purchase or review later.
+          </p>
         </div>
-        <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
-          Handcrafted notebooks and stationeries you have saved to purchase or review later.
-        </p>
+
+        {wishlistProducts.length > 0 && (
+          <WishlistHeaderActions products={wishlistProducts} />
+        )}
       </div>
 
       {wishlistProducts.length === 0 ? (
-        <div className="text-center py-12 sm:py-16 border border-dashed border-forest-200/80 rounded-2xl sm:rounded-3xl bg-cream-100/40 space-y-2.5">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-1 border border-forest-200/60">
-            <Heart className="h-6 w-6 stroke-[1.75]" />
+        /* Artisanal Empty State with 1-Tap Category Exploration Pills */
+        <div className="text-center py-7 sm:py-14 px-4 border border-dashed border-forest-200/90 rounded-2xl sm:rounded-3xl bg-cream-100/40 space-y-4">
+          <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-cream-200/70 text-forest-600 border border-forest-200/80 shadow-2xs">
+            <Heart className="h-6 w-6 sm:h-7 sm:w-7 stroke-[1.6] text-gold-600" />
           </div>
-          <p className="text-sm font-semibold text-forest-950">Your wishlist is currently empty.</p>
-          <p className="text-xs text-forest-600 max-w-sm mx-auto">
-            Explore our catalog and save items you want to keep in mind for future orders.
-          </p>
-          <div className="pt-2">
+
+          <div className="space-y-1 max-w-md mx-auto">
+            <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
+              Your wishlist is currently empty
+            </h2>
+            <p className="text-xs sm:text-sm text-forest-600 font-sans leading-relaxed">
+              Explore our handcrafted journals, writing tools, and botanical inks to curate your personal collection.
+            </p>
+          </div>
+
+          {/* Category Exploration Pills */}
+          <div className="pt-1">
+            <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-forest-500 mb-2">
+              Explore by category
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-lg mx-auto">
+              {QUICK_CATEGORIES.map(({ label, href, icon: Icon }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/80 bg-cream-50 px-3 py-1.5 sm:px-3.5 sm:py-2 text-[11px] sm:text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-all shadow-2xs"
+                >
+                  <Icon className="h-3.5 w-3.5 text-gold-600" />
+                  <span>{label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-forest-200/50 max-w-xs mx-auto">
             <Link
               href="/products"
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
+              className="w-full inline-flex h-11 sm:h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-all shadow-xs"
             >
-              <span>Explore Stationery Goods</span>
-              <ArrowRight className="h-3.5 w-3.5" />
+              <span>Explore All Stationery Goods</span>
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
+        /* Populated Items */
+        <div className="space-y-3.5 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
           {wishlistProducts.map((product) => (
             <WishlistItem key={product.id} product={product} />
           ))}

@@ -1,19 +1,22 @@
 'use client'
 
-import React, { useTransition, useState } from 'react'
+import React, { useTransition, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateProfileAction, updatePasswordAction, deleteAccountAction } from '@/lib/actions/profile'
 import { useToast } from '@/components/ui/toast'
 import {
-  Edit2,
+  User,
+  Mail,
+  Phone,
+  MapPin,
   Lock,
   Eye,
   EyeOff,
   AlertTriangle,
   Trash2,
   Check,
-  X,
   ShieldCheck,
+  ChevronDown,
 } from 'lucide-react'
 
 interface ProfileFormProps {
@@ -27,22 +30,29 @@ interface ProfileFormProps {
   email: string | null
 }
 
+/**
+ * Customer Profile Settings Form.
+ * Dedicated mobile-first layout with grouped inset sections, 48px tactile inputs,
+ * direct inline editing, and smooth animated security accordions.
+ */
 export function ProfileForm({ profile, email }: ProfileFormProps) {
   const router = useRouter()
   const { toast } = useToast()
 
-  // UX State: View vs Edit mode for Personal Information
-  const [isEditingPersonal, setIsEditingPersonal] = useState(false)
-
-  // UX State: Expandable Change Password
+  // Password accordion state
   const [isChangingPassword, setIsChangingPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const passwordFormRef = useRef<HTMLFormElement>(null)
 
-  // Danger Zone Modal State
+  // Danger Zone Modal state
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState('')
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  // Transitions for smooth state handling
+  // Saved feedback state
+  const [isJustSaved, setIsJustSaved] = useState(false)
+
+  // Transitions
   const [isProfilePending, startProfileTransition] = useTransition()
   const [isPasswordPending, startPasswordTransition] = useTransition()
   const [isDeletePending, startDeleteTransition] = useTransition()
@@ -58,9 +68,6 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
     fieldErrors?: Partial<Record<'newPassword' | 'confirmPassword', string[]>>
   }>({ error: null })
 
-  const passwordFormRef = React.useRef<HTMLFormElement>(null)
-  const [showPassword, setShowPassword] = useState(false)
-
   const handleProfileSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -68,8 +75,9 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
       const res = await updateProfileAction({ error: null }, formData)
       setProfileState(res)
       if (res.success) {
+        setIsJustSaved(true)
+        setTimeout(() => setIsJustSaved(false), 2000)
         toast('Profile details updated successfully!', 'success')
-        setIsEditingPersonal(false)
       }
     })
   }
@@ -107,37 +115,23 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      {/* 1. Personal Information Card */}
-      <div className="rounded-2xl border border-forest-200/80 bg-cream-100/70 p-5 sm:p-7 shadow-2xs">
-        <div className="flex items-start justify-between gap-4 border-b border-forest-200/60 pb-4 mb-5">
+      {/* 1. Personal & Delivery Information Card */}
+      <div className="rounded-2xl border border-forest-200/80 bg-cream-100/70 p-4 sm:p-7 shadow-2xs">
+        <div className="flex items-center gap-3 border-b border-forest-200/60 pb-4 mb-5">
+          <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 shadow-2xs">
+            <User className="h-5 w-5 stroke-[1.8]" />
+          </div>
           <div>
             <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
               Personal Information
             </h2>
-            <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
-              {isEditingPersonal
-                ? 'Update your name, contact phone, or default delivery address below.'
-                : 'Your name, contact details, and default shipping address.'}
+            <p className="text-xs sm:text-[13px] text-forest-600 font-sans leading-relaxed">
+              Your name, contact details, and default shipping address.
             </p>
           </div>
-
-          {!isEditingPersonal && (
-            <button
-              type="button"
-              onClick={() => setIsEditingPersonal(true)}
-              className="btn-secondary shrink-0 inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-sans font-semibold active:scale-95 transition-all cursor-pointer"
-            >
-              <Edit2 className="h-3.5 w-3.5 text-gold-600" />
-              <span>Edit Details</span>
-            </button>
-          )}
         </div>
 
-        <form
-          key={`${profile?.full_name}-${profile?.phone}-${profile?.address}-${isEditingPersonal}`}
-          onSubmit={handleProfileSubmit}
-          className="space-y-4"
-        >
+        <form onSubmit={handleProfileSubmit} className="space-y-4">
           {profileState.error && (
             <div
               role="alert"
@@ -151,171 +145,192 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Full Name */}
             <div className="space-y-1.5">
-              <label htmlFor="fullName" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                Full Name {isEditingPersonal && <span className="text-gold-600">*</span>}
+              <label
+                htmlFor="fullName"
+                className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+              >
+                Full Name <span className="text-gold-600">*</span>
               </label>
-              {isEditingPersonal ? (
-                <>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    required
-                    defaultValue={profile?.full_name || ''}
-                    disabled={isProfilePending}
-                    placeholder="e.g. Shafi Rahman"
-                    className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
-                  />
-                  {profileState.fieldErrors?.fullName && (
-                    <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{profileState.fieldErrors.fullName[0]}</p>
-                  )}
-                </>
-              ) : (
-                <div className="rounded-xl border border-forest-200/80 bg-cream-50/70 px-4 h-12 flex items-center text-sm sm:text-base font-semibold text-forest-950 font-sans">
-                  {profile?.full_name || <span className="text-forest-400 font-normal italic">Not set</span>}
-                </div>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                required
+                defaultValue={profile?.full_name || ''}
+                disabled={isProfilePending}
+                placeholder="e.g. Shafi Rahman"
+                className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
+              />
+              {profileState.fieldErrors?.fullName && (
+                <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+                  {profileState.fieldErrors.fullName[0]}
+                </p>
               )}
             </div>
 
             {/* Email (Read-Only) */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label htmlFor="email" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+                <label
+                  htmlFor="email"
+                  className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+                >
                   Email Address
                 </label>
-                <span className="text-[10px] font-medium text-forest-400 font-mono">Read-only</span>
+                <span className="text-[10px] font-medium text-forest-400 font-mono">
+                  Read-only
+                </span>
               </div>
-              <input
-                id="email"
-                type="email"
-                value={email || ''}
-                readOnly
-                disabled
-                className="block w-full h-12 rounded-xl border border-forest-200/80 bg-cream-50/50 px-4 text-sm sm:text-base text-forest-700 cursor-not-allowed select-none font-sans"
-              />
+              <div className="relative">
+                <input
+                  id="email"
+                  type="email"
+                  value={email || ''}
+                  readOnly
+                  disabled
+                  className="block w-full h-12 rounded-xl border border-forest-200/80 bg-cream-50/70 px-4 pl-10 text-sm sm:text-base text-forest-700 cursor-not-allowed select-none font-sans"
+                />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-forest-400 pointer-events-none" />
+              </div>
             </div>
           </div>
 
           {/* Contact Phone Number */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label htmlFor="phone" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+              <label
+                htmlFor="phone"
+                className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+              >
                 Phone Number
               </label>
-              <span className="text-[10px] font-semibold text-forest-400 font-sans">Optional</span>
+              <span className="text-[10px] font-semibold text-forest-400 font-sans">
+                Optional
+              </span>
             </div>
-            {isEditingPersonal ? (
-              <>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  inputMode="numeric"
-                  autoComplete="tel"
-                  defaultValue={profile?.phone || ''}
-                  disabled={isProfilePending}
-                  placeholder="e.g. 01712345678"
-                  className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono tracking-wide"
-                />
-                {profileState.fieldErrors?.phone && (
-                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{profileState.fieldErrors.phone[0]}</p>
-                )}
-              </>
-            ) : (
-              <div className="rounded-xl border border-forest-200/80 bg-cream-50/70 px-4 h-12 flex items-center text-sm sm:text-base font-semibold text-forest-950 font-mono">
-                {profile?.phone || <span className="text-forest-400 font-normal italic font-sans">No phone number provided</span>}
-              </div>
+            <div className="relative">
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel"
+                defaultValue={profile?.phone || ''}
+                disabled={isProfilePending}
+                placeholder="e.g. 01712345678"
+                className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 pl-10 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono tracking-wide"
+              />
+              <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-forest-400 pointer-events-none" />
+            </div>
+            {profileState.fieldErrors?.phone && (
+              <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+                {profileState.fieldErrors.phone[0]}
+              </p>
             )}
           </div>
 
           {/* Default Address */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label htmlFor="address" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+              <label
+                htmlFor="address"
+                className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+              >
                 Default Shipping Address
               </label>
-              <span className="text-[10px] font-semibold text-forest-400 font-sans">Optional</span>
+              <span className="text-[10px] font-semibold text-forest-400 font-sans">
+                Optional
+              </span>
             </div>
-            {isEditingPersonal ? (
-              <>
-                <textarea
-                  id="address"
-                  name="address"
-                  rows={3}
-                  defaultValue={profile?.address || ''}
-                  disabled={isProfilePending}
-                  placeholder="e.g. House #12, Road #4, Uttara, Dhaka"
-                  className="block w-full rounded-xl border border-input-border bg-input-bg p-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans leading-relaxed"
-                />
-                {profileState.fieldErrors?.address && (
-                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{profileState.fieldErrors.address[0]}</p>
-                )}
-              </>
-            ) : (
-              <div className="rounded-xl border border-forest-200/80 bg-cream-50/70 p-4 text-sm sm:text-base font-medium text-forest-950 whitespace-pre-wrap min-h-12 font-sans leading-relaxed">
-                {profile?.address || <span className="text-forest-400 font-normal italic">No delivery address saved</span>}
-              </div>
+            <div className="relative">
+              <textarea
+                id="address"
+                name="address"
+                rows={3}
+                defaultValue={profile?.address || ''}
+                disabled={isProfilePending}
+                placeholder="e.g. House #12, Road #4, Uttara, Dhaka"
+                className="block w-full rounded-xl border border-input-border bg-input-bg p-4 pl-10 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans leading-relaxed"
+              />
+              <MapPin className="absolute left-3.5 top-4 h-4 w-4 text-forest-400 pointer-events-none" />
+            </div>
+            {profileState.fieldErrors?.address && (
+              <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+                {profileState.fieldErrors.address[0]}
+              </p>
             )}
           </div>
 
-          {/* Action Buttons in Edit Mode */}
-          {isEditingPersonal && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3 border-t border-forest-200/60">
-              <button
-                type="submit"
-                disabled={isProfilePending}
-                className="btn-primary inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-60 active:scale-95 transition-all cursor-pointer shadow-xs"
-              >
-                {isProfilePending ? (
-                  <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-cream-100 border-t-gold-400" />
-                    <span>Saving Changes...</span>
-                  </div>
-                ) : (
-                  <>
-                    <Check className="h-4 w-4" />
-                    <span>Save Changes</span>
-                  </>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsEditingPersonal(false)}
-                disabled={isProfilePending}
-                className="btn-secondary inline-flex h-12 sm:h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50 active:scale-95 transition-all cursor-pointer"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
+          {/* Save Changes CTA */}
+          <div className="pt-3 border-t border-forest-200/60">
+            <button
+              type="submit"
+              disabled={isProfilePending}
+              className={`w-full sm:w-auto inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl px-7 text-xs sm:text-sm font-sans font-semibold active:scale-95 transition-all shadow-xs cursor-pointer ${
+                isJustSaved
+                  ? 'bg-forest-900 text-gold-300 border border-gold-400/70'
+                  : 'btn-primary'
+              }`}
+            >
+              {isProfilePending ? (
+                <div className="flex items-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-cream-100 border-t-gold-400" />
+                  <span>Saving Changes...</span>
+                </div>
+              ) : isJustSaved ? (
+                <>
+                  <Check className="h-4 w-4 text-gold-300" />
+                  <span>Saved Successfully ✓</span>
+                </>
+              ) : (
+                <>
+                  <Check className="h-4 w-4 text-gold-400" />
+                  <span>Save Changes</span>
+                </>
+              )}
+            </button>
+          </div>
         </form>
       </div>
 
-      {/* 2. Password & Security Card (Expandable) */}
-      <div className="rounded-2xl border border-forest-200/80 bg-cream-100/70 p-5 sm:p-7 shadow-2xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
-              Password &amp; Security
-            </h2>
-            <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
-              Manage your password to ensure your Bashtoli account remains protected.
-            </p>
+      {/* 2. Password & Security Card (Collapsible Accordion) */}
+      <div className="rounded-2xl border border-forest-200/80 bg-cream-100/70 p-4 sm:p-7 shadow-2xs">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 shadow-2xs">
+              <ShieldCheck className="h-5 w-5 stroke-[1.8]" />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
+                Password &amp; Security
+              </h2>
+              <p className="text-xs sm:text-[13px] text-forest-600 font-sans leading-relaxed">
+                Ensure your Bashtoli account remains protected.
+              </p>
+            </div>
           </div>
 
-          {!isChangingPassword && (
-            <button
-              type="button"
-              onClick={() => {
-                setPasswordState({ error: null })
-                setIsChangingPassword(true)
-              }}
-              className="btn-primary shrink-0 inline-flex h-12 sm:h-10 items-center justify-center gap-2 rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold active:scale-95 transition-all cursor-pointer shadow-xs"
-            >
-              <Lock className="h-4 w-4 text-gold-400" />
-              <span>Change Password</span>
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => {
+              setPasswordState({ error: null })
+              setIsChangingPassword(!isChangingPassword)
+            }}
+            className="shrink-0 inline-flex h-10 sm:h-10 items-center justify-center gap-1.5 rounded-xl border border-forest-200/80 bg-cream-50 px-3.5 text-xs font-sans font-semibold text-forest-800 hover:border-gold-500/60 active:scale-95 transition-all cursor-pointer shadow-2xs"
+          >
+            <Lock className="h-3.5 w-3.5 text-gold-600" />
+            <span className="hidden sm:inline">
+              {isChangingPassword ? 'Close' : 'Change Password'}
+            </span>
+            <span className="sm:hidden">
+              {isChangingPassword ? 'Close' : 'Update'}
+            </span>
+            <ChevronDown
+              className={`h-3.5 w-3.5 text-forest-400 transition-transform duration-200 ${
+                isChangingPassword ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
         </div>
 
         {/* Expandable Password Form */}
@@ -338,7 +353,10 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* New Password */}
               <div className="space-y-1.5">
-                <label htmlFor="newPassword" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+                <label
+                  htmlFor="newPassword"
+                  className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+                >
                   New Password <span className="text-gold-600">*</span>
                 </label>
                 <div className="relative">
@@ -365,13 +383,18 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   </button>
                 </div>
                 {passwordState.fieldErrors?.newPassword && (
-                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{passwordState.fieldErrors.newPassword[0]}</p>
+                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+                    {passwordState.fieldErrors.newPassword[0]}
+                  </p>
                 )}
               </div>
 
               {/* Confirm Password */}
               <div className="space-y-1.5">
-                <label htmlFor="confirmPassword" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+                >
                   Confirm Password <span className="text-gold-600">*</span>
                 </label>
                 <input
@@ -384,7 +407,9 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
                 />
                 {passwordState.fieldErrors?.confirmPassword && (
-                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">{passwordState.fieldErrors.confirmPassword[0]}</p>
+                  <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+                    {passwordState.fieldErrors.confirmPassword[0]}
+                  </p>
                 )}
               </div>
             </div>
@@ -402,7 +427,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
                   </div>
                 ) : (
                   <>
-                    <Check className="h-4 w-4" />
+                    <Check className="h-4 w-4 text-gold-400" />
                     <span>Save New Password</span>
                   </>
                 )}
@@ -424,16 +449,20 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
       </div>
 
       {/* 3. Danger Zone Section */}
-      <div className="rounded-2xl border border-terracotta-500/30 bg-terracotta-100/50 p-5 sm:p-7 shadow-2xs">
+      <div className="rounded-2xl border border-terracotta-500/30 bg-terracotta-100/50 p-4 sm:p-7 shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-base font-semibold text-terracotta-800 tracking-tight flex items-center gap-2 font-sans">
-              <AlertTriangle className="h-4 w-4 text-terracotta-600" />
-              <span>Danger Zone</span>
-            </h2>
-            <p className="text-xs sm:text-[13px] text-terracotta-800/80 mt-1 max-w-xl font-sans leading-relaxed">
-              Permanently delete your account and all associated profile details from the database. Past completed and in-progress orders are preserved securely in store records.
-            </p>
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-terracotta-100 text-terracotta-700 border border-terracotta-500/40 shadow-2xs">
+              <AlertTriangle className="h-5 w-5 stroke-[1.8]" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-terracotta-900 tracking-tight font-sans">
+                Danger Zone
+              </h2>
+              <p className="text-xs sm:text-[13px] text-terracotta-800/80 mt-1 max-w-xl font-sans leading-relaxed">
+                Permanently delete your account and all associated profile details. Past order invoices are preserved securely in store records.
+              </p>
+            </div>
           </div>
           <button
             type="button"
@@ -442,7 +471,7 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
               setDeleteError(null)
               setIsDeleteModalOpen(true)
             }}
-            className="btn-danger shrink-0 w-full sm:w-auto inline-flex h-12 sm:h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold active:scale-95 transition-all cursor-pointer"
+            className="btn-danger shrink-0 w-full sm:w-auto inline-flex h-12 sm:h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold active:scale-95 transition-all cursor-pointer shadow-2xs"
           >
             <Trash2 className="h-4 w-4" />
             <span>Delete Account</span>
@@ -496,7 +525,10 @@ export function ProfileForm({ profile, email }: ProfileFormProps) {
 
             <form onSubmit={handleDeleteSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="deleteConfirmation" className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+                <label
+                  htmlFor="deleteConfirmation"
+                  className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90"
+                >
                   Type <span className="font-mono font-black text-terracotta-600 select-all">DELETE</span> to confirm:
                 </label>
                 <input
