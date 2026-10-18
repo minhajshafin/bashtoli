@@ -2,6 +2,7 @@
 
 import React, { useActionState, useTransition } from 'react'
 import { addAddressAction, editAddressAction } from '@/lib/actions/addresses'
+import { AlertCircle, X, Check } from 'lucide-react'
 
 interface AddressFormProps {
   address?: {
@@ -42,7 +43,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
   }, [state.success, onClose])
 
   return (
-    <div className="bg-cream-100/90 border border-forest-200/80 rounded-2xl p-6 sm:p-7 shadow-2xs animate-fade-in">
+    <div className="bg-cream-100/90 border border-forest-200/80 rounded-2xl p-5 sm:p-7 shadow-2xs animate-fade-in">
       <div className="flex justify-between items-center mb-5 pb-3 border-b border-forest-200/60">
         <h3 className="text-sm sm:text-base font-medium text-forest-950 font-display">
           {isEditing ? 'Edit Saved Address' : 'Add New Address'}
@@ -51,12 +52,10 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
           <button
             type="button"
             onClick={onClose}
-            className="text-forest-400 hover:text-forest-700 transition-colors cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-forest-400 hover:text-forest-700 hover:bg-cream-200/60 transition-colors cursor-pointer"
             aria-label="Close form"
           >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="h-4 w-4" />
           </button>
         )}
       </div>
@@ -65,12 +64,10 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
         {state.error && (
           <div
             role="alert"
-            className="flex items-start gap-2 rounded-xl bg-terracotta-100 border border-terracotta-500/30 px-4 py-3 text-xs font-semibold text-terracotta-800 font-sans"
+            className="flex items-start gap-2.5 rounded-xl bg-terracotta-100/90 border border-terracotta-500/40 px-4 py-3 text-xs font-semibold text-terracotta-900 font-sans"
           >
-            <svg className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <span>{state.error}</span>
+            <AlertCircle className="h-4 w-4 text-terracotta-700 shrink-0 mt-0.5" />
+            <span className="leading-relaxed">{state.error}</span>
           </div>
         )}
 
@@ -86,7 +83,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.label || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
+            className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans"
             placeholder="e.g. Home, Office, Studio"
           />
           {state.fieldErrors?.label && (
@@ -103,10 +100,12 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             id="phone"
             name="phone"
             type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
             required
             defaultValue={address?.phone || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono"
+            className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-mono tracking-wide"
             placeholder="e.g. 01712345678"
           />
           {state.fieldErrors?.phone && (
@@ -126,7 +125,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             required
             defaultValue={address?.full_address || ''}
             disabled={isPending}
-            className="block w-full rounded-xl border border-input-border bg-input-bg px-4 py-2.5 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans leading-relaxed"
+            className="block w-full rounded-xl border border-input-border bg-input-bg p-4 text-sm sm:text-base text-input-text placeholder-forest-400 focus:border-input-border-focus focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all font-sans leading-relaxed"
             placeholder="House, Flat, Road, Area name, City / District"
           />
           {state.fieldErrors?.full_address && (
@@ -135,7 +134,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
         </div>
 
         {/* Set as Default option */}
-        <div className="flex items-center gap-2 pt-1.5">
+        <div className="flex items-center gap-2.5 pt-1">
           <input
             id="is_default"
             name="is_default"
@@ -143,21 +142,21 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
             value="true"
             defaultChecked={address?.is_default || false}
             disabled={isPending}
-            className="h-4 w-4 rounded border-forest-300 text-gold-500 focus:ring-gold-500 accent-forest-800"
+            className="h-4.5 w-4.5 rounded border-forest-300 text-gold-500 focus:ring-gold-500 accent-forest-800 cursor-pointer"
           />
-          <label htmlFor="is_default" className="text-xs sm:text-sm font-medium text-forest-700 select-none font-sans">
+          <label htmlFor="is_default" className="text-xs sm:text-sm font-medium text-forest-800 select-none font-sans cursor-pointer">
             Set as default shipping address
           </label>
         </div>
 
         {/* Buttons footer */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-forest-200/60">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-3 border-t border-forest-200/60">
           {onClose && (
             <button
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="btn-secondary inline-flex h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50"
+              className="btn-secondary inline-flex h-12 sm:h-11 items-center justify-center rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold disabled:opacity-50 active:scale-95 transition-all cursor-pointer"
             >
               Cancel
             </button>
@@ -165,7 +164,7 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="btn-primary inline-flex h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-60"
+            className="btn-primary inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-60 active:scale-95 transition-all cursor-pointer shadow-xs"
           >
             {isPending ? (
               <div className="flex items-center gap-2">
@@ -173,9 +172,15 @@ export function AddressForm({ address, onClose }: AddressFormProps) {
                 <span>Saving...</span>
               </div>
             ) : isEditing ? (
-              'Save Changes'
+              <>
+                <Check className="h-4 w-4" />
+                <span>Save Changes</span>
+              </>
             ) : (
-              'Save Address'
+              <>
+                <Check className="h-4 w-4" />
+                <span>Save Address</span>
+              </>
             )}
           </button>
         </div>

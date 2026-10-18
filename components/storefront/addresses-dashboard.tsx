@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { AddressList } from './address-list'
 import { AddressForm } from './address-form'
+import { Plus } from 'lucide-react'
 
 interface SavedAddress {
   id: string
@@ -37,20 +38,19 @@ export function AddressesDashboard({ initialAddresses }: AddressesDashboardProps
 
         {!showAddForm && (
           <button
+            type="button"
             onClick={() => setShowAddForm(true)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-forest-900 px-5 text-xs sm:text-sm font-sans font-semibold text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 transition-all cursor-pointer"
+            className="w-full sm:w-auto inline-flex h-11 sm:h-10 items-center justify-center gap-2 rounded-xl bg-forest-900 px-5 text-xs sm:text-sm font-sans font-semibold text-cream-50 shadow-2xs hover:bg-gold-500 hover:text-forest-950 active:scale-95 transition-all cursor-pointer"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            Add Address
+            <Plus className="h-4 w-4" />
+            <span>Add New Address</span>
           </button>
         )}
       </div>
 
       {/* Add Form Container */}
       {showAddForm && (
-        <div className="border border-forest-200/80 rounded-2xl p-1 bg-cream-100/60 shadow-2xs">
+        <div className="border border-forest-200/80 rounded-2xl p-1 bg-cream-100/60 shadow-2xs animate-fade-in">
           <AddressForm onClose={() => setShowAddForm(false)} />
         </div>
       )}

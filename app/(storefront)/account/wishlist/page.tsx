@@ -1,7 +1,9 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import React from 'react'
+import Link from 'next/link'
 import { WishlistItem } from '@/components/storefront/wishlist-item'
+import { Heart, ArrowRight } from 'lucide-react'
 
 export async function generateMetadata() {
   return {
@@ -103,34 +105,42 @@ export default async function WishlistPage() {
         <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
           Saved Items
         </p>
-        <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
-          My Wishlist
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
+            My Wishlist
+          </h1>
+          {wishlistProducts.length > 0 && (
+            <span className="text-xs font-mono font-bold text-gold-600 bg-gold-400/20 px-2.5 py-0.5 rounded-full border border-gold-500/30">
+              {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
+            </span>
+          )}
+        </div>
         <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
           Handcrafted notebooks and stationeries you have saved to purchase or review later.
         </p>
       </div>
 
       {wishlistProducts.length === 0 ? (
-        <div className="text-center py-12 sm:py-16 border border-dashed border-forest-200/80 rounded-2xl sm:rounded-3xl bg-cream-100/40 space-y-2">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-2 border border-forest-200/60">
-            <svg className="h-6 w-6 stroke-current fill-none" viewBox="0 0 24 24" strokeWidth="1.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-            </svg>
+        <div className="text-center py-12 sm:py-16 border border-dashed border-forest-200/80 rounded-2xl sm:rounded-3xl bg-cream-100/40 space-y-2.5">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-1 border border-forest-200/60">
+            <Heart className="h-6 w-6 stroke-[1.75]" />
           </div>
           <p className="text-sm font-semibold text-forest-950">Your wishlist is currently empty.</p>
-          <p className="text-xs text-forest-600 max-w-sm mx-auto">Explore our catalog and save items you want to keep in mind for future orders.</p>
+          <p className="text-xs text-forest-600 max-w-sm mx-auto">
+            Explore our catalog and save items you want to keep in mind for future orders.
+          </p>
           <div className="pt-2">
-            <a
+            <Link
               href="/products"
               className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
             >
-              Explore Stationery Goods &rarr;
-            </a>
+              <span>Explore Stationery Goods</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
           {wishlistProducts.map((product) => (
             <WishlistItem key={product.id} product={product} />
           ))}
@@ -139,4 +149,3 @@ export default async function WishlistPage() {
     </div>
   )
 }
-

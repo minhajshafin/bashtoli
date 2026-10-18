@@ -3,6 +3,7 @@
 import React, { useTransition, useState } from 'react'
 import { claimGuestOrdersAction } from '@/lib/actions/claim-guest-orders'
 import { useToast } from '@/components/ui/toast'
+import { AlertCircle, Link2 } from 'lucide-react'
 
 interface GuestOrder {
   id: string
@@ -36,12 +37,10 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-gold-400/60 bg-gold-400/10 p-5 sm:p-6 space-y-4 animate-fade-in shadow-2xs">
+    <div className="rounded-2xl border border-gold-400/60 bg-gold-400/10 p-4 sm:p-6 space-y-4 animate-fade-in shadow-2xs">
       <div className="flex items-start gap-3.5">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 shadow-2xs">
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <AlertCircle className="h-5 w-5 stroke-[1.8]" />
         </div>
         <div>
           <h3 className="text-sm sm:text-base font-medium text-forest-950 font-display">
@@ -79,9 +78,19 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
           type="button"
           onClick={handleClaim}
           disabled={isPending}
-          className="btn-primary inline-flex h-10 items-center justify-center rounded-xl px-5 text-xs font-sans font-semibold disabled:opacity-50"
+          className="btn-primary w-full sm:w-auto inline-flex h-11 sm:h-10 items-center justify-center gap-2 rounded-xl px-5 text-xs font-sans font-semibold disabled:opacity-50 active:scale-95 transition-all cursor-pointer shadow-xs"
         >
-          {isPending ? 'Linking Orders...' : 'Link Orders to My Account'}
+          {isPending ? (
+            <span className="flex items-center gap-2">
+              <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-cream-100 border-t-gold-400" />
+              <span>Linking Orders...</span>
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5">
+              <Link2 className="h-4 w-4" />
+              <span>Link Orders to My Account</span>
+            </span>
+          )}
         </button>
       </div>
     </div>

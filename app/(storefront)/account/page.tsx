@@ -3,6 +3,15 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { fetchCustomerOrders } from '@/lib/queries/customer-orders'
+import {
+  Package,
+  MapPin,
+  Heart,
+  User,
+  ArrowRight,
+  Clock,
+  ChevronRight,
+} from 'lucide-react'
 
 export async function generateMetadata() {
   return {
@@ -24,163 +33,165 @@ export default async function AccountPage() {
     redirect('/login?redirectTo=/account')
   }
 
-  // Fetch profile & customer orders
-  const [{ data: profile }, orders] = await Promise.all([
+  // Fetch profile, customer orders, and wishlist count in parallel
+  const [{ data: profile }, orders, { count: wishlistCount }] = await Promise.all([
     supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle(),
     fetchCustomerOrders(),
+    supabase.from('wishlist').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
   ])
 
   const displayName = profile?.full_name || user.email?.split('@')[0] || 'Customer'
   const recentOrders = orders.slice(0, 3)
+  const totalOrdersCount = orders.length
+  const totalWishlistCount = wishlistCount ?? 0
 
   const quickLinks = [
     {
       title: 'Order History',
+      description: `${totalOrdersCount} ${totalOrdersCount === 1 ? 'order' : 'orders'} logged`,
       href: '/account/orders',
-      icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
-        </svg>
-      ),
+      icon: Package,
     },
     {
       title: 'Saved Addresses',
+      description: 'Manage shipping book',
       href: '/account/addresses',
-      icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-        </svg>
-      ),
+      icon: MapPin,
     },
     {
       title: 'My Wishlist',
+      description: `${totalWishlistCount} ${totalWishlistCount === 1 ? 'item' : 'items'} saved`,
       href: '/account/wishlist',
-      icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-        </svg>
-      ),
+      icon: Heart,
     },
     {
       title: 'Profile Settings',
+      description: 'Security & contact info',
       href: '/account/profile',
-      icon: (
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.964 0a9 9 0 1 0-11.963 0m11.964 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        </svg>
-      ),
+      icon: User,
     },
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Welcome Header */}
-      <div className="border-b border-forest-200/80 pb-6">
-        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1.5">
+      <div className="border-b border-forest-200/80 pb-5">
+        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
           Account Overview
         </p>
         <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
-          Welcome back, {displayName}
+          Welcome back, {displayName.split(' ')[0]}
         </h1>
-        <p className="text-xs sm:text-[13px] text-forest-600 mt-1.5 font-sans leading-relaxed">
+        <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
           Manage your stationery orders, delivery addresses, saved wishlist, and personal profile.
         </p>
       </div>
 
-      {/* Quick Links Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-        {quickLinks.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="flex items-center justify-between p-4 sm:p-5 rounded-2xl border border-forest-200/80 bg-cream-100/60 hover:bg-cream-100 hover:border-gold-500/50 hover:shadow-2xs transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 group-hover:bg-gold-500 group-hover:text-forest-950 transition-colors shrink-0 shadow-2xs">
-                {item.icon}
+      {/* Quick Links Grid: 2-column tactile mobile cards */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        {quickLinks.map((item) => {
+          const Icon = item.icon
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex flex-col justify-between p-3.5 sm:p-5 rounded-2xl border border-forest-200/80 bg-cream-100/70 hover:bg-cream-100 hover:border-gold-500/50 hover:shadow-2xs active:scale-[0.98] transition-all duration-200 group"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 group-hover:bg-gold-500 group-hover:text-forest-950 transition-colors shrink-0 shadow-2xs">
+                  <Icon className="h-5 w-5 stroke-[1.8]" />
+                </div>
+                <ChevronRight className="h-4 w-4 text-forest-400 group-hover:text-gold-600 group-hover:translate-x-0.5 transition-all" />
               </div>
-              <span className="text-sm sm:text-[15px] font-medium text-forest-950 group-hover:text-gold-600 transition-colors font-sans">
-                {item.title}
-              </span>
-            </div>
-            <span className="text-forest-400 group-hover:text-gold-600 group-hover:translate-x-1 transition-all text-base font-semibold">
-              &rarr;
-            </span>
-          </Link>
-        ))}
+              <div className="mt-3">
+                <h3 className="text-xs sm:text-sm font-semibold text-forest-950 group-hover:text-gold-600 transition-colors font-sans truncate">
+                  {item.title}
+                </h3>
+                <p className="text-[11px] text-forest-500 font-sans mt-0.5 truncate">
+                  {item.description}
+                </p>
+              </div>
+            </Link>
+          )
+        })}
       </div>
 
       {/* Recent Orders Section */}
-      <div className="pt-2">
-        <div className="flex items-center justify-between mb-4">
+      <div className="space-y-3.5 pt-1">
+        <div className="flex items-center justify-between">
           <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
             Recent Orders
           </h2>
           {orders.length > 0 && (
             <Link
               href="/account/orders"
-              className="text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
             >
-              View all ({orders.length}) &rarr;
+              <span>View all ({orders.length})</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           )}
         </div>
 
         {recentOrders.length > 0 ? (
           <div className="space-y-3">
-            {recentOrders.map((order) => (
-              <div
-                key={order.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 sm:p-5 rounded-2xl border border-forest-200/80 bg-cream-100/60 hover:bg-cream-100/90 hover:border-forest-300 transition-all shadow-2xs"
-              >
-                <div>
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-sm font-bold text-forest-950 font-mono">
-                      {order.order_number}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full bg-forest-200/80 text-forest-800 border border-forest-300/60 font-sans">
-                      {order.status}
-                    </span>
+            {recentOrders.map((order) => {
+              const orderDateStr = new Date(order.created_at).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })
+
+              return (
+                <div
+                  key={order.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 rounded-2xl border border-forest-200/80 bg-cream-100/70 hover:bg-cream-100 hover:border-forest-300 transition-all shadow-2xs"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-forest-950 font-mono">
+                        {order.order_number}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full bg-forest-900 text-gold-400 border border-forest-800 font-sans">
+                        {order.status}
+                      </span>
+                    </div>
+                    <p className="text-xs text-forest-600 font-sans flex items-center gap-1.5">
+                      <Clock className="h-3 w-3 text-forest-400" />
+                      <span>{orderDateStr}</span>
+                      <span>·</span>
+                      <span>{order.item_count} {order.item_count === 1 ? 'item' : 'items'}</span>
+                    </p>
                   </div>
-                  <p className="text-xs text-forest-600 mt-1 font-sans">
-                    {new Date(order.created_at).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}{' '}
-                    · {order.item_count} {order.item_count === 1 ? 'item' : 'items'}
-                  </p>
+                  <div className="flex items-center justify-between sm:justify-end gap-4 pt-2.5 sm:pt-0 border-t sm:border-t-0 border-forest-200/60">
+                    <span className="text-base sm:text-lg font-bold text-forest-950 font-price">
+                      ৳{order.total.toLocaleString()}
+                    </span>
+                    <Link
+                      href={`/order/${order.order_number}`}
+                      className="inline-flex h-9 items-center justify-center text-xs font-sans font-semibold px-4 rounded-xl bg-forest-900 text-cream-50 hover:bg-gold-500 hover:text-forest-950 active:scale-95 transition-all shadow-2xs"
+                    >
+                      View Receipt
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-forest-200/60">
-                  <span className="text-base sm:text-lg font-bold text-forest-950 font-price">
-                    ৳{order.total.toLocaleString()}
-                  </span>
-                  <Link
-                    href={`/order/${order.order_number}`}
-                    className="text-xs font-sans font-semibold px-4 py-2 rounded-xl bg-forest-900 text-cream-50 hover:bg-gold-500 hover:text-forest-950 transition-all shadow-2xs"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-forest-200/80 bg-cream-100/40 p-8 sm:p-10 text-center space-y-2">
-            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-1 border border-forest-200/60">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
-              </svg>
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-1 border border-forest-200/60">
+              <Package className="h-5 w-5 stroke-[1.75]" />
             </div>
             <p className="text-sm font-medium text-forest-900">You haven&apos;t placed any orders yet.</p>
-            <p className="text-xs text-forest-600">Discover our handmade notebooks, pens, and desk essentials.</p>
+            <p className="text-xs text-forest-600 max-w-sm mx-auto">Discover our handcrafted notebooks, pens, and desk essentials.</p>
             <div className="pt-2">
               <Link
                 href="/products"
                 className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 transition-colors"
               >
-                Browse stationery collection &rarr;
+                <span>Browse stationery collection</span>
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
