@@ -17,20 +17,20 @@ export default function PrivacyPolicyPage() {
   ]
 
   return (
-    <main className="min-h-[calc(100dvh-5rem)] bg-cream-50 bg-laid-paper py-10 sm:py-16 px-4 sm:px-6 lg:px-8 selection:bg-gold-500/20 selection:text-forest-900">
+    <main className="min-h-[calc(100dvh-5rem)] bg-cream-50 bg-laid-paper py-6 sm:py-16 px-4 sm:px-6 lg:px-8 pb-32 sm:pb-16 selection:bg-gold-500/20 selection:text-forest-900">
       <div className="max-w-5xl mx-auto">
         {/* Header Banner */}
-        <div className="mb-10 sm:mb-14 border-b border-forest-200/80 pb-6 sm:pb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="mb-6 sm:mb-12 border-b border-forest-200/80 pb-5 sm:pb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-900/5 border border-forest-200 text-[10px] font-bold uppercase tracking-[0.25em] text-forest-700 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-900/5 border border-forest-200 text-[10px] font-bold uppercase tracking-[0.25em] text-forest-700 mb-2.5">
               <span>Customer Care</span>
               <span className="text-gold-600">·</span>
               <span>Legal Notice</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl text-forest-950 font-normal tracking-tight font-display">
+            <h1 className="text-2xl sm:text-4xl text-forest-950 font-medium tracking-tight font-display">
               Privacy Policy
             </h1>
-            <p className="mt-2 text-xs sm:text-[13px] text-forest-600 font-light">
+            <p className="mt-1.5 text-xs sm:text-sm text-forest-600 font-light">
               How we protect your details when you shop for papers and pens.
             </p>
           </div>
@@ -41,10 +41,37 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
 
+        {/* Mobile Quick Jump Accordion (< lg only) */}
+        <div className="lg:hidden mb-6">
+          <details className="group rounded-2xl bg-cream-100/90 border border-forest-200/80 shadow-xs overflow-hidden">
+            <summary className="flex items-center justify-between p-4 text-xs font-semibold uppercase tracking-wider text-forest-800 cursor-pointer list-none select-none">
+              <div className="flex items-center gap-2">
+                <span className="text-gold-600 font-mono text-[11px]">§</span>
+                <span>Jump to Section ({sections.length})</span>
+              </div>
+              <svg className="w-4 h-4 text-forest-500 group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div className="px-4 pb-3 pt-1 border-t border-forest-200/60 divide-y divide-forest-200/40">
+              {sections.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="flex items-center justify-between py-2.5 text-xs text-forest-700 hover:text-forest-950 font-medium active:text-gold-600 transition-colors"
+                >
+                  <span>{s.title}</span>
+                  <span className="font-mono text-[11px] text-gold-600">{s.number}</span>
+                </a>
+              ))}
+            </div>
+          </details>
+        </div>
+
         {/* Editorial 2-Column Body */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Sticky Anchor Index & Support Box */}
-          <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
+          {/* Desktop Left Sticky Anchor Index & Support Box (hidden on mobile, lg:block on desktop) */}
+          <aside className="hidden lg:block lg:col-span-4 space-y-6 lg:sticky lg:top-28">
             <nav className="p-5 sm:p-6 rounded-2xl bg-cream-100/90 border border-forest-200/80 shadow-xs space-y-3" aria-label="Table of contents">
               <p className="text-[10px] uppercase tracking-[0.25em] text-forest-500 font-bold">
                 Table of Contents
@@ -98,9 +125,9 @@ export default function PrivacyPolicyPage() {
           </aside>
 
           {/* Right Main Editorial Content Card */}
-          <div className="lg:col-span-8 p-6 sm:p-10 rounded-3xl bg-cream-100/90 border border-forest-200/80 shadow-xs space-y-10">
+          <div className="lg:col-span-8 p-5 sm:p-10 rounded-3xl bg-cream-100/90 border border-forest-200/80 shadow-xs space-y-8 sm:space-y-10">
             {/* Section 01 */}
-            <section id="overview" className="scroll-mt-28 space-y-3">
+            <section id="overview" className="scroll-mt-20 space-y-3">
               <div className="flex items-center gap-2.5">
                 <span className="font-mono text-xs font-bold text-gold-600">01</span>
                 <div className="h-px w-6 bg-forest-200" />
@@ -108,13 +135,13 @@ export default function PrivacyPolicyPage() {
                   Overview
                 </h2>
               </div>
-              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+              <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
                 At বাঁশতলী (Bashtoli Stationery), we respect your privacy and are committed to safeguarding the personal details you share with us. This policy outlines the types of information we collect, how it is used to fulfill your stationery orders, and the measures we take to keep your data secure.
               </p>
             </section>
 
             {/* Section 02 */}
-            <section id="collection" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+            <section id="collection" className="scroll-mt-20 space-y-3 border-t border-forest-200/70 pt-8">
               <div className="flex items-center gap-2.5">
                 <span className="font-mono text-xs font-bold text-gold-600">02</span>
                 <div className="h-px w-6 bg-forest-200" />
@@ -122,7 +149,7 @@ export default function PrivacyPolicyPage() {
                   Information We Collect
                 </h2>
               </div>
-              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+              <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
                 When you browse our catalog, place an order, or create an account, we may collect the following information:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -130,7 +157,7 @@ export default function PrivacyPolicyPage() {
                   <p className="text-[11px] font-bold text-forest-900 uppercase tracking-wide mb-1">
                     Contact Details
                   </p>
-                  <p className="text-xs text-forest-700 leading-relaxed">
+                  <p className="text-xs sm:text-[13px] text-forest-700 leading-relaxed">
                     Full name, delivery phone number, and optional email address.
                   </p>
                 </div>
@@ -138,7 +165,7 @@ export default function PrivacyPolicyPage() {
                   <p className="text-[11px] font-bold text-forest-900 uppercase tracking-wide mb-1">
                     Delivery Address
                   </p>
-                  <p className="text-xs text-forest-700 leading-relaxed">
+                  <p className="text-xs sm:text-[13px] text-forest-700 leading-relaxed">
                     Shipping address, selected delivery zone (Inside / Outside Dhaka), and notes.
                   </p>
                 </div>
@@ -146,7 +173,7 @@ export default function PrivacyPolicyPage() {
                   <p className="text-[11px] font-bold text-forest-900 uppercase tracking-wide mb-1">
                     Order Records
                   </p>
-                  <p className="text-xs text-forest-700 leading-relaxed">
+                  <p className="text-xs sm:text-[13px] text-forest-700 leading-relaxed">
                     Purchased items, quantities, pricing snapshots, and fulfillment history.
                   </p>
                 </div>
@@ -154,7 +181,7 @@ export default function PrivacyPolicyPage() {
                   <p className="text-[11px] font-bold text-forest-900 uppercase tracking-wide mb-1">
                     Authentication
                   </p>
-                  <p className="text-xs text-forest-700 leading-relaxed">
+                  <p className="text-xs sm:text-[13px] text-forest-700 leading-relaxed">
                     Encrypted session tokens managed securely via Supabase Auth.
                   </p>
                 </div>
@@ -162,7 +189,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 03 */}
-            <section id="usage" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+            <section id="usage" className="scroll-mt-20 space-y-3 border-t border-forest-200/70 pt-8">
               <div className="flex items-center gap-2.5">
                 <span className="font-mono text-xs font-bold text-gold-600">03</span>
                 <div className="h-px w-6 bg-forest-200" />
@@ -170,10 +197,10 @@ export default function PrivacyPolicyPage() {
                   How We Use Your Information
                 </h2>
               </div>
-              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+              <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
                 We use your personal data strictly for legitimate operational purposes:
               </p>
-              <ul className="space-y-2 text-xs sm:text-[13px] text-forest-700 pl-4 list-disc marker:text-gold-600">
+              <ul className="space-y-2 text-[13px] sm:text-sm text-forest-700 pl-4 list-disc marker:text-gold-600">
                 <li>Processing and dispatching your stationery packages via courier partners across Bangladesh.</li>
                 <li>Sending transactional updates including order receipts and delivery confirmation via WhatsApp, phone, or email.</li>
                 <li>Allowing you to lookup past orders and track package progress anytime.</li>
@@ -182,7 +209,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 04 */}
-            <section id="security" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+            <section id="security" className="scroll-mt-20 space-y-3 border-t border-forest-200/70 pt-8">
               <div className="flex items-center gap-2.5">
                 <span className="font-mono text-xs font-bold text-gold-600">04</span>
                 <div className="h-px w-6 bg-forest-200" />
@@ -190,10 +217,10 @@ export default function PrivacyPolicyPage() {
                   Data Security & Payment Privacy
                 </h2>
               </div>
-              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+              <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
                 Your account credentials and passwords are encrypted using industry-standard protocols. We do not store sensitive payment card credentials on our servers — all retail transactions are settled safely via Cash on Delivery (COD) upon physical package inspection.
               </p>
-              <div className="p-4 rounded-xl bg-forest-900/5 border border-forest-200 text-xs text-forest-800 flex items-start gap-3">
+              <div className="p-4 rounded-xl bg-forest-900/5 border border-forest-200 text-xs sm:text-sm text-forest-800 flex items-start gap-3">
                 <span className="text-base text-gold-600 mt-0.5">✓</span>
                 <p>
                   <strong>No Marketing Spam:</strong> We will never sell, lease, or rent your phone number or contact information to third-party marketing networks.
@@ -202,7 +229,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* Section 05 */}
-            <section id="contact" className="scroll-mt-28 space-y-3 border-t border-forest-200/70 pt-8">
+            <section id="contact" className="scroll-mt-20 space-y-3 border-t border-forest-200/70 pt-8">
               <div className="flex items-center gap-2.5">
                 <span className="font-mono text-xs font-bold text-gold-600">05</span>
                 <div className="h-px w-6 bg-forest-200" />
@@ -210,7 +237,7 @@ export default function PrivacyPolicyPage() {
                   Contact & Data Rights
                 </h2>
               </div>
-              <p className="text-xs sm:text-[13px] text-forest-800 leading-relaxed font-normal">
+              <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
                 If you have questions about your stored data, wish to request account deletion, or want to update your delivery address, write to us directly at{' '}
                 <a
                   href="mailto:contact@bashtoli.com"
@@ -220,6 +247,38 @@ export default function PrivacyPolicyPage() {
                 </a>.
               </p>
             </section>
+
+            {/* Mobile Support & Return Box (lg:hidden) */}
+            <div className="lg:hidden pt-6 border-t border-forest-200/70 space-y-4">
+              <div className="p-4 rounded-2xl bg-forest-900 text-cream-100 border border-forest-800 shadow-sm space-y-2">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-gold-400 font-bold">
+                  Need Assistance?
+                </p>
+                <p className="text-xs text-forest-300 font-light leading-relaxed">
+                  Have questions about your order or want to update your stored delivery address?
+                </p>
+                <div className="pt-1 flex flex-col gap-1 text-xs">
+                  <a
+                    href="mailto:contact@bashtoli.com"
+                    className="inline-flex items-center gap-1.5 font-medium text-gold-300 hover:text-gold-200 transition-colors"
+                  >
+                    <span>✉</span> contact@bashtoli.com
+                  </a>
+                  <span className="text-[11px] text-forest-400">
+                    Dhaka, Bangladesh · 7 Days a week
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <Link
+                  href="/products"
+                  className="btn-secondary w-full h-12 flex items-center justify-center gap-2 rounded-xl text-xs font-semibold"
+                >
+                  <span>&larr;</span> Return to Shop
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
