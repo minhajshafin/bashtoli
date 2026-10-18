@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { CartIcon } from '@/components/storefront/cart-icon'
 import { MobileNav } from '@/components/storefront/mobile-nav'
+import { MobileSearchOverlay } from '@/components/storefront/mobile-search-overlay'
 import { logoutAction } from '@/lib/actions/auth'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
 
@@ -35,6 +36,12 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
   useEffect(() => {
     setMobileSearchOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    const handleOpen = () => setMobileSearchOpen(true)
+    window.addEventListener('open-mobile-search', handleOpen)
+    return () => window.removeEventListener('open-mobile-search', handleOpen)
+  }, [])
 
   useEffect(() => {
     if (!accountOpen) return
@@ -86,11 +93,11 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           {/* Search Trigger Button */}
           <button
             type="button"
-            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+            onClick={() => setMobileSearchOpen(true)}
             aria-label="Search products"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-cream-200/90 hover:text-gold-300 active:scale-95 transition-all"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-cream-200/90 hover:text-gold-300 active:scale-95 transition-all cursor-pointer"
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-4.5 w-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
           </button>
@@ -289,47 +296,11 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
         </div>
       </div>
 
-      {/* Mobile Expandable Search Dropdown */}
-      {mobileSearchOpen && (
-        <div className="md:hidden border-t border-forest-800/80 bg-forest-950/98 px-4 py-2.5 animate-fade-in backdrop-blur-md">
-          <form onSubmit={handleSearch} className="flex items-center gap-2">
-            <div className="relative flex-1">
-              <svg
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none text-gold-400/80"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-              <input
-                type="search"
-                autoFocus
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search products..."
-                className="w-full pl-9 pr-12 py-1.5 text-xs rounded-full bg-forest-900/80 text-cream-100 placeholder:text-forest-400/80 border border-forest-700/80 focus:border-gold-500 focus:outline-none transition-colors"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] uppercase font-semibold text-forest-400 hover:text-gold-400 transition-colors cursor-pointer select-none"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={() => setMobileSearchOpen(false)}
-              className="px-2 py-1.5 text-[11px] uppercase tracking-wider font-medium text-forest-300 hover:text-gold-400 transition-colors cursor-pointer"
-            >
-              Cancel
-            </button>
-          </form>
-        </div>
-      )}
+      {/* Mobile Search & Discovery Overlay */}
+      <MobileSearchOverlay
+        isOpen={mobileSearchOpen}
+        onClose={() => setMobileSearchOpen(false)}
+      />
     </header>
   )
 }
