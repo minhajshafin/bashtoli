@@ -13,9 +13,9 @@ interface CheckoutStepsProps {
  */
 export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
   const steps = [
-    { number: 1, label: 'Shopping Bag', href: '/bag' },
-    { number: 2, label: 'Delivery Details', href: '/checkout' },
-    { number: 3, label: 'Confirmation', href: null },
+    { number: 1, label: 'Shopping Bag', shortLabel: 'Bag', href: '/bag' },
+    { number: 2, label: 'Delivery Details', shortLabel: 'Delivery', href: '/checkout' },
+    { number: 3, label: 'Confirmation', shortLabel: 'Receipt', href: null },
   ]
 
   return (
@@ -27,9 +27,9 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
           const isClickable = isDone && step.href
 
           const content = (
-            <div className="flex items-center gap-2 group cursor-pointer">
+            <div className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer">
               <div
-                className={`flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full text-[11px] font-mono transition-colors ${
+                className={`flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-mono transition-colors ${
                   isDone
                     ? 'bg-forest-900 text-gold-400 border border-forest-800'
                     : isCurrent
@@ -47,7 +47,7 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
               </div>
 
               <span
-                className={`text-xs font-sans transition-colors ${
+                className={`text-xs font-sans whitespace-nowrap transition-colors ${
                   isCurrent
                     ? 'font-semibold text-forest-950'
                     : isDone
@@ -55,7 +55,8 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
                     : 'font-normal text-forest-400'
                 }`}
               >
-                {step.label}
+                <span className="sm:hidden">{step.shortLabel}</span>
+                <span className="hidden sm:inline">{step.label}</span>
               </span>
             </div>
           )

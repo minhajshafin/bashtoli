@@ -70,14 +70,14 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
             disabled
             className="w-full flex h-11 sm:h-12 items-center justify-center rounded-xl bg-cream-200/60 border border-forest-200/60 text-xs font-sans font-medium uppercase tracking-[0.14em] text-forest-400 cursor-not-allowed"
           >
-            Proceed to Delivery Details &rarr;
+            Proceed to Checkout &rarr;
           </button>
         ) : (
           <Link
             href="/checkout"
-            className="btn-accent rounded-xl w-full flex h-11 sm:h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer"
+            className="btn-accent rounded-xl w-full flex h-11 sm:h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer active:scale-95 shadow-xs transition-transform"
           >
-            Proceed to Delivery Details &rarr;
+            Proceed to Checkout &rarr;
           </Link>
         )}
       </div>

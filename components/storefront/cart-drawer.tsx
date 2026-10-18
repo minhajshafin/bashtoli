@@ -23,6 +23,8 @@ export function CartDrawer() {
   const drawerRef = useRef<HTMLDivElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
   const itemListRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
 
   // Smooth closing animation handler
   const handleClose = useCallback(() => {
@@ -38,6 +40,28 @@ export function CartDrawer() {
       closeDrawer()
     }, 240)
   }, [isClosing, closeDrawer])
+
+  // Swipe to dismiss gesture on mobile (swipe right)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const diffX = e.touches[0].clientX - touchStartX.current
+    const diffY = Math.abs(e.touches[0].clientY - touchStartY.current)
+    if (diffX > 70 && diffX > diffY * 1.4) {
+      touchStartX.current = null
+      touchStartY.current = null
+      handleClose()
+    }
+  }
+
+  const handleTouchEnd = () => {
+    touchStartX.current = null
+    touchStartY.current = null
+  }
 
   // Reset closing state when drawer opens
   useEffect(() => {
@@ -116,12 +140,18 @@ export function CartDrawer() {
       {/* Slide-out Drawer Panel */}
       <div
         ref={drawerRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         className={`relative flex h-full w-full max-w-md flex-col bg-cream-50 text-forest-900 shadow-sm border-l border-forest-200/80 z-10 ${
           isClosing ? 'animate-slide-out-right pointer-events-none' : 'animate-slide-in-right'
         }`}
       >
+        {/* Subtle mobile drag handle */}
+        <div className="sm:hidden mx-auto mt-2.5 -mb-1 h-1 w-12 rounded-full bg-forest-300/60" aria-hidden="true" />
+
         {/* Drawer Header */}
-        <div className="flex items-center justify-between border-b border-forest-200/80 bg-cream-100/60 px-6 py-4.5">
+        <div className="flex items-center justify-between border-b border-forest-200/80 bg-cream-100/60 px-5 sm:px-6 py-4">
           <div className="flex items-center gap-2.5">
             <h2
               className="font-display text-xl tracking-tight text-forest-950 font-medium"
@@ -139,7 +169,7 @@ export function CartDrawer() {
             type="button"
             onClick={handleClose}
             aria-label="Close Shopping Bag"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-text-muted hover:bg-btn-ghost-hover-bg hover:text-btn-ghost-hover-text transition-colors cursor-pointer"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-text-muted hover:bg-btn-ghost-hover-bg hover:text-btn-ghost-hover-text transition-colors cursor-pointer touch-manipulation active:scale-90"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -148,7 +178,7 @@ export function CartDrawer() {
         </div>
 
         {/* Milestone Indicator Banner */}
-        <div className="border-b border-forest-200/70 bg-cream-100/40 px-6 py-3">
+        <div className="border-b border-forest-200/70 bg-cream-100/40 px-5 sm:px-6 py-3">
           <div className="flex items-center justify-between text-xs font-medium mb-1.5">
             <span className="text-forest-700">
               {amountRemaining > 0 ? (
@@ -173,7 +203,7 @@ export function CartDrawer() {
         </div>
 
         {/* Drawer Item List */}
-        <div ref={itemListRef} className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+        <div ref={itemListRef} className="flex-1 overflow-y-auto px-5 sm:px-6 py-5 space-y-3.5">
           {cart.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center py-12">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-cream-200/80 text-forest-400 mb-4">
@@ -190,7 +220,7 @@ export function CartDrawer() {
               <Link
                 href="/products"
                 onClick={handleClose}
-                className="btn-primary inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide"
+                className="btn-primary inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide cursor-pointer active:scale-95"
               >
                 Browse Collection
               </Link>
@@ -199,7 +229,7 @@ export function CartDrawer() {
             cart.map((item) => (
               <div
                 key={item.variant_id}
-                className="cart-drawer-item flex items-center gap-3.5 rounded-2xl border border-forest-200/70 bg-cream-100/40 p-3 hover:border-gold-500/40 transition-colors"
+                className="cart-drawer-item flex items-center gap-3.5 rounded-2xl border border-forest-200/70 bg-cream-100/40 p-3 sm:p-3.5 hover:border-gold-500/40 transition-colors"
               >
                 {/* Thumbnail */}
                 <div className="relative h-18 w-18 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-cream-200">
@@ -228,32 +258,32 @@ export function CartDrawer() {
                     ৳{(item.price * item.qty).toLocaleString()}
                   </p>
 
-                  {/* Quantity bar */}
+                  {/* Quantity bar & Actions */}
                   <div className="flex items-center gap-2 mt-2">
-                    <div className="flex items-center rounded-lg border border-forest-200/90 bg-white h-7">
+                    <div className="flex items-center rounded-lg border border-forest-200/90 bg-white h-8.5 shadow-2xs">
                       <button
                         type="button"
                         onClick={() => updateQty(item.variant_id, item.qty - 1)}
                         disabled={item.qty <= 1}
-                        className="flex h-full w-6.5 items-center justify-center text-forest-400 hover:text-forest-900 hover:bg-cream-200/80 disabled:opacity-30 cursor-pointer active:scale-95 transition-colors"
+                        className="flex h-full w-8 items-center justify-center text-forest-500 hover:text-forest-950 hover:bg-cream-200/80 disabled:opacity-30 cursor-pointer active:scale-90 transition-colors touch-manipulation"
                         aria-label="Decrease quantity"
                       >
-                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
                         </svg>
                       </button>
 
-                      <span className="font-price w-6 text-center text-xs font-bold text-forest-950 select-none">
+                      <span className="font-price w-7 text-center text-xs font-bold text-forest-950 select-none">
                         {item.qty}
                       </span>
 
                       <button
                         type="button"
                         onClick={() => updateQty(item.variant_id, item.qty + 1)}
-                        className="flex h-full w-6.5 items-center justify-center text-forest-400 hover:text-forest-900 hover:bg-cream-200/80 cursor-pointer active:scale-95 transition-colors"
+                        className="flex h-full w-8 items-center justify-center text-forest-500 hover:text-forest-950 hover:bg-cream-200/80 cursor-pointer active:scale-90 transition-colors touch-manipulation"
                         aria-label="Increase quantity"
                       >
-                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                         </svg>
                       </button>
@@ -262,7 +292,7 @@ export function CartDrawer() {
                     <button
                       type="button"
                       onClick={() => removeItem(item.variant_id)}
-                      className="text-[11px] text-text-muted hover:text-btn-danger-bg transition-colors ml-auto p-1 cursor-pointer active:scale-90"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-forest-400 hover:text-btn-danger-bg hover:bg-terracotta-100/50 transition-colors ml-auto cursor-pointer active:scale-90 touch-manipulation"
                       title="Remove item"
                       aria-label={`Remove ${item.name}`}
                     >
@@ -279,7 +309,7 @@ export function CartDrawer() {
 
         {/* Drawer Footer & Checkout Action */}
         {cart.length > 0 && (
-          <div className="border-t border-forest-200/80 bg-cream-100/70 p-6 space-y-3">
+          <div className="border-t border-forest-200/80 bg-cream-100/70 p-5 sm:p-6 pb-[calc(env(safe-area-inset-bottom,0px)+20px)] sm:pb-6 space-y-3 shrink-0">
             <div className="flex items-center justify-between text-xs text-forest-600">
               <span>Estimated Subtotal</span>
               <span className="font-price text-base font-bold text-forest-950">
@@ -294,7 +324,7 @@ export function CartDrawer() {
             <Link
               href="/checkout"
               onClick={handleClose}
-              className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-xs font-bold uppercase tracking-wider"
+              className="btn-accent flex h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-xs font-bold uppercase tracking-wider cursor-pointer active:scale-[0.98] transition-transform shadow-xs"
             >
               <span>Proceed to Checkout</span>
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -306,7 +336,7 @@ export function CartDrawer() {
               <Link
                 href="/bag"
                 onClick={handleClose}
-                className="link-editorial text-xs font-medium"
+                className="link-editorial text-xs font-medium py-1 inline-block"
               >
                 View Full Shopping Bag
               </Link>
