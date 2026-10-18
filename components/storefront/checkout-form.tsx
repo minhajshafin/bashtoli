@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useCart } from '@/lib/cart/cart-context'
 import { DeliveryZoneSelect } from './delivery-zone-select'
 import { submitCheckout, type CheckoutActionState } from '@/lib/actions/checkout'
@@ -29,8 +29,8 @@ interface CheckoutFormProps {
 
 /**
  * CheckoutForm
- * Harmonized checkout form that seamlessly shares the exact aesthetic, cards,
- * typography, and color palette of /bag and the rest of the Bashtoli storefront.
+ * Guided checkout form featuring 48px touch inputs, tactile delivery cards,
+ * and a sticky thumb-zone Cash on Delivery confirmation bar on mobile.
  */
 export function CheckoutForm({
   savedAddresses = [],
@@ -40,6 +40,7 @@ export function CheckoutForm({
   userAddress = null,
 }: CheckoutFormProps) {
   const router = useRouter()
+  const formRef = useRef<HTMLFormElement>(null)
   const { cart, isLoaded, subtotal, clearCart } = useCart()
 
   // Form Fields State
@@ -104,6 +105,12 @@ export function CheckoutForm({
     setDeliveryZone(zone)
   }
 
+  // Normalizer for phone input: keep digits and +
+  const handlePhoneChange = (val: string) => {
+    const cleaned = val.replace(/[^\d+]/g, '')
+    setPhone(cleaned)
+  }
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     setTopError(null)
@@ -155,20 +162,30 @@ export function CheckoutForm({
   return (
     <div className="w-full">
       {/* Mobile Top Collapsible Order Summary (<lg) */}
-      <div className="lg:hidden mb-4 rounded-2xl border border-forest-200/80 bg-cream-100/60 overflow-hidden shadow-2xs">
+      <div className="lg:hidden mb-5 rounded-2xl border border-forest-200/80 bg-cream-100/70 overflow-hidden shadow-2xs">
         <button
           type="button"
           onClick={() => setIsMobileSummaryOpen(!isMobileSummaryOpen)}
-          className="w-full px-4 py-3 flex items-center justify-between text-xs font-sans cursor-pointer text-forest-950"
+          className="w-full px-4 py-3.5 flex items-center justify-between text-xs font-sans cursor-pointer text-forest-950 touch-manipulation"
         >
           <div className="flex items-center gap-2">
-            <span className="text-forest-600">🛍</span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-forest-900/10 text-forest-800 text-[11px]">
+              🛍
+            </span>
             <span className="font-semibold text-forest-950">
-              {isMobileSummaryOpen ? 'Hide order summary' : `Show order summary (${totalItemCount} items)`}
+              {isMobileSummaryOpen ? 'Hide order summary' : `View order summary (${totalItemCount} items)`}
             </span>
-            <span className="text-[10px] text-forest-500">
-              {isMobileSummaryOpen ? '▲' : '▼'}
-            </span>
+            <svg
+              className={`h-3.5 w-3.5 text-forest-500 transition-transform duration-200 ${
+                isMobileSummaryOpen ? 'rotate-180' : ''
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
           </div>
           <span className="font-price font-bold text-sm text-forest-950">
             ৳{grandTotal.toLocaleString()}
@@ -176,13 +193,13 @@ export function CheckoutForm({
         </button>
 
         {isMobileSummaryOpen && (
-          <div className="px-4 pb-4 pt-2 border-t border-forest-200/80 space-y-3 bg-cream-50/80">
-            <div className="space-y-2.5 max-h-52 overflow-y-auto pr-1">
+          <div className="px-4 pb-4 pt-2 border-t border-forest-200/80 space-y-3 bg-cream-50/90 animate-fade-in">
+            <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
               {cart.map((item) => (
                 <div key={item.variant_id} className="flex items-center gap-3 text-xs">
-                  <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-white">
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-white">
                     {item.image_url ? (
-                      <Image src={item.image_url} alt={item.name} fill sizes="44px" className="object-cover" />
+                      <Image src={item.image_url} alt={item.name} fill sizes="48px" className="object-cover" />
                     ) : (
                       <ProductImageSkeleton size="sm" showText={false} />
                     )}
@@ -200,7 +217,7 @@ export function CheckoutForm({
                 </div>
               ))}
             </div>
-            <div className="pt-2 border-t border-forest-200/80 space-y-1 text-xs text-forest-700">
+            <div className="pt-2.5 border-t border-forest-200/80 space-y-1.5 text-xs text-forest-700">
               <div className="flex justify-between">
                 <span>Items Subtotal</span>
                 <span className="font-price font-medium text-forest-950">৳{subtotal.toLocaleString()}</span>
@@ -208,7 +225,7 @@ export function CheckoutForm({
               <div className="flex justify-between">
                 <span>Delivery Fee</span>
                 <span className="font-price font-medium text-forest-950">
-                  {deliveryFee === 0 ? 'Free (Pickup)' : `৳${deliveryFee}`}
+                  {deliveryFee === 0 ? 'Free (Pickup)' : `৳${deliveryFee.toLocaleString()}`}
                 </span>
               </div>
             </div>
@@ -216,13 +233,16 @@ export function CheckoutForm({
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
-        {/* Left 2 Columns: Information & Delivery Cards (Matches /bag items list) */}
+      <form ref={formRef} onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+        {/* Left 2 Columns: Information & Delivery Cards */}
         <div className="lg:col-span-2 space-y-5">
           {/* Top Error Alert */}
           {topError && (
-            <div className="rounded-2xl border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700">
-              {topError}
+            <div className="rounded-2xl border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700 flex items-start gap-2.5">
+              <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+              <span>{topError}</span>
             </div>
           )}
 
@@ -237,8 +257,8 @@ export function CheckoutForm({
 
             {/* Saved Address Selector */}
             {savedAddresses.length > 0 && (
-              <div className="space-y-1.5 pb-2 border-b border-forest-200/80">
-                <label className="text-xs font-semibold text-forest-950 block">Saved Addresses</label>
+              <div className="space-y-2 pb-3 border-b border-forest-200/80">
+                <label className="text-xs font-semibold text-forest-950 block">Saved Delivery Addresses</label>
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
                   {savedAddresses.map((addr) => {
                     const isSelected = address === addr.full_address && phone === addr.phone
@@ -250,13 +270,15 @@ export function CheckoutForm({
                           setPhone(addr.phone || '')
                           setAddress(addr.full_address)
                         }}
-                        className={`px-3 py-1.5 rounded-xl border text-xs truncate shrink-0 transition-all cursor-pointer ${
+                        className={`min-h-[44px] px-3.5 py-2 rounded-xl border text-xs truncate shrink-0 transition-all cursor-pointer touch-manipulation active:scale-95 flex items-center gap-1.5 ${
                           isSelected
-                            ? 'btn-primary font-medium shadow-xs'
-                            : 'btn-secondary text-forest-800'
+                            ? 'bg-forest-950 text-cream-50 font-medium shadow-xs border-forest-900'
+                            : 'bg-white border-forest-200/90 text-forest-800 hover:bg-cream-100/60'
                         }`}
                       >
-                        {addr.label || 'Saved'} ({addr.phone || 'No phone'})
+                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? 'bg-gold-400' : 'bg-forest-300'}`} />
+                        <span>{addr.label || 'Saved'}</span>
+                        <span className="opacity-70 font-mono text-[11px]">({addr.phone || 'No phone'})</span>
                       </button>
                     )
                   })}
@@ -265,10 +287,10 @@ export function CheckoutForm({
             )}
 
             {/* Full Name & Phone in 2-Col Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="customer_name" className="text-xs font-semibold text-forest-950 block mb-1.5 tracking-wide">
-                  Full Name *
+                  Full Name <span className="text-terracotta-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -276,32 +298,41 @@ export function CheckoutForm({
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="e.g. Shafi Rahman"
-                  className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-sans"
+                  autoComplete="name"
+                  autoCapitalize="words"
+                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
                   required
                 />
                 {fieldErrors.customer_name && (
-                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.customer_name[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
+                    <span>⚠</span> {fieldErrors.customer_name[0]}
+                  </p>
                 )}
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label htmlFor="phone" className="text-xs font-semibold text-forest-950 tracking-wide">
-                    Phone Number *
+                    Phone Number <span className="text-terracotta-500">*</span>
                   </label>
-                  <span className="text-[10px] font-mono text-forest-500">11 digits</span>
+                  <span className="text-[10px] font-mono text-forest-500">11 digits (017...)</span>
                 </div>
                 <input
                   type="tel"
                   id="phone"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => handlePhoneChange(e.target.value)}
                   placeholder="01712345678"
-                  className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-mono"
+                  inputMode="numeric"
+                  pattern="[0-9+]*"
+                  autoComplete="tel"
+                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-mono"
                   required
                 />
                 {fieldErrors.phone && (
-                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.phone[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
+                    <span>⚠</span> {fieldErrors.phone[0]}
+                  </p>
                 )}
               </div>
             </div>
@@ -309,7 +340,7 @@ export function CheckoutForm({
             {/* Delivery Address */}
             <div>
               <label htmlFor="address" className="text-xs font-semibold text-forest-950 block mb-1.5 tracking-wide">
-                {fulfillmentType === 'delivery' ? 'Street Address *' : 'Billing Address *'}
+                {fulfillmentType === 'delivery' ? 'Street Address' : 'Billing Address'} <span className="text-terracotta-500">*</span>
               </label>
               <input
                 type="text"
@@ -317,11 +348,14 @@ export function CheckoutForm({
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="House #, Road #, Sector/Area, City (e.g. House 14, Road 5, Banani, Dhaka)"
-                className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-sans"
+                autoComplete="street-address"
+                className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
                 required
               />
               {fieldErrors.address && (
-                <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.address[0]}</p>
+                <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
+                  <span>⚠</span> {fieldErrors.address[0]}
+                </p>
               )}
             </div>
           </div>
@@ -332,7 +366,7 @@ export function CheckoutForm({
               <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-600/90">
                 02 · Fulfillment &amp; Dispatch
               </h2>
-              <span className="text-[10px] font-mono text-gold-600">Cash on Delivery</span>
+              <span className="text-[10px] font-mono text-gold-600 font-semibold">Cash on Delivery</span>
             </div>
 
             {/* Delivery Zone / Fulfillment Select */}
@@ -344,13 +378,13 @@ export function CheckoutForm({
             />
 
             {/* Email & Delivery Notes in 2-Col Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label htmlFor="guest_email" className="text-xs font-semibold text-forest-950 tracking-wide">
                     Email Address
                   </label>
-                  <span className="text-[10px] font-sans text-forest-500">Optional</span>
+                  <span className="text-[10px] font-sans text-forest-500">Optional for receipt</span>
                 </div>
                 <input
                   type="email"
@@ -358,10 +392,14 @@ export function CheckoutForm({
                   value={guestEmail}
                   onChange={(e) => setGuestEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-sans"
+                  inputMode="email"
+                  autoComplete="email"
+                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
                 />
                 {fieldErrors.guest_email && (
-                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.guest_email[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
+                    <span>⚠</span> {fieldErrors.guest_email[0]}
+                  </p>
                 )}
               </div>
 
@@ -378,17 +416,20 @@ export function CheckoutForm({
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="e.g. Call before arrival"
-                  className="w-full rounded-xl border border-forest-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-forest-950 placeholder:text-forest-400/70 focus:border-forest-900 focus:outline-none focus:ring-1 focus:ring-forest-900 transition-all shadow-2xs font-sans"
+                  autoComplete="off"
+                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
                 />
                 {fieldErrors.notes && (
-                  <p className="text-terracotta-600 text-xs mt-1 font-medium">{fieldErrors.notes[0]}</p>
+                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
+                    <span>⚠</span> {fieldErrors.notes[0]}
+                  </p>
                 )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right 1 Column: Order Summary Card (Exact match of /bag CartSummary) */}
+        {/* Right 1 Column: Order Summary Card */}
         <div className="lg:col-span-1 rounded-2xl border border-forest-200/80 bg-cream-100/60 p-5 sm:p-6 shadow-2xs space-y-4 lg:sticky lg:top-24">
           <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
             <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-600/90">
@@ -408,12 +449,12 @@ export function CheckoutForm({
           </div>
 
           {/* Itemized Cart Items Preview */}
-          <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1">
+          <div className="space-y-2.5 max-h-52 overflow-y-auto pr-1">
             {cart.map((item) => (
               <div key={item.variant_id} className="flex items-center gap-3 text-xs">
-                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-white">
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-white">
                   {item.image_url ? (
-                    <Image src={item.image_url} alt={item.name} fill sizes="44px" className="object-cover" />
+                    <Image src={item.image_url} alt={item.name} fill sizes="48px" className="object-cover" />
                   ) : (
                     <ProductImageSkeleton size="sm" showText={false} />
                   )}
@@ -464,18 +505,25 @@ export function CheckoutForm({
             </div>
           </div>
 
-          {/* Checkout Submit CTA */}
-          <div className="pt-2">
+          {/* Desktop Checkout Submit CTA */}
+          <div className="pt-2 hidden lg:block">
             <button
               type="submit"
               disabled={isSubmitting || cart.length === 0 || hasUnavailable}
-              className={`btn-accent rounded-xl w-full flex h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer ${
+              className={`btn-accent rounded-xl w-full flex h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer touch-manipulation active:scale-[0.98] shadow-xs ${
                 isSubmitting || cart.length === 0 || hasUnavailable
                   ? 'opacity-60 cursor-not-allowed'
                   : ''
               }`}
             >
-              {isSubmitting ? 'Placing Order...' : 'Place Order · Cash on Delivery →'}
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-forest-950 border-t-transparent" />
+                  <span>Placing Order...</span>
+                </span>
+              ) : (
+                'Place Order · Cash on Delivery →'
+              )}
             </button>
           </div>
 
@@ -488,6 +536,45 @@ export function CheckoutForm({
           </div>
         </div>
       </form>
+
+      {/* Sticky Mobile Thumb-Zone Place Order Bar (<lg) */}
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-forest-950/95 backdrop-blur-xl border-t border-forest-800/80 p-4 pb-[calc(env(safe-area-inset-bottom,0px)+12px)] lg:hidden flex items-center justify-between gap-3 shadow-xl">
+        <div className="min-w-0 flex flex-col">
+          <span className="text-[10px] font-sans font-medium uppercase tracking-wider text-cream-200/70">
+            Total Payable
+          </span>
+          <span className="font-price text-lg font-bold text-cream-50 leading-tight">
+            ৳{grandTotal.toLocaleString()}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (formRef.current) {
+              formRef.current.requestSubmit()
+            }
+          }}
+          disabled={isSubmitting || cart.length === 0 || hasUnavailable}
+          className={`btn-accent flex h-12 items-center justify-center gap-2 rounded-full px-5 sm:px-6 text-xs font-sans font-bold uppercase tracking-wider cursor-pointer touch-manipulation active:scale-95 shadow-xs ${
+            isSubmitting || cart.length === 0 || hasUnavailable ? 'opacity-60 cursor-not-allowed' : ''
+          }`}
+        >
+          {isSubmitting ? (
+            <span className="flex items-center gap-2">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-forest-950 border-t-transparent" />
+              <span>Placing Order...</span>
+            </span>
+          ) : (
+            <>
+              <span>Place Order</span>
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </>
+          )}
+        </button>
+      </div>
     </div>
   )
 }

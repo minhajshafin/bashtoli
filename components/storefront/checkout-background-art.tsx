@@ -40,7 +40,7 @@ export function CheckoutBackgroundArt({ className }: { className?: string } = {}
         viewBox="0 0 600 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute -top-12 -right-16 sm:-right-8 w-[380px] sm:w-[480px] lg:w-[540px] max-w-none text-forest-900/[0.07] transition-opacity duration-700"
+        className="hidden sm:block absolute -top-12 -right-16 sm:-right-8 w-[380px] sm:w-[480px] lg:w-[540px] max-w-none text-forest-900/[0.07] transition-opacity duration-700"
       >
         <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
           <path d="M580 10 C460 60, 360 140, 280 260" strokeWidth="2.5" />
@@ -66,7 +66,7 @@ export function CheckoutBackgroundArt({ className }: { className?: string } = {}
         viewBox="0 0 500 600"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute -bottom-16 -left-16 sm:-left-8 w-[340px] sm:w-[440px] max-w-none text-forest-900/[0.06]"
+        className="hidden sm:block absolute -bottom-16 -left-16 sm:-left-8 w-[340px] sm:w-[440px] max-w-none text-forest-900/[0.06]"
       >
         <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
           <path d="M80 620 C90 480, 110 320, 140 160" strokeWidth="2.5" />
