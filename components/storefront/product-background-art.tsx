@@ -41,7 +41,7 @@ export function ProductBackgroundArt() {
         viewBox="0 0 600 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute -top-12 -right-16 sm:-right-8 w-[380px] sm:w-[480px] lg:w-[560px] max-w-none text-forest-900/[0.08] transition-opacity duration-700"
+        className="hidden sm:block absolute -top-12 -right-16 sm:-right-8 w-[380px] sm:w-[480px] lg:w-[560px] max-w-none text-forest-900/[0.08] transition-opacity duration-700"
       >
         {/* Main curved culm stem */}
         <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
@@ -89,7 +89,7 @@ export function ProductBackgroundArt() {
         viewBox="0 0 500 600"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute -bottom-16 -left-16 sm:-left-8 w-[340px] sm:w-[440px] lg:w-[500px] max-w-none text-forest-900/[0.07]"
+        className="hidden sm:block absolute -bottom-16 -left-16 sm:-left-8 w-[340px] sm:w-[440px] lg:w-[500px] max-w-none text-forest-900/[0.07]"
       >
         <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
           {/* Stem 1 (tall slender upright) */}

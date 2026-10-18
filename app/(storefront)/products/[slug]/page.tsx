@@ -92,7 +92,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Edge-to-edge Handcrafted Botanical Background Art */}
       <ProductBackgroundArt />
 
-      <div className="relative z-10 mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-6 sm:pb-8 lg:min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center">
+      <div className="relative z-10 mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 pt-0 sm:pt-4 pb-24 sm:pb-8 lg:min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center">
         {/* JSON-LD Schema Structured Data */}
         <ProductJsonLd
           product={data.product}
@@ -100,8 +100,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           variants={data.variants}
         />
 
-        {/* Back to shop navigation */}
-        <div className="mb-2 sm:mb-3">
+        {/* Back to shop navigation (Desktop only; on mobile, floated over hero media) */}
+        <div className="hidden sm:block mb-2 sm:mb-3">
           <Link
             href="/products"
             className="inline-flex items-center gap-1.5 px-2.5 py-1 -ml-2.5 rounded-full text-xs font-sans font-medium text-forest-750 hover:text-forest-950 hover:bg-forest-900/5 transition-all group"

@@ -1,8 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import React, { useState, useEffect, useRef } from 'react'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
+import { WishlistButton } from '@/components/storefront/wishlist-button'
 
 interface ProductImage {
   id: string
@@ -14,14 +16,26 @@ interface ProductImage {
 interface ImageGalleryProps {
   images: ProductImage[]
   fallbackName: string
+  productId?: string
+  productName?: string
+  isLoggedIn?: boolean
+  initialIsWishlisted?: boolean
 }
 
-export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
+export function ImageGallery({
+  images,
+  fallbackName,
+  productId,
+  productName,
+  isLoggedIn,
+  initialIsWishlisted,
+}: ImageGalleryProps) {
   const [activeIdx, setActiveIdx] = useState(0)
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({})
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
+  const isSwiping = useRef(false)
 
   const minSwipeDistance = 50
 
@@ -40,30 +54,63 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
   }, [isLightboxOpen, images.length])
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
+    isSwiping.current = false
+    touchStartX.current = e.targetTouches[0].clientX
+    touchStartY.current = e.targetTouches[0].clientY
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
+    if (touchStartX.current === null || touchStartY.current === null) return
+    const diffX = Math.abs(e.targetTouches[0].clientX - touchStartX.current)
+    const diffY = Math.abs(e.targetTouches[0].clientY - touchStartY.current)
+    if (diffX > 10 && diffX > diffY) {
+      isSwiping.current = true
+    }
   }
 
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return
+    const endX = e.changedTouches[0].clientX
+    const endY = e.changedTouches[0].clientY
+    const diffX = touchStartX.current - endX
+    const diffY = touchStartY.current !== null ? Math.abs(touchStartY.current - endY) : 0
 
-    if (isLeftSwipe && images.length > 1) {
-      setActiveIdx((prev) => (prev + 1) % images.length)
-    } else if (isRightSwipe && images.length > 1) {
-      setActiveIdx((prev) => (prev - 1 + images.length) % images.length)
+    if (Math.abs(diffX) > diffY && Math.abs(diffX) > minSwipeDistance && images.length > 1) {
+      if (diffX > 0) {
+        // Swipe left -> next image
+        setActiveIdx((prev) => (prev + 1) % images.length)
+      } else {
+        // Swipe right -> previous image
+        setActiveIdx((prev) => (prev - 1 + images.length) % images.length)
+      }
     }
+    touchStartX.current = null
+    touchStartY.current = null
   }
 
   if (images.length === 0) {
     return (
-      <div className="relative aspect-square w-full max-w-[460px] lg:max-w-[480px] max-h-[calc(100dvh-12rem)] overflow-hidden rounded-2xl border border-forest-200/80 bg-cream-100/70">
+      <div className="-mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full relative aspect-[4/3] sm:aspect-square max-w-none sm:max-w-[460px] lg:max-w-[480px] max-h-[calc(100dvh-12rem)] overflow-hidden rounded-b-2xl sm:rounded-2xl border-b sm:border border-forest-200/80 bg-cream-100/70">
+        <Link
+          href="/products"
+          className="sm:hidden absolute top-3 left-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-forest-950/70 backdrop-blur-md text-cream-100 border border-white/10 active:scale-90 transition-transform shadow-sm"
+          aria-label="Back to all products"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+        </Link>
+        {productId && (
+          <div className="sm:hidden absolute top-3 right-3 z-20">
+            <WishlistButton
+              productId={productId}
+              productName={productName || fallbackName}
+              isLoggedIn={isLoggedIn}
+              initialIsWishlisted={initialIsWishlisted}
+              variant="card"
+            />
+          </div>
+        )}
         <ProductImageSkeleton size="lg" />
       </div>
     )
@@ -73,30 +120,83 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-2.5 w-full max-w-[460px] lg:max-w-[480px]">
+      <div className="-mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full flex flex-col gap-2.5 max-w-none sm:max-w-[460px] lg:max-w-[480px]">
         {/* Primary Display Frame */}
         <div
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          onClick={() => setIsLightboxOpen(true)}
-          className="group relative aspect-square w-full max-h-[calc(100dvh-12rem)] overflow-hidden rounded-2xl border border-forest-200/80 bg-cream-100/70 shadow-xs cursor-zoom-in"
+          onClick={() => {
+            if (!isSwiping.current) setIsLightboxOpen(true)
+          }}
+          className="group relative aspect-[4/3] sm:aspect-square w-full max-h-[calc(100dvh-12rem)] overflow-hidden rounded-b-2xl sm:rounded-2xl border-b sm:border border-forest-200/80 bg-cream-100/70 shadow-xs cursor-zoom-in select-none"
           title="Click to inspect high-resolution view"
         >
+          {/* Mobile Floating Back Button */}
+          <Link
+            href="/products"
+            onClick={(e) => e.stopPropagation()}
+            className="sm:hidden absolute top-3 left-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-forest-950/70 backdrop-blur-md text-cream-100 border border-white/10 active:scale-90 transition-transform shadow-sm"
+            aria-label="Back to all products"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+          </Link>
+
+          {/* Mobile Floating Wishlist Button */}
+          {productId && (
+            <div
+              className="sm:hidden absolute top-3 right-3 z-20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <WishlistButton
+                productId={productId}
+                productName={productName || fallbackName}
+                isLoggedIn={isLoggedIn}
+                initialIsWishlisted={initialIsWishlisted}
+                variant="card"
+              />
+            </div>
+          )}
+
           <Image
+            key={activeImage.id || activeIdx}
             src={failedImages[activeImage.url] ? '/placeholder-product.svg' : activeImage.url}
             alt={activeImage.alt_text || fallbackName}
             fill
             loading="eager"
             fetchPriority="high"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
             onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
           />
 
-          {/* Floating Slides / Counter Indicator */}
+          {/* Mobile Centered Carousel Indicator Dots */}
           {images.length > 1 && (
-            <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-10 rounded-full bg-forest-950/75 backdrop-blur-xs px-2.5 py-1 text-[10px] font-mono font-medium text-cream-100 tracking-wider shadow-sm border border-forest-800/80 select-none">
+            <div className="sm:hidden absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-forest-950/70 backdrop-blur-md border border-forest-800/60 shadow-xs">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setActiveIdx(idx)
+                  }}
+                  aria-label={`Go to image ${idx + 1}`}
+                  className={`rounded-full transition-all duration-300 ${
+                    idx === activeIdx
+                      ? 'w-4 h-1.5 bg-gold-400'
+                      : 'w-1.5 h-1.5 bg-cream-100/40 hover:bg-cream-100/70'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Desktop Floating Slides / Counter Indicator */}
+          {images.length > 1 && (
+            <div className="hidden sm:block absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-10 rounded-full bg-forest-950/75 backdrop-blur-xs px-2.5 py-1 text-[10px] font-mono font-medium text-cream-100 tracking-wider shadow-sm border border-forest-800/80 select-none">
               {String(activeIdx + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
             </div>
           )}
@@ -113,7 +213,7 @@ export function ImageGallery({ images, fallbackName }: ImageGalleryProps) {
         {/* Thumbnails Row */}
         {images.length > 1 && (
           <div
-            className="flex gap-2 overflow-x-auto pb-1 scrollbar-none"
+            className="flex gap-2 overflow-x-auto px-4 sm:px-0 pb-1 scrollbar-none pt-1"
             style={{ overflowAnchor: 'none' }}
           >
             {images.map((img, idx) => {
