@@ -26,11 +26,13 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
       <CartProvider isLoggedIn={false}>
         <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
           {/* Guest Header Fallback */}
-          <NavHeader
-            isLoggedIn={false}
-            fullName={null}
-            isStaffOrAdmin={false}
-          />
+          <Suspense fallback={<div className="h-20 bg-forest-950" />}>
+            <NavHeader
+              isLoggedIn={false}
+              fullName={null}
+              isStaffOrAdmin={false}
+            />
+          </Suspense>
 
           {/* Main Content Area */}
           <main className="flex-1">
@@ -38,13 +40,17 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
           </main>
 
           {/* Footer */}
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
 
           {/* Slide-over Shopping Bag Drawer */}
           <CartDrawer />
 
           {/* Mobile Bottom Navigation Dock */}
-          <MobileBottomDock />
+          <Suspense fallback={null}>
+            <MobileBottomDock />
+          </Suspense>
         </div>
       </CartProvider>
     </WishlistProvider>
@@ -76,11 +82,13 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
       <CartProvider isLoggedIn={!!user}>
         <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
           {/* Sticky Header */}
-          <NavHeader
-            isLoggedIn={!!user}
-            fullName={profile?.full_name || user?.email || null}
-            isStaffOrAdmin={isStaffOrAdmin}
-          />
+          <Suspense fallback={<div className="h-20 bg-forest-950" />}>
+            <NavHeader
+              isLoggedIn={!!user}
+              fullName={profile?.full_name || user?.email || null}
+              isStaffOrAdmin={isStaffOrAdmin}
+            />
+          </Suspense>
 
           {/* Main Content Area */}
           <main className="flex-1">
@@ -88,13 +96,17 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
           </main>
 
           {/* Footer */}
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
 
           {/* Slide-over Shopping Bag Drawer */}
           <CartDrawer />
 
           {/* Mobile Bottom Navigation Dock */}
-          <MobileBottomDock />
+          <Suspense fallback={null}>
+            <MobileBottomDock />
+          </Suspense>
         </div>
       </CartProvider>
     </WishlistProvider>
@@ -109,7 +121,9 @@ export default function StorefrontLayout({
   return (
     <ToastProvider>
       <ConfirmDialogProvider>
-        <RouteProgressBar />
+        <Suspense fallback={null}>
+          <RouteProgressBar />
+        </Suspense>
         <MotionListener />
         <Suspense fallback={<StorefrontLayoutFallback>{children}</StorefrontLayoutFallback>}>
           <AuthAwareShell>{children}</AuthAwareShell>
