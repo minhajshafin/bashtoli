@@ -135,10 +135,10 @@ export default async function WishlistPage() {
   return (
     <div className="w-full">
       {/* Top Utility Navigation Row */}
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between pb-3 sm:pb-4 border-b border-forest-800/80">
         <Link
           href="/products"
-          className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/80 hover:text-gold-300 transition-colors group cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors uppercase tracking-wider group cursor-pointer"
         >
           <svg
             className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5"
@@ -151,8 +151,8 @@ export default async function WishlistPage() {
           </svg>
           <span>Back to Shop</span>
         </Link>
-        <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/80">
-          Curated Archive
+        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-forest-400">
+          CURATED ARCHIVE
         </span>
       </div>
 

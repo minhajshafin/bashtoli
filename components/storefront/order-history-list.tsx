@@ -13,16 +13,16 @@ function getStatusBadgeStyle(status: string) {
   switch (status.toLowerCase()) {
     case 'pending':
     case 'processing':
-      return 'bg-gold-400/20 text-gold-700 border-gold-400/50'
+      return 'bg-gold-100 text-gold-800 border-gold-300/80'
     case 'shipped':
     case 'out_for_delivery':
-      return 'bg-forest-900/10 text-forest-800 border-forest-300/80'
+      return 'bg-forest-100 text-forest-900 border-forest-300/80'
     case 'delivered':
-      return 'bg-emerald-800/15 text-emerald-800 border-emerald-300/80'
+      return 'bg-emerald-100 text-emerald-800 border-emerald-300/80'
     case 'cancelled':
-      return 'bg-terracotta-100 text-terracotta-800 border-terracotta-500/30'
+      return 'bg-terracotta-100 text-terracotta-800 border-terracotta-300/80'
     default:
-      return 'bg-forest-200/80 text-forest-800 border-forest-300/60'
+      return 'bg-forest-100 text-forest-800 border-forest-300/60'
   }
 }
 
@@ -40,12 +40,12 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
           <Link
             key={o.id}
             href={`/order/${o.order_number}`}
-            className="group block rounded-2xl border border-forest-200/80 bg-cream-100/70 p-4 sm:p-5 hover:bg-cream-100 hover:border-gold-500/50 hover:shadow-2xs active:scale-[0.99] transition-all duration-200"
+            className="group block rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md text-forest-950 p-4 sm:p-5 hover:border-gold-500/60 hover:shadow-lg active:scale-[0.99] transition-all duration-200 cursor-pointer"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <span className="text-sm sm:text-base font-bold text-forest-950 font-mono group-hover:text-gold-600 transition-colors">
+                  <span className="text-sm sm:text-base font-bold text-forest-950 font-mono group-hover:text-gold-700 transition-colors">
                     {o.order_number}
                   </span>
                   <span
@@ -68,7 +68,7 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
                 <span className="text-base sm:text-lg font-bold text-forest-950 font-price">
                   ৳{o.total.toLocaleString()}
                 </span>
-                <span className="inline-flex h-9 items-center justify-center gap-1 text-xs font-sans font-semibold px-4 rounded-xl bg-forest-900 text-cream-50 group-hover:bg-gold-500 group-hover:text-forest-950 transition-all shadow-2xs">
+                <span className="inline-flex h-9 items-center justify-center gap-1 text-xs font-sans font-semibold px-4 rounded-xl bg-forest-900 text-cream-50 group-hover:bg-gold-500 group-hover:text-forest-950 transition-all shadow-xs">
                   <span>Track &amp; Invoice</span>
                   <ChevronRight className="h-3.5 w-3.5" />
                 </span>

@@ -37,9 +37,9 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-gold-400/60 bg-gold-400/10 p-4 sm:p-6 space-y-4 animate-fade-in shadow-2xs">
+    <div className="rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md text-forest-950 p-4 sm:p-6 space-y-4 animate-fade-in">
       <div className="flex items-start gap-3.5">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest-900 text-gold-400 border border-forest-800 shadow-2xs">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest-950 text-gold-400 border border-forest-800 shadow-2xs">
           <AlertCircle className="h-5 w-5 stroke-[1.8]" />
         </div>
         <div>
@@ -53,7 +53,7 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
       </div>
 
       {/* Guest orders list */}
-      <div className="max-h-40 overflow-y-auto rounded-xl border border-forest-200/80 bg-cream-50 divide-y divide-forest-200/60">
+      <div className="max-h-40 overflow-y-auto rounded-xl border border-forest-200/90 bg-white divide-y divide-forest-200/60">
         {orders.map((o) => {
           const dateStr = new Date(o.created_at).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -78,7 +78,7 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
           type="button"
           onClick={handleClaim}
           disabled={isPending}
-          className="btn-primary w-full sm:w-auto inline-flex h-11 sm:h-10 items-center justify-center gap-2 rounded-xl px-5 text-xs font-sans font-semibold disabled:opacity-50 active:scale-95 transition-all cursor-pointer shadow-xs"
+          className="w-full sm:w-auto inline-flex h-11 sm:h-10 items-center justify-center gap-2 rounded-xl bg-forest-900 text-cream-50 hover:bg-gold-500 hover:text-forest-950 px-5 text-xs font-sans font-semibold disabled:opacity-50 active:scale-95 transition-all cursor-pointer shadow-xs"
         >
           {isPending ? (
             <span className="flex items-center gap-2">

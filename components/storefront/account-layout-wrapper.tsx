@@ -29,42 +29,32 @@ export function AccountLayoutWrapper({
 }: AccountLayoutWrapperProps) {
   const pathname = usePathname()
   const isWishlist = pathname === '/account/wishlist'
-  const isProfile = pathname === '/account/profile'
-  const isDarkCanvas = isProfile || isWishlist
+  const isOverview = pathname === '/account'
+  const isDarkCanvas = true
 
   return (
-    <div
-      className={`relative min-h-[calc(100dvh-5rem)] overflow-hidden transition-colors duration-300 ${
-        isDarkCanvas
-          ? 'bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 py-5 sm:py-8 lg:py-16 pb-36 sm:pb-24'
-          : 'bg-cream-50 text-forest-900 py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24'
-      }`}
-    >
+    <div className="relative min-h-[calc(100dvh-5rem)] overflow-hidden transition-colors duration-300 bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 py-4 sm:py-8 lg:py-16 pb-36 sm:pb-24">
       <CheckoutBackgroundArt
-        variant={isDarkCanvas ? 'dark' : 'light'}
-        className={isDarkCanvas ? 'opacity-40' : undefined}
+        variant="dark"
+        className="opacity-40"
       />
 
       <div
-        className={`relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] w-full flex-1 ${
-          isWishlist ? 'px-4 sm:px-6 lg:px-8 xl:px-10' : 'px-4 sm:px-6 lg:px-8 xl:px-10'
-        }`}
+        className={`relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] w-full flex-1 px-4 sm:px-6 lg:px-8 xl:px-10`}
       >
         <div className="lg:grid lg:grid-cols-12 lg:gap-10 xl:gap-12 items-start">
           {/* Sidebar / Top Navigation Rail */}
           <aside
-            className={`lg:col-span-4 pb-5 lg:pb-0 border-b lg:border-b-0 lg:border-r lg:pr-8 xl:pr-10 ${
+            className={`lg:col-span-4 pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r lg:pr-8 xl:pr-10 ${
               isWishlist ? 'hidden lg:block' : 'block'
-            } ${isDarkCanvas ? 'border-forest-800/80' : 'border-forest-200/80'}`}
+            } border-forest-800/80`}
           >
-            <div className="space-y-4 sm:space-y-6">
-              {/* Customer Identity Card */}
+            <div className="space-y-3 sm:space-y-6">
+              {/* Customer Identity Card: Shown on mobile ONLY on /account (the hub). On subpages, hidden on mobile so content starts immediately! */}
               <div
-                className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border shadow-2xs backdrop-blur-xs transition-colors ${
-                  isDarkCanvas
-                    ? 'border-forest-800/90 bg-forest-900/80 text-cream-50 shadow-xl'
-                    : 'border-forest-200/80 bg-cream-100/75 text-forest-900'
-                }`}
+                className={`${
+                  isOverview ? 'flex' : 'hidden lg:flex'
+                } items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border shadow-xl backdrop-blur-xs transition-colors border-forest-800/90 bg-forest-900/80 text-cream-50`}
               >
                 <div
                   className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-display text-lg sm:text-xl font-medium shadow-xs border ${

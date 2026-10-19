@@ -79,13 +79,13 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
                 href={href}
                 ref={isActive ? activeTabRef : undefined}
                 aria-current={isActive ? 'page' : undefined}
-                className={`shrink-0 flex items-center justify-between rounded-xl px-4 py-2.5 text-xs sm:text-sm font-sans transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap ${
+                className={`shrink-0 flex items-center justify-between rounded-xl px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-sans transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap ${
                   isActive
                     ? isDark
-                      ? 'bg-forest-900 text-gold-300 font-semibold shadow-xs ring-1 ring-gold-400/50 border border-gold-500/30'
+                      ? 'bg-gold-500 text-forest-950 font-bold shadow-md border border-gold-400 ring-1 ring-gold-400/40'
                       : 'bg-forest-950 text-cream-50 font-semibold shadow-xs ring-1 ring-gold-500/30'
                     : isDark
-                      ? 'bg-forest-950/60 lg:bg-transparent border border-forest-800/90 lg:border-transparent text-cream-200/80 hover:bg-forest-900/80 hover:text-cream-50'
+                      ? 'bg-forest-900/90 lg:bg-transparent border border-forest-800/90 lg:border-transparent text-cream-200/85 hover:bg-forest-800/90 hover:text-cream-50'
                       : 'bg-cream-100/70 lg:bg-transparent border border-forest-200/80 lg:border-transparent text-forest-700 hover:bg-cream-200/70 hover:text-forest-950'
                 }`}
               >
@@ -93,7 +93,9 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
                   <Icon
                     className={`h-4 w-4 shrink-0 transition-colors ${
                       isActive
-                        ? 'text-gold-400 stroke-[2.2]'
+                        ? isDark
+                          ? 'text-forest-950 stroke-[2.2]'
+                          : 'text-gold-400 stroke-[2.2]'
                         : isDark
                           ? 'text-forest-400 stroke-[1.8]'
                           : 'text-forest-500 stroke-[1.8]'

@@ -17,9 +17,10 @@ interface SavedAddress {
 
 interface AddressListProps {
   addresses: SavedAddress[]
+  onAddNew?: () => void
 }
 
-export function AddressList({ addresses }: AddressListProps) {
+export function AddressList({ addresses, onAddNew }: AddressListProps) {
   const confirm = useConfirm()
   const { toast } = useToast()
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
@@ -60,12 +61,24 @@ export function AddressList({ addresses }: AddressListProps) {
 
   if (addresses.length === 0) {
     return (
-      <div className="text-center py-12 sm:py-16 border border-dashed border-forest-200/80 bg-cream-100/40 rounded-2xl sm:rounded-3xl space-y-2">
-        <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-cream-200/70 text-forest-500 mb-1 border border-forest-200/60">
+      <div className="text-center py-12 sm:py-16 border border-forest-200/90 bg-cream-50 rounded-2xl sm:rounded-3xl space-y-2 shadow-md text-forest-950">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-forest-950 text-gold-400 mb-2 border border-forest-800 shadow-2xs">
           <MapPin className="h-5 w-5 stroke-[1.75]" />
         </div>
-        <p className="text-sm font-semibold text-forest-950">No saved addresses yet.</p>
-        <p className="text-xs text-forest-600">Add an address above to speed up your checkout.</p>
+        <p className="text-sm font-semibold text-forest-950 font-display">No saved addresses yet.</p>
+        <p className="text-xs text-forest-600 font-sans max-w-sm mx-auto">Add an address to speed up checkout on your future stationery orders.</p>
+        {onAddNew && (
+          <div className="pt-3">
+            <button
+              type="button"
+              onClick={onAddNew}
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-700 transition-colors cursor-pointer"
+            >
+              <span>Add your first address</span>
+              <span>→</span>
+            </button>
+          </div>
+        )}
       </div>
     )
   }
@@ -89,23 +102,23 @@ export function AddressList({ addresses }: AddressListProps) {
         return (
           <div
             key={address.id}
-            className={`relative flex flex-col justify-between rounded-2xl border p-4 sm:p-5 transition-all shadow-2xs ${
+            className={`relative flex flex-col justify-between rounded-2xl border p-4 sm:p-5 transition-all shadow-md bg-cream-50 text-forest-950 ${
               address.is_default
-                ? 'border-gold-500/70 bg-cream-100/85 ring-1 ring-gold-500/20'
-                : 'border-forest-200/80 bg-cream-100/60 hover:bg-cream-100 hover:border-forest-300'
+                ? 'border-gold-500/80 ring-1 ring-gold-400/40'
+                : 'border-forest-200/90 hover:border-forest-300'
             }`}
           >
             {/* Address Details */}
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-forest-500 shrink-0" />
+                  <MapPin className="h-4 w-4 text-forest-700 shrink-0" />
                   <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-950 font-sans">
                     {address.label || 'Saved Address'}
                   </span>
                 </div>
                 {address.is_default && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-gold-400/20 text-gold-700 border border-gold-400/50 px-2.5 py-0.5 text-[10px] font-bold font-mono uppercase tracking-wider">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-gold-100 text-gold-800 border border-gold-300/80 px-2.5 py-0.5 text-[10px] font-bold font-mono uppercase tracking-wider">
                     <CheckCircle2 className="h-3 w-3 text-gold-600" />
                     <span>Default</span>
                   </span>
@@ -119,7 +132,7 @@ export function AddressList({ addresses }: AddressListProps) {
                 </div>
               )}
 
-              <p className="text-xs sm:text-[13px] text-forest-600 leading-relaxed whitespace-pre-line font-sans pt-0.5">
+              <p className="text-xs sm:text-[13px] text-forest-700 leading-relaxed whitespace-pre-line font-sans pt-0.5">
                 {address.full_address}
               </p>
             </div>
@@ -132,22 +145,22 @@ export function AddressList({ addresses }: AddressListProps) {
                     type="button"
                     onClick={() => handleSetDefault(address.id)}
                     disabled={isPending}
-                    className="inline-flex items-center text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-500 disabled:opacity-50 transition-colors cursor-pointer py-1"
+                    className="inline-flex items-center text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-700 disabled:opacity-50 transition-colors cursor-pointer py-1"
                   >
                     Set as Default
                   </button>
                 ) : (
-                  <span className="text-[11px] text-forest-400 font-sans font-medium italic">
+                  <span className="text-[11px] text-forest-500 font-sans font-medium italic">
                     Primary shipping address
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setEditingAddressId(address.id)}
                   disabled={isPending}
-                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-forest-700 hover:text-forest-950 disabled:opacity-50 transition-colors cursor-pointer py-1 px-1.5 rounded-lg hover:bg-cream-200/60"
+                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-forest-700 hover:text-forest-950 disabled:opacity-50 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-forest-100/60"
                 >
                   <Edit2 className="h-3 w-3" />
                   <span>Edit</span>
@@ -156,7 +169,7 @@ export function AddressList({ addresses }: AddressListProps) {
                   type="button"
                   onClick={() => handleDelete(address.id)}
                   disabled={isPending}
-                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-terracotta-600 hover:text-terracotta-700 disabled:opacity-50 transition-colors cursor-pointer py-1 px-1.5 rounded-lg hover:bg-terracotta-100/60"
+                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-terracotta-600 hover:text-terracotta-700 disabled:opacity-50 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-terracotta-100/60"
                 >
                   <Trash2 className="h-3 w-3" />
                   <span>Delete</span>
