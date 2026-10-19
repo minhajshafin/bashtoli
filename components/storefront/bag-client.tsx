@@ -120,7 +120,7 @@ export function BagClient() {
             <div className="flex items-center gap-2 mb-1.5">
               <span className="h-px w-5 bg-gold-400/60" />
               <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/90">
-                Order Review · Dhaka Atelier
+                Order Review · Dhaka Shop
               </span>
             </div>
             <div className="flex items-center gap-3">

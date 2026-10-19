@@ -30,22 +30,24 @@ export function AccountLayoutWrapper({
   const pathname = usePathname()
   const isWishlist = pathname === '/account/wishlist'
   const isProfile = pathname === '/account/profile'
+  const isDarkCanvas = isProfile || isWishlist
 
   return (
     <div
       className={`relative min-h-[calc(100dvh-5rem)] overflow-hidden transition-colors duration-300 ${
-        isProfile
-          ? 'bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24'
-          : isWishlist
-            ? 'bg-cream-50 text-forest-900 pt-0 sm:pt-0 lg:py-16 pb-36 sm:pb-24'
-            : 'bg-cream-50 text-forest-900 py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24'
+        isDarkCanvas
+          ? 'bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 py-5 sm:py-8 lg:py-16 pb-36 sm:pb-24'
+          : 'bg-cream-50 text-forest-900 py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24'
       }`}
     >
-      <CheckoutBackgroundArt className={isProfile ? 'opacity-30' : undefined} />
+      <CheckoutBackgroundArt
+        variant={isDarkCanvas ? 'dark' : 'light'}
+        className={isDarkCanvas ? 'opacity-40' : undefined}
+      />
 
       <div
         className={`relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] w-full flex-1 ${
-          isWishlist ? 'px-0 lg:px-8 xl:px-10' : 'px-4 sm:px-6 lg:px-8 xl:px-10'
+          isWishlist ? 'px-4 sm:px-6 lg:px-8 xl:px-10' : 'px-4 sm:px-6 lg:px-8 xl:px-10'
         }`}
       >
         <div className="lg:grid lg:grid-cols-12 lg:gap-10 xl:gap-12 items-start">
@@ -53,20 +55,20 @@ export function AccountLayoutWrapper({
           <aside
             className={`lg:col-span-4 pb-5 lg:pb-0 border-b lg:border-b-0 lg:border-r lg:pr-8 xl:pr-10 ${
               isWishlist ? 'hidden lg:block' : 'block'
-            } ${isProfile ? 'border-forest-800/80' : 'border-forest-200/80'}`}
+            } ${isDarkCanvas ? 'border-forest-800/80' : 'border-forest-200/80'}`}
           >
             <div className="space-y-4 sm:space-y-6">
               {/* Customer Identity Card */}
               <div
                 className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border shadow-2xs backdrop-blur-xs transition-colors ${
-                  isProfile
+                  isDarkCanvas
                     ? 'border-forest-800/90 bg-forest-900/80 text-cream-50 shadow-xl'
                     : 'border-forest-200/80 bg-cream-100/75 text-forest-900'
                 }`}
               >
                 <div
                   className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-display text-lg sm:text-xl font-medium shadow-xs border ${
-                    isProfile
+                    isDarkCanvas
                       ? 'bg-forest-950 text-gold-400 border-gold-500/40 ring-2 ring-gold-400/10'
                       : 'bg-forest-900 text-gold-400 border-forest-800'
                   }`}
@@ -77,7 +79,7 @@ export function AccountLayoutWrapper({
                   <div className="flex items-center gap-2">
                     <p
                       className={`text-[10px] font-sans font-semibold uppercase tracking-[0.2em] ${
-                        isProfile ? 'text-gold-400/90' : 'text-forest-600/90'
+                        isDarkCanvas ? 'text-gold-400/90' : 'text-forest-600/90'
                       }`}
                     >
                       Customer
@@ -90,14 +92,14 @@ export function AccountLayoutWrapper({
                   </div>
                   <h2
                     className={`text-sm sm:text-lg font-medium font-display truncate mt-0.5 ${
-                      isProfile ? 'text-cream-50' : 'text-forest-950'
+                      isDarkCanvas ? 'text-cream-50' : 'text-forest-950'
                     }`}
                   >
                     {displayName}
                   </h2>
                   <p
                     className={`text-xs truncate font-mono ${
-                      isProfile ? 'text-forest-400' : 'text-forest-600'
+                      isDarkCanvas ? 'text-forest-400' : 'text-forest-600'
                     }`}
                   >
                     {email}
@@ -106,7 +108,7 @@ export function AccountLayoutWrapper({
               </div>
 
               {/* Navigation Tabs (Horizontal on mobile, vertical list on desktop) */}
-              <AccountNav isDark={isProfile} />
+              <AccountNav isDark={isDarkCanvas} />
             </div>
           </aside>
 

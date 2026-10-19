@@ -134,27 +134,49 @@ export default async function WishlistPage() {
 
   return (
     <div className="w-full">
-      {/* 1. Header (Deep Forest Green Canvas) */}
-      <section className="w-full bg-forest-950 bg-laid-paper-dark border-b border-forest-800/80 text-cream-100 px-4 sm:px-6 lg:rounded-2xl lg:border lg:border-forest-800/80 lg:p-7 lg:mb-6 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-5 sm:py-6 lg:py-0">
+      {/* Top Utility Navigation Row */}
+      <div className="mb-4 flex items-center justify-between">
+        <Link
+          href="/products"
+          className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/80 hover:text-gold-300 transition-colors group cursor-pointer"
+        >
+          <svg
+            className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          <span>Back to Shop</span>
+        </Link>
+        <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/80">
+          Curated Archive
+        </span>
+      </div>
+
+      {/* Masthead Header */}
+      <section className="mb-6 pb-5 border-b border-forest-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2">
-              <span className="h-px w-3 sm:w-3.5 bg-gold-400/60" />
-              <p className="text-[9px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.24em] text-gold-400/90">
-                Saved Items · Curated Archive
+            <div className="inline-flex items-center gap-2 mb-1.5">
+              <span className="h-px w-5 bg-gold-400/60" />
+              <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/90">
+                Saved Items · Bashtoli Stationery
               </p>
             </div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl sm:text-3xl font-medium text-cream-50 tracking-tight font-display">
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-cream-50 tracking-tight font-display">
                 My Wishlist
               </h1>
               {wishlistProducts.length > 0 && (
-                <span className="text-xs font-mono font-bold text-gold-300 bg-gold-400/20 px-2.5 py-0.5 rounded-full border border-gold-400/40">
+                <span className="rounded-full bg-gold-400/15 border border-gold-400/35 px-2.5 py-0.5 text-xs font-bold text-gold-300 font-price">
                   {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-[13px] text-forest-200/75 mt-1 font-sans leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-[13px] text-cream-200/70 mt-1 font-sans leading-relaxed max-w-xl">
               Handcrafted notebooks and stationeries you have saved to purchase or review later.
             </p>
           </div>
@@ -165,17 +187,17 @@ export default async function WishlistPage() {
         </div>
       </section>
 
-      {/* 2. List Canvas (Warm Cream Laid Paper Canvas) */}
-      <section className="px-4 sm:px-6 lg:px-0 pt-5 sm:pt-6">
+      {/* List Canvas (Populated Cards or Artisanal Empty State) */}
+      <section>
         {wishlistProducts.length === 0 ? (
-          /* Artisanal Empty State with 1-Tap Category Exploration Pills */
-          <div className="text-center py-10 sm:py-16 px-4 border border-dashed border-forest-200/90 rounded-2xl sm:rounded-3xl bg-cream-100/50 space-y-4">
-            <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-cream-200/70 text-forest-600 border border-forest-200/80 shadow-2xs">
-              <Heart className="h-6 w-6 sm:h-7 sm:w-7 stroke-[1.6] text-gold-600" />
+          /* Elevated Cream Empty State Card */
+          <div className="text-center py-12 sm:py-16 px-6 border border-forest-200/90 rounded-2xl sm:rounded-3xl bg-cream-50 text-forest-950 shadow-md space-y-5 max-w-2xl mx-auto">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-cream-100 text-gold-600 border border-forest-200/80 shadow-2xs">
+              <Heart className="h-7 w-7 stroke-[1.6]" />
             </div>
 
-            <div className="space-y-1 max-w-md mx-auto">
-              <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
+            <div className="space-y-1.5 max-w-md mx-auto">
+              <h2 className="text-lg sm:text-xl font-medium text-forest-950 font-display">
                 Your wishlist is currently empty
               </h2>
               <p className="text-xs sm:text-sm text-forest-600 font-sans leading-relaxed">
@@ -184,16 +206,16 @@ export default async function WishlistPage() {
             </div>
 
             {/* Category Exploration Pills */}
-            <div className="pt-1">
-              <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-forest-500 mb-2">
+            <div className="pt-2">
+              <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-forest-500 mb-2.5">
                 Explore by category
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-lg mx-auto">
+              <div className="flex flex-wrap items-center justify-center gap-2 max-w-lg mx-auto">
                 {QUICK_CATEGORIES.map(({ label, href, icon: Icon }) => (
                   <Link
                     key={label}
                     href={href}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/80 bg-cream-50 px-3 py-1.5 sm:px-3.5 sm:py-2 text-[11px] sm:text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-all shadow-2xs"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/90 bg-white px-3.5 py-2 text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-all shadow-2xs"
                   >
                     <Icon className="h-3.5 w-3.5 text-gold-600" />
                     <span>{label}</span>
@@ -202,10 +224,10 @@ export default async function WishlistPage() {
               </div>
             </div>
 
-            <div className="pt-2 border-t border-forest-200/50 max-w-xs mx-auto">
+            <div className="pt-3 border-t border-forest-200/70 max-w-xs mx-auto">
               <Link
                 href="/products"
-                className="w-full inline-flex h-11 sm:h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-all shadow-xs"
+                className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-all shadow-xs"
               >
                 <span>Explore All Stationery Goods</span>
                 <ArrowRight className="h-4 w-4" />

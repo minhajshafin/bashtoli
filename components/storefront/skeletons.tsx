@@ -259,24 +259,23 @@ export function BagPageSkeleton() {
  */
 export function CheckoutPageSkeleton() {
   return (
-    <div className="animate-delayed-fade-in relative min-h-[calc(100dvh-5rem)] bg-cream-50 overflow-hidden">
-      <div className="mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8 lg:py-10">
+    <div className="animate-delayed-fade-in relative min-h-[calc(100dvh-5rem)] bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden">
+      <div className="mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 lg:py-10 pb-40 sm:pb-24">
         {/* 3-Step Visual Progress Track Skeleton */}
-        <div className="mb-6 pb-5 border-b border-forest-200/60 max-w-xl mx-auto flex items-center justify-between gap-3">
-          <div className="h-7 w-28 rounded-full skeleton-shimmer" />
-          <div className="h-px flex-1 bg-forest-200/60" />
-          <div className="h-7 w-32 rounded-full skeleton-shimmer" />
-          <div className="h-px flex-1 bg-forest-200/60" />
-          <div className="h-7 w-28 rounded-full skeleton-shimmer opacity-60" />
+        <div className="mb-6 pb-5 border-b border-forest-800/80 max-w-xl mx-auto flex items-center gap-3">
+          <div className="h-1 flex-1 rounded-full skeleton-shimmer" />
+          <div className="h-1 flex-1 rounded-full skeleton-shimmer opacity-70" />
+          <div className="h-1 flex-1 rounded-full skeleton-shimmer opacity-40" />
         </div>
 
         {/* Header Skeleton */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b border-forest-200/80 gap-3">
-          <div className="space-y-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-5 border-b border-forest-800/80 gap-3">
+          <div className="space-y-2">
             <div className="h-3 w-32 rounded-md skeleton-shimmer opacity-70" />
-            <div className="h-8 w-48 sm:w-56 rounded-xl skeleton-shimmer" />
+            <div className="h-8 w-56 sm:w-64 rounded-xl skeleton-shimmer" />
+            <div className="h-3.5 w-72 sm:w-80 rounded-md skeleton-shimmer opacity-60" />
           </div>
-          <div className="h-4 w-40 rounded-md skeleton-shimmer opacity-60" />
+          <div className="h-5 w-32 rounded-full skeleton-shimmer opacity-50" />
         </div>
 
         {/* 3-Column Grid */}
@@ -284,7 +283,7 @@ export function CheckoutPageSkeleton() {
           {/* Left 2 Columns: Information & Delivery Cards */}
           <div className="lg:col-span-2 space-y-5">
             {/* Card 1: Contact Details */}
-            <div className="p-5 sm:p-7 rounded-2xl border border-forest-200/80 bg-cream-100/60 shadow-2xs space-y-4">
+            <div className="p-5 sm:p-7 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md space-y-4">
               <div className="flex items-center gap-2 pb-3 border-b border-forest-200/60">
                 <div className="h-4 w-44 rounded-md skeleton-shimmer" />
               </div>
@@ -305,7 +304,7 @@ export function CheckoutPageSkeleton() {
             </div>
 
             {/* Card 2: Fulfillment & Destination */}
-            <div className="p-5 sm:p-7 rounded-2xl border border-forest-200/80 bg-cream-100/60 shadow-2xs space-y-4">
+            <div className="p-5 sm:p-7 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md space-y-4">
               <div className="flex items-center gap-2 pb-3 border-b border-forest-200/60">
                 <div className="h-4 w-48 rounded-md skeleton-shimmer" />
               </div>
@@ -318,7 +317,7 @@ export function CheckoutPageSkeleton() {
 
           {/* Right 1 Column: Sticky Order Breakdown */}
           <div className="lg:col-span-1 space-y-4">
-            <div className="p-5 sm:p-6 rounded-2xl border border-forest-200/80 bg-cream-100/95 shadow-xs space-y-4">
+            <div className="p-5 sm:p-6 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
                 <div className="h-4 w-32 rounded-md skeleton-shimmer" />
                 <div className="h-4 w-12 rounded-full skeleton-shimmer" />

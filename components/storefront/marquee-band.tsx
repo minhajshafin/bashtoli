@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-const ITEMS = 'বাঁশতলী Bamboo Atelier ✦ Fountain Pen Journals ✦ Handcrafted Papers ✦ Artisanal Inks ✦ Washi Tapes ✦ Desk Crafts ✦ '
+const ITEMS = 'বাঁশতলী Stationery Shop ✦ Fountain Pen Journals ✦ Handcrafted Papers ✦ Artisanal Inks ✦ Washi Tapes ✦ Desk Crafts ✦ '
 
 export function MarqueeBand() {
   return (

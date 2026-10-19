@@ -85,7 +85,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
   return (
     <div className="w-full">
       {/* 1. MOBILE VIEW: Dedicated Touch Card (< 640px) */}
-      <div className="sm:hidden relative flex flex-col rounded-2xl border border-forest-200/90 bg-white/90 shadow-2xs p-3.5 space-y-3 hover:border-forest-300 transition-all">
+      <div className="sm:hidden relative flex flex-col rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md p-3.5 space-y-3 hover:border-forest-300 transition-all text-forest-950">
         <div className="flex items-start gap-3">
           {/* Square Image Thumbnail */}
           <Link
@@ -204,7 +204,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
       </div>
 
       {/* 2. DESKTOP VIEW: Vertical Card (>= 640px) */}
-      <div className="hidden sm:flex flex-col overflow-hidden rounded-2xl border border-forest-200/80 bg-cream-100/70 shadow-2xs hover:border-gold-500/60 hover:bg-cream-100/90 transition-all h-full">
+      <div className="hidden sm:flex flex-col overflow-hidden rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md hover:border-gold-500/60 transition-all h-full text-forest-950">
         {/* Product Image container */}
         <div className="relative aspect-square w-full overflow-hidden bg-cream-200/40">
           <Link href={`/products/${product.slug}`} className="block w-full h-full">

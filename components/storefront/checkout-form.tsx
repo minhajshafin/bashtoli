@@ -162,7 +162,7 @@ export function CheckoutForm({
   return (
     <div className="w-full">
       {/* Mobile Top Collapsible Order Summary (<lg) */}
-      <div className="lg:hidden mb-5 rounded-2xl border border-forest-200/80 bg-cream-100/70 overflow-hidden shadow-2xs">
+      <div className="lg:hidden mb-5 rounded-2xl border border-forest-200/90 bg-cream-50 overflow-hidden shadow-md text-forest-950">
         <button
           type="button"
           onClick={() => setIsMobileSummaryOpen(!isMobileSummaryOpen)}
@@ -193,7 +193,7 @@ export function CheckoutForm({
         </button>
 
         {isMobileSummaryOpen && (
-          <div className="px-4 pb-4 pt-2 border-t border-forest-200/80 space-y-3 bg-cream-50/90 animate-fade-in">
+          <div className="px-4 pb-4 pt-2 border-t border-forest-200/80 space-y-3 bg-cream-50 animate-fade-in">
             <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
               {cart.map((item) => (
                 <div key={item.variant_id} className="flex items-center gap-3 text-xs">
@@ -247,9 +247,9 @@ export function CheckoutForm({
           )}
 
           {/* Card 1: Recipient Details */}
-          <div className="rounded-2xl border border-forest-200/80 bg-cream-50/90 p-5 sm:p-6 shadow-2xs space-y-4">
+          <div className="rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 text-forest-950">
             <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
-              <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-600/90">
+              <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
                 01 · Recipient Details
               </h2>
               <span className="text-[10px] font-mono text-forest-500">Contact for courier</span>
@@ -361,9 +361,9 @@ export function CheckoutForm({
           </div>
 
           {/* Card 2: Fulfillment & Instructions */}
-          <div className="rounded-2xl border border-forest-200/80 bg-cream-50/90 p-5 sm:p-6 shadow-2xs space-y-4">
+          <div className="rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 text-forest-950">
             <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
-              <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-600/90">
+              <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
                 02 · Fulfillment &amp; Dispatch
               </h2>
               <span className="text-[10px] font-mono text-gold-600 font-semibold">Cash on Delivery</span>
@@ -430,16 +430,16 @@ export function CheckoutForm({
         </div>
 
         {/* Right 1 Column: Order Summary Card */}
-        <div className="lg:col-span-1 rounded-2xl border border-forest-200/80 bg-cream-100/60 p-5 sm:p-6 shadow-2xs space-y-4 lg:sticky lg:top-24">
+        <div className="lg:col-span-1 rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 lg:sticky lg:top-24 text-forest-950">
           <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
-            <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-600/90">
+            <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
               Order Summary ({totalItemCount})
             </h2>
             <span className="text-[10px] font-mono text-gold-600">Dhaka Shop</span>
           </div>
 
           {/* Inspection Reassurance Banner */}
-          <div className="flex items-start gap-2.5 rounded-xl border border-gold-400/30 bg-gold-400/10 p-3 text-xs text-forest-900">
+          <div className="flex items-start gap-2.5 rounded-xl border border-gold-400/40 bg-gold-400/15 p-3 text-xs text-forest-950">
             <svg className="h-4 w-4 shrink-0 text-gold-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
             </svg>
