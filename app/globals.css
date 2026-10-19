@@ -636,7 +636,7 @@ input[type="search"]::-webkit-search-results-decoration {
 @keyframes toastEnter {
   0% {
     opacity: 0;
-    transform: translateY(8px) scale(0.97);
+    transform: translateY(-10px) scale(0.96);
   }
   100% {
     opacity: 1;
@@ -654,11 +654,11 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .animate-toast-enter {
-  animation: toastEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: toastEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-toast-countdown {
-  animation: toastCountdown 3.5s linear forwards;
+  animation: toastCountdown 3s linear forwards;
 }
 
 /* Shimmer animations for theme-aligned skeletons */
