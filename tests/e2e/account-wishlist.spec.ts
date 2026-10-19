@@ -13,10 +13,10 @@ test.describe('Account Wishlist Persistence & Interactions', () => {
 
   test('guest can toggle wishlist on product card with optimistic UI feedback', async ({ page }) => {
     await page.goto('/products')
-    await expect(page).toHaveTitle(/Products/i)
+    await expect(page).toHaveTitle(/Stationery Catalog|Products/i)
 
     // Find the first product card's wishlist button
-    const firstWishlistButton = page.locator('button[aria-label="Add to wishlist"]').first()
+    const firstWishlistButton = page.locator('button[aria-label="Add to wishlist"]:visible').first()
     await expect(firstWishlistButton).toBeVisible({ timeout: 15000 })
 
     // Click to add to wishlist
@@ -46,12 +46,12 @@ test.describe('Account Wishlist Persistence & Interactions', () => {
     await page.goto('/products/e2e-test-bamboo-product')
     await expect(page.locator('h1', { hasText: 'E2E Test Bamboo Product' })).toBeVisible()
 
-    const addWishlistButton = page.locator('button[aria-label="Add to wishlist"]').first()
+    const addWishlistButton = page.locator('button[aria-label="Add to wishlist"]:visible').first()
     await expect(addWishlistButton).toBeVisible({ timeout: 15000 })
 
     // Click to add to wishlist
     await addWishlistButton.click()
-    const removeBtnPDP = page.locator('button[aria-label="Remove from wishlist"]').first()
+    const removeBtnPDP = page.locator('button[aria-label="Remove from wishlist"]:visible').first()
     await expect(removeBtnPDP).toBeVisible({ timeout: 10000 })
     await expect(removeBtnPDP).toBeEnabled({ timeout: 10000 })
 
@@ -65,11 +65,11 @@ test.describe('Account Wishlist Persistence & Interactions', () => {
     await expect(pageBody).toContainText('E2E Test Bamboo Product')
 
     // 5. Remove the item using the card remove button
-    const removeBtn = page.locator('button[title="Remove from Wishlist"]').first()
+    const removeBtn = page.locator('button[title="Remove from Wishlist"]:visible').first()
     await expect(removeBtn).toBeVisible({ timeout: 10000 })
     await removeBtn.click()
 
     // 6. Verify item is removed
-    await expect(page.locator('button[title="Remove from Wishlist"]')).toHaveCount(0, { timeout: 10000 })
+    await expect(page.locator('button[title="Remove from Wishlist"]:visible')).toHaveCount(0, { timeout: 10000 })
   })
 })

@@ -33,15 +33,21 @@ export function AccountLayoutWrapper({
 
   return (
     <div
-      className={`relative min-h-[calc(100dvh-5rem)] overflow-hidden py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24 transition-colors duration-300 ${
+      className={`relative min-h-[calc(100dvh-5rem)] overflow-hidden transition-colors duration-300 ${
         isProfile
-          ? 'bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30'
-          : 'bg-cream-50 text-forest-900'
+          ? 'bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24'
+          : isWishlist
+            ? 'bg-cream-50 text-forest-900 pt-0 sm:pt-0 lg:py-16 pb-36 sm:pb-24'
+            : 'bg-cream-50 text-forest-900 py-6 sm:py-10 lg:py-16 pb-36 sm:pb-24'
       }`}
     >
       <CheckoutBackgroundArt className={isProfile ? 'opacity-30' : undefined} />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 w-full flex-1">
+      <div
+        className={`relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] w-full flex-1 ${
+          isWishlist ? 'px-0 lg:px-8 xl:px-10' : 'px-4 sm:px-6 lg:px-8 xl:px-10'
+        }`}
+      >
         <div className="lg:grid lg:grid-cols-12 lg:gap-10 xl:gap-12 items-start">
           {/* Sidebar / Top Navigation Rail */}
           <aside

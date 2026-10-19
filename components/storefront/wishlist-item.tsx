@@ -85,12 +85,12 @@ export function WishlistItem({ product }: WishlistItemProps) {
   return (
     <div className="w-full">
       {/* 1. MOBILE VIEW: Dedicated Touch Card (< 640px) */}
-      <div className="sm:hidden relative flex flex-col rounded-2xl border border-forest-200/80 bg-cream-100/70 p-3.5 shadow-2xs space-y-3">
+      <div className="sm:hidden relative flex flex-col rounded-2xl border border-forest-200/90 bg-white/90 shadow-2xs p-3.5 space-y-3 hover:border-forest-300 transition-all">
         <div className="flex items-start gap-3">
           {/* Square Image Thumbnail */}
           <Link
             href={`/products/${product.slug}`}
-            className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-cream-200/40 border border-forest-200/60 block active:scale-95 transition-transform"
+            className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-cream-100 border border-forest-200/70 block active:scale-95 transition-transform"
           >
             {product.imageUrl ? (
               <Image
@@ -110,7 +110,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
             <div>
               <div className="flex items-center justify-between gap-1.5 mb-1">
                 {product.categoryName && (
-                  <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-text-accent block truncate">
+                  <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-gold-700 block truncate">
                     {product.categoryName}
                   </span>
                 )}
@@ -140,11 +140,11 @@ export function WishlistItem({ product }: WishlistItemProps) {
             </div>
 
             <div className="mt-2 flex items-baseline justify-between">
-              <span className="text-sm font-bold font-price text-forest-950">
+              <span className="text-base font-bold font-price text-forest-950">
                 ৳{priceFormatted}
               </span>
               {product.defaultVariant?.name && product.defaultVariant.name !== 'Standard' && (
-                <span className="text-[10px] font-mono text-forest-500 truncate max-w-[120px]">
+                <span className="text-[10px] font-mono text-forest-600 bg-cream-100 px-1.5 py-0.5 rounded border border-forest-200/60 truncate max-w-[120px]">
                   {product.defaultVariant.name}
                 </span>
               )}
@@ -153,12 +153,12 @@ export function WishlistItem({ product }: WishlistItemProps) {
         </div>
 
         {/* Action Row */}
-        <div className="flex items-center gap-2 pt-2 border-t border-forest-200/60">
+        <div className="flex items-center gap-2 pt-2.5 border-t border-forest-100">
           {!product.isSoldOut ? (
             <button
               type="button"
               onClick={handleAddToCart}
-              className={`flex-1 h-11 rounded-xl text-xs font-sans font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-2xs cursor-pointer ${
+              className={`flex-1 h-11 rounded-xl text-xs font-sans font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-xs cursor-pointer ${
                 isJustAdded
                   ? 'bg-forest-900 text-gold-300 border border-gold-400/60'
                   : 'btn-primary'
@@ -191,7 +191,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
             onClick={handleRemove}
             disabled={isPending}
             aria-label={`Remove ${product.name} from wishlist`}
-            className="h-11 w-11 shrink-0 rounded-xl border border-forest-200/80 bg-cream-50/80 flex items-center justify-center text-forest-500 hover:text-terracotta-700 hover:bg-terracotta-100/70 hover:border-terracotta-400/50 active:scale-90 transition-all cursor-pointer"
+            className="h-11 w-11 shrink-0 rounded-xl border border-forest-200/80 bg-cream-50 flex items-center justify-center text-forest-500 hover:text-terracotta-700 hover:bg-terracotta-100/70 hover:border-terracotta-400/50 active:scale-90 transition-all cursor-pointer"
             title="Remove from Wishlist"
           >
             {isPending ? (

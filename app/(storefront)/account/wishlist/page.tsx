@@ -133,86 +133,94 @@ export default async function WishlistPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header with Title, Count, & Add All CTA */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-forest-200/80 pb-5">
-        <div>
-          <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90 mb-1">
-            Saved Items
-          </p>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
-              My Wishlist
-            </h1>
-            {wishlistProducts.length > 0 && (
-              <span className="text-xs font-mono font-bold text-gold-600 bg-gold-400/20 px-2.5 py-0.5 rounded-full border border-gold-500/30">
-                {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
-              </span>
-            )}
+    <div className="w-full">
+      {/* 1. Header (Deep Forest Green Canvas) */}
+      <section className="w-full bg-forest-950 bg-laid-paper-dark border-b border-forest-800/80 text-cream-100 px-4 sm:px-6 lg:rounded-2xl lg:border lg:border-forest-800/80 lg:p-7 lg:mb-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-5 sm:py-6 lg:py-0">
+          <div>
+            <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2">
+              <span className="h-px w-3 sm:w-3.5 bg-gold-400/60" />
+              <p className="text-[9px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.24em] text-gold-400/90">
+                Saved Items · Curated Archive
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-2xl sm:text-3xl font-medium text-cream-50 tracking-tight font-display">
+                My Wishlist
+              </h1>
+              {wishlistProducts.length > 0 && (
+                <span className="text-xs font-mono font-bold text-gold-300 bg-gold-400/20 px-2.5 py-0.5 rounded-full border border-gold-400/40">
+                  {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
+                </span>
+              )}
+            </div>
+            <p className="text-xs sm:text-[13px] text-forest-200/75 mt-1 font-sans leading-relaxed max-w-xl">
+              Handcrafted notebooks and stationeries you have saved to purchase or review later.
+            </p>
           </div>
-          <p className="text-xs sm:text-[13px] text-forest-600 mt-1 font-sans leading-relaxed">
-            Handcrafted notebooks and stationeries you have saved to purchase or review later.
-          </p>
+
+          {wishlistProducts.length > 0 && (
+            <WishlistHeaderActions products={wishlistProducts} />
+          )}
         </div>
+      </section>
 
-        {wishlistProducts.length > 0 && (
-          <WishlistHeaderActions products={wishlistProducts} />
-        )}
-      </div>
+      {/* 2. List Canvas (Warm Cream Laid Paper Canvas) */}
+      <section className="px-4 sm:px-6 lg:px-0 pt-5 sm:pt-6">
+        {wishlistProducts.length === 0 ? (
+          /* Artisanal Empty State with 1-Tap Category Exploration Pills */
+          <div className="text-center py-10 sm:py-16 px-4 border border-dashed border-forest-200/90 rounded-2xl sm:rounded-3xl bg-cream-100/50 space-y-4">
+            <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-cream-200/70 text-forest-600 border border-forest-200/80 shadow-2xs">
+              <Heart className="h-6 w-6 sm:h-7 sm:w-7 stroke-[1.6] text-gold-600" />
+            </div>
 
-      {wishlistProducts.length === 0 ? (
-        /* Artisanal Empty State with 1-Tap Category Exploration Pills */
-        <div className="text-center py-7 sm:py-14 px-4 border border-dashed border-forest-200/90 rounded-2xl sm:rounded-3xl bg-cream-100/40 space-y-4">
-          <div className="mx-auto flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-cream-200/70 text-forest-600 border border-forest-200/80 shadow-2xs">
-            <Heart className="h-6 w-6 sm:h-7 sm:w-7 stroke-[1.6] text-gold-600" />
-          </div>
+            <div className="space-y-1 max-w-md mx-auto">
+              <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
+                Your wishlist is currently empty
+              </h2>
+              <p className="text-xs sm:text-sm text-forest-600 font-sans leading-relaxed">
+                Explore our handcrafted journals, writing tools, and botanical inks to curate your personal collection.
+              </p>
+            </div>
 
-          <div className="space-y-1 max-w-md mx-auto">
-            <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
-              Your wishlist is currently empty
-            </h2>
-            <p className="text-xs sm:text-sm text-forest-600 font-sans leading-relaxed">
-              Explore our handcrafted journals, writing tools, and botanical inks to curate your personal collection.
-            </p>
-          </div>
+            {/* Category Exploration Pills */}
+            <div className="pt-1">
+              <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-forest-500 mb-2">
+                Explore by category
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-lg mx-auto">
+                {QUICK_CATEGORIES.map(({ label, href, icon: Icon }) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/80 bg-cream-50 px-3 py-1.5 sm:px-3.5 sm:py-2 text-[11px] sm:text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-all shadow-2xs"
+                  >
+                    <Icon className="h-3.5 w-3.5 text-gold-600" />
+                    <span>{label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-          {/* Category Exploration Pills */}
-          <div className="pt-1">
-            <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-forest-500 mb-2">
-              Explore by category
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-lg mx-auto">
-              {QUICK_CATEGORIES.map(({ label, href, icon: Icon }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/80 bg-cream-50 px-3 py-1.5 sm:px-3.5 sm:py-2 text-[11px] sm:text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-all shadow-2xs"
-                >
-                  <Icon className="h-3.5 w-3.5 text-gold-600" />
-                  <span>{label}</span>
-                </Link>
-              ))}
+            <div className="pt-2 border-t border-forest-200/50 max-w-xs mx-auto">
+              <Link
+                href="/products"
+                className="w-full inline-flex h-11 sm:h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-all shadow-xs"
+              >
+                <span>Explore All Stationery Goods</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
-
-          <div className="pt-2 border-t border-forest-200/50 max-w-xs mx-auto">
-            <Link
-              href="/products"
-              className="w-full inline-flex h-11 sm:h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-all shadow-xs"
-            >
-              <span>Explore All Stationery Goods</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+        ) : (
+          /* Populated Items */
+          <div className="space-y-3.5 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+            {wishlistProducts.map((product) => (
+              <WishlistItem key={product.id} product={product} />
+            ))}
           </div>
-        </div>
-      ) : (
-        /* Populated Items */
-        <div className="space-y-3.5 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
-          {wishlistProducts.map((product) => (
-            <WishlistItem key={product.id} product={product} />
-          ))}
-        </div>
-      )}
+        )}
+      </section>
     </div>
   )
 }
