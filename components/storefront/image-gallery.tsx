@@ -202,7 +202,10 @@ export function ImageGallery({
           )}
 
           {/* Hover Zoom Prompt Badge (Desktop) */}
-          <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-10 hidden sm:flex items-center gap-1.5 rounded-full bg-forest-950/65 backdrop-blur-xs px-2.5 py-1 text-[11px] font-sans font-medium text-cream-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-forest-800/60 select-none">
+          <div
+            aria-hidden="true"
+            className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-10 hidden sm:flex items-center gap-1.5 rounded-full bg-forest-950/90 backdrop-blur-md px-2.5 py-1 text-[11px] font-sans font-medium text-cream-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-forest-800/80 select-none pointer-events-none"
+          >
             <svg className="h-3.5 w-3.5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6" />
             </svg>

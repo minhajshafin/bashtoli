@@ -366,7 +366,7 @@ export function CheckoutForm({
               <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
                 02 · Fulfillment &amp; Dispatch
               </h2>
-              <span className="text-[10px] font-mono text-gold-600 font-semibold">Cash on Delivery</span>
+              <span className="text-[10px] font-mono text-forest-700 font-semibold">Cash on Delivery</span>
             </div>
 
             {/* Delivery Zone / Fulfillment Select */}
@@ -435,7 +435,7 @@ export function CheckoutForm({
             <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
               Order Summary ({totalItemCount})
             </h2>
-            <span className="text-[10px] font-mono text-gold-600">Dhaka Shop</span>
+            <span className="text-[10px] font-mono text-forest-700 font-semibold">Dhaka Shop</span>
           </div>
 
           {/* Inspection Reassurance Banner */}

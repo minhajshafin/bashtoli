@@ -87,7 +87,7 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
 
       {isOpen && (
         <div
-          role="dialog"
+          role={variant === 'danger' ? 'alertdialog' : 'dialog'}
           aria-modal="true"
           aria-labelledby="confirm-dialog-title"
           aria-describedby="confirm-dialog-desc"

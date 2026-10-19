@@ -112,7 +112,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
         <p className="font-display text-[13px] font-semibold text-forest-950 leading-snug tracking-[-0.01em]">
           {currentSlide.badge_text}
         </p>
-        <p className="text-[9px] uppercase tracking-widest text-gold-600 font-semibold font-sans mt-0.5">
+        <p className="text-[9px] uppercase tracking-widest text-forest-750 font-semibold font-sans mt-0.5">
           {currentSlide.subtext || 'Now in store & online'}
         </p>
       </div>

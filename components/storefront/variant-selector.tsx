@@ -80,7 +80,7 @@ export function VariantSelector({
                 )}
               </div>
               {!currentValue && (
-                <span className="font-sans text-[11px] text-gold-600 font-medium">
+                <span className="font-sans text-[11px] text-forest-700 font-semibold tracking-wide">
                   Select {opt.name.toLowerCase()}
                 </span>
               )}

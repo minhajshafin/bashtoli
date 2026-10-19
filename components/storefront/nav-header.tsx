@@ -161,6 +161,9 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             </svg>
             <input
               type="search"
+              id="desktop-search-input"
+              name="q"
+              aria-label="Search journals, pens, paper"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search journals, pens, paper..."

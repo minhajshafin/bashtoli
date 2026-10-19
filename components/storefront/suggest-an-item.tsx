@@ -120,6 +120,7 @@ export function SuggestAnItem() {
                 autoComplete="off"
                 className="hidden"
                 aria-hidden="true"
+                aria-label="Do not fill this field"
               />
 
               {/* Field 1: The Requested Item (Primary Textarea) */}

@@ -188,7 +188,7 @@ export default async function AccountPage() {
             <div className="pt-3">
               <Link
                 href="/products"
-                className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-700 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-sans font-bold uppercase tracking-wider text-forest-900 hover:text-forest-950 transition-colors"
               >
                 <span>Browse stationery collection</span>
                 <ArrowRight className="h-3.5 w-3.5" />

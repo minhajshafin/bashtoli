@@ -278,7 +278,7 @@ export function AuthForm({ type }: AuthFormProps) {
         {/* Divider */}
         <div className="relative my-3 flex items-center justify-center">
           <div className="w-full border-t border-forest-200/80" />
-          <span className="bg-cream-100 px-3 text-[10px] font-medium text-forest-400 uppercase tracking-wider">
+          <span className="bg-cream-100 px-3 text-[10px] font-semibold text-forest-650 uppercase tracking-wider">
             or
           </span>
           <div className="w-full border-t border-forest-200/80" />

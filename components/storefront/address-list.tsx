@@ -72,7 +72,7 @@ export function AddressList({ addresses, onAddNew }: AddressListProps) {
             <button
               type="button"
               onClick={onAddNew}
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-700 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-bold uppercase tracking-wider text-forest-900 hover:text-forest-950 transition-colors cursor-pointer"
             >
               <span>Add your first address</span>
               <span>→</span>

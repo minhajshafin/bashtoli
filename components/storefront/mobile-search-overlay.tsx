@@ -141,6 +141,9 @@ export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProp
             <input
               ref={inputRef}
               type="search"
+              id="mobile-search-input"
+              name="q"
+              aria-label="Search journals, pens, paper"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search journals, pens, paper..."

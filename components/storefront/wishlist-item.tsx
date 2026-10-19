@@ -255,7 +255,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
         <div className="p-4 flex flex-col justify-between flex-1">
           <div>
             {product.categoryName && (
-              <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-text-accent block truncate">
+              <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-750 block truncate">
                 {product.categoryName}
               </span>
             )}
