@@ -15,7 +15,7 @@ export function CheckoutBackgroundArt({ className, variant = 'light' }: Checkout
 
   return (
     <div
-      className={`pointer-events-none absolute inset-0 overflow-hidden select-none z-0 ${className || ''}`}
+      className={`pointer-events-none fixed inset-0 overflow-hidden select-none z-0 ${className || ''}`}
       aria-hidden="true"
     >
       {/* 1. Ambient Laid-Paper Radial Light */}

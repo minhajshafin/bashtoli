@@ -44,8 +44,8 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 src={s.image_url}
                 alt={s.alt_text || 'Bashtoli Stationery'}
                 fill
-                loading={i === 0 ? 'eager' : 'lazy'}
-                fetchPriority={i === 0 ? 'high' : 'low'}
+                priority={i === 0}
+                loading={i === 0 ? undefined : 'lazy'}
                 sizes="(max-width: 640px) 320px, (max-width: 1024px) 320px, 360px"
                 className="object-cover transition-transform duration-1000 ease-out"
                 style={{

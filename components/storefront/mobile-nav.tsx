@@ -69,6 +69,7 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
                     src="/logo-text.svg"
                     alt="Bashtoli Stationery"
                     fill
+                    sizes="80px"
                     className="object-contain object-left"
                   />
                 </div>

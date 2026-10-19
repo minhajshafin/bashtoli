@@ -86,6 +86,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
               alt="Bashtoli Stationery"
               fill
               priority
+              sizes="96px"
               className="object-contain object-left"
             />
           </Link>
@@ -115,6 +116,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
               alt="Bashtoli Stationery"
               fill
               priority
+              sizes="(max-width: 1024px) 96px, 104px"
               className="object-contain object-left"
             />
           </Link>

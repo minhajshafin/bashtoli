@@ -165,8 +165,8 @@ export function ImageGallery({
             src={failedImages[activeImage.url] ? '/placeholder-product.svg' : activeImage.url}
             alt={activeImage.alt_text || fallbackName}
             fill
-            loading="eager"
-            fetchPriority="high"
+            priority={activeIdx === 0}
+            loading={activeIdx === 0 ? undefined : 'lazy'}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
             className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
             onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
