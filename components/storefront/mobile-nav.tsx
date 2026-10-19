@@ -15,10 +15,13 @@ export function MobileNav({ isLoggedIn, fullName }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
 
-  // Close the drawer whenever the route changes.
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname)
+
+  // Close the drawer whenever the route changes
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
     setIsOpen(false)
-  }, [pathname])
+  }
 
   useEffect(() => {
     if (isOpen) {

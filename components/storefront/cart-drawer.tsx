@@ -63,12 +63,6 @@ export function CartDrawer() {
     touchStartY.current = null
   }
 
-  // Reset closing state when drawer opens
-  useEffect(() => {
-    if (isDrawerOpen) {
-      setIsClosing(false)
-    }
-  }, [isDrawerOpen])
 
   // Subtle stagger reveal of drawer items when opened
   useEffect(() => {

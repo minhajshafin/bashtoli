@@ -42,9 +42,22 @@ const POPULAR_SEARCHES = [
 export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProps) {
   const router = useRouter()
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<SearchProduct[]>([])
+  const [searchResults, setSearchResults] = useState<SearchProduct[]>([])
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen)
+
+  // Reset fields during render when overlay closes
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen)
+    if (!isOpen) {
+      setQuery('')
+      setSearchResults([])
+    }
+  }
+
+  // Derive visible results: automatically empty when query is blank
+  const results = query.trim() ? searchResults : []
 
   // Focus input and lock body scroll when opened
   useEffect(() => {
@@ -59,8 +72,6 @@ export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProp
       }
     } else {
       document.body.style.overflow = ''
-      setQuery('')
-      setResults([])
     }
   }, [isOpen])
 
@@ -80,25 +91,23 @@ export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProp
   useEffect(() => {
     const trimmed = query.trim()
     if (!trimmed) {
-      setResults([])
-      setLoading(false)
       return
     }
 
-    setLoading(true)
     const controller = new AbortController()
     const timer = setTimeout(async () => {
+      setLoading(true)
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`, {
           signal: controller.signal,
         })
         if (res.ok) {
           const data = await res.json()
-          setResults(data.products || [])
+          setSearchResults(data.products || [])
         }
-      } catch (err: unknown) {
-        if ((err as Error)?.name !== 'AbortError') {
-          console.error('Error fetching search results:', err)
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Search error:', err)
         }
       } finally {
         setLoading(false)

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useRef, Suspense } from 'react'
+import React, { useEffect, useState, useRef, useCallback, Suspense } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 /** Custom browser events to programmatically control the progress bar if needed */
@@ -37,13 +37,27 @@ function ProgressBarInner() {
   const finishTimerRef = useRef<NodeJS.Timeout | null>(null)
   const safetyTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const clearTimers = () => {
+  const clearTimers = useCallback(() => {
     if (trickleTimerRef.current) clearInterval(trickleTimerRef.current)
     if (finishTimerRef.current) clearTimeout(finishTimerRef.current)
     if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current)
-  }
+  }, [])
 
-  const start = () => {
+  const done = useCallback(() => {
+    if (trickleTimerRef.current) clearInterval(trickleTimerRef.current)
+    if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current)
+
+    setProgress(100)
+    setFading(true)
+
+    finishTimerRef.current = setTimeout(() => {
+      setVisible(false)
+      setProgress(0)
+      setFading(false)
+    }, 320)
+  }, [])
+
+  const start = useCallback(() => {
     clearTimers()
     setFading(false)
     setVisible(true)
@@ -63,21 +77,7 @@ function ProgressBarInner() {
     safetyTimerRef.current = setTimeout(() => {
       done()
     }, 8000)
-  }
-
-  const done = () => {
-    if (trickleTimerRef.current) clearInterval(trickleTimerRef.current)
-    if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current)
-
-    setProgress(100)
-    setFading(true)
-
-    finishTimerRef.current = setTimeout(() => {
-      setVisible(false)
-      setProgress(0)
-      setFading(false)
-    }, 320)
-  }
+  }, [clearTimers, done])
 
   const isInitialMount = useRef(true)
 
@@ -89,7 +89,7 @@ function ProgressBarInner() {
     }
     done()
     return () => clearTimers()
-  }, [pathname, searchString])
+  }, [pathname, searchString, done, clearTimers])
 
   // Listen to global events and link clicks
   useEffect(() => {
@@ -156,7 +156,7 @@ function ProgressBarInner() {
       window.removeEventListener('popstate', handlePopState)
       clearTimers()
     }
-  }, [])
+  }, [start, done, clearTimers])
 
   if (!visible) return null
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import Image from 'next/image'
 import React, { useState, useEffect, useRef } from 'react'
 import { useCart } from '@/lib/cart/cart-context'

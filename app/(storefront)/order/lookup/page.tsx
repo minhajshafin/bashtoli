@@ -1,7 +1,6 @@
 import { OrderLookupForm } from '@/components/storefront/order-lookup-form'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 import { Search, HelpCircle } from 'lucide-react'
-import Link from 'next/link'
 import React from 'react'
 
 export const metadata = {

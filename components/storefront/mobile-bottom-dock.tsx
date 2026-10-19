@@ -12,7 +12,7 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
 
 export function MobileBottomDock() {
   const pathname = usePathname()
-  const { itemCount, openDrawer, isDrawerOpen } = useCart()
+  const { itemCount, isDrawerOpen } = useCart()
   const wishlistContext = useWishlist()
   const wishlistCount = wishlistContext?.wishlistIds?.length ?? 0
 

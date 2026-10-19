@@ -1,12 +1,10 @@
 import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import {
   RouteProgressBar,
   startRouteProgress,
   doneRouteProgress,
-  ROUTE_PROGRESS_START_EVENT,
-  ROUTE_PROGRESS_DONE_EVENT,
 } from '@/components/storefront/route-progress-bar'
 
 // Mock next/navigation

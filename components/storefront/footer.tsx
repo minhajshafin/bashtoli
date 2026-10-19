@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -70,11 +70,7 @@ const socials = [
 
 export function Footer() {
   const pathname = usePathname()
-  const [currentYear, setCurrentYear] = useState<number>(2026)
-
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear())
-  }, [])
+  const currentYear = 2026
 
   // Do not render footer on checkout page
   if (pathname === '/checkout' || pathname?.startsWith('/checkout/')) {

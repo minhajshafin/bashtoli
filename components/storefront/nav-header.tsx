@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { CartIcon } from '@/components/storefront/cart-icon'
-import { MobileNav } from '@/components/storefront/mobile-nav'
 import { MobileSearchOverlay } from '@/components/storefront/mobile-search-overlay'
 import { logoutAction } from '@/lib/actions/auth'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
@@ -22,20 +21,22 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
   const [scrolled, setScrolled] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const [prevPathname, setPrevPathname] = useState(pathname)
   const [searchQuery, setSearchQuery] = useState('')
   const accountRef = useRef<HTMLDivElement>(null)
   const wishlistContext = useWishlist()
   const wishlistCount = wishlistContext?.wishlistIds?.length ?? 0
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
+    setMobileSearchOpen(false)
+  }
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 32)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
-
-  useEffect(() => {
-    setMobileSearchOpen(false)
-  }, [pathname])
 
   useEffect(() => {
     const handleOpen = () => setMobileSearchOpen(true)
