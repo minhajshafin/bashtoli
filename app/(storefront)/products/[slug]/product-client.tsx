@@ -242,7 +242,7 @@ export function ProductDetailClient({
             </div>
           </div>
 
-          {/* Collapsible Atelier Details & Guarantees Accordion */}
+          {/* Collapsible Stationery Details & Guarantees Accordion */}
           <div className="mt-5 border-t border-forest-200/60 divide-y divide-forest-200/50">
             {/* Accordion 1: Shipping & Delivery */}
             <div className="py-2.5">
@@ -279,7 +279,7 @@ export function ProductDetailClient({
               )}
             </div>
 
-            {/* Accordion 2: Atelier Guarantee & Exchange */}
+            {/* Accordion 2: Bashtoli Guarantee & Exchange */}
             <div className="py-2.5">
               <button
                 type="button"

@@ -105,7 +105,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
         </div>
       </div>
 
-      {/* Floating Atelier Spec Note (Desktop & Tablet) */}
+      {/* Floating Stationery Spec Note (Desktop & Tablet) */}
       <div
         className="absolute -left-4 sm:-left-6 bottom-6 px-3.5 py-2.5 shadow-lifted hidden sm:block z-20 pointer-events-none rounded-xl bg-cream-50/95 backdrop-blur-md border border-gold-500/30 max-w-[190px] animate-fade-in"
       >

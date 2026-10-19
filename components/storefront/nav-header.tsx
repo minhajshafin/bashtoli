@@ -122,7 +122,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           {/* Hairline Divider */}
           <div className="h-3.5 w-px bg-forest-700/50" aria-hidden="true" />
 
-          {/* Navigation links (Shop & Track Order — refined atelier rhythm) */}
+          {/* Navigation links (Shop & Track Order — refined stationery rhythm) */}
           <nav className="flex items-center gap-5 lg:gap-6" aria-label="Primary Navigation">
             <Link
               href="/products"

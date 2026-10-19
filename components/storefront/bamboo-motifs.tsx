@@ -1,20 +1,20 @@
 import React from 'react'
 
 /**
- * Artisanal Bamboo & Paper Suite (বাঁশতলী Atelier)
- * Combines Papermaker's Screen Watermarks (Concept 1) + Minimalist Sumi-e & Red Chop Seal (Concept 2).
+ * Artisanal Bamboo & Paper Suite (বাঁশতলী Stationery)
+ * Combines Papermaker's Screen Watermarks + Minimalist Sumi-e & Red Chop Seal.
  * 
  * Features:
- * 1. AtelierChopSeal - Authentic cinnabar red (হিংলুল / Hankō) maker's stamp
+ * 1. BashtoliChopSeal - Authentic cinnabar red (হিংলুল / Hankō) maker's stamp
  * 2. BambooPaperWatermark - Blind-deboss botanical watermark pressed into cotton paper
  * 3. DriftingBambooLeaf - Minimalist sumi-e bamboo leaves settled on the desk canvas
  */
 
 /**
- * 1. ATELIER CHOP SEAL (বাঁশতলী মোহর)
+ * 1. BASHTOLI CHOP SEAL (বাঁশতলী মোহর)
  * Authentic cinnabar-red vermilion stamp inspired by traditional stationery maker seals.
  */
-export function AtelierChopSeal({
+export function BashtoliChopSeal({
   className = '',
   size = 'md',
 }: {
@@ -105,6 +105,8 @@ export function AtelierChopSeal({
     </div>
   )
 }
+
+export const AtelierChopSeal = BashtoliChopSeal
 
 /**
  * 2. BAMBOO PAPER WATERMARK (Blind-Debossed Pulp Watermark)

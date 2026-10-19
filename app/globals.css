@@ -5,7 +5,7 @@
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
   --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-  /* Forest greens — Harmonized Atelier Moss */
+  /* Forest greens — Harmonized Stationery Moss */
   --color-forest-950: #0a160f;
   --color-forest-900: #102218;
   --color-forest-800: #162e21;
@@ -47,7 +47,7 @@
      Semantic Interactive Color Tokens (Tailwind CSS v4 @theme)
      ========================================================================== */
 
-  /* Button Tokens: Primary (Deep Forest Atelier Action) */
+  /* Button Tokens: Primary (Deep Forest Stationery Action) */
   --color-btn-primary-bg: #0a160f;
   --color-btn-primary-text: #fbf8f2;
   --color-btn-primary-border: #162e21;

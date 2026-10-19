@@ -103,7 +103,7 @@ export function Footer() {
       <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 pb-20 sm:pt-11 sm:pb-7">
         {/* Main Architectural Colophon Grid (Desktop multi-column, Mobile centered compact) */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
-          {/* Col 1: Brand & Atelier Identity (Desktop & Mobile) */}
+          {/* Col 1: Brand & Stationery Identity (Desktop & Mobile) */}
           <div className="col-span-1 md:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
             <Link
               href="/"
@@ -189,7 +189,7 @@ export function Footer() {
             />
           </div>
 
-          {/* Col 4: Atelier Location & Visit Card (Desktop only) */}
+          {/* Col 4: Shop Location & Visit Card (Desktop only) */}
           <div className="hidden md:block col-span-2 md:col-span-4">
             <ColumnHeading>Visit Our Shop</ColumnHeading>
 
