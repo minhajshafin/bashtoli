@@ -188,21 +188,30 @@ export function ProductDetailSkeleton() {
  */
 export function BagPageSkeleton() {
   return (
-    <div className="animate-delayed-fade-in relative min-h-[calc(100dvh-5rem)] bg-forest-950 bg-laid-paper-dark text-cream-100 px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 lg:py-10 pb-36 sm:pb-16">
+    <div className="animate-delayed-fade-in relative min-h-[calc(100dvh-5rem)] bg-forest-950 bg-laid-paper-dark text-cream-100 px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 lg:py-10 pb-40 sm:pb-16">
       <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto space-y-6">
-        {/* Stepper placeholder */}
-        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8 flex items-center justify-between">
-          <div className="h-7 w-20 rounded-full skeleton-shimmer-dark" />
-          <div className="h-0.5 flex-1 mx-3 skeleton-shimmer-dark opacity-40" />
-          <div className="h-7 w-20 rounded-full skeleton-shimmer-dark opacity-50" />
-          <div className="h-0.5 flex-1 mx-3 skeleton-shimmer-dark opacity-40" />
-          <div className="h-7 w-20 rounded-full skeleton-shimmer-dark opacity-40" />
+        {/* Top utility row placeholder */}
+        <div className="flex items-center justify-between pb-3 border-b border-forest-800/60">
+          <div className="h-3.5 w-28 rounded-md skeleton-shimmer-dark opacity-60" />
+          <div className="h-3.5 w-16 rounded-md skeleton-shimmer-dark opacity-40" />
         </div>
 
-        {/* Header placeholder */}
-        <div className="space-y-2 border-b border-forest-800/80 pb-5">
-          <div className="h-4 w-28 rounded-md skeleton-shimmer-dark opacity-60" />
-          <div className="h-9 w-48 rounded-xl skeleton-shimmer-dark" />
+        {/* Masthead & Progress row placeholder */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 pb-5 border-b border-forest-800/80">
+          <div className="space-y-2">
+            <div className="h-3 w-32 rounded-md skeleton-shimmer-dark opacity-50" />
+            <div className="h-8 w-48 rounded-xl skeleton-shimmer-dark" />
+            <div className="h-3 w-64 rounded-md skeleton-shimmer-dark opacity-40" />
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 w-full md:w-72">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="space-y-1.5">
+                <div className="h-1 sm:h-1.5 rounded-full skeleton-shimmer-dark opacity-60" />
+                <div className="h-3 w-12 rounded-md skeleton-shimmer-dark opacity-40" />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">

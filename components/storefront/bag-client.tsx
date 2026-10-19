@@ -10,6 +10,7 @@ import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 import { checkCartItemsAvailability } from '@/lib/actions/cart'
 import type { ValidatedCartItem } from '@/lib/queries/cart'
+import { ArrowLeft, Trash2 } from 'lucide-react'
 
 export function BagClient() {
   const confirm = useConfirm()
@@ -80,32 +81,15 @@ export function BagClient() {
       <CheckoutBackgroundArt variant="dark" />
 
       <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 lg:py-10 pb-40 sm:pb-16 flex flex-col justify-start">
-        {/* 3-Step Visual Progress Track (Dark Variant on Green Background) */}
-        <CheckoutSteps currentStep={1} variant="dark" />
-
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 sm:mb-6 pb-4 border-b border-forest-800/80 gap-3">
-          <div>
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/80 hover:text-gold-300 transition-colors mb-2 cursor-pointer group"
-            >
-              <svg className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-              </svg>
-              <span>Continue Shopping</span>
-            </Link>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl sm:text-3xl lg:text-[2rem] font-medium text-cream-50 tracking-[-0.02em] font-display">
-                Shopping Bag
-              </h1>
-              {cart.length > 0 && (
-                <span className="rounded-full bg-gold-400/20 text-gold-300 border border-gold-400/35 px-2.5 py-0.5 text-xs font-bold font-price">
-                  {totalQuantity}
-                </span>
-              )}
-            </div>
-          </div>
+        {/* Top Utility Navigation Row */}
+        <div className="flex items-center justify-between pb-3 mb-4 sm:mb-5 border-b border-forest-800/60">
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/80 hover:text-gold-300 transition-colors cursor-pointer group"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 text-gold-400 transition-transform group-hover:-translate-x-0.5" />
+            <span>Continue Shopping</span>
+          </Link>
 
           {cart.length > 0 && (
             <button
@@ -122,14 +106,42 @@ export function BagClient() {
                   clearCart()
                 }
               }}
-              className="self-start sm:self-auto inline-flex items-center gap-1.5 rounded-full border border-forest-800 bg-forest-900/90 px-3.5 py-1.5 text-[11px] font-sans font-semibold uppercase tracking-wider text-cream-200/90 hover:text-btn-danger-bg hover:border-terracotta-400/60 transition-colors cursor-pointer touch-manipulation active:scale-95"
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/60 hover:text-btn-danger-bg transition-colors cursor-pointer group"
             >
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-              </svg>
+              <Trash2 className="h-3.5 w-3.5 text-forest-400 group-hover:text-btn-danger-bg transition-colors" />
               <span>Clear Bag</span>
             </button>
           )}
+        </div>
+
+        {/* Masthead Title & Progress Section */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-6 pb-5 border-b border-forest-800/80">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="h-px w-5 bg-gold-400/60" />
+              <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/90">
+                Order Review · Dhaka Atelier
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-cream-50 font-display tracking-tight">
+                Shopping Bag
+              </h1>
+              {cart.length > 0 && (
+                <span className="rounded-full bg-gold-400/15 border border-gold-400/35 px-2.5 py-0.5 text-xs font-bold text-gold-300 font-price">
+                  {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
+                </span>
+              )}
+            </div>
+            <p className="text-xs sm:text-[13px] text-cream-200/70 font-sans mt-1.5 max-w-md leading-relaxed">
+              Review your chosen stationery pieces and desk essentials before checkout.
+            </p>
+          </div>
+
+          {/* 3-Step Segmented Progress Track */}
+          <div className="w-full md:w-auto md:min-w-[280px] lg:min-w-[340px]">
+            <CheckoutSteps currentStep={1} variant="dark" />
+          </div>
         </div>
 
         {cart.length > 0 ? (

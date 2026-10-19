@@ -6,13 +6,14 @@ import Link from 'next/link'
 interface CheckoutStepsProps {
   currentStep: 1 | 2 | 3
   variant?: 'light' | 'dark'
+  className?: string
 }
 
 /**
  * CheckoutSteps
- * Harmonized 3-step checkout stepper supporting both light cream and deep forest green backgrounds.
+ * Sleek modern 3-step segmented progress track supporting light cream and deep forest green canvases.
  */
-export function CheckoutSteps({ currentStep, variant = 'light' }: CheckoutStepsProps) {
+export function CheckoutSteps({ currentStep, variant = 'light', className = '' }: CheckoutStepsProps) {
   const isDark = variant === 'dark'
 
   const steps = [
@@ -22,83 +23,84 @@ export function CheckoutSteps({ currentStep, variant = 'light' }: CheckoutStepsP
   ]
 
   return (
-    <nav aria-label="Checkout Progress" className="w-full max-w-md mx-auto mb-6 sm:mb-8">
-      <ol className="flex items-center justify-between">
-        {steps.map((step, idx) => {
+    <nav aria-label="Checkout Progress" className={`w-full ${className}`}>
+      <ol className="grid grid-cols-3 gap-2 sm:gap-3">
+        {steps.map((step) => {
           const isDone = currentStep > step.number
           const isCurrent = currentStep === step.number
           const isClickable = isDone && step.href
 
           const content = (
-            <div className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer">
+            <div className="flex flex-col gap-1.5 group cursor-pointer transition-all">
+              {/* Top Hairline Progress Bar */}
               <div
-                className={`flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-mono transition-colors ${
-                  isDone
-                    ? isDark
-                      ? 'bg-forest-800 text-gold-300 border border-forest-700'
-                      : 'bg-forest-900 text-gold-400 border border-forest-800'
-                    : isCurrent
-                    ? 'bg-gold-500 text-forest-950 font-bold ring-2 ring-gold-400/30 shadow-xs'
-                    : isDark
-                    ? 'bg-forest-900/90 border border-forest-800 text-cream-300/60'
-                    : 'bg-cream-200/80 border border-forest-200 text-forest-500'
-                }`}
-              >
-                {isDone ? (
-                  <svg className="h-3 w-3 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                  </svg>
-                ) : (
-                  step.number
-                )}
-              </div>
-
-              <span
-                className={`text-xs font-sans whitespace-nowrap transition-colors ${
+                className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
                   isCurrent
-                    ? isDark
-                      ? 'font-semibold text-gold-300'
-                      : 'font-semibold text-forest-950'
+                    ? 'bg-gold-400 shadow-xs'
                     : isDone
                     ? isDark
-                      ? 'font-medium text-cream-200 group-hover:text-cream-50'
-                      : 'font-medium text-forest-700 group-hover:text-forest-950'
+                      ? 'bg-gold-500/50'
+                      : 'bg-forest-900/60'
                     : isDark
-                    ? 'font-normal text-cream-300/50'
-                    : 'font-normal text-forest-400'
+                    ? 'bg-forest-800/60'
+                    : 'bg-forest-200/60'
                 }`}
-              >
-                <span className="sm:hidden">{step.shortLabel}</span>
-                <span className="hidden sm:inline">{step.label}</span>
-              </span>
+              />
+
+              {/* Step Label & Number */}
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                <span
+                  className={`text-[10px] sm:text-[11px] font-mono font-bold transition-colors ${
+                    isCurrent
+                      ? isDark
+                        ? 'text-gold-300'
+                        : 'text-forest-950'
+                      : isDone
+                      ? isDark
+                        ? 'text-gold-400/80 group-hover:text-gold-300'
+                        : 'text-forest-700'
+                      : isDark
+                      ? 'text-cream-300/40'
+                      : 'text-forest-400'
+                  }`}
+                >
+                  0{step.number}
+                </span>
+                <span
+                  className={`text-[11px] sm:text-xs font-sans tracking-wide transition-colors truncate ${
+                    isCurrent
+                      ? isDark
+                        ? 'font-semibold text-cream-50'
+                        : 'font-semibold text-forest-950'
+                      : isDone
+                      ? isDark
+                        ? 'font-medium text-cream-200/80 group-hover:text-cream-50'
+                        : 'font-medium text-forest-700'
+                      : isDark
+                      ? 'font-normal text-cream-300/40'
+                      : 'font-normal text-forest-400'
+                  }`}
+                >
+                  <span className="sm:hidden">{step.shortLabel}</span>
+                  <span className="hidden sm:inline">{step.label}</span>
+                </span>
+                {isDone && (
+                  <span className={`text-[10px] font-bold ${isDark ? 'text-gold-400' : 'text-forest-700'}`}>✓</span>
+                )}
+              </div>
             </div>
           )
 
           return (
-            <React.Fragment key={step.number}>
-              <li className="flex items-center">
-                {isClickable ? (
-                  <Link href={step.href!} className="no-underline">
-                    {content}
-                  </Link>
-                ) : (
-                  <div>{content}</div>
-                )}
-              </li>
-
-              {idx < steps.length - 1 && (
-                <li
-                  aria-hidden="true"
-                  className={`flex-1 mx-2.5 sm:mx-4 h-px transition-colors ${
-                    currentStep > step.number
-                      ? 'bg-gold-500/60'
-                      : isDark
-                      ? 'bg-forest-800/80'
-                      : 'bg-forest-200/80'
-                  }`}
-                />
+            <li key={step.number}>
+              {isClickable ? (
+                <Link href={step.href!} className="no-underline block">
+                  {content}
+                </Link>
+              ) : (
+                <div>{content}</div>
               )}
-            </React.Fragment>
+            </li>
           )
         })}
       </ol>
