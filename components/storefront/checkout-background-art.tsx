@@ -5,24 +5,32 @@ import React from 'react'
  * Renders handcrafted botanical bamboo artwork, archival laid-paper dot grid,
  * and warm ambient light matching the rest of the Bashtoli storefront.
  */
-export function CheckoutBackgroundArt({ className }: { className?: string } = {}) {
+interface CheckoutBackgroundArtProps {
+  className?: string
+  variant?: 'light' | 'dark'
+}
+
+export function CheckoutBackgroundArt({ className, variant = 'light' }: CheckoutBackgroundArtProps = {}) {
+  const isDark = variant === 'dark'
+
   return (
     <div
       className={`pointer-events-none absolute inset-0 overflow-hidden select-none z-0 ${className || ''}`}
       aria-hidden="true"
     >
-      {/* 1. Ambient Warm Laid-Paper Radial Light */}
+      {/* 1. Ambient Laid-Paper Radial Light */}
       <div
-        className="absolute inset-0 opacity-70"
+        className={`absolute inset-0 ${isDark ? 'opacity-40' : 'opacity-70'}`}
         style={{
-          background:
-            'radial-gradient(circle at 50% 20%, rgba(255, 253, 248, 0.8) 0%, rgba(246, 240, 228, 0.35) 55%, transparent 80%)',
+          background: isDark
+            ? 'radial-gradient(circle at 50% 20%, rgba(201, 169, 110, 0.14) 0%, rgba(16, 34, 24, 0.5) 60%, transparent 85%)'
+            : 'radial-gradient(circle at 50% 20%, rgba(255, 253, 248, 0.8) 0%, rgba(246, 240, 228, 0.35) 55%, transparent 80%)',
         }}
       />
 
       {/* 2. Delicate Stationery Dot-Grid Pattern */}
       <svg
-        className="absolute inset-0 h-full w-full opacity-[0.035] text-forest-950"
+        className={`absolute inset-0 h-full w-full opacity-[0.035] ${isDark ? 'text-gold-400' : 'text-forest-950'}`}
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
         height="100%"
@@ -40,7 +48,9 @@ export function CheckoutBackgroundArt({ className }: { className?: string } = {}
         viewBox="0 0 600 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="hidden sm:block absolute -top-12 -right-16 sm:-right-8 w-[380px] sm:w-[480px] lg:w-[540px] max-w-none text-forest-900/[0.07] transition-opacity duration-700"
+        className={`hidden sm:block absolute -top-12 -right-16 sm:-right-8 w-[380px] sm:w-[480px] lg:w-[540px] max-w-none ${
+          isDark ? 'text-gold-400/[0.09]' : 'text-forest-900/[0.07]'
+        } transition-opacity duration-700`}
       >
         <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
           <path d="M580 10 C460 60, 360 140, 280 260" strokeWidth="2.5" />
@@ -66,7 +76,9 @@ export function CheckoutBackgroundArt({ className }: { className?: string } = {}
         viewBox="0 0 500 600"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="hidden sm:block absolute -bottom-16 -left-16 sm:-left-8 w-[340px] sm:w-[440px] max-w-none text-forest-900/[0.06]"
+        className={`hidden sm:block absolute -bottom-16 -left-16 sm:-left-8 w-[340px] sm:w-[440px] max-w-none ${
+          isDark ? 'text-gold-400/[0.08]' : 'text-forest-900/[0.06]'
+        }`}
       >
         <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
           <path d="M80 620 C90 480, 110 320, 140 160" strokeWidth="2.5" />

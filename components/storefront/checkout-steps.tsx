@@ -5,13 +5,16 @@ import Link from 'next/link'
 
 interface CheckoutStepsProps {
   currentStep: 1 | 2 | 3
+  variant?: 'light' | 'dark'
 }
 
 /**
  * CheckoutSteps
- * Harmonized 3-step checkout stepper perfectly matching the aesthetic of /bag and the site.
+ * Harmonized 3-step checkout stepper supporting both light cream and deep forest green backgrounds.
  */
-export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
+export function CheckoutSteps({ currentStep, variant = 'light' }: CheckoutStepsProps) {
+  const isDark = variant === 'dark'
+
   const steps = [
     { number: 1, label: 'Shopping Bag', shortLabel: 'Bag', href: '/bag' },
     { number: 2, label: 'Delivery Details', shortLabel: 'Delivery', href: '/checkout' },
@@ -31,9 +34,13 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
               <div
                 className={`flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-mono transition-colors ${
                   isDone
-                    ? 'bg-forest-900 text-gold-400 border border-forest-800'
+                    ? isDark
+                      ? 'bg-forest-800 text-gold-300 border border-forest-700'
+                      : 'bg-forest-900 text-gold-400 border border-forest-800'
                     : isCurrent
                     ? 'bg-gold-500 text-forest-950 font-bold ring-2 ring-gold-400/30 shadow-xs'
+                    : isDark
+                    ? 'bg-forest-900/90 border border-forest-800 text-cream-300/60'
                     : 'bg-cream-200/80 border border-forest-200 text-forest-500'
                 }`}
               >
@@ -49,9 +56,15 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
               <span
                 className={`text-xs font-sans whitespace-nowrap transition-colors ${
                   isCurrent
-                    ? 'font-semibold text-forest-950'
+                    ? isDark
+                      ? 'font-semibold text-gold-300'
+                      : 'font-semibold text-forest-950'
                     : isDone
-                    ? 'font-medium text-forest-700 group-hover:text-forest-950'
+                    ? isDark
+                      ? 'font-medium text-cream-200 group-hover:text-cream-50'
+                      : 'font-medium text-forest-700 group-hover:text-forest-950'
+                    : isDark
+                    ? 'font-normal text-cream-300/50'
                     : 'font-normal text-forest-400'
                 }`}
               >
@@ -77,7 +90,11 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
                 <li
                   aria-hidden="true"
                   className={`flex-1 mx-2.5 sm:mx-4 h-px transition-colors ${
-                    currentStep > step.number ? 'bg-gold-500/60' : 'bg-forest-200/80'
+                    currentStep > step.number
+                      ? 'bg-gold-500/60'
+                      : isDark
+                      ? 'bg-forest-800/80'
+                      : 'bg-forest-200/80'
                   }`}
                 />
               )}

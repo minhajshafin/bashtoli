@@ -13,16 +13,16 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
   const isCheckoutDisabled = isCartEmpty || hasUnavailableItems
 
   return (
-    <div className="rounded-2xl border border-forest-200/80 bg-cream-100/60 p-5 sm:p-6 shadow-2xs space-y-4">
+    <div className="rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 text-forest-950">
       <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
-        <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-600/90">
+        <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
           Order Summary
         </h2>
-        <span className="text-[10px] font-mono text-gold-600">Dhaka Shop</span>
+        <span className="text-[10px] font-mono text-gold-700 font-semibold">Dhaka Shop</span>
       </div>
 
       {/* Complimentary Packaging Note */}
-      <div className="flex items-start gap-2.5 rounded-xl border border-gold-400/30 bg-gold-400/10 p-3 text-xs text-forest-900">
+      <div className="flex items-start gap-2.5 rounded-xl border border-gold-400/40 bg-gold-400/15 p-3 text-xs text-forest-900">
         <svg className="h-4 w-4 shrink-0 text-gold-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H4.5a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
         </svg>
@@ -49,7 +49,7 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
         {/* Grand subtotal */}
         <div className="flex items-center justify-between pt-1">
           <span className="text-sm font-semibold text-forest-950 font-sans">Estimated Total</span>
-          <span className="text-lg font-bold text-forest-950 font-price">
+          <span className="text-lg sm:text-xl font-bold text-forest-950 font-price">
             ৳{subtotal.toLocaleString()}
           </span>
         </div>
@@ -83,7 +83,7 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
       </div>
 
       {/* Secure checkout info */}
-      <div className="flex items-center justify-center gap-1.5 text-[11px] text-forest-500 font-sans">
+      <div className="flex items-center justify-center gap-1.5 text-[11px] text-forest-600 font-sans">
         <svg className="h-3.5 w-3.5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>

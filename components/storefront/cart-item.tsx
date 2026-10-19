@@ -31,7 +31,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
   return (
     <>
       {/* 1. Mobile-Optimized Compact Item Card (< sm) */}
-      <div className="sm:hidden p-3.5 rounded-2xl border border-forest-200/80 bg-cream-50/95 shadow-2xs">
+      <div className="sm:hidden p-3.5 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md">
         <div className="flex items-start gap-3">
           {/* Thumbnail image */}
           <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-cream-100/70">
@@ -133,7 +133,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
       </div>
 
       {/* 2. Desktop Standard Row (sm:flex) */}
-      <div className="hidden sm:flex sm:items-center justify-between gap-4 p-5 rounded-2xl border border-forest-200/80 bg-cream-50/90 shadow-2xs transition-all">
+      <div className="hidden sm:flex sm:items-center justify-between gap-4 p-5 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md transition-all hover:shadow-lg">
         <div className="flex items-center gap-4">
           <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-forest-200/80 bg-cream-100/70">
             {item.image_url ? (

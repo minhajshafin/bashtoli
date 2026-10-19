@@ -184,38 +184,49 @@ export function ProductDetailSkeleton() {
 }
 
 /**
- * Shopping Bag Skeleton with Delayed Reveal.
+ * Shopping Bag Skeleton with Delayed Reveal (Green Background + Cream Cards).
  */
 export function BagPageSkeleton() {
   return (
-    <div className="animate-delayed-fade-in relative min-h-[calc(100dvh-4rem)] bg-cream-50 px-5 md:px-8 py-12">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <div className="space-y-2 border-b border-forest-200 pb-5">
-          <div className="h-9 w-48 rounded-xl skeleton-shimmer" />
-          <div className="h-4 w-32 rounded-md skeleton-shimmer opacity-70" />
+    <div className="animate-delayed-fade-in relative min-h-[calc(100dvh-5rem)] bg-forest-950 bg-laid-paper-dark text-cream-100 px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 lg:py-10 pb-36 sm:pb-16">
+      <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto space-y-6">
+        {/* Stepper placeholder */}
+        <div className="w-full max-w-md mx-auto mb-6 sm:mb-8 flex items-center justify-between">
+          <div className="h-7 w-20 rounded-full skeleton-shimmer-dark" />
+          <div className="h-0.5 flex-1 mx-3 skeleton-shimmer-dark opacity-40" />
+          <div className="h-7 w-20 rounded-full skeleton-shimmer-dark opacity-50" />
+          <div className="h-0.5 flex-1 mx-3 skeleton-shimmer-dark opacity-40" />
+          <div className="h-7 w-20 rounded-full skeleton-shimmer-dark opacity-40" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Items list skeleton */}
-          <div className="lg:col-span-8 space-y-4">
-            {Array.from({ length: 3 }).map((_, i) => (
+        {/* Header placeholder */}
+        <div className="space-y-2 border-b border-forest-800/80 pb-5">
+          <div className="h-4 w-28 rounded-md skeleton-shimmer-dark opacity-60" />
+          <div className="h-9 w-48 rounded-xl skeleton-shimmer-dark" />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+          {/* Items list skeleton (Cream cards) */}
+          <div className="lg:col-span-2 space-y-3 sm:space-y-3.5">
+            {Array.from({ length: 2 }).map((_, i) => (
               <div
                 key={i}
-                className="flex gap-4 p-4 rounded-2xl bg-cream-100/80 border border-forest-200/50"
+                className="flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-cream-50 border border-forest-200/90 shadow-md"
               >
-                <div className="w-24 h-28 rounded-xl skeleton-shimmer shrink-0" />
-                <div className="flex-1 space-y-3 py-1">
-                  <div className="h-5 w-1/2 rounded-md skeleton-shimmer" />
-                  <div className="h-4 w-24 rounded-md skeleton-shimmer" />
-                  <div className="h-8 w-28 rounded-full skeleton-shimmer" />
+                <div className="w-20 h-20 rounded-xl skeleton-shimmer shrink-0" />
+                <div className="flex-1 space-y-2.5 py-1">
+                  <div className="h-4 w-1/2 rounded-md skeleton-shimmer" />
+                  <div className="h-3.5 w-24 rounded-md skeleton-shimmer opacity-70" />
+                  <div className="h-6 w-28 rounded-md skeleton-shimmer" />
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Order Summary skeleton */}
-          <div className="lg:col-span-4 p-6 rounded-3xl bg-cream-100/90 border border-forest-200 space-y-4">
-            <div className="h-6 w-32 rounded-md skeleton-shimmer" />
+          {/* Order Summary skeleton (Cream card) */}
+          <div className="lg:col-span-1 p-5 sm:p-6 rounded-2xl bg-cream-50 border border-forest-200/90 shadow-md space-y-4">
+            <div className="h-4 w-32 rounded-md skeleton-shimmer" />
+            <div className="h-10 w-full rounded-xl skeleton-shimmer opacity-80" />
             <div className="space-y-2 py-2">
               <div className="flex justify-between">
                 <div className="h-4 w-20 rounded-md skeleton-shimmer" />
@@ -226,7 +237,7 @@ export function BagPageSkeleton() {
                 <div className="h-4 w-16 rounded-md skeleton-shimmer" />
               </div>
             </div>
-            <div className="h-12 w-full rounded-full skeleton-shimmer" />
+            <div className="h-11 w-full rounded-xl skeleton-shimmer" />
           </div>
         </div>
       </div>
