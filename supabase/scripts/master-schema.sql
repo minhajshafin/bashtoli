@@ -3,15 +3,13 @@
 -- ============================================================
 -- This master script contains the complete, consolidated schema
 -- for the Bashtoli e-commerce application. It is compiled from
--- the 8 modular migrations in supabase/migrations/:
+-- the 6 modular migrations in supabase/migrations/:
 --   1. 001_types_and_extensions.sql
 --   2. 002_core_tables.sql
 --   3. 003_indexes.sql
 --   4. 004_functions_and_triggers.sql
 --   5. 005_row_level_security.sql
 --   6. 006_storage.sql
---   7. 007_security_hardening.sql
---   8. 008_order_access_token.sql
 --
 -- USAGE (Supabase Web Dashboard):
 -- 1. Open your Supabase project dashboard.
@@ -195,6 +193,7 @@ CREATE TABLE public.wishlist (
 CREATE TABLE public.orders (
   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   order_number     text NOT NULL UNIQUE,
+  access_token     text NOT NULL DEFAULT replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''),
   user_id          uuid REFERENCES public.profiles(id) ON DELETE SET NULL,
   customer_name    text NOT NULL,
   phone            text NOT NULL,
@@ -210,6 +209,8 @@ CREATE TABLE public.orders (
   created_at       timestamptz NOT NULL DEFAULT now(),
   updated_at       timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_access_token ON public.orders (access_token);
 
 -- ── 13. order_items ──────────────────────────────────────────
 -- Purchased variant snapshot at time of order (historical prices immutable).
@@ -519,6 +520,7 @@ AS $$
 DECLARE
   v_order_id       uuid;
   v_order_number   text;
+  v_access_token   text;
   v_item           jsonb;
   v_rows_updated   integer;
 
@@ -584,12 +586,14 @@ BEGIN
 
   v_total := v_subtotal + v_delivery_fee;
 
-  -- 3. Generate a race-condition-safe order number
+  -- 3. Generate a race-condition-safe order number and access token
   v_order_number := public.generate_order_number();
+  v_access_token := replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
 
   -- 4. Insert the order row
   INSERT INTO public.orders (
     order_number,
+    access_token,
     user_id,
     customer_name,
     phone,
@@ -604,6 +608,7 @@ BEGIN
     status
   ) VALUES (
     v_order_number,
+    v_access_token,
     p_user_id,
     p_customer_name,
     p_phone,
@@ -660,9 +665,10 @@ BEGIN
     );
   END LOOP;
 
-  -- 7. Return computed financials
+  -- 7. Return computed financials and access token
   RETURN jsonb_build_object(
     'order_number', v_order_number,
+    'access_token', v_access_token,
     'subtotal',     v_subtotal,
     'delivery_fee', v_delivery_fee,
     'total',        v_total
@@ -698,6 +704,96 @@ $$;
 REVOKE EXECUTE ON FUNCTION public.increment_stock(uuid, int) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.increment_stock(uuid, int) TO service_role;
 
+-- ── cancel_order ─────────────────────────────────────────────
+-- Allows authenticated customers to safely self-cancel their pending orders
+-- within 24 hours of placement. Restores variant stock quantities, logs status
+-- transition, and enforces strict ownership inside a single ACID database transaction.
+CREATE OR REPLACE FUNCTION public.cancel_order(
+  p_order_id uuid
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_user_id    uuid;
+  v_status     public.order_status;
+  v_created_at timestamptz;
+  v_caller_id  uuid := auth.uid();
+  v_item       RECORD;
+BEGIN
+  IF p_order_id IS NULL THEN
+    RAISE EXCEPTION 'Order ID is required';
+  END IF;
+
+  IF v_caller_id IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated';
+  END IF;
+
+  -- Lock the order row FOR UPDATE to prevent race conditions
+  SELECT o.user_id, o.status, o.created_at
+  INTO v_user_id, v_status, v_created_at
+  FROM public.orders o
+  WHERE o.id = p_order_id
+  FOR UPDATE;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Order not found';
+  END IF;
+
+  -- Require orders.user_id = auth.uid()
+  IF v_user_id IS NULL OR v_user_id <> v_caller_id THEN
+    RAISE EXCEPTION 'Unauthorized: Not the order owner';
+  END IF;
+
+  -- Require status = 'pending'
+  IF v_status <> 'pending' THEN
+    RAISE EXCEPTION 'Only pending orders can be cancelled';
+  END IF;
+
+  -- 24h rule: Orders can only be cancelled within 24 hours of placement
+  IF v_created_at < (now() - interval '24 hours') THEN
+    RAISE EXCEPTION 'Orders can only be cancelled within 24 hours of placement.';
+  END IF;
+
+  -- Update order status to 'cancelled'
+  UPDATE public.orders o
+  SET status = 'cancelled',
+      updated_at = now()
+  WHERE o.id = p_order_id;
+
+  -- Insert status transition history row
+  INSERT INTO public.order_status_history (
+    order_id,
+    status,
+    changed_by,
+    changed_at
+  )
+  VALUES (
+    p_order_id,
+    'cancelled',
+    v_caller_id,
+    now()
+  );
+
+  -- Restore stock for every item associated with the order
+  FOR v_item IN
+    SELECT oi.variant_id, oi.qty
+    FROM public.order_items oi
+    WHERE oi.order_id = p_order_id
+  LOOP
+    UPDATE public.product_variants pv
+    SET stock_qty  = pv.stock_qty + v_item.qty,
+        updated_at = now()
+    WHERE pv.id = v_item.variant_id;
+  END LOOP;
+END;
+$$;
+
+REVOKE EXECUTE ON FUNCTION public.cancel_order(uuid) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.cancel_order(uuid) TO authenticated, service_role;
+
 
 -- ============================================================
 -- 5. ATOMIC CART & GUEST ORDER RPCS
@@ -728,7 +824,8 @@ REVOKE EXECUTE ON FUNCTION public.cart_add_or_increment(uuid, uuid, int, int) FR
 GRANT EXECUTE ON FUNCTION public.cart_add_or_increment(uuid, uuid, int, int) TO authenticated, service_role;
 
 -- ── find_unclaimed_guest_orders ──────────────────────────────
--- Queries unclaimed guest orders matching customer's JWT email or verified phone.
+-- Queries unclaimed guest orders matching the caller's confirmed email from auth.users.
+-- Phone matching is completely removed to prevent unverified phone hijacking.
 CREATE OR REPLACE FUNCTION public.find_unclaimed_guest_orders()
 RETURNS TABLE (
   id           uuid,
@@ -741,27 +838,29 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_user_id uuid := auth.uid();
-  v_email   text := auth.jwt()->>'email';
-  v_phone   text;
+  v_user_id      uuid := auth.uid();
+  v_email        text;
+  v_confirmed_at timestamptz;
 BEGIN
   IF v_user_id IS NULL THEN
     RETURN;
   END IF;
 
-  SELECT phone INTO v_phone
-  FROM public.profiles
-  WHERE id = v_user_id;
+  SELECT u.email, u.email_confirmed_at
+  INTO v_email, v_confirmed_at
+  FROM auth.users u
+  WHERE u.id = v_user_id;
+
+  -- Require email to be present and confirmed
+  IF v_email IS NULL OR v_confirmed_at IS NULL THEN
+    RETURN;
+  END IF;
 
   RETURN QUERY
   SELECT o.id, o.order_number, o.created_at, o.total
   FROM public.orders o
   WHERE o.user_id IS NULL
-    AND (
-      (v_email IS NOT NULL AND lower(o.guest_email) = lower(v_email))
-      OR
-      (v_phone IS NOT NULL AND v_phone <> '' AND o.phone = v_phone)
-    )
+    AND lower(o.guest_email) = lower(v_email)
   ORDER BY o.created_at DESC;
 END;
 $$;
@@ -770,7 +869,8 @@ REVOKE ALL ON FUNCTION public.find_unclaimed_guest_orders() FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.find_unclaimed_guest_orders() TO authenticated, service_role;
 
 -- ── claim_guest_orders ───────────────────────────────────────
--- Atomically links matching unclaimed guest orders to auth.uid().
+-- Atomically links matching unclaimed guest orders to auth.uid()
+-- using only confirmed email matching.
 CREATE OR REPLACE FUNCTION public.claim_guest_orders(
   p_order_ids uuid[] DEFAULT NULL
 )
@@ -780,29 +880,30 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_user_id     uuid := auth.uid();
-  v_email       text := auth.jwt()->>'email';
-  v_phone       text;
-  claimed_count int;
+  v_user_id      uuid := auth.uid();
+  v_email        text;
+  v_confirmed_at timestamptz;
+  claimed_count  int;
 BEGIN
   IF v_user_id IS NULL THEN
     RAISE EXCEPTION 'Not authenticated';
   END IF;
 
-  SELECT phone INTO v_phone
-  FROM public.profiles
-  WHERE id = v_user_id;
+  SELECT u.email, u.email_confirmed_at
+  INTO v_email, v_confirmed_at
+  FROM auth.users u
+  WHERE u.id = v_user_id;
 
-  UPDATE public.orders
+  IF v_email IS NULL OR v_confirmed_at IS NULL THEN
+    RAISE EXCEPTION 'User email is not confirmed';
+  END IF;
+
+  UPDATE public.orders o
   SET user_id    = v_user_id,
       updated_at = now()
-  WHERE user_id IS NULL
-    AND (p_order_ids IS NULL OR id = ANY(p_order_ids))
-    AND (
-      (v_email IS NOT NULL AND lower(guest_email) = lower(v_email))
-      OR
-      (v_phone IS NOT NULL AND v_phone <> '' AND phone = v_phone)
-    );
+  WHERE o.user_id IS NULL
+    AND (p_order_ids IS NULL OR o.id = ANY(p_order_ids))
+    AND lower(o.guest_email) = lower(v_email);
 
   GET DIAGNOSTICS claimed_count = ROW_COUNT;
   RETURN claimed_count;
@@ -1095,19 +1196,6 @@ CREATE POLICY "orders: customer select own"
   ON public.orders FOR SELECT
   USING (user_id = auth.uid());
 
--- Authenticated customers can see unclaimed guest orders matching their verified email/phone
-CREATE POLICY "orders: customer select unclaimed guest orders"
-  ON public.orders FOR SELECT
-  USING (
-    user_id IS NULL
-    AND auth.uid() IS NOT NULL
-    AND (
-      (guest_email IS NOT NULL AND lower(guest_email) = lower(auth.jwt()->>'email'))
-      OR
-      (phone IS NOT NULL AND phone = (SELECT p.phone FROM public.profiles p WHERE p.id = auth.uid()))
-    )
-  );
-
 -- Staff and Admins can view all orders
 CREATE POLICY "orders: staff/admin select all"
   ON public.orders FOR SELECT
@@ -1119,18 +1207,6 @@ CREATE POLICY "orders: staff/admin update"
   ON public.orders FOR UPDATE
   TO authenticated
   USING (app_private.is_staff_or_admin());
-
--- Customers can only cancel their own pending order (narrowed security policy)
-CREATE POLICY "orders: customer cancel own"
-  ON public.orders FOR UPDATE
-  USING (
-    user_id = auth.uid()
-    AND status = 'pending'
-  )
-  WITH CHECK (
-    user_id = auth.uid()
-    AND status = 'cancelled'
-  );
 
 -- ── order_items ──────────────────────────────────────────────
 CREATE POLICY "order_items: customer select own"
@@ -1166,18 +1242,6 @@ CREATE POLICY "order_status_history: staff/admin insert"
   ON public.order_status_history FOR INSERT
   TO authenticated
   WITH CHECK (app_private.is_staff_or_admin());
-
-CREATE POLICY "order_status_history: customer insert cancellation"
-  ON public.order_status_history FOR INSERT
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND status = 'cancelled'
-    AND EXISTS (
-      SELECT 1 FROM public.orders o
-      WHERE o.id = order_status_history.order_id
-        AND o.user_id = auth.uid()
-    )
-  );
 
 
 -- ============================================================
@@ -1282,453 +1346,14 @@ CREATE POLICY "product_images_delete_policy"
   );
 
 
--- ============================================================
--- 007_security_hardening.sql
--- Security Hardening: Atomic Order Cancellation RPC, Principle of
--- Least Privilege Grants, Safe Email-Only Guest Order Claiming,
--- and Table Hardening against Tampering.
--- ============================================================
-
--- ============================================================
--- 1. ATOMIC ORDER CANCELLATION RPC
--- ============================================================
-
--- ── cancel_order ─────────────────────────────────────────────
--- Allows authenticated customers to safely self-cancel their pending orders.
--- Restores variant stock quantities, logs status transition, and enforces
--- strict ownership inside a single ACID database transaction.
-CREATE OR REPLACE FUNCTION public.cancel_order(
-  p_order_id uuid
-)
-RETURNS void
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-DECLARE
-  v_user_id    uuid;
-  v_status     public.order_status;
-  v_created_at timestamptz;
-  v_caller_id  uuid := auth.uid();
-  v_item       RECORD;
-BEGIN
-  IF p_order_id IS NULL THEN
-    RAISE EXCEPTION 'Order ID is required';
-  END IF;
-
-  IF v_caller_id IS NULL THEN
-    RAISE EXCEPTION 'Not authenticated';
-  END IF;
-
-  -- Lock the order row FOR UPDATE to prevent race conditions
-  SELECT o.user_id, o.status, o.created_at
-  INTO v_user_id, v_status, v_created_at
-  FROM public.orders o
-  WHERE o.id = p_order_id
-  FOR UPDATE;
-
-  IF NOT FOUND THEN
-    RAISE EXCEPTION 'Order not found';
-  END IF;
-
-  -- Require orders.user_id = auth.uid()
-  IF v_user_id IS NULL OR v_user_id <> v_caller_id THEN
-    RAISE EXCEPTION 'Unauthorized: Not the order owner';
-  END IF;
-
-  -- Require status = 'pending'
-  IF v_status <> 'pending' THEN
-    RAISE EXCEPTION 'Only pending orders can be cancelled';
-  END IF;
-
-  -- 24h rule: Orders can only be cancelled within 24 hours of placement
-  IF v_created_at < (now() - interval '24 hours') THEN
-    RAISE EXCEPTION 'Orders can only be cancelled within 24 hours of placement.';
-  END IF;
-
-  -- Update order status to 'cancelled'
-  UPDATE public.orders o
-  SET status = 'cancelled',
-      updated_at = now()
-  WHERE o.id = p_order_id;
-
-  -- Insert status transition history row
-  INSERT INTO public.order_status_history (
-    order_id,
-    status,
-    changed_by,
-    changed_at
-  )
-  VALUES (
-    p_order_id,
-    'cancelled',
-    v_caller_id,
-    now()
-  );
-
-  -- Restore stock for every item associated with the order
-  FOR v_item IN
-    SELECT oi.variant_id, oi.qty
-    FROM public.order_items oi
-    WHERE oi.order_id = p_order_id
-  LOOP
-    UPDATE public.product_variants pv
-    SET stock_qty  = pv.stock_qty + v_item.qty,
-        updated_at = now()
-    WHERE pv.id = v_item.variant_id;
-  END LOOP;
-END;
-$$;
-
-REVOKE EXECUTE ON FUNCTION public.cancel_order(uuid) FROM PUBLIC, anon;
-GRANT EXECUTE ON FUNCTION public.cancel_order(uuid) TO authenticated, service_role;
-
-
--- ============================================================
--- 2. DROP OBSOLETE CUSTOMER WRITE POLICIES
--- ============================================================
--- Cancellation is now strictly handled by the atomic cancel_order RPC above.
--- Direct customer UPDATE on orders and direct customer INSERT into
--- order_status_history are no longer permitted via PostgREST.
-
-DROP POLICY IF EXISTS "orders: customer cancel own" ON public.orders;
-DROP POLICY IF EXISTS "order_status_history: customer insert cancellation" ON public.order_status_history;
-
-
--- ============================================================
--- 3. RESTRICT ORDERS UPDATE COLUMN GRANTS
--- ============================================================
--- Codebase inspection shows that updateOrderStatusAction (and all other order
--- update paths) only modify the 'status' column. No user-session code modifies
--- price, totals, items, user_id, customer_name, phone, address, or order_number.
--- Revoking table-level UPDATE and granting UPDATE only on 'status' prevents
--- column-tampering via direct PostgREST calls.
-
+-- ── 3. Table Grants & Privilege Hardening ──────────────────
+-- Restrict authenticated UPDATE on public.orders to status column only.
+-- Prevents tampering with price, totals, items, user_id, or recipient details.
 REVOKE UPDATE ON public.orders FROM anon, authenticated;
 GRANT UPDATE (status) ON public.orders TO authenticated;
 
-
--- ============================================================
--- 4. RECREATE GUEST ORDER LINKING FUNCTIONS (EMAIL ONLY)
--- ============================================================
--- Queries and links unclaimed guest orders by matching ONLY lower(guest_email)
--- with the caller's confirmed email from auth.users.
--- Phone matching is completely removed to prevent unverified phone hijacking.
-
-CREATE OR REPLACE FUNCTION public.find_unclaimed_guest_orders()
-RETURNS TABLE (
-  id           uuid,
-  order_number text,
-  created_at   timestamptz,
-  total        numeric
-)
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-DECLARE
-  v_user_id      uuid := auth.uid();
-  v_email        text;
-  v_confirmed_at timestamptz;
-BEGIN
-  IF v_user_id IS NULL THEN
-    RETURN;
-  END IF;
-
-  SELECT u.email, u.email_confirmed_at
-  INTO v_email, v_confirmed_at
-  FROM auth.users u
-  WHERE u.id = v_user_id;
-
-  -- Require email to be present and confirmed
-  IF v_email IS NULL OR v_confirmed_at IS NULL THEN
-    RETURN;
-  END IF;
-
-  RETURN QUERY
-  SELECT o.id, o.order_number, o.created_at, o.total
-  FROM public.orders o
-  WHERE o.user_id IS NULL
-    AND lower(o.guest_email) = lower(v_email)
-  ORDER BY o.created_at DESC;
-END;
-$$;
-
-REVOKE ALL ON FUNCTION public.find_unclaimed_guest_orders() FROM PUBLIC, anon;
-GRANT EXECUTE ON FUNCTION public.find_unclaimed_guest_orders() TO authenticated, service_role;
-
-
-CREATE OR REPLACE FUNCTION public.claim_guest_orders(
-  p_order_ids uuid[] DEFAULT NULL
-)
-RETURNS int
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-DECLARE
-  v_user_id      uuid := auth.uid();
-  v_email        text;
-  v_confirmed_at timestamptz;
-  claimed_count  int;
-BEGIN
-  IF v_user_id IS NULL THEN
-    RAISE EXCEPTION 'Not authenticated';
-  END IF;
-
-  SELECT u.email, u.email_confirmed_at
-  INTO v_email, v_confirmed_at
-  FROM auth.users u
-  WHERE u.id = v_user_id;
-
-  IF v_email IS NULL OR v_confirmed_at IS NULL THEN
-    RAISE EXCEPTION 'User email is not confirmed';
-  END IF;
-
-  UPDATE public.orders o
-  SET user_id    = v_user_id,
-      updated_at = now()
-  WHERE o.user_id IS NULL
-    AND (p_order_ids IS NULL OR o.id = ANY(p_order_ids))
-    AND lower(o.guest_email) = lower(v_email);
-
-  GET DIAGNOSTICS claimed_count = ROW_COUNT;
-  RETURN claimed_count;
-END;
-$$;
-
-REVOKE ALL ON FUNCTION public.claim_guest_orders(uuid[]) FROM PUBLIC, anon;
-GRANT EXECUTE ON FUNCTION public.claim_guest_orders(uuid[]) TO authenticated, service_role;
-
-
--- ============================================================
--- 5. REVOKE PRIVILEGES ON SENSITIVE TABLES FROM ANON
--- ============================================================
--- Evidence that no anon code path needs them:
--- 1. orders: Guest checkout executes place_order RPC via service_role (adminDb).
---    Guest order tracking (/order/[orderNumber]) and lookupOrderAction read
---    orders using createAdminClient() (service_role).
--- 2. order_items: Written by place_order (service_role) and read by order tracking (service_role)
---    or authenticated users (auth.uid() = user_id).
--- 3. order_status_history: Written by place_order (service_role), cancel_order (RPC), and
---    updateOrderStatusAction (service_role). Read only by customer or staff.
--- 4. profiles: Created by auth trigger handle_new_user(). Read/updated only by owner or staff.
--- No anon client query touches these tables via PostgREST.
-
+-- Revoke all direct PostgREST privileges on sensitive tables from anon role.
 REVOKE ALL ON public.orders, public.order_items, public.order_status_history, public.profiles FROM anon;
 
-
--- ============================================================
--- 6. REVOKE HIGH-RISK TABLE PRIVILEGES
--- ============================================================
--- Prevent non-administrative roles from executing TRUNCATE, attaching triggers,
--- or creating external foreign keys referencing public schema tables.
-
+-- Revoke high-risk administrative privileges from non-service roles.
 REVOKE TRUNCATE, TRIGGER, REFERENCES ON ALL TABLES IN SCHEMA public FROM anon, authenticated;
-
-
--- ============================================================
--- 008_order_access_token.sql
--- Add per-order unguessable access token to public.orders for
--- privacy-preserving guest order tracking, and update place_order
--- to generate and return the token upon checkout.
--- ============================================================
-
--- ── 1. Add access_token column with 64-char hex default ───────────
--- Using replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '')
--- generates an unguessable 64-hex-character token and automatically
--- backfills existing orders.
-ALTER TABLE public.orders
-ADD COLUMN IF NOT EXISTS access_token text NOT NULL
-DEFAULT replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
-
--- ── 2. Create unique index on access_token ────────────────────────
-CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_access_token
-ON public.orders (access_token);
-
--- ── 3. Update place_order to insert & return access_token ─────────
--- Minimal diff update: adds v_access_token to declarations, generates it,
--- inserts into public.orders, and includes it in the returned JSONB.
-CREATE OR REPLACE FUNCTION public.place_order(
-  p_user_id          uuid,
-  p_customer_name    text,
-  p_phone            text,
-  p_guest_email      text,
-  p_address          text,
-  p_notes            text,
-  p_fulfillment_type text,
-  p_delivery_zone    text,
-  p_items            jsonb  -- [{ variant_id, product_id, qty, product_name }]
-)
-RETURNS jsonb
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-DECLARE
-  v_order_id       uuid;
-  v_order_number   text;
-  v_access_token   text;
-  v_item           jsonb;
-  v_rows_updated   integer;
-
-  -- Financials computed inside the function
-  v_subtotal       numeric(12,2) := 0;
-  v_delivery_fee   numeric(12,2) := 0;
-  v_total          numeric(12,2) := 0;
-
-  -- Per-item lookups
-  v_variant_price  numeric(12,2);
-  v_variant_active boolean;
-  v_product_active boolean;
-  v_item_qty       integer;
-  v_item_subtotal  numeric(12,2);
-BEGIN
-  -- 1. Compute delivery fee from zone (server-authoritative)
-  IF p_fulfillment_type = 'pickup' THEN
-    v_delivery_fee := 0;
-  ELSIF p_fulfillment_type = 'delivery' THEN
-    IF p_delivery_zone = 'inside_dhaka' THEN
-      v_delivery_fee := 70;
-    ELSIF p_delivery_zone = 'outside_dhaka' THEN
-      v_delivery_fee := 120;
-    ELSE
-      RAISE EXCEPTION 'INVALID_ZONE: delivery_zone is required for fulfillment_type = delivery';
-    END IF;
-  ELSE
-    RAISE EXCEPTION 'INVALID_FULFILLMENT_TYPE: %', p_fulfillment_type;
-  END IF;
-
-  -- 2. Validate every item, look up DB price, compute subtotal
-  FOR v_item IN SELECT * FROM jsonb_array_elements(p_items) LOOP
-    v_item_qty := (v_item->>'qty')::integer;
-
-    IF v_item_qty <= 0 THEN
-      RAISE EXCEPTION 'INVALID_QTY: qty must be > 0 for variant_id %',
-        (v_item->>'variant_id')::uuid;
-    END IF;
-
-    SELECT
-      pv.price,
-      pv.active,
-      p.active
-    INTO
-      v_variant_price,
-      v_variant_active,
-      v_product_active
-    FROM public.product_variants pv
-    JOIN public.products p ON p.id = pv.product_id
-    WHERE pv.id = (v_item->>'variant_id')::uuid;
-
-    IF NOT FOUND THEN
-      RAISE EXCEPTION 'ITEM_NOT_FOUND: variant_id %', (v_item->>'variant_id')::uuid;
-    END IF;
-
-    IF NOT v_variant_active OR NOT v_product_active THEN
-      RAISE EXCEPTION 'ITEM_INACTIVE: variant_id %', (v_item->>'variant_id')::uuid;
-    END IF;
-
-    v_item_subtotal := v_variant_price * v_item_qty;
-    v_subtotal      := v_subtotal + v_item_subtotal;
-  END LOOP;
-
-  v_total := v_subtotal + v_delivery_fee;
-
-  -- 3. Generate a race-condition-safe order number and access token
-  v_order_number := public.generate_order_number();
-  v_access_token := replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
-
-  -- 4. Insert the order row
-  INSERT INTO public.orders (
-    order_number,
-    access_token,
-    user_id,
-    customer_name,
-    phone,
-    guest_email,
-    address,
-    notes,
-    fulfillment_type,
-    delivery_zone,
-    subtotal,
-    delivery_fee,
-    total,
-    status
-  ) VALUES (
-    v_order_number,
-    v_access_token,
-    p_user_id,
-    p_customer_name,
-    p_phone,
-    p_guest_email,
-    p_address,
-    p_notes,
-    p_fulfillment_type::public.fulfillment_type,
-    NULLIF(p_delivery_zone, '')::public.delivery_zone,
-    v_subtotal,
-    v_delivery_fee,
-    v_total,
-    'pending'::public.order_status
-  )
-  RETURNING id INTO v_order_id;
-
-  -- 5. Log initial status history
-  INSERT INTO public.order_status_history (order_id, status, changed_by)
-  VALUES (v_order_id, 'pending'::public.order_status, p_user_id);
-
-  -- 6. Decrement stock and insert order items
-  FOR v_item IN SELECT * FROM jsonb_array_elements(p_items) LOOP
-    v_item_qty := (v_item->>'qty')::integer;
-
-    SELECT price INTO v_variant_price
-    FROM public.product_variants
-    WHERE id = (v_item->>'variant_id')::uuid;
-
-    -- Atomic stock decrement — rolls back if stock is insufficient
-    UPDATE public.product_variants
-       SET stock_qty = stock_qty - v_item_qty
-     WHERE id = (v_item->>'variant_id')::uuid
-       AND stock_qty >= v_item_qty;
-
-    GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
-
-    IF v_rows_updated = 0 THEN
-      RAISE EXCEPTION 'INSUFFICIENT_STOCK: variant_id %', (v_item->>'variant_id')::uuid;
-    END IF;
-
-    INSERT INTO public.order_items (
-      order_id,
-      product_id,
-      variant_id,
-      qty,
-      price_at_purchase,
-      product_name
-    ) VALUES (
-      v_order_id,
-      (v_item->>'product_id')::uuid,
-      (v_item->>'variant_id')::uuid,
-      v_item_qty,
-      v_variant_price,
-      v_item->>'product_name'
-    );
-  END LOOP;
-
-  -- 7. Return computed financials and access token
-  RETURN jsonb_build_object(
-    'order_number', v_order_number,
-    'access_token', v_access_token,
-    'subtotal',     v_subtotal,
-    'delivery_fee', v_delivery_fee,
-    'total',        v_total
-  );
-END;
-$$;
-
-REVOKE EXECUTE ON FUNCTION public.place_order(
-  uuid, text, text, text, text, text, text, text, jsonb
-) FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.place_order(
-  uuid, text, text, text, text, text, text, text, jsonb
-) TO service_role;
-
-

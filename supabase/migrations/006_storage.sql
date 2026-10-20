@@ -61,3 +61,17 @@ CREATE POLICY "product_images_delete_policy"
     bucket_id = 'product-images'
     AND app_private.is_staff_or_admin()
   );
+
+
+-- ── 3. Table Grants & Privilege Hardening ──────────────────
+-- Restrict authenticated UPDATE on public.orders to status column only.
+-- Prevents tampering with price, totals, items, user_id, or recipient details.
+REVOKE UPDATE ON public.orders FROM anon, authenticated;
+GRANT UPDATE (status) ON public.orders TO authenticated;
+
+-- Revoke all direct PostgREST privileges on sensitive tables from anon role.
+REVOKE ALL ON public.orders, public.order_items, public.order_status_history, public.profiles FROM anon;
+
+-- Revoke high-risk administrative privileges from non-service roles.
+REVOKE TRUNCATE, TRIGGER, REFERENCES ON ALL TABLES IN SCHEMA public FROM anon, authenticated;
+

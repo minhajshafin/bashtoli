@@ -57,9 +57,40 @@ describe('Order Token & Authorization Utilities', () => {
     })
 
     it('fails verification if signed with a different secret', () => {
-      const signed = signOrderVerification(ORDER_NUMBER, 'secret-A')
-      const isValid = verifyOrderVerification(ORDER_NUMBER, signed, 'secret-B')
+      const secretA = 'secret-A-key-with-sufficient-length-32'
+      const secretB = 'secret-B-key-with-sufficient-length-32'
+      const signed = signOrderVerification(ORDER_NUMBER, secretA)
+      const isValid = verifyOrderVerification(ORDER_NUMBER, signed, secretB)
       expect(isValid).toBe(false)
+    })
+
+    it('fails closed (verify returns false, sign throws) when secret is missing or < 32 chars', () => {
+      const originalSecret = process.env.ORDER_COOKIE_SECRET
+      const originalServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+      try {
+        delete process.env.ORDER_COOKIE_SECRET
+        process.env.SUPABASE_SERVICE_ROLE_KEY = 'should-never-be-used-as-fallback-service-key-32'
+
+        // 1. Missing secret
+        expect(() => signOrderVerification(ORDER_NUMBER)).toThrow(
+          'ORDER_COOKIE_SECRET is not configured or is shorter than 32 characters'
+        )
+        expect(verifyOrderVerification(ORDER_NUMBER, '12345.abcde')).toBe(false)
+
+        // 2. Secret shorter than 32 characters
+        expect(() => signOrderVerification(ORDER_NUMBER, 'short-secret-under-32-chars')).toThrow(
+          'ORDER_COOKIE_SECRET is not configured or is shorter than 32 characters'
+        )
+        expect(verifyOrderVerification(ORDER_NUMBER, '12345.abcde', 'short-secret-under-32-chars')).toBe(false)
+
+        // 3. Exactly 32 characters succeeds
+        const exact32 = '12345678901234567890123456789012'
+        const signed32 = signOrderVerification(ORDER_NUMBER, exact32)
+        expect(verifyOrderVerification(ORDER_NUMBER, signed32, exact32)).toBe(true)
+      } finally {
+        if (originalSecret !== undefined) process.env.ORDER_COOKIE_SECRET = originalSecret
+        if (originalServiceKey !== undefined) process.env.SUPABASE_SERVICE_ROLE_KEY = originalServiceKey
+      }
     })
 
     it('fails verification if the signature is tampered', () => {
@@ -147,6 +178,30 @@ describe('Order Token & Authorization Utilities', () => {
         get: vi.fn(() => undefined),
       }
       expect(isOrderCookieVerified(cookieStore, ORDER_NUMBER, TEST_SECRET)).toBe(false)
+    })
+
+    it('fails closed in cookie store helpers when secret is missing or < 32 chars', () => {
+      const originalSecret = process.env.ORDER_COOKIE_SECRET
+      try {
+        delete process.env.ORDER_COOKIE_SECRET
+        const mockSet = vi.fn()
+        const cookieStore = {
+          set: mockSet,
+          get: vi.fn(() => ({ value: '12345.abcde' })),
+        }
+
+        expect(() => setOrderVerificationCookie(cookieStore, ORDER_NUMBER)).toThrow(
+          'ORDER_COOKIE_SECRET is not configured or is shorter than 32 characters'
+        )
+        expect(isOrderCookieVerified(cookieStore, ORDER_NUMBER)).toBe(false)
+
+        expect(() => setOrderVerificationCookie(cookieStore, ORDER_NUMBER, 'too-short')).toThrow(
+          'ORDER_COOKIE_SECRET is not configured or is shorter than 32 characters'
+        )
+        expect(isOrderCookieVerified(cookieStore, ORDER_NUMBER, 'too-short')).toBe(false)
+      } finally {
+        if (originalSecret !== undefined) process.env.ORDER_COOKIE_SECRET = originalSecret
+      }
     })
   })
 

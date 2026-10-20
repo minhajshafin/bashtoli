@@ -26,15 +26,16 @@ export function timingSafeEqualStrings(
 }
 
 /**
- * Returns the secret key used for signing order verification cookies.
+ * Returns the validated secret key used for signing and verifying order verification cookies.
+ * Strictly requires ORDER_COOKIE_SECRET to be defined and at least 32 characters long.
+ * Fails closed (returns null) if missing or insufficient length.
  */
-function getSigningSecret(secretOverride?: string): string {
-  return (
-    secretOverride ||
-    process.env.ORDER_COOKIE_SECRET ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    'bashtoli-order-verification-fallback-secret'
-  )
+function getSigningSecret(secretOverride?: string): string | null {
+  const secret = secretOverride ?? process.env.ORDER_COOKIE_SECRET
+  if (!secret || typeof secret !== 'string' || secret.length < 32) {
+    return null
+  }
+  return secret
 }
 
 /**
@@ -48,12 +49,17 @@ export function getOrderVerificationCookieName(orderNumber: string): string {
 /**
  * Signs an order number with a timestamp using HMAC-SHA256.
  * Payload format: `${issuedAt}.${signature}`
+ * Throws a clear error if ORDER_COOKIE_SECRET is missing or < 32 characters.
  */
 export function signOrderVerification(
   orderNumber: string,
   secretOverride?: string
 ): string {
   const secret = getSigningSecret(secretOverride)
+  if (!secret) {
+    throw new Error('ORDER_COOKIE_SECRET is not configured or is shorter than 32 characters')
+  }
+
   const issuedAt = Date.now().toString()
   const hmac = crypto
     .createHmac('sha256', secret)
@@ -66,6 +72,7 @@ export function signOrderVerification(
 /**
  * Verifies that a signed cookie payload is valid, untampered, and unexpired.
  * Max age defaults to 24 hours (86,400,000 ms).
+ * Fails closed (returns false) if ORDER_COOKIE_SECRET is missing or < 32 characters.
  */
 export function verifyOrderVerification(
   orderNumber: string,
@@ -74,6 +81,11 @@ export function verifyOrderVerification(
   maxAgeMs = 24 * 60 * 60 * 1000
 ): boolean {
   if (!signedValue || typeof signedValue !== 'string') {
+    return false
+  }
+
+  const secret = getSigningSecret(secretOverride)
+  if (!secret) {
     return false
   }
 
@@ -96,7 +108,6 @@ export function verifyOrderVerification(
     return false
   }
 
-  const secret = getSigningSecret(secretOverride)
   const expectedHmac = crypto
     .createHmac('sha256', secret)
     .update(`${orderNumber}:${issuedAtStr}`)
@@ -107,14 +118,20 @@ export function verifyOrderVerification(
 
 /**
  * Sets an httpOnly signed cookie verifying phone ownership of the given order number.
+ * Throws a clear error if ORDER_COOKIE_SECRET is missing or < 32 characters.
  */
 export function setOrderVerificationCookie(
   cookieStore: { set: (name: string, value: string, options: Record<string, unknown>) => void },
   orderNumber: string,
   secretOverride?: string
 ): void {
+  const secret = getSigningSecret(secretOverride)
+  if (!secret) {
+    throw new Error('ORDER_COOKIE_SECRET is not configured or is shorter than 32 characters')
+  }
+
   const cookieName = getOrderVerificationCookieName(orderNumber)
-  const signedValue = signOrderVerification(orderNumber, secretOverride)
+  const signedValue = signOrderVerification(orderNumber, secret)
 
   cookieStore.set(cookieName, signedValue, {
     httpOnly: true,

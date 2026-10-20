@@ -132,6 +132,7 @@ CREATE TABLE public.wishlist (
 CREATE TABLE public.orders (
   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   order_number     text NOT NULL UNIQUE,
+  access_token     text NOT NULL DEFAULT replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''),
   user_id          uuid REFERENCES public.profiles(id) ON DELETE SET NULL,
   customer_name    text NOT NULL,
   phone            text NOT NULL,
@@ -147,6 +148,8 @@ CREATE TABLE public.orders (
   created_at       timestamptz NOT NULL DEFAULT now(),
   updated_at       timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_access_token ON public.orders (access_token);
 
 -- ── 13. order_items ──────────────────────────────────────────
 -- Purchased variant snapshot at time of order (historical prices immutable).

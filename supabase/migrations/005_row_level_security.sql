@@ -279,19 +279,6 @@ CREATE POLICY "orders: customer select own"
   ON public.orders FOR SELECT
   USING (user_id = auth.uid());
 
--- Authenticated customers can see unclaimed guest orders matching their verified email/phone
-CREATE POLICY "orders: customer select unclaimed guest orders"
-  ON public.orders FOR SELECT
-  USING (
-    user_id IS NULL
-    AND auth.uid() IS NOT NULL
-    AND (
-      (guest_email IS NOT NULL AND lower(guest_email) = lower(auth.jwt()->>'email'))
-      OR
-      (phone IS NOT NULL AND phone = (SELECT p.phone FROM public.profiles p WHERE p.id = auth.uid()))
-    )
-  );
-
 -- Staff and Admins can view all orders
 CREATE POLICY "orders: staff/admin select all"
   ON public.orders FOR SELECT
@@ -303,18 +290,6 @@ CREATE POLICY "orders: staff/admin update"
   ON public.orders FOR UPDATE
   TO authenticated
   USING (app_private.is_staff_or_admin());
-
--- Customers can only cancel their own pending order (narrowed security policy)
-CREATE POLICY "orders: customer cancel own"
-  ON public.orders FOR UPDATE
-  USING (
-    user_id = auth.uid()
-    AND status = 'pending'
-  )
-  WITH CHECK (
-    user_id = auth.uid()
-    AND status = 'cancelled'
-  );
 
 -- ── order_items ──────────────────────────────────────────────
 CREATE POLICY "order_items: customer select own"
@@ -350,18 +325,6 @@ CREATE POLICY "order_status_history: staff/admin insert"
   ON public.order_status_history FOR INSERT
   TO authenticated
   WITH CHECK (app_private.is_staff_or_admin());
-
-CREATE POLICY "order_status_history: customer insert cancellation"
-  ON public.order_status_history FOR INSERT
-  WITH CHECK (
-    auth.uid() IS NOT NULL
-    AND status = 'cancelled'
-    AND EXISTS (
-      SELECT 1 FROM public.orders o
-      WHERE o.id = order_status_history.order_id
-        AND o.user_id = auth.uid()
-    )
-  );
 
 
 -- ============================================================

@@ -170,7 +170,7 @@ export async function createTestGuestOrder(
   email: string,
   phone = '01712345678',
   customerName = 'Test Guest User'
-): Promise<{ id: string; order_number: string }> {
+): Promise<{ id: string; order_number: string; access_token: string }> {
   const supabase = getAdminClient()
   await ensureTestCatalog()
 
@@ -193,7 +193,7 @@ export async function createTestGuestOrder(
       total: 330,
       status: 'pending',
     })
-    .select('id, order_number')
+    .select('id, order_number, access_token')
     .single()
 
   if (orderErr || !order) {

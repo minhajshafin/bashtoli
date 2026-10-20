@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 interface GuestOrderSummary {
@@ -22,63 +22,15 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
   if (!user) return { orders: [], error: 'Not authenticated' }
 
   try {
-    // 1. Try atomic database RPC
     const { data: rpcOrders, error: rpcError } = await supabase.rpc('find_unclaimed_guest_orders')
 
-    if (!rpcError && rpcOrders) {
-      return {
-        orders: rpcOrders.map((o) => ({
-          id: o.id,
-          order_number: o.order_number,
-          created_at: o.created_at,
-          total: Number(o.total),
-        })),
-        error: null,
-      }
+    if (rpcError) {
+      console.error('Error finding unclaimed guest orders RPC:', rpcError)
+      return { orders: [], error: 'Failed to search for unclaimed orders.' }
     }
-
-    // 2. Fallback to direct query if RPC is not yet in Postgres schema cache
-    let dbClient = supabase
-    try {
-      dbClient = createAdminClient()
-    } catch {
-      // Continue with user supabase client if service role not set
-    }
-
-    const { data: profile } = await dbClient
-      .from('profiles')
-      .select('phone')
-      .eq('id', user.id)
-      .maybeSingle()
-
-    const phone = profile?.phone || ''
-    const email = user.email || ''
-
-    if (!phone && !email) {
-      return { orders: [], error: null }
-    }
-
-    // Build the query conditions dynamically
-    let query = dbClient
-      .from('orders')
-      .select('id, order_number, created_at, total')
-      .is('user_id', null)
-
-    // Build conditional logic: either phone or email must match
-    if (phone && email) {
-      query = query.or(`phone.eq.${encodeURIComponent(phone)},guest_email.eq.${encodeURIComponent(email)}`)
-    } else if (phone) {
-      query = query.eq('phone', phone)
-    } else {
-      query = query.eq('guest_email', email)
-    }
-
-    const { data: orders, error } = await query.order('created_at', { ascending: false })
-
-    if (error) throw error
 
     return {
-      orders: (orders || []).map((o) => ({
+      orders: (rpcOrders || []).map((o) => ({
         id: o.id,
         order_number: o.order_number,
         created_at: o.created_at,
@@ -109,35 +61,18 @@ export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ erro
     }
 
     // Execute atomic claim_guest_orders RPC (bypasses customer UPDATE RLS securely via SECURITY DEFINER)
-    let claimedCount: number | null = null
     const { data: rpcCount, error: rpcError } = await supabase.rpc('claim_guest_orders', {
       p_order_ids: orderIds,
     })
 
-    if (!rpcError) {
-      claimedCount = rpcCount
-    } else {
-      // Graceful fallback to admin client if RPC is not yet present
-      let dbClient = supabase
-      try {
-        dbClient = createAdminClient()
-      } catch {
-        throw rpcError
-      }
-
-      const { error: updateError } = await dbClient
-        .from('orders')
-        .update({ user_id: user.id })
-        .in('id', orderIds)
-        .is('user_id', null)
-
-      if (updateError) throw updateError
-      claimedCount = orderIds.length
+    if (rpcError) {
+      console.error('Error claiming guest orders RPC:', rpcError)
+      return { error: 'Failed to claim orders.' }
     }
 
     revalidatePath('/account/orders')
     revalidatePath('/account')
-    return { error: null, success: true, claimed: claimedCount ?? orderIds.length }
+    return { error: null, success: true, claimed: rpcCount ?? orderIds.length }
   } catch (err) {
     console.error('Error claiming guest orders:', err)
     return { error: 'Failed to claim orders.' }
