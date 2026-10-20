@@ -1,13 +1,31 @@
 import { NextResponse } from 'next/server'
 import { createPublicClient } from '@/lib/supabase/server'
+import { checkSearchRateLimit } from '@/lib/supabase/rate-limit'
 
 export async function GET(request: Request) {
+  // Apply per-IP rate limiter (prefix rl:search, 30 req / 60 s)
+  const limitResult = await checkSearchRateLimit(request)
+  if (limitResult.limited) {
+    return NextResponse.json(
+      { error: 'Too many search requests. Please try again later.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(limitResult.retryAfter) },
+      }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
-  const q = searchParams.get('q')?.trim() || ''
+  // Cap search query at 64 characters
+  const rawQ = searchParams.get('q')?.trim() || ''
+  const q = rawQ.slice(0, 64).trim()
 
   if (!q) {
     return NextResponse.json({ products: [] })
   }
+
+  // Escape PostgreSQL LIKE special characters: backslash, percent, underscore
+  const escapedQ = q.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_')
 
   try {
     const supabase = createPublicClient()
@@ -22,7 +40,7 @@ export async function GET(request: Request) {
         product_images (url, sort_order)
       `)
       .eq('active', true)
-      .ilike('name', `%${q}%`)
+      .ilike('name', `%${escapedQ}%`)
       .order('created_at', { ascending: false })
       .limit(6)
 

@@ -1,92 +1,33 @@
 'use server'
 
-import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 
 /**
- * Server Action: Allows a customer to self-cancel their pending order within 24 hours of placement.
- * Updates order status to 'cancelled' and replenishes variant stock levels.
+ * Server Action: Allows an authenticated customer to self-cancel their pending order.
+ * Delegates atomically to the cancel_order RPC, which enforces ownership, updates
+ * status to 'cancelled', records status history, and replenishes variant stock.
  */
-export async function customerCancelOrderAction(orderId: string): Promise<{ error: string | null; success?: boolean }> {
+export async function customerCancelOrderAction(
+  orderId: string
+): Promise<{ error: string | null; success?: boolean }> {
   const client = await createClient()
   const {
     data: { user },
   } = await client.auth.getUser()
 
-  if (!user) return { error: 'You must be logged in to cancel orders.' }
-
-  // Use admin client to bypass guest select RLS policy and perform transaction securely
-  const adminDb = createAdminClient()
+  if (!user) {
+    return { error: 'You must be logged in to cancel orders.' }
+  }
 
   try {
-    // 1. Fetch order details
-    const { data: order, error: orderError } = await adminDb
-      .from('orders')
-      .select('*')
-      .eq('id', orderId)
-      .maybeSingle()
+    const { error: rpcError } = await client.rpc('cancel_order', {
+      p_order_id: orderId,
+    })
 
-    if (orderError || !order) {
-      return { error: 'Order not found.' }
-    }
-
-    // 2. Access control check: Must be the owner
-    if (order.user_id !== user.id) {
-      return { error: 'You do not have permission to cancel this order.' }
-    }
-
-    // 3. Status check: Must be pending
-    if (order.status !== 'pending') {
-      return { error: 'Only pending orders can be cancelled.' }
-    }
-
-    // 4. Time check: Must be within 24 hours of placement
-    const createdAt = new Date(order.created_at)
-    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
-
-    if (createdAt < twentyFourHoursAgo) {
-      return { error: 'Orders can only be cancelled within 24 hours of placement.' }
-    }
-
-    // 5. Update order status to 'cancelled'
-    const { error: updateError } = await adminDb
-      .from('orders')
-      .update({ status: 'cancelled' })
-      .eq('id', orderId)
-
-    if (updateError) throw updateError
-
-    // 5b. Log cancellation in order_status_history
-    const { error: historyError } = await adminDb
-      .from('order_status_history')
-      .insert({
-        order_id: orderId,
-        status: 'cancelled',
-        changed_by: user.id,
-      })
-
-    if (historyError) {
-      console.error('Failed to log order status history for cancellation:', historyError)
-    }
-
-    // 6. Restock items: Increment product_variants stock_qty
-    const { data: orderItems, error: itemsError } = await adminDb
-      .from('order_items')
-      .select('variant_id, qty, product_id')
-      .eq('order_id', orderId)
-
-    if (itemsError) throw itemsError
-
-    for (const item of orderItems || []) {
-      // Atomic increment — no read-modify-write race condition
-      const { error: stockError } = await adminDb.rpc('increment_stock', {
-        p_variant_id: item.variant_id,
-        p_qty: item.qty,
-      })
-
-      if (stockError) {
-        console.error(`Failed to restock variant ${item.variant_id}:`, stockError)
-      }
+    if (rpcError) {
+      console.error('Failed to cancel order:', rpcError)
+      return { error: rpcError.message || 'Failed to cancel the order. Please try again.' }
     }
 
     revalidateTag('products', 'max')
@@ -97,14 +38,7 @@ export async function customerCancelOrderAction(orderId: string): Promise<{ erro
     revalidatePath('/admin')
     revalidatePath('/admin/products')
     revalidatePath('/admin/orders')
-    revalidatePath(`/order/${order.order_number}`)
     revalidatePath('/account/orders')
-
-    for (const item of orderItems || []) {
-      if (item.product_id) {
-        revalidatePath(`/admin/products/${item.product_id}`)
-      }
-    }
 
     return { error: null, success: true }
   } catch (err) {

@@ -60,6 +60,8 @@ describe('Product Images Actions', () => {
         }),
       }),
     }
+
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.com'
   })
 
   describe('updateProductImageAlt', () => {
@@ -157,6 +159,30 @@ describe('Product Images Actions', () => {
         sort_order: 2,
       })
       expect(mockRevalidatePath).toHaveBeenCalledWith(`/admin/products/${PROD_UUID}`)
+    })
+
+    it('rejects URLs not starting with this project Supabase public storage prefix', async () => {
+      const mockInsert = vi.fn()
+      productImagesMock = {
+        select: vi.fn(),
+        insert: mockInsert,
+      }
+
+      // External host
+      const res1 = await addProductImage(
+        PROD_UUID,
+        'https://malicious.com/storage/v1/object/public/product-images/test.jpg'
+      )
+      expect(res1.error).toContain('Invalid image URL: Image must be hosted in this project’s product-images storage bucket.')
+
+      // Wrong bucket
+      const res2 = await addProductImage(
+        PROD_UUID,
+        'https://example.com/storage/v1/object/public/other-bucket/test.jpg'
+      )
+      expect(res2.error).toContain('Invalid image URL: Image must be hosted in this project’s product-images storage bucket.')
+
+      expect(mockInsert).not.toHaveBeenCalled()
     })
   })
 

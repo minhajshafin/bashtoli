@@ -23,12 +23,11 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
 
   try {
     // 1. Try atomic database RPC
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: rpcOrders, error: rpcError } = await (supabase as any).rpc('find_unclaimed_guest_orders')
+    const { data: rpcOrders, error: rpcError } = await supabase.rpc('find_unclaimed_guest_orders')
 
     if (!rpcError && rpcOrders) {
       return {
-        orders: rpcOrders.map((o: { id: string; order_number: string; created_at: string; total: number | string }) => ({
+        orders: rpcOrders.map((o) => ({
           id: o.id,
           order_number: o.order_number,
           created_at: o.created_at,
@@ -111,8 +110,7 @@ export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ erro
 
     // Execute atomic claim_guest_orders RPC (bypasses customer UPDATE RLS securely via SECURITY DEFINER)
     let claimedCount: number | null = null
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: rpcCount, error: rpcError } = await (supabase as any).rpc('claim_guest_orders', {
+    const { data: rpcCount, error: rpcError } = await supabase.rpc('claim_guest_orders', {
       p_order_ids: orderIds,
     })
 

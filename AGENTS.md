@@ -52,6 +52,7 @@ Bashtoli: e-commerce site for a local stationery shop. Production, real customer
 - Do not add new places where phone, email, or address appear in URLs or logs.
 - Rate-limit sensitive public endpoints (checkout, order lookup, auth, search).
 - Never log secrets or PII.
+- Never reveal, print, quote, or copy secrets into chat, reports, docs, commit messages, test output, or logs. Secrets include `.env*` values, API keys, tokens, JWTs (`eyJ...`), the service-role key, and passwords. When searching or grepping, exclude `.env*` files and redact matches (show variable names and file:line only, never values). If a secret is found in a tracked file or output, report only its location and tell the user to rotate it.
 - `NEXT_PUBLIC_` only for values safe in the browser. New env vars go in `.env.example` (no real values) and `docs/`.
 - No new dependencies without stating why. `react-dom` is a required runtime dependency; do not remove it.
 

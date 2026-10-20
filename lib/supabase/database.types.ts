@@ -542,6 +542,12 @@ export type Database = {
         }
         Returns: number
       }
+      cancel_order: {
+        Args: {
+          p_order_id: string
+        }
+        Returns: void
+      }
     }
     Enums: {
       delivery_zone: 'inside_dhaka' | 'outside_dhaka'

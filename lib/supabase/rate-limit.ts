@@ -12,8 +12,10 @@
  *        UPSTASH_REDIS_REST_TOKEN=...
  *
  * Limits defined here:
- *   auth   — 10 requests / 60 s per IP (login, signup, forgot-password)
- *   order  — 5 requests / 60 s per IP  (guest order lookup)
+ *   auth     — 10 requests / 60 s per IP (login, signup, forgot-password)
+ *   order    — 5 requests / 60 s per IP  (guest order lookup)
+ *   checkout — 5 requests / 60 s per IP  (order placement)
+ *   search   — 30 requests / 60 s per IP (catalog product search)
  */
 
 import { Ratelimit } from '@upstash/ratelimit'
@@ -22,7 +24,7 @@ import type { NextRequest } from 'next/server'
 
 // ── Helpers ───────────────────────────────────────────────────
 
-function getClientIp(request: NextRequest): string {
+export function getClientIp(request: Request | NextRequest): string {
   // On Vercel (and most CDN/proxy setups), x-real-ip is set by the edge
   // and cannot be spoofed by the client. Prefer it over x-forwarded-for.
   const realIp = request.headers.get('x-real-ip')
@@ -67,6 +69,7 @@ function isConfigured(): boolean {
 let authLimiter: Ratelimit | null = null
 let orderLimiter: Ratelimit | null = null
 let checkoutLimiter: Ratelimit | null = null
+let searchLimiter: Ratelimit | null = null
 
 function getAuthLimiter(): Ratelimit {
   if (!authLimiter) {
@@ -102,6 +105,18 @@ function getCheckoutLimiter(): Ratelimit {
     })
   }
   return checkoutLimiter
+}
+
+function getSearchLimiter(): Ratelimit {
+  if (!searchLimiter) {
+    searchLimiter = new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(30, '60 s'),
+      prefix: 'rl:search',
+      analytics: false,
+    })
+  }
+  return searchLimiter
 }
 
 // ── Public API ────────────────────────────────────────────────
@@ -184,6 +199,34 @@ export async function checkCheckoutRateLimit(
     return { limited: true, retryAfter }
   } catch (err) {
     console.error('[rate-limit] Checkout limiter error:', err)
+    return { limited: false }
+  }
+}
+
+/**
+ * Check the search rate limit for the given request or headers.
+ * Limits to 30 requests / 60 s per IP (prefix: rl:search) to prevent scraping.
+ * Returns `{ limited: false }` when Upstash is not configured (fail-open).
+ */
+export async function checkSearchRateLimit(
+  requestOrHeaders?: Request | NextRequest | { get(name: string): string | null }
+): Promise<RateLimitResult> {
+  if (!isConfigured()) return { limited: false }
+
+  let ip = '127.0.0.1'
+  if (requestOrHeaders && 'headers' in requestOrHeaders) {
+    ip = getClientIp(requestOrHeaders as Request)
+  } else if (requestOrHeaders && 'get' in requestOrHeaders) {
+    ip = getClientIpFromHeaders(requestOrHeaders)
+  }
+
+  try {
+    const { success, reset } = await getSearchLimiter().limit(ip)
+    if (success) return { limited: false }
+    const retryAfter = Math.ceil((reset - Date.now()) / 1000)
+    return { limited: true, retryAfter }
+  } catch (err) {
+    console.error('[rate-limit] Search limiter error:', err)
     return { limited: false }
   }
 }

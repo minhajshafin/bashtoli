@@ -9,6 +9,7 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
 } from '@/lib/validations/auth'
+import { safeRedirectPath } from '@/lib/utils/safe-redirect'
 
 export type LoginState = {
   error: string | null
@@ -88,8 +89,9 @@ export async function loginAction(
 
     // Route logic:
     // Allowlist relative paths only — no protocol-relative URLs (e.g. //evil.com)
-    if (redirectTo && /^\/[^/]/.test(redirectTo)) {
-      targetPath = redirectTo
+    const safeTarget = safeRedirectPath(redirectTo, '')
+    if (safeTarget) {
+      targetPath = safeTarget
     } else if (profile?.role === 'staff' || profile?.role === 'admin') {
       targetPath = '/admin'
     } else {

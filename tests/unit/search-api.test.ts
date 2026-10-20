@@ -14,13 +14,20 @@ const mockSupabase = {
   })),
 }
 
+const mockCheckSearchRateLimit = vi.fn().mockResolvedValue({ limited: false })
+
 vi.mock('@/lib/supabase/server', () => ({
   createPublicClient: () => mockSupabase,
+}))
+
+vi.mock('@/lib/supabase/rate-limit', () => ({
+  checkSearchRateLimit: (...args: unknown[]) => mockCheckSearchRateLimit(...args),
 }))
 
 describe('GET /api/search', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockCheckSearchRateLimit.mockResolvedValue({ limited: false })
 
     // Setup default mock chain
     mockSelect.mockReturnValue({ eq: mockEq })
@@ -87,6 +94,44 @@ describe('GET /api/search', () => {
         imageUrl: 'https://example.com/image-1.jpg', // Lowest sort_order picked first
       },
     ])
+  })
+
+  it('caps query string at 64 characters before querying', async () => {
+    mockLimit.mockResolvedValue({ data: [], error: null })
+
+    const longQuery = 'a'.repeat(80)
+    const expectedCapped = 'a'.repeat(64)
+    const request = new Request(`http://localhost:3000/api/search?q=${longQuery}`)
+    const response = await GET(request)
+
+    expect(response.status).toBe(200)
+    expect(mockIlike).toHaveBeenCalledWith('name', `%${expectedCapped}%`)
+  })
+
+  it('escapes %, _, and \\ characters in search query to prevent ILIKE pattern injection', async () => {
+    mockLimit.mockResolvedValue({ data: [], error: null })
+
+    const specialQuery = '100%_pen\\test'
+    // % -> \%, _ -> \_, \ -> \\
+    const expectedEscaped = '100\\%\\_pen\\\\test'
+    const request = new Request(`http://localhost:3000/api/search?q=${encodeURIComponent(specialQuery)}`)
+    const response = await GET(request)
+
+    expect(response.status).toBe(200)
+    expect(mockIlike).toHaveBeenCalledWith('name', `%${expectedEscaped}%`)
+  })
+
+  it('returns 429 Too Many Requests when search rate limit is exceeded', async () => {
+    mockCheckSearchRateLimit.mockResolvedValue({ limited: true, retryAfter: 45 })
+
+    const request = new Request('http://localhost:3000/api/search?q=pen')
+    const response = await GET(request)
+    const json = await response.json()
+
+    expect(response.status).toBe(429)
+    expect(response.headers.get('Retry-After')).toBe('45')
+    expect(json).toEqual({ error: 'Too many search requests. Please try again later.' })
+    expect(mockSupabase.from).not.toHaveBeenCalled()
   })
 
   it('handles database error by returning empty products with 500 status', async () => {

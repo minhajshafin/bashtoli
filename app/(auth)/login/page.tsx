@@ -20,16 +20,14 @@ export async function generateMetadata() {
 }
 
 import { Suspense } from 'react'
+import { safeRedirectPath } from '@/lib/utils/safe-redirect'
 
 export const instant = false
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = await searchParams
   const rawRedirectTo = resolvedSearchParams?.redirectTo
-  const redirectTo =
-    rawRedirectTo && /^\/[^/]/.test(rawRedirectTo)
-      ? rawRedirectTo
-      : '/products'
+  const redirectTo = safeRedirectPath(rawRedirectTo, '/products')
 
   const supabase = await createClient()
   const {

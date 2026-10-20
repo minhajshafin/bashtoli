@@ -51,6 +51,16 @@ export async function addProductImage(
     return { error: err instanceof Error ? err.message : 'Unauthorized.' }
   }
 
+  // Reject URLs not starting with this project's Supabase public storage prefix for product-images
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '')
+  const expectedPrefix = `${supabaseUrl}/storage/v1/object/public/product-images/`
+
+  if (!supabaseUrl || !url.startsWith(expectedPrefix) || url.length <= expectedPrefix.length) {
+    return {
+      error: 'Invalid image URL: Image must be hosted in this project’s product-images storage bucket.',
+    }
+  }
+
   // Fetch current max sort_order
   const { data: currentImages, error: fetchErr } = await supabase
     .from('product_images')

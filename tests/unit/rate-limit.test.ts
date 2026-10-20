@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import {
   getClientIpFromHeaders,
+  getClientIp,
   checkAuthRateLimit,
   checkOrderLookupRateLimit,
   checkCheckoutRateLimit,
+  checkSearchRateLimit,
 } from '@/lib/supabase/rate-limit'
 import type { NextRequest } from 'next/server'
 
@@ -75,6 +77,13 @@ describe('Rate Limiting & Security Hardening (lib/supabase/rate-limit.ts)', () =
       const headers = new Headers()
       expect(getClientIpFromHeaders(headers)).toBe('127.0.0.1')
     })
+
+    it('getClientIp extracts IP from Request directly', () => {
+      const req = new Request('http://localhost:3000', {
+        headers: { 'x-real-ip': '203.0.113.88' },
+      })
+      expect(getClientIp(req)).toBe('203.0.113.88')
+    })
   })
 
   describe('Unconfigured Environment (Fail-Open)', () => {
@@ -103,6 +112,15 @@ describe('Rate Limiting & Security Hardening (lib/supabase/rate-limit.ts)', () =
     it('allows checkout requests through when Redis is not configured', async () => {
       const headers = new Headers({ 'x-real-ip': '1.2.3.4' })
       const res = await checkCheckoutRateLimit(headers)
+      expect(res).toEqual({ limited: false })
+      expect(mockLimit).not.toHaveBeenCalled()
+    })
+
+    it('allows search requests through when Redis is not configured', async () => {
+      const req = new Request('http://localhost:3000/api/search?q=pen', {
+        headers: { 'x-real-ip': '1.2.3.4' },
+      })
+      const res = await checkSearchRateLimit(req)
       expect(res).toEqual({ limited: false })
       expect(mockLimit).not.toHaveBeenCalled()
     })
@@ -185,6 +203,38 @@ describe('Rate Limiting & Security Hardening (lib/supabase/rate-limit.ts)', () =
 
       const headers = new Headers({ 'x-real-ip': '198.51.100.1' })
       const res = await checkCheckoutRateLimit(headers)
+      expect(res).toEqual({ limited: false })
+      consoleSpy.mockRestore()
+    })
+
+    it('enforces search rate limit (30 req / 60s) returning retryAfter when limited', async () => {
+      const resetTime = Date.now() + 20_000
+      mockLimit.mockResolvedValueOnce({
+        success: false,
+        limit: 30,
+        remaining: 0,
+        reset: resetTime,
+      })
+
+      const req = new Request('http://localhost:3000/api/search?q=pen', {
+        headers: { 'x-real-ip': '198.51.100.99' },
+      })
+      const res = await checkSearchRateLimit(req)
+      expect(res.limited).toBe(true)
+      if (res.limited) {
+        expect(res.retryAfter).toBeGreaterThanOrEqual(19)
+        expect(res.retryAfter).toBeLessThanOrEqual(21)
+      }
+    })
+
+    it('fails open when Redis throws connection error on search', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      mockLimit.mockRejectedValueOnce(new Error('Search redis connection failed'))
+
+      const req = new Request('http://localhost:3000/api/search?q=pen', {
+        headers: { 'x-real-ip': '198.51.100.1' },
+      })
+      const res = await checkSearchRateLimit(req)
       expect(res).toEqual({ limited: false })
       consoleSpy.mockRestore()
     })
