@@ -147,7 +147,7 @@ GRANT EXECUTE ON FUNCTION app_private.is_admin() TO authenticated, service_role;
 
 -- ── generate_order_number ────────────────────────────────────
 -- Race-condition safe order number generator (ORD-YYYYMMDD-NNNN).
--- Uses pg_advisory_xact_lock() scoped to current date.
+-- Uses pg_advisory_xact_lock() scoped to current date in Asia/Dhaka.
 CREATE OR REPLACE FUNCTION public.generate_order_number()
 RETURNS text
 LANGUAGE plpgsql
@@ -158,7 +158,7 @@ DECLARE
   lock_key  bigint;
   next_seq  integer;
 BEGIN
-  date_str := to_char(CURRENT_DATE, 'YYYYMMDD');
+  date_str := to_char((now() AT TIME ZONE 'Asia/Dhaka')::date, 'YYYYMMDD');
   lock_key  := date_str::bigint;
 
   PERFORM pg_advisory_xact_lock(lock_key);
@@ -217,6 +217,13 @@ DECLARE
   v_item_qty       integer;
   v_item_subtotal  numeric(12,2);
 BEGIN
+  -- Validate items parameter at start
+  IF p_items IS NULL
+     OR jsonb_typeof(p_items) <> 'array'
+     OR jsonb_array_length(p_items) = 0 THEN
+    RAISE EXCEPTION 'INVALID_ITEMS: p_items must be a non-empty array';
+  END IF;
+
   -- 1. Compute delivery fee from zone (server-authoritative)
   IF p_fulfillment_type = 'pickup' THEN
     v_delivery_fee := 0;

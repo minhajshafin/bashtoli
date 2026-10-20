@@ -272,15 +272,22 @@ CREATE TABLE public.admin_audit_log (
 -- order lookups, and admin filtering.
 -- ============================================================
 
--- ── orders ───────────────────────────────────────────────────
--- Guest lookup by order number and admin order search
-CREATE INDEX IF NOT EXISTS idx_orders_order_number  ON public.orders (order_number);
-
+-- ── orders & order items ──────────────────────────────────────
 -- Filter orders by status (e.g. pending orders queue)
 CREATE INDEX IF NOT EXISTS idx_orders_status        ON public.orders (status);
 
 -- Customer orders list lookups
 CREATE INDEX IF NOT EXISTS idx_orders_user_id       ON public.orders (user_id);
+
+-- Order items lookup by order
+CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON public.order_items (order_id);
+
+-- Order status transition history lookups
+CREATE INDEX IF NOT EXISTS idx_order_status_history_order_id ON public.order_status_history (order_id);
+
+-- ── addresses ────────────────────────────────────────────────
+-- Customer saved address lookups
+CREATE INDEX IF NOT EXISTS idx_addresses_user_id    ON public.addresses (user_id);
 
 -- ── products & variants ──────────────────────────────────────
 -- Category browse page filtering
@@ -306,6 +313,12 @@ CREATE INDEX IF NOT EXISTS idx_product_images_product_id ON public.product_image
 
 -- Variant lookup by parent product
 CREATE INDEX IF NOT EXISTS idx_variants_product_id  ON public.product_variants (product_id);
+
+-- Product options lookup by parent product
+CREATE INDEX IF NOT EXISTS idx_product_options_product_id ON public.product_options (product_id);
+
+-- Option values lookup by option
+CREATE INDEX IF NOT EXISTS idx_product_option_values_option_id ON public.product_option_values (option_id);
 
 -- ── categories ───────────────────────────────────────────────
 -- Homepage 7-slot category collage grid ordering
@@ -466,7 +479,7 @@ GRANT EXECUTE ON FUNCTION app_private.is_admin() TO authenticated, service_role;
 
 -- ── generate_order_number ────────────────────────────────────
 -- Race-condition safe order number generator (ORD-YYYYMMDD-NNNN).
--- Uses pg_advisory_xact_lock() scoped to current date.
+-- Uses pg_advisory_xact_lock() scoped to current date in Asia/Dhaka.
 CREATE OR REPLACE FUNCTION public.generate_order_number()
 RETURNS text
 LANGUAGE plpgsql
@@ -477,7 +490,7 @@ DECLARE
   lock_key  bigint;
   next_seq  integer;
 BEGIN
-  date_str := to_char(CURRENT_DATE, 'YYYYMMDD');
+  date_str := to_char((now() AT TIME ZONE 'Asia/Dhaka')::date, 'YYYYMMDD');
   lock_key  := date_str::bigint;
 
   PERFORM pg_advisory_xact_lock(lock_key);
@@ -536,6 +549,13 @@ DECLARE
   v_item_qty       integer;
   v_item_subtotal  numeric(12,2);
 BEGIN
+  -- Validate items parameter at start
+  IF p_items IS NULL
+     OR jsonb_typeof(p_items) <> 'array'
+     OR jsonb_array_length(p_items) = 0 THEN
+    RAISE EXCEPTION 'INVALID_ITEMS: p_items must be a non-empty array';
+  END IF;
+
   -- 1. Compute delivery fee from zone (server-authoritative)
   IF p_fulfillment_type = 'pickup' THEN
     v_delivery_fee := 0;
