@@ -3,7 +3,7 @@
 -- ============================================================
 -- This master script contains the complete, consolidated schema
 -- for the Bashtoli e-commerce application. It is compiled from
--- the 7 modular migrations in supabase/migrations/:
+-- the 8 modular migrations in supabase/migrations/:
 --   1. 001_types_and_extensions.sql
 --   2. 002_core_tables.sql
 --   3. 003_indexes.sql
@@ -11,6 +11,7 @@
 --   5. 005_row_level_security.sql
 --   6. 006_storage.sql
 --   7. 007_security_hardening.sql
+--   8. 008_order_access_token.sql
 --
 -- USAGE (Supabase Web Dashboard):
 -- 1. Open your Supabase project dashboard.
@@ -1305,10 +1306,11 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_user_id   uuid;
-  v_status    public.order_status;
-  v_caller_id uuid := auth.uid();
-  v_item      RECORD;
+  v_user_id    uuid;
+  v_status     public.order_status;
+  v_created_at timestamptz;
+  v_caller_id  uuid := auth.uid();
+  v_item       RECORD;
 BEGIN
   IF p_order_id IS NULL THEN
     RAISE EXCEPTION 'Order ID is required';
@@ -1319,10 +1321,10 @@ BEGIN
   END IF;
 
   -- Lock the order row FOR UPDATE to prevent race conditions
-  SELECT user_id, status
-  INTO v_user_id, v_status
-  FROM public.orders
-  WHERE id = p_order_id
+  SELECT o.user_id, o.status, o.created_at
+  INTO v_user_id, v_status, v_created_at
+  FROM public.orders o
+  WHERE o.id = p_order_id
   FOR UPDATE;
 
   IF NOT FOUND THEN
@@ -1339,11 +1341,16 @@ BEGIN
     RAISE EXCEPTION 'Only pending orders can be cancelled';
   END IF;
 
+  -- 24h rule: Orders can only be cancelled within 24 hours of placement
+  IF v_created_at < (now() - interval '24 hours') THEN
+    RAISE EXCEPTION 'Orders can only be cancelled within 24 hours of placement.';
+  END IF;
+
   -- Update order status to 'cancelled'
-  UPDATE public.orders
+  UPDATE public.orders o
   SET status = 'cancelled',
       updated_at = now()
-  WHERE id = p_order_id;
+  WHERE o.id = p_order_id;
 
   -- Insert status transition history row
   INSERT INTO public.order_status_history (
@@ -1361,14 +1368,14 @@ BEGIN
 
   -- Restore stock for every item associated with the order
   FOR v_item IN
-    SELECT variant_id, qty
-    FROM public.order_items
-    WHERE order_id = p_order_id
+    SELECT oi.variant_id, oi.qty
+    FROM public.order_items oi
+    WHERE oi.order_id = p_order_id
   LOOP
-    UPDATE public.product_variants
-    SET stock_qty  = stock_qty + v_item.qty,
+    UPDATE public.product_variants pv
+    SET stock_qty  = pv.stock_qty + v_item.qty,
         updated_at = now()
-    WHERE id = v_item.variant_id;
+    WHERE pv.id = v_item.variant_id;
   END LOOP;
 END;
 $$;
@@ -1428,10 +1435,10 @@ BEGIN
     RETURN;
   END IF;
 
-  SELECT email, email_confirmed_at
+  SELECT u.email, u.email_confirmed_at
   INTO v_email, v_confirmed_at
-  FROM auth.users
-  WHERE id = v_user_id;
+  FROM auth.users u
+  WHERE u.id = v_user_id;
 
   -- Require email to be present and confirmed
   IF v_email IS NULL OR v_confirmed_at IS NULL THEN
@@ -1469,21 +1476,21 @@ BEGIN
     RAISE EXCEPTION 'Not authenticated';
   END IF;
 
-  SELECT email, email_confirmed_at
+  SELECT u.email, u.email_confirmed_at
   INTO v_email, v_confirmed_at
-  FROM auth.users
-  WHERE id = v_user_id;
+  FROM auth.users u
+  WHERE u.id = v_user_id;
 
   IF v_email IS NULL OR v_confirmed_at IS NULL THEN
     RAISE EXCEPTION 'User email is not confirmed';
   END IF;
 
-  UPDATE public.orders
+  UPDATE public.orders o
   SET user_id    = v_user_id,
       updated_at = now()
-  WHERE user_id IS NULL
-    AND (p_order_ids IS NULL OR id = ANY(p_order_ids))
-    AND lower(guest_email) = lower(v_email);
+  WHERE o.user_id IS NULL
+    AND (p_order_ids IS NULL OR o.id = ANY(p_order_ids))
+    AND lower(o.guest_email) = lower(v_email);
 
   GET DIAGNOSTICS claimed_count = ROW_COUNT;
   RETURN claimed_count;
@@ -1518,4 +1525,210 @@ REVOKE ALL ON public.orders, public.order_items, public.order_status_history, pu
 -- or creating external foreign keys referencing public schema tables.
 
 REVOKE TRUNCATE, TRIGGER, REFERENCES ON ALL TABLES IN SCHEMA public FROM anon, authenticated;
+
+
+-- ============================================================
+-- 008_order_access_token.sql
+-- Add per-order unguessable access token to public.orders for
+-- privacy-preserving guest order tracking, and update place_order
+-- to generate and return the token upon checkout.
+-- ============================================================
+
+-- ── 1. Add access_token column with 64-char hex default ───────────
+-- Using replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '')
+-- generates an unguessable 64-hex-character token and automatically
+-- backfills existing orders.
+ALTER TABLE public.orders
+ADD COLUMN IF NOT EXISTS access_token text NOT NULL
+DEFAULT replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
+
+-- ── 2. Create unique index on access_token ────────────────────────
+CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_access_token
+ON public.orders (access_token);
+
+-- ── 3. Update place_order to insert & return access_token ─────────
+-- Minimal diff update: adds v_access_token to declarations, generates it,
+-- inserts into public.orders, and includes it in the returned JSONB.
+CREATE OR REPLACE FUNCTION public.place_order(
+  p_user_id          uuid,
+  p_customer_name    text,
+  p_phone            text,
+  p_guest_email      text,
+  p_address          text,
+  p_notes            text,
+  p_fulfillment_type text,
+  p_delivery_zone    text,
+  p_items            jsonb  -- [{ variant_id, product_id, qty, product_name }]
+)
+RETURNS jsonb
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_order_id       uuid;
+  v_order_number   text;
+  v_access_token   text;
+  v_item           jsonb;
+  v_rows_updated   integer;
+
+  -- Financials computed inside the function
+  v_subtotal       numeric(12,2) := 0;
+  v_delivery_fee   numeric(12,2) := 0;
+  v_total          numeric(12,2) := 0;
+
+  -- Per-item lookups
+  v_variant_price  numeric(12,2);
+  v_variant_active boolean;
+  v_product_active boolean;
+  v_item_qty       integer;
+  v_item_subtotal  numeric(12,2);
+BEGIN
+  -- 1. Compute delivery fee from zone (server-authoritative)
+  IF p_fulfillment_type = 'pickup' THEN
+    v_delivery_fee := 0;
+  ELSIF p_fulfillment_type = 'delivery' THEN
+    IF p_delivery_zone = 'inside_dhaka' THEN
+      v_delivery_fee := 70;
+    ELSIF p_delivery_zone = 'outside_dhaka' THEN
+      v_delivery_fee := 120;
+    ELSE
+      RAISE EXCEPTION 'INVALID_ZONE: delivery_zone is required for fulfillment_type = delivery';
+    END IF;
+  ELSE
+    RAISE EXCEPTION 'INVALID_FULFILLMENT_TYPE: %', p_fulfillment_type;
+  END IF;
+
+  -- 2. Validate every item, look up DB price, compute subtotal
+  FOR v_item IN SELECT * FROM jsonb_array_elements(p_items) LOOP
+    v_item_qty := (v_item->>'qty')::integer;
+
+    IF v_item_qty <= 0 THEN
+      RAISE EXCEPTION 'INVALID_QTY: qty must be > 0 for variant_id %',
+        (v_item->>'variant_id')::uuid;
+    END IF;
+
+    SELECT
+      pv.price,
+      pv.active,
+      p.active
+    INTO
+      v_variant_price,
+      v_variant_active,
+      v_product_active
+    FROM public.product_variants pv
+    JOIN public.products p ON p.id = pv.product_id
+    WHERE pv.id = (v_item->>'variant_id')::uuid;
+
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'ITEM_NOT_FOUND: variant_id %', (v_item->>'variant_id')::uuid;
+    END IF;
+
+    IF NOT v_variant_active OR NOT v_product_active THEN
+      RAISE EXCEPTION 'ITEM_INACTIVE: variant_id %', (v_item->>'variant_id')::uuid;
+    END IF;
+
+    v_item_subtotal := v_variant_price * v_item_qty;
+    v_subtotal      := v_subtotal + v_item_subtotal;
+  END LOOP;
+
+  v_total := v_subtotal + v_delivery_fee;
+
+  -- 3. Generate a race-condition-safe order number and access token
+  v_order_number := public.generate_order_number();
+  v_access_token := replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
+
+  -- 4. Insert the order row
+  INSERT INTO public.orders (
+    order_number,
+    access_token,
+    user_id,
+    customer_name,
+    phone,
+    guest_email,
+    address,
+    notes,
+    fulfillment_type,
+    delivery_zone,
+    subtotal,
+    delivery_fee,
+    total,
+    status
+  ) VALUES (
+    v_order_number,
+    v_access_token,
+    p_user_id,
+    p_customer_name,
+    p_phone,
+    p_guest_email,
+    p_address,
+    p_notes,
+    p_fulfillment_type::public.fulfillment_type,
+    NULLIF(p_delivery_zone, '')::public.delivery_zone,
+    v_subtotal,
+    v_delivery_fee,
+    v_total,
+    'pending'::public.order_status
+  )
+  RETURNING id INTO v_order_id;
+
+  -- 5. Log initial status history
+  INSERT INTO public.order_status_history (order_id, status, changed_by)
+  VALUES (v_order_id, 'pending'::public.order_status, p_user_id);
+
+  -- 6. Decrement stock and insert order items
+  FOR v_item IN SELECT * FROM jsonb_array_elements(p_items) LOOP
+    v_item_qty := (v_item->>'qty')::integer;
+
+    SELECT price INTO v_variant_price
+    FROM public.product_variants
+    WHERE id = (v_item->>'variant_id')::uuid;
+
+    -- Atomic stock decrement — rolls back if stock is insufficient
+    UPDATE public.product_variants
+       SET stock_qty = stock_qty - v_item_qty
+     WHERE id = (v_item->>'variant_id')::uuid
+       AND stock_qty >= v_item_qty;
+
+    GET DIAGNOSTICS v_rows_updated = ROW_COUNT;
+
+    IF v_rows_updated = 0 THEN
+      RAISE EXCEPTION 'INSUFFICIENT_STOCK: variant_id %', (v_item->>'variant_id')::uuid;
+    END IF;
+
+    INSERT INTO public.order_items (
+      order_id,
+      product_id,
+      variant_id,
+      qty,
+      price_at_purchase,
+      product_name
+    ) VALUES (
+      v_order_id,
+      (v_item->>'product_id')::uuid,
+      (v_item->>'variant_id')::uuid,
+      v_item_qty,
+      v_variant_price,
+      v_item->>'product_name'
+    );
+  END LOOP;
+
+  -- 7. Return computed financials and access token
+  RETURN jsonb_build_object(
+    'order_number', v_order_number,
+    'access_token', v_access_token,
+    'subtotal',     v_subtotal,
+    'delivery_fee', v_delivery_fee,
+    'total',        v_total
+  );
+END;
+$$;
+
+REVOKE EXECUTE ON FUNCTION public.place_order(
+  uuid, text, text, text, text, text, text, text, jsonb
+) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.place_order(
+  uuid, text, text, text, text, text, text, text, jsonb
+) TO service_role;
+
 

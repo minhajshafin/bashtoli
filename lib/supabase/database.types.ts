@@ -250,6 +250,7 @@ export type Database = {
         Row: {
           id: string
           order_number: string
+          access_token: string
           user_id: string | null
           customer_name: string
           phone: string
@@ -268,6 +269,7 @@ export type Database = {
         Insert: {
           id?: string | null
           order_number: string
+          access_token?: string
           user_id?: string | null
           customer_name: string
           phone: string
@@ -286,6 +288,7 @@ export type Database = {
         Update: {
           id?: string | null
           order_number?: string | null
+          access_token?: string | null
           user_id?: string | null
           customer_name?: string | null
           phone?: string | null

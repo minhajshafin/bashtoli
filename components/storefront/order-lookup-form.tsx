@@ -34,7 +34,8 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
           setFieldErrors(result.fieldErrors)
         }
       } else if (result.success) {
-        router.push(`/order/${encodeURIComponent(orderNumber.trim())}?phone=${encodeURIComponent(phone.trim())}`)
+        router.push(`/order/${encodeURIComponent(orderNumber.trim())}`)
+        router.refresh()
       }
     } catch (err) {
       console.error('Order tracking form submission error:', err)

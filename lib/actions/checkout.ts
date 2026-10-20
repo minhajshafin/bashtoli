@@ -11,6 +11,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 export type CheckoutActionState = {
   error: string | null
   orderNumber?: string
+  accessToken?: string
   fieldErrors?: Partial<
     Record<
       'customer_name' | 'phone' | 'guest_email' | 'address' | 'fulfillment_type' | 'delivery_zone' | 'notes',
@@ -127,6 +128,7 @@ export async function submitCheckout(
   //    The function returns a JSONB object with the computed financials.
   interface PlaceOrderResult {
     order_number: string
+    access_token: string
     subtotal: number
     delivery_fee: number
     total: number
@@ -205,6 +207,7 @@ export async function submitCheckout(
     await sendOrderEmails(
       {
         order_number: result.order_number,
+        access_token: result.access_token,
         customer_name: parsed.data.customer_name,
         phone: parsed.data.phone,
         guest_email: parsed.data.guest_email || null,
@@ -225,5 +228,6 @@ export async function submitCheckout(
   return {
     error: null,
     orderNumber: result.order_number,
+    accessToken: result.access_token,
   }
 }

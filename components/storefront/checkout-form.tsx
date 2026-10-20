@@ -148,7 +148,8 @@ export function CheckoutForm({
       } else if (result.orderNumber) {
         clearCart()
         router.refresh()
-        router.push(`/order/${result.orderNumber}?phone=${encodeURIComponent(phone)}`)
+        const tokenQuery = result.accessToken ? `?token=${encodeURIComponent(result.accessToken)}` : ''
+        router.push(`/order/${result.orderNumber}${tokenQuery}`)
       }
     } catch (err) {
       console.error('Checkout submission error:', err)

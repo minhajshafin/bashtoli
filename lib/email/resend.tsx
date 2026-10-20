@@ -16,6 +16,7 @@ interface OrderItemInfo {
 
 interface OrderInfo {
   order_number: string
+  access_token?: string
   customer_name: string
   phone: string
   guest_email?: string | null
@@ -91,6 +92,7 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
             react: (
               <OrderConfirmationEmail
                 orderNumber={order.order_number}
+                accessToken={order.access_token}
                 customerName={order.customer_name}
                 address={order.address}
                 total={Number(order.total)}

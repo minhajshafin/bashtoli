@@ -22,10 +22,11 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_user_id   uuid;
-  v_status    public.order_status;
-  v_caller_id uuid := auth.uid();
-  v_item      RECORD;
+  v_user_id    uuid;
+  v_status     public.order_status;
+  v_created_at timestamptz;
+  v_caller_id  uuid := auth.uid();
+  v_item       RECORD;
 BEGIN
   IF p_order_id IS NULL THEN
     RAISE EXCEPTION 'Order ID is required';
@@ -36,10 +37,10 @@ BEGIN
   END IF;
 
   -- Lock the order row FOR UPDATE to prevent race conditions
-  SELECT user_id, status
-  INTO v_user_id, v_status
-  FROM public.orders
-  WHERE id = p_order_id
+  SELECT o.user_id, o.status, o.created_at
+  INTO v_user_id, v_status, v_created_at
+  FROM public.orders o
+  WHERE o.id = p_order_id
   FOR UPDATE;
 
   IF NOT FOUND THEN
@@ -56,11 +57,16 @@ BEGIN
     RAISE EXCEPTION 'Only pending orders can be cancelled';
   END IF;
 
+  -- 24h rule: Orders can only be cancelled within 24 hours of placement
+  IF v_created_at < (now() - interval '24 hours') THEN
+    RAISE EXCEPTION 'Orders can only be cancelled within 24 hours of placement.';
+  END IF;
+
   -- Update order status to 'cancelled'
-  UPDATE public.orders
+  UPDATE public.orders o
   SET status = 'cancelled',
       updated_at = now()
-  WHERE id = p_order_id;
+  WHERE o.id = p_order_id;
 
   -- Insert status transition history row
   INSERT INTO public.order_status_history (
@@ -78,14 +84,14 @@ BEGIN
 
   -- Restore stock for every item associated with the order
   FOR v_item IN
-    SELECT variant_id, qty
-    FROM public.order_items
-    WHERE order_id = p_order_id
+    SELECT oi.variant_id, oi.qty
+    FROM public.order_items oi
+    WHERE oi.order_id = p_order_id
   LOOP
-    UPDATE public.product_variants
-    SET stock_qty  = stock_qty + v_item.qty,
+    UPDATE public.product_variants pv
+    SET stock_qty  = pv.stock_qty + v_item.qty,
         updated_at = now()
-    WHERE id = v_item.variant_id;
+    WHERE pv.id = v_item.variant_id;
   END LOOP;
 END;
 $$;
@@ -145,10 +151,10 @@ BEGIN
     RETURN;
   END IF;
 
-  SELECT email, email_confirmed_at
+  SELECT u.email, u.email_confirmed_at
   INTO v_email, v_confirmed_at
-  FROM auth.users
-  WHERE id = v_user_id;
+  FROM auth.users u
+  WHERE u.id = v_user_id;
 
   -- Require email to be present and confirmed
   IF v_email IS NULL OR v_confirmed_at IS NULL THEN
@@ -186,21 +192,21 @@ BEGIN
     RAISE EXCEPTION 'Not authenticated';
   END IF;
 
-  SELECT email, email_confirmed_at
+  SELECT u.email, u.email_confirmed_at
   INTO v_email, v_confirmed_at
-  FROM auth.users
-  WHERE id = v_user_id;
+  FROM auth.users u
+  WHERE u.id = v_user_id;
 
   IF v_email IS NULL OR v_confirmed_at IS NULL THEN
     RAISE EXCEPTION 'User email is not confirmed';
   END IF;
 
-  UPDATE public.orders
+  UPDATE public.orders o
   SET user_id    = v_user_id,
       updated_at = now()
-  WHERE user_id IS NULL
-    AND (p_order_ids IS NULL OR id = ANY(p_order_ids))
-    AND lower(guest_email) = lower(v_email);
+  WHERE o.user_id IS NULL
+    AND (p_order_ids IS NULL OR o.id = ANY(p_order_ids))
+    AND lower(o.guest_email) = lower(v_email);
 
   GET DIAGNOSTICS claimed_count = ROW_COUNT;
   RETURN claimed_count;

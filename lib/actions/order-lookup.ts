@@ -2,8 +2,9 @@
 
 import { createAdminClient } from '@/lib/supabase/server'
 import { orderLookupSchema } from '@/lib/validations/order-lookup'
-import { headers } from 'next/headers'
+import { headers, cookies } from 'next/headers'
 import { checkOrderLookupRateLimit } from '@/lib/supabase/rate-limit'
+import { setOrderVerificationCookie } from '@/lib/utils/order-token'
 
 export type OrderLookupActionState = {
   error: string | null
@@ -53,6 +54,10 @@ export async function lookupOrder(formData: {
       error: 'Order not found. Please double-check the order number and phone number.',
     }
   }
+
+  // Set httpOnly signed cookie verifying ownership of this order
+  const cookieStore = await cookies()
+  setOrderVerificationCookie(cookieStore, parsed.data.order_number)
 
   return {
     error: null,

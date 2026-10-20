@@ -175,6 +175,7 @@ export async function updateOrderStatusAction(
               react: (
                 <OrderStatusUpdateEmail
                   orderNumber={order.order_number}
+                  accessToken={order.access_token}
                   customerName={order.customer_name}
                   status={nextStatus as 'confirmed' | 'shipped' | 'delivered'}
                   address={order.address}

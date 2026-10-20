@@ -2,6 +2,7 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import React from 'react'
+import { cookies } from 'next/headers'
 import { OrderStatus } from '@/components/storefront/order-status'
 import { OrderLookupForm } from '@/components/storefront/order-lookup-form'
 import { OrderReferencePill } from '@/components/storefront/order-reference-pill'
@@ -10,6 +11,7 @@ import { CancelOrderButton } from '@/components/storefront/cancel-order-button'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { PrintReceiptButton } from '@/components/storefront/print-receipt-button'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
+import { timingSafeEqualStrings, isOrderCookieVerified } from '@/lib/utils/order-token'
 import {
   CheckCircle2,
   Clock,
@@ -29,7 +31,7 @@ interface OrderPageProps {
     orderNumber: string
   }>
   searchParams: Promise<{
-    phone?: string
+    token?: string
   }>
 }
 
@@ -61,9 +63,9 @@ export default async function OrderConfirmationPage({
   const { orderNumber } = resolvedParams
 
   const resolvedSearchParams = await searchParams
-  const phoneParam = resolvedSearchParams?.phone
+  const tokenParam = resolvedSearchParams?.token
 
-  // Use admin client to bypass guest select RLS policy
+  // Use admin client to query order details securely
   const adminDb = createAdminClient()
 
   // 1. Fetch order details
@@ -78,20 +80,38 @@ export default async function OrderConfirmationPage({
     notFound()
   }
 
-  // 2. Access control logic: verify owner session or phone check
+  // 2. Access control logic:
+  // Full view ONLY for:
+  // - Owner (authenticated session where user.id === order.user_id)
+  // - Staff or admin role
+  // - Valid token matching order.access_token (constant-time compare)
   const client = await createClient()
   const {
     data: { user },
   } = await client.auth.getUser()
 
-  const isOwner = user && order.user_id === user.id
-  const isGuestVerified =
-    phoneParam && phoneParam.trim() === order.phone.trim()
+  let isStaffOrAdmin = false
+  if (user) {
+    const { data: profile } = await client
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+    if (profile?.role === 'staff' || profile?.role === 'admin') {
+      isStaffOrAdmin = true
+    }
+  }
 
-  const hasAccess = isOwner || isGuestVerified
+  const isOwner = Boolean(user && order.user_id && order.user_id === user.id)
+  const hasValidToken = timingSafeEqualStrings(tokenParam, order.access_token)
+  const isFullView = isOwner || isStaffOrAdmin || hasValidToken
 
-  // If no access, show phone verification gate
-  if (!hasAccess) {
+  // 3. If not full view, check for signed httpOnly phone-verification cookie
+  const cookieStore = await cookies()
+  const isCookieVerified = isOrderCookieVerified(cookieStore, order.order_number)
+
+  // 4. If neither full view nor verified cookie, show phone verification gate
+  if (!isFullView && !isCookieVerified) {
     return (
       <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center px-4 py-8 sm:py-16 pb-28 sm:pb-20 overflow-hidden">
         <CheckoutBackgroundArt />
@@ -107,7 +127,7 @@ export default async function OrderConfirmationPage({
               Verify Phone Number
             </h1>
             <p className="text-xs sm:text-[13px] text-forest-600 leading-relaxed max-w-xs mx-auto font-sans">
-              To view details for order{' '}
+              To view tracking information for order{' '}
               <span className="font-semibold text-forest-950 font-mono">{orderNumber}</span>
               , please enter the phone number provided at checkout.
             </p>
@@ -119,10 +139,95 @@ export default async function OrderConfirmationPage({
     )
   }
 
-  // 3. Fetch order items (only if access granted)
+  // 5. Partial View for verified phone guest tracking:
+  // Shows ONLY order status and item names/quantities.
+  // NEVER address, phone, email, or customer name.
+  if (!isFullView) {
+    const { data: itemsData, error: itemsError } = await adminDb
+      .from('order_items')
+      .select('id, product_name, qty')
+      .eq('order_id', order.id)
+
+    if (itemsError) {
+      console.error('Error fetching partial order items:', itemsError)
+    }
+
+    const items = itemsData || []
+
+    return (
+      <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden">
+        <CheckoutBackgroundArt />
+        <div className="relative z-10 mx-auto max-w-2xl space-y-6 sm:space-y-8">
+          <div className="text-center space-y-3">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-1 shadow-xs border border-forest-800">
+              <CheckCircle2 className="h-7 w-7 stroke-[2]" />
+            </div>
+
+            <div className="flex justify-center">
+              <OrderReferencePill orderNumber={order.order_number} size="md" />
+            </div>
+
+            <div className="space-y-1">
+              <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
+                Order Tracking
+              </h1>
+              <p className="text-xs sm:text-[13px] text-forest-600 font-sans max-w-md mx-auto leading-relaxed">
+                Guest tracking view. Recipient contact and address details are hidden for privacy.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-cream-100/75 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-2xs space-y-6">
+            {/* Status Stepper */}
+            <div className="pb-5 border-b border-forest-200/80">
+              <OrderStatus status={order.status} createdAt={order.created_at} />
+            </div>
+
+            {/* Ordered Items: ONLY item names and quantities */}
+            <div className="space-y-3 pt-1">
+              <div className="flex items-center gap-1.5">
+                <ShoppingBag className="h-3.5 w-3.5 text-forest-500" />
+                <h3 className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+                  Ordered Items ({items.length})
+                </h3>
+              </div>
+              <div className="divide-y divide-forest-200/70 border-t border-b border-forest-200/70">
+                {items.map((item) => (
+                  <div key={item.id} className="flex justify-between items-center py-3 text-xs sm:text-sm font-sans gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-forest-950 truncate">{item.product_name}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-cream-200/80 text-[11px] font-mono font-medium text-forest-700">
+                        Qty: {item.qty}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-3 pt-2">
+            <WhatsAppLink orderNumber={order.order_number} className="w-full sm:w-auto" />
+            <Link
+              href="/products"
+              className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all cursor-pointer w-full sm:w-auto"
+            >
+              <span>Continue Shopping</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // 6. Full View: Owner, Staff/Admin, or Matching Token
   const { data: itemsData, error: itemsError } = await adminDb
     .from('order_items')
     .select('*')
+    .eq('order_id', order.id)
     .eq('order_id', order.id)
 
   if (itemsError) {

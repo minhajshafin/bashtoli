@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # AGENTS.md
 
-Bashtoli: e-commerce site for a local stationery shop. Production, real customers. Cash on delivery (COD) only; there is no payment gateway.
+Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deployed to production, real customers soon. Cash on delivery (COD) only; there is no payment gateway.
 
 ## Stack
 - Next.js 16 (App Router), React 19, TypeScript (strict), Tailwind
@@ -86,7 +86,7 @@ Never claim success without running them.
 ## Change Discipline
 - Smallest diff that solves the task. One concern per change; separate refactors from behavior changes.
 - Plan first, and wait for approval, for anything touching auth, RLS, orders, pricing, migrations, or env vars.
-- Schema changes are new migration files. Never edit a shipped migration. Keep `supabase/scripts/master-schema.sql` in sync with migrations.
+- Pre-launch: no production database exists, so fix schema, RLS, and function problems directly in the original migrations (001–006). Do not add patch migrations for them. Keep `supabase/scripts/master-schema.sql` identical in content to the concatenated migrations. Once the first production deploy happens, this changes: migrations become append-only and this line must be updated by the owner.
 - No deleting files or renaming env vars without approval.
 - When asked to write a report or doc to a file, write it there only. Do not repeat its contents in chat; reply with the file path.
 
