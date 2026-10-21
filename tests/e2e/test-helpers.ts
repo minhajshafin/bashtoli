@@ -96,6 +96,72 @@ export async function ensureTestCatalog(): Promise<void> {
     alt_text: 'E2E Test Bamboo Product',
   })
   if (imgErr) console.warn('Catalog seed error (image):', imgErr.message)
+
+  // 5. Ensure test hero slide for admin storefront tests
+  const { error: slideErr } = await supabase.from('hero_slides').upsert({
+    id: 'a1111111-1111-1111-1111-111111111111',
+    image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=1200',
+    alt_text: 'E2E Hero Slide',
+    badge_text: 'New Collection',
+    badge_color_preset: 'gold',
+    link_url: '/products',
+    subtext: 'Discover handcrafted stationery essentials.',
+    sort_order: 0,
+    active: true,
+  })
+  if (slideErr) console.warn('Catalog seed error (hero slide):', slideErr.message)
+}
+
+/**
+ * Creates or retrieves a confirmed admin user for testing with profiles.role = 'admin'.
+ */
+export async function createOrGetTestAdmin(
+  email = `e2e-admin-${Date.now()}@example.com`,
+  password = `AdminPass_${Date.now()}_${Math.random().toString(36).slice(2, 8)}!`
+): Promise<{ id: string; email: string; password: string }> {
+  const supabase = getAdminClient()
+
+  // Check if user already exists
+  const { data: users } = await supabase.auth.admin.listUsers()
+  const existing = users?.users.find((u) => u.email?.toLowerCase() === email.toLowerCase())
+
+  let userId: string
+
+  if (existing) {
+    userId = existing.id
+    // Update password to known test password and ensure email is confirmed
+    await supabase.auth.admin.updateUserById(userId, {
+      password,
+      email_confirm: true,
+      user_metadata: { full_name: 'E2E Admin' },
+    })
+  } else {
+    const { data: newUser, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { full_name: 'E2E Admin' },
+    })
+    if (error || !newUser.user) {
+      throw new Error(`Failed to create test admin ${email}: ${error?.message}`)
+    }
+    userId = newUser.user.id
+  }
+
+  // Update profile to admin role
+  const { error: profileErr } = await supabase
+    .from('profiles')
+    .update({
+      role: 'admin',
+      full_name: 'E2E Admin',
+    })
+    .eq('id', userId)
+
+  if (profileErr) {
+    throw new Error(`Failed to set admin role in profile for ${email}: ${profileErr.message}`)
+  }
+
+  return { id: userId, email, password }
 }
 
 /**
@@ -174,8 +240,8 @@ export async function createTestGuestOrder(
   const supabase = getAdminClient()
   await ensureTestCatalog()
 
-  const randomSuffix = Math.floor(1000 + Math.random() * 9000)
-  const orderNumber = `ORD-CLAIM-${randomSuffix}`
+  const randomSuffix = Math.floor(1000 + Math.random() * 9000).toString()
+  const orderNumber = `ORD-19990101-${randomSuffix}`
 
   const { data: order, error: orderErr } = await supabase
     .from('orders')

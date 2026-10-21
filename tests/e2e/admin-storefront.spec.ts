@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { ensureTestCatalog, loginViaUI } from './test-helpers'
+import { ensureTestCatalog, createOrGetTestAdmin, loginViaUI } from './test-helpers'
 
 test.describe('Admin Storefront Customization', () => {
   test.beforeAll(async () => {
@@ -7,8 +7,13 @@ test.describe('Admin Storefront Customization', () => {
   })
 
   test('admin should update hero slide badge and reflect on storefront homepage', async ({ page }) => {
-    // 1. Log in as admin
-    await loginViaUI(page, 'admin@example.com', 'mypassword123')
+    // 1. Provision dedicated E2E admin with random credentials
+    const adminEmail = `e2e-admin-storefront-${Date.now()}@example.com`
+    const adminPassword = `AdminPass_${Date.now()}_${Math.random().toString(36).slice(2, 8)}!`
+    const admin = await createOrGetTestAdmin(adminEmail, adminPassword)
+
+    // Log in as admin
+    await loginViaUI(page, admin.email, admin.password)
 
     // 2. Navigate to Storefront Management
     await page.goto('/admin/storefront')

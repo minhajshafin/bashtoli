@@ -6,7 +6,7 @@ test.describe('Customer Suggestions & Honeypot Bot Defense', () => {
     await expect(page).toHaveTitle(/Bashtoli/i)
 
     // Locate suggestion section
-    const suggestionSection = page.locator('text=Help Us Grow')
+    const suggestionSection = page.locator('text=Looking for something in particular?')
     await expect(suggestionSection).toBeVisible({ timeout: 15000 })
 
     // Fill valid submission details
@@ -15,12 +15,12 @@ test.describe('Customer Suggestions & Honeypot Bot Defense', () => {
     await page.fill('#suggestion-message', 'We would love handcrafted bamboo tea strainers and pen holders!')
 
     // Submit form
-    const submitBtn = page.locator('button[type="submit"]:has-text("Share with us")')
+    const submitBtn = page.locator('button[type="submit"]:has-text("Leave Note")')
     await expect(submitBtn).toBeVisible()
     await submitBtn.click()
 
     // Verify confirmation message
-    const confirmationText = page.locator('text=Thank you — we\'ll look into it')
+    const confirmationText = page.locator('text=Thank you! Your suggestion has been noted for our upcoming stocking trip.')
     await expect(confirmationText).toBeVisible({ timeout: 15000 })
 
     // Verify reset capability
@@ -42,12 +42,12 @@ test.describe('Customer Suggestions & Honeypot Bot Defense', () => {
     await page.fill('#suggestion-message', 'Visit spam site for special discounts!')
 
     // Submit form
-    const submitBtn = page.locator('button[type="submit"]:has-text("Share with us")')
+    const submitBtn = page.locator('button[type="submit"]:has-text("Leave Note")')
     await expect(submitBtn).toBeVisible()
     await submitBtn.click()
 
     // Verify it silently handles the submission without crashing
-    const confirmationText = page.locator('text=Thank you — we\'ll look into it')
+    const confirmationText = page.locator('text=Thank you! Your suggestion has been noted for our upcoming stocking trip.')
     await expect(confirmationText).toBeVisible({ timeout: 15000 })
   })
 })

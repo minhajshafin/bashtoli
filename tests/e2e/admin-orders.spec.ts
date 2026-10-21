@@ -1,14 +1,20 @@
 import { test, expect } from '@playwright/test'
-import { ensureTestCatalog, loginViaUI } from './test-helpers'
+import { ensureTestCatalog, createOrGetTestAdmin, createTestGuestOrder, loginViaUI } from './test-helpers'
 
 test.describe('Admin Order Lifecycle & Fulfillment', () => {
   test.beforeAll(async () => {
     await ensureTestCatalog()
+    await createTestGuestOrder('admin-order-seed@example.com')
   })
 
   test('admin should view orders list, inspect order details, and transition status', async ({ page }) => {
-    // 1. Log in via UI as admin
-    await loginViaUI(page, 'admin@example.com', 'mypassword123')
+    // 1. Provision dedicated E2E admin with random credentials
+    const adminEmail = `e2e-admin-orders-${Date.now()}@example.com`
+    const adminPassword = `AdminPass_${Date.now()}_${Math.random().toString(36).slice(2, 8)}!`
+    const admin = await createOrGetTestAdmin(adminEmail, adminPassword)
+
+    // Log in via UI as admin
+    await loginViaUI(page, admin.email, admin.password)
 
     // 2. Navigate to Admin Orders list
     await page.goto('/admin/orders')

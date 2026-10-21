@@ -29,10 +29,15 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     // Wait for toast or brief animation
     await page.waitForTimeout(500)
 
-    // Click cart/bag link in navigation to view shopping bag
+    // Click cart/bag link in navigation to open shopping bag drawer
     const bagLink = page.locator('a[href="/bag"]').first()
     await expect(bagLink).toBeVisible()
     await bagLink.click()
+
+    // Drawer opens: click "View Full Shopping Bag" to navigate to /bag
+    const viewFullBagLink = page.getByRole('link', { name: 'View Full Shopping Bag' })
+    await expect(viewFullBagLink).toBeVisible()
+    await viewFullBagLink.click()
 
     // 4. Verify bag page load and item presence
     await expect(page).toHaveURL(/\/bag/)
@@ -48,11 +53,11 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     await expect(page).toHaveURL(/\/checkout/)
     await expect(page.locator('h1', { hasText: 'Checkout' })).toBeVisible()
 
-    await page.fill('input#customer_name', 'Playwright E2E Client')
-    await page.fill('input#phone', '01712345678')
-    await page.fill('input#guest_email', 'e2e-client@example.com')
-    await page.fill('textarea#address', 'Road 5, Block B, Banani, Dhaka')
-    await page.fill('textarea#notes', 'Deliver after 5 PM, drop with security guard.')
+    await page.fill('#customer_name', 'Playwright E2E Client')
+    await page.fill('#phone', '01712345678')
+    await page.fill('#guest_email', 'e2e-client@example.com')
+    await page.fill('#address', 'Road 5, Block B, Banani, Dhaka')
+    await page.fill('#notes', 'Deliver after 5 PM, drop with security guard.')
 
     // Choose Inside Dhaka shipping zone
     const zoneButton = page.locator('button:has-text("Inside Dhaka")')
@@ -60,7 +65,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     await zoneButton.click()
 
     // Submit Cash on Delivery order
-    const placeOrderButton = page.locator('button:has-text("Place Order")')
+    const placeOrderButton = page.locator('button:has-text("Place Order")').first()
     await expect(placeOrderButton).toBeVisible()
     await placeOrderButton.click()
 
