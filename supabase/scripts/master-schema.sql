@@ -536,6 +536,7 @@ DECLARE
   v_order_id       uuid;
   v_order_number   text;
   v_access_token   text;
+  v_existing       record;
   v_item           jsonb;
   v_rows_updated   integer;
 
@@ -559,22 +560,17 @@ BEGIN
       o.subtotal,
       o.delivery_fee,
       o.total
-    INTO
-      v_order_number,
-      v_access_token,
-      v_subtotal,
-      v_delivery_fee,
-      v_total
+    INTO v_existing
     FROM public.orders o
     WHERE o.idempotency_key = p_idempotency_key;
 
     IF FOUND THEN
       RETURN jsonb_build_object(
-        'order_number', v_order_number,
-        'access_token', v_access_token,
-        'subtotal',     v_subtotal,
-        'delivery_fee', v_delivery_fee,
-        'total',        v_total
+        'order_number', v_existing.order_number,
+        'access_token', v_existing.access_token,
+        'subtotal',     v_existing.subtotal,
+        'delivery_fee', v_existing.delivery_fee,
+        'total',        v_existing.total
       );
     END IF;
   END IF;
