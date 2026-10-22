@@ -30,6 +30,7 @@ function saveGuestWishlist(ids: string[]) {
 
 interface WishlistContextType {
   wishlistIds: string[]
+  isLoaded: boolean
   isWishlisted: (productId: string) => boolean
   toggleWishlist: (productId: string, productName?: string) => Promise<boolean>
 }
@@ -46,9 +47,11 @@ export function WishlistProvider({
   initialWishlistIds?: string[]
 }) {
   const [wishlistIds, setWishlistIds] = useState<string[]>(initialWishlistIds)
+  const [isLoaded, setIsLoaded] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
+    let mounted = true
     async function initWishlist() {
       if (isLoggedIn) {
         // 1. Merge guest items from localStorage if any
@@ -61,12 +64,22 @@ export function WishlistProvider({
         }
         // 2. Fetch authenticated user's wishlist and merge with any existing optimistic items
         const dbIds = await fetchUserWishlistAction()
-        setWishlistIds((prev) => Array.from(new Set([...prev, ...dbIds])))
+        if (mounted) {
+          setWishlistIds((prev) => Array.from(new Set([...prev, ...dbIds])))
+          setIsLoaded(true)
+        }
       } else {
-        setWishlistIds(getGuestWishlist())
+        const guest = getGuestWishlist()
+        if (mounted) {
+          setWishlistIds(guest)
+          setIsLoaded(true)
+        }
       }
     }
     initWishlist()
+    return () => {
+      mounted = false
+    }
   }, [isLoggedIn])
 
   const isWishlisted = useCallback(
@@ -121,7 +134,7 @@ export function WishlistProvider({
   )
 
   return (
-    <WishlistContext.Provider value={{ wishlistIds, isWishlisted, toggleWishlist }}>
+    <WishlistContext.Provider value={{ wishlistIds, isLoaded, isWishlisted, toggleWishlist }}>
       {children}
     </WishlistContext.Provider>
   )

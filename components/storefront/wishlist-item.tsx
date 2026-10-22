@@ -207,7 +207,7 @@ export function WishlistItem({ product }: WishlistItemProps) {
       <div className="hidden sm:flex flex-col overflow-hidden rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md hover:border-gold-500/60 transition-all h-full text-forest-950">
         {/* Product Image container */}
         <div className="relative aspect-square w-full overflow-hidden bg-cream-200/40">
-          <Link href={`/products/${product.slug}`} className="block w-full h-full">
+          <Link href={`/products/${product.slug}`} className="relative block w-full h-full">
             {product.imageUrl ? (
               <Image
                 src={product.imageUrl}

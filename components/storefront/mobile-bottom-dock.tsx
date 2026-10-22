@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useRef, useSyncExternalStore, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Store, Heart, ShoppingBag, User } from 'lucide-react'
@@ -9,12 +9,20 @@ import { useCart } from '@/lib/cart/cart-context'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+const emptySubscribe = () => () => {}
 
 export function MobileBottomDock() {
   const pathname = usePathname()
-  const { itemCount, isDrawerOpen } = useCart()
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
+  const { itemCount, isLoaded: isCartLoaded, isDrawerOpen } = useCart()
   const wishlistContext = useWishlist()
-  const wishlistCount = wishlistContext?.wishlistIds?.length ?? 0
+  const isWishlistLoaded = wishlistContext?.isLoaded ?? false
+  const displayWishlistCount = isWishlistLoaded ? (wishlistContext?.wishlistIds?.length ?? 0) : 0
+  const displayCartCount = isCartLoaded ? itemCount : 0
 
   const dockRef = useRef<HTMLDivElement>(null)
   const indicatorRef = useRef<HTMLDivElement>(null)
@@ -43,7 +51,7 @@ export function MobileBottomDock() {
   else if (isAccount) activeIndex = 4
 
   useIsomorphicLayoutEffect(() => {
-    if (isHiddenRoute) return
+    if (!mounted || isHiddenRoute) return
     const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
     const indicator = indicatorRef.current
     if (!indicator) return
@@ -81,11 +89,11 @@ export function MobileBottomDock() {
       ease: 'power3.out',
       overwrite: 'auto',
     })
-  }, [activeIndex, isHiddenRoute])
+  }, [activeIndex, isHiddenRoute, mounted])
 
   // Reposition indicator immediately on window resize / orientation change
   useEffect(() => {
-    if (isHiddenRoute) return
+    if (!mounted || isHiddenRoute) return
     function handleResize() {
       const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
       const indicator = indicatorRef.current
@@ -100,11 +108,11 @@ export function MobileBottomDock() {
 
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [activeIndex, isHiddenRoute])
+  }, [activeIndex, isHiddenRoute, mounted])
 
-  // Do not render bottom dock on checkout, admin, or individual product detail pages
+  // Do not render bottom dock before client mount, or on checkout, admin, or individual product detail pages
   // Evaluated after all hooks have run to strictly uphold React's Rules of Hooks
-  if (isHiddenRoute) {
+  if (!mounted || isHiddenRoute) {
     return null
   }
 
@@ -165,7 +173,7 @@ export function MobileBottomDock() {
             itemRefs.current[2] = el
           }}
           href="/account/wishlist"
-          aria-label={`Wishlist (${wishlistCount})`}
+          aria-label={`Wishlist (${displayWishlistCount})`}
           aria-current={isWishlist ? 'page' : undefined}
           className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
             isWishlist
@@ -174,9 +182,9 @@ export function MobileBottomDock() {
           }`}
         >
           <Heart className="h-5 w-5 stroke-[1.8]" />
-          {wishlistCount > 0 && (
+          {isWishlistLoaded && displayWishlistCount > 0 && (
             <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price leading-none animate-fade-in z-20">
-              {wishlistCount}
+              {displayWishlistCount}
             </span>
           )}
         </Link>
@@ -187,7 +195,7 @@ export function MobileBottomDock() {
             itemRefs.current[3] = el
           }}
           href="/bag"
-          aria-label={`Shopping Bag (${itemCount})`}
+          aria-label={`Shopping Bag (${displayCartCount})`}
           aria-current={isBag ? 'page' : undefined}
           className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-250 active:scale-90 cursor-pointer ${
             isBag
@@ -196,9 +204,9 @@ export function MobileBottomDock() {
           }`}
         >
           <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
-          {itemCount > 0 && (
+          {isCartLoaded && displayCartCount > 0 && (
             <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price leading-none animate-fade-in z-20">
-              {itemCount}
+              {displayCartCount}
             </span>
           )}
         </Link>

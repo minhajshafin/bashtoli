@@ -30,5 +30,20 @@ const localStorageMock = {
 
 if (typeof window !== 'undefined') {
   Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true })
+  if (!window.matchMedia) {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: (query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      }),
+    })
+  }
 }
 Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock, writable: true })
