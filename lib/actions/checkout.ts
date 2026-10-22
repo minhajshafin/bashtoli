@@ -33,6 +33,7 @@ export async function submitCheckout(
     fulfillment_type: 'delivery' | 'pickup'
     delivery_zone: 'inside_dhaka' | 'outside_dhaka' | null
     notes?: string
+    idempotency_key?: string | null
   },
   cartItems: CartItem[]
 ): Promise<CheckoutActionState> {
@@ -149,6 +150,7 @@ export async function submitCheckout(
     p_fulfillment_type: parsed.data.fulfillment_type,
     p_delivery_zone: parsed.data.delivery_zone || null,
     p_items: itemsParameter,
+    p_idempotency_key: parsed.data.idempotency_key || null,
   })
 
   if (rpcError) {

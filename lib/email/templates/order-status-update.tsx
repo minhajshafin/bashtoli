@@ -34,7 +34,7 @@ export function OrderStatusUpdateEmail({
   address,
   total,
 }: OrderStatusUpdateEmailProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bashtoli.com'
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bashtoli.com'
   const trackingUrl = accessToken
     ? `${siteUrl}/order/${orderNumber}?token=${encodeURIComponent(accessToken)}`
     : `${siteUrl}/order/${orderNumber}`

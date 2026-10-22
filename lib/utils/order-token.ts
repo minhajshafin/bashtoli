@@ -33,6 +33,11 @@ export function timingSafeEqualStrings(
 function getSigningSecret(secretOverride?: string): string | null {
   const secret = secretOverride ?? process.env.ORDER_COOKIE_SECRET
   if (!secret || typeof secret !== 'string' || secret.length < 32) {
+    if (process.env.NODE_ENV === 'production' && !secretOverride) {
+      throw new Error(
+        'ORDER_COOKIE_SECRET is misconfigured in production: must be set and at least 32 characters long.'
+      )
+    }
     return null
   }
   return secret

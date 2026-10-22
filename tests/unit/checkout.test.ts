@@ -184,4 +184,77 @@ describe('submitCheckout server action', () => {
     expect(mockRevalidatePath).toHaveBeenCalledWith('/admin/products/f1111111-1111-1111-1111-111111111111')
     expect(mockRevalidatePath).toHaveBeenCalledWith('/products/bamboo-pen')
   })
+
+  it('invoking checkout twice with the same idempotency key returns the same order without creating a duplicate or throwing', async () => {
+    mockFrom.mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        in: vi.fn().mockResolvedValue({
+          data: [
+            {
+              id: 'd1111111-1111-1111-1111-111111111111',
+              price: 150,
+              active: true,
+              stock_qty: 10,
+              product_id: 'f1111111-1111-1111-1111-111111111111',
+              products: {
+                id: 'f1111111-1111-1111-1111-111111111111',
+                name: 'Bamboo Pen',
+                slug: 'bamboo-pen',
+                active: true,
+              },
+            },
+          ],
+          error: null,
+        }),
+      }),
+    })
+
+    const testIdempotencyKey = 'a0000000-0000-4000-8000-000000000001'
+    const existingOrderResult = {
+      order_number: 'ORD-20260912-0099',
+      access_token: 'test_access_token_abc123',
+      subtotal: 300,
+      delivery_fee: 70,
+      total: 370,
+    }
+
+    mockRpc.mockResolvedValue({
+      data: existingOrderResult,
+      error: null,
+    })
+
+    const formWithKey = {
+      ...VALID_FORM,
+      idempotency_key: testIdempotencyKey,
+    }
+
+    // First attempt
+    const firstAttempt = await submitCheckout(formWithKey, SAMPLE_CART)
+    expect(firstAttempt.error).toBeNull()
+    expect(firstAttempt.orderNumber).toBe('ORD-20260912-0099')
+    expect(firstAttempt.accessToken).toBe('test_access_token_abc123')
+
+    // Second attempt with exact same idempotency key
+    const secondAttempt = await submitCheckout(formWithKey, SAMPLE_CART)
+    expect(secondAttempt.error).toBeNull()
+    expect(secondAttempt.orderNumber).toBe(firstAttempt.orderNumber)
+    expect(secondAttempt.accessToken).toBe(firstAttempt.accessToken)
+
+    // Verify both calls forwarded the idempotency key to place_order RPC
+    expect(mockRpc).toHaveBeenCalledTimes(2)
+    expect(mockRpc).toHaveBeenNthCalledWith(
+      1,
+      'place_order',
+      expect.objectContaining({
+        p_idempotency_key: testIdempotencyKey,
+      })
+    )
+    expect(mockRpc).toHaveBeenNthCalledWith(
+      2,
+      'place_order',
+      expect.objectContaining({
+        p_idempotency_key: testIdempotencyKey,
+      })
+    )
+  })
 })

@@ -8,7 +8,13 @@ import { expect } from '@playwright/test'
  * Loads environment variables from .env.local if not already present.
  */
 export function loadEnv(): void {
-  if (process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) return
+  if (
+    process.env.SUPABASE_SERVICE_ROLE_KEY &&
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.E2E_SUPABASE_URL
+  ) {
+    return
+  }
 
   const envPath = path.resolve(process.cwd(), '.env.local')
   if (fs.existsSync(envPath)) {
@@ -33,8 +39,16 @@ export function loadEnv(): void {
  */
 export function getAdminClient(): SupabaseClient {
   loadEnv()
+
+  const e2eUrl = process.env.E2E_SUPABASE_URL
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!e2eUrl || e2eUrl !== url) {
+    throw new Error(
+      'Safety check failed: E2E_SUPABASE_URL must be explicitly set and equal NEXT_PUBLIC_SUPABASE_URL to execute administrative test operations.'
+    )
+  }
 
   if (!url || !key) {
     throw new Error('Supabase URL or Service Role Key missing in environment.')
@@ -247,6 +261,7 @@ export async function createTestGuestOrder(
     .from('orders')
     .insert({
       order_number: orderNumber,
+      idempotency_key: crypto.randomUUID(),
       user_id: null,
       customer_name: customerName,
       phone,

@@ -194,6 +194,7 @@ CREATE TABLE public.orders (
   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   order_number     text NOT NULL UNIQUE,
   access_token     text NOT NULL DEFAULT replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''),
+  idempotency_key  uuid UNIQUE,
   user_id          uuid REFERENCES public.profiles(id) ON DELETE SET NULL,
   customer_name    text NOT NULL,
   phone            text NOT NULL,
@@ -523,7 +524,8 @@ CREATE OR REPLACE FUNCTION public.place_order(
   p_notes            text,
   p_fulfillment_type text,
   p_delivery_zone    text,
-  p_items            jsonb  -- [{ variant_id, product_id, qty, product_name }]
+  p_items            jsonb, -- [{ variant_id, product_id, qty, product_name }]
+  p_idempotency_key  uuid DEFAULT NULL
 )
 RETURNS jsonb
 LANGUAGE plpgsql
@@ -549,6 +551,34 @@ DECLARE
   v_item_qty       integer;
   v_item_subtotal  numeric(12,2);
 BEGIN
+  -- 0. Check for existing order with this idempotency key
+  IF p_idempotency_key IS NOT NULL THEN
+    SELECT
+      o.order_number,
+      o.access_token,
+      o.subtotal,
+      o.delivery_fee,
+      o.total
+    INTO
+      v_order_number,
+      v_access_token,
+      v_subtotal,
+      v_delivery_fee,
+      v_total
+    FROM public.orders o
+    WHERE o.idempotency_key = p_idempotency_key;
+
+    IF FOUND THEN
+      RETURN jsonb_build_object(
+        'order_number', v_order_number,
+        'access_token', v_access_token,
+        'subtotal',     v_subtotal,
+        'delivery_fee', v_delivery_fee,
+        'total',        v_total
+      );
+    END IF;
+  END IF;
+
   -- Validate items parameter at start
   IF p_items IS NULL
      OR jsonb_typeof(p_items) <> 'array'
@@ -614,6 +644,7 @@ BEGIN
   INSERT INTO public.orders (
     order_number,
     access_token,
+    idempotency_key,
     user_id,
     customer_name,
     phone,
@@ -629,6 +660,7 @@ BEGIN
   ) VALUES (
     v_order_number,
     v_access_token,
+    p_idempotency_key,
     p_user_id,
     p_customer_name,
     p_phone,
@@ -697,10 +729,10 @@ END;
 $$;
 
 REVOKE EXECUTE ON FUNCTION public.place_order(
-  uuid, text, text, text, text, text, text, text, jsonb
+  uuid, text, text, text, text, text, text, text, jsonb, uuid
 ) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.place_order(
-  uuid, text, text, text, text, text, text, text, jsonb
+  uuid, text, text, text, text, text, text, text, jsonb, uuid
 ) TO service_role;
 
 -- ── increment_stock ──────────────────────────────────────────

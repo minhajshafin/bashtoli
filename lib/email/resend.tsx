@@ -37,6 +37,9 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
   const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'admin@example.com'
 
   if (!resend) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Email service is misconfigured in production: RESEND_API_KEY is missing or invalid.')
+    }
     console.warn(
       `[Email Warning] Resend is not configured (RESEND_API_KEY is missing or set to placeholder). Skipped sending emails for ${order.order_number}.`
     )
@@ -149,6 +152,9 @@ export async function sendSuggestionEmail(
   const replyTo = isEmail && data.contact ? data.contact.trim() : undefined
 
   if (!resend) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Email service is misconfigured in production: RESEND_API_KEY is missing or invalid.')
+    }
     console.warn(
       `[Email Info] Resend is not configured (RESEND_API_KEY is missing or set to placeholder). Simulated sending suggestion email:`,
       {

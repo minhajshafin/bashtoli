@@ -59,6 +59,8 @@ export function CheckoutForm({
 
   // Validation & Processing States
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const isSubmittingRef = useRef(false)
+  const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID())
   const [topError, setTopError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<NonNullable<CheckoutActionState['fieldErrors']>>({})
   const [hasUnavailable, setHasUnavailable] = useState(false)
@@ -112,16 +114,23 @@ export function CheckoutForm({
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
+
+    // Re-entrancy guard: drop concurrent or double submissions
+    if (isSubmittingRef.current) return
+    isSubmittingRef.current = true
+
     setTopError(null)
     setFieldErrors({})
 
     if (cart.length === 0) {
       setTopError('Your shopping bag is empty. Please add items before checking out.')
+      isSubmittingRef.current = false
       return
     }
 
     if (hasUnavailable) {
       setTopError('Your shopping bag contains unavailable items. Please return to your bag to adjust.')
+      isSubmittingRef.current = false
       return
     }
 
@@ -135,6 +144,7 @@ export function CheckoutForm({
       fulfillment_type: fulfillmentType,
       delivery_zone: deliveryZone,
       notes,
+      idempotency_key: idempotencyKey,
     }
 
     try {
@@ -146,6 +156,7 @@ export function CheckoutForm({
           setFieldErrors(result.fieldErrors)
         }
       } else if (result.orderNumber) {
+        setIdempotencyKey(crypto.randomUUID())
         clearCart()
         router.refresh()
         const tokenQuery = result.accessToken ? `?token=${encodeURIComponent(result.accessToken)}` : ''
@@ -155,6 +166,7 @@ export function CheckoutForm({
       console.error('Checkout submission error:', err)
       setTopError('An unexpected connection error occurred. Please try again.')
     } finally {
+      isSubmittingRef.current = false
       setIsSubmitting(false)
     }
   }

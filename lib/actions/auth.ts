@@ -142,7 +142,7 @@ export async function signupAction(
 
   const supabase = await createClient()
 
-  let appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL
+  let appUrl = process.env.NEXT_PUBLIC_APP_URL
   if (!appUrl) {
     const headersList = await headers()
     const host = headersList.get('x-forwarded-host') || headersList.get('host')
@@ -213,7 +213,7 @@ export async function forgotPasswordAction(
 
   // Use NEXT_PUBLIC_APP_URL — do NOT derive the redirect base URL solely from
   // the Host header, which is client-controlled (Host Header Injection). (L-NEW-2)
-  let appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL
+  let appUrl = process.env.NEXT_PUBLIC_APP_URL
   if (!appUrl) {
     const headersList = await headers()
     const host = headersList.get('x-forwarded-host') || headersList.get('host')

@@ -251,6 +251,7 @@ export type Database = {
           id: string
           order_number: string
           access_token: string
+          idempotency_key: string | null
           user_id: string | null
           customer_name: string
           phone: string
@@ -270,6 +271,7 @@ export type Database = {
           id?: string | null
           order_number: string
           access_token?: string
+          idempotency_key?: string | null
           user_id?: string | null
           customer_name: string
           phone: string
@@ -289,6 +291,7 @@ export type Database = {
           id?: string | null
           order_number?: string | null
           access_token?: string | null
+          idempotency_key?: string | null
           user_id?: string | null
           customer_name?: string | null
           phone?: string | null
@@ -527,6 +530,7 @@ export type Database = {
           p_fulfillment_type: 'delivery' | 'pickup'
           p_delivery_zone: 'inside_dhaka' | 'outside_dhaka' | null
           p_items: Json
+          p_idempotency_key?: string | null
         }
         Returns: Json
       }

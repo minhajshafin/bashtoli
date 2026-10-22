@@ -22,6 +22,7 @@ export const checkoutSchema = z.object({
   fulfillment_type: z.enum(['delivery', 'pickup']),
   delivery_zone: z.enum(['inside_dhaka', 'outside_dhaka']).nullable().optional(),
   notes: z.string().max(500, 'Notes cannot exceed 500 characters').optional().or(z.literal('')),
+  idempotency_key: z.string().uuid().optional().nullable(),
 }).refine((data) => {
   if (data.fulfillment_type === 'delivery' && !data.delivery_zone) {
     return false

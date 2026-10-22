@@ -64,6 +64,14 @@ function isConfigured(): boolean {
   )
 }
 
+function assertConfigured(): boolean {
+  if (isConfigured()) return true
+  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build') {
+    throw new Error('Rate limiting is misconfigured in production: UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN must be set.')
+  }
+  return false
+}
+
 // ── Singleton limiters (created once, reused across requests) ─
 
 let authLimiter: Ratelimit | null = null
@@ -132,7 +140,7 @@ export type RateLimitResult =
 export async function checkAuthRateLimit(
   request: NextRequest
 ): Promise<RateLimitResult> {
-  if (!isConfigured()) return { limited: false }
+  if (!assertConfigured()) return { limited: false }
 
   const ip = getClientIp(request)
 
@@ -155,7 +163,7 @@ export async function checkAuthRateLimit(
 export async function checkOrderLookupRateLimit(
   requestOrHeaders?: NextRequest | { get(name: string): string | null }
 ): Promise<RateLimitResult> {
-  if (!isConfigured()) return { limited: false }
+  if (!assertConfigured()) return { limited: false }
 
   let ip = '127.0.0.1'
   if (requestOrHeaders && 'nextUrl' in requestOrHeaders) {
@@ -183,7 +191,7 @@ export async function checkOrderLookupRateLimit(
 export async function checkCheckoutRateLimit(
   requestOrHeaders?: NextRequest | { get(name: string): string | null }
 ): Promise<RateLimitResult> {
-  if (!isConfigured()) return { limited: false }
+  if (!assertConfigured()) return { limited: false }
 
   let ip = '127.0.0.1'
   if (requestOrHeaders && 'nextUrl' in requestOrHeaders) {
@@ -211,7 +219,7 @@ export async function checkCheckoutRateLimit(
 export async function checkSearchRateLimit(
   requestOrHeaders?: Request | NextRequest | { get(name: string): string | null }
 ): Promise<RateLimitResult> {
-  if (!isConfigured()) return { limited: false }
+  if (!assertConfigured()) return { limited: false }
 
   let ip = '127.0.0.1'
   if (requestOrHeaders && 'headers' in requestOrHeaders) {

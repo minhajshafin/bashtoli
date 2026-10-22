@@ -133,6 +133,7 @@ CREATE TABLE public.orders (
   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   order_number     text NOT NULL UNIQUE,
   access_token     text NOT NULL DEFAULT replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''),
+  idempotency_key  uuid UNIQUE,
   user_id          uuid REFERENCES public.profiles(id) ON DELETE SET NULL,
   customer_name    text NOT NULL,
   phone            text NOT NULL,
