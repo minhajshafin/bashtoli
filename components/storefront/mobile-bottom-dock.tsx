@@ -1,28 +1,24 @@
 'use client'
 
-import React, { useRef, useSyncExternalStore, useEffect, useLayoutEffect } from 'react'
+import React, { useRef, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Store, Heart, ShoppingBag, User } from 'lucide-react'
 import { gsap, isReducedMotion } from '@/lib/motion'
 import { useCart } from '@/lib/cart/cart-context'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
+import { useHydrated } from '@/lib/hooks/use-hydrated'
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
-const emptySubscribe = () => () => {}
 
 export function MobileBottomDock() {
   const pathname = usePathname()
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  )
+  const hydrated = useHydrated()
   const { itemCount, isLoaded: isCartLoaded, isDrawerOpen } = useCart()
   const wishlistContext = useWishlist()
   const isWishlistLoaded = wishlistContext?.isLoaded ?? false
-  const displayWishlistCount = isWishlistLoaded ? (wishlistContext?.wishlistIds?.length ?? 0) : 0
-  const displayCartCount = isCartLoaded ? itemCount : 0
+  const displayWishlistCount = hydrated && isWishlistLoaded ? (wishlistContext?.wishlistIds?.length ?? 0) : 0
+  const displayCartCount = hydrated && isCartLoaded ? itemCount : 0
 
   const dockRef = useRef<HTMLDivElement>(null)
   const indicatorRef = useRef<HTMLDivElement>(null)
@@ -51,7 +47,7 @@ export function MobileBottomDock() {
   else if (isAccount) activeIndex = 4
 
   useIsomorphicLayoutEffect(() => {
-    if (!mounted || isHiddenRoute) return
+    if (!hydrated || isHiddenRoute) return
     const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
     const indicator = indicatorRef.current
     if (!indicator) return
@@ -89,11 +85,11 @@ export function MobileBottomDock() {
       ease: 'power3.out',
       overwrite: 'auto',
     })
-  }, [activeIndex, isHiddenRoute, mounted])
+  }, [activeIndex, isHiddenRoute, hydrated])
 
   // Reposition indicator immediately on window resize / orientation change
   useEffect(() => {
-    if (!mounted || isHiddenRoute) return
+    if (!hydrated || isHiddenRoute) return
     function handleResize() {
       const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
       const indicator = indicatorRef.current
@@ -108,11 +104,11 @@ export function MobileBottomDock() {
 
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [activeIndex, isHiddenRoute, mounted])
+  }, [activeIndex, isHiddenRoute, hydrated])
 
   // Do not render bottom dock before client mount, or on checkout, admin, or individual product detail pages
   // Evaluated after all hooks have run to strictly uphold React's Rules of Hooks
-  if (!mounted || isHiddenRoute) {
+  if (!hydrated || isHiddenRoute) {
     return null
   }
 
@@ -182,7 +178,7 @@ export function MobileBottomDock() {
           }`}
         >
           <Heart className="h-5 w-5 stroke-[1.8]" />
-          {isWishlistLoaded && displayWishlistCount > 0 && (
+          {hydrated && isWishlistLoaded && displayWishlistCount > 0 && (
             <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price leading-none animate-fade-in z-20">
               {displayWishlistCount}
             </span>
@@ -204,7 +200,7 @@ export function MobileBottomDock() {
           }`}
         >
           <ShoppingBag className="h-5 w-5 stroke-[1.8]" />
-          {isCartLoaded && displayCartCount > 0 && (
+          {hydrated && isCartLoaded && displayCartCount > 0 && (
             <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 text-[9px] font-bold font-price leading-none animate-fade-in z-20">
               {displayCartCount}
             </span>

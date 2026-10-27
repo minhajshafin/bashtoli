@@ -4,13 +4,16 @@ import Link from 'next/link'
 import React, { useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useCart } from '@/lib/cart/cart-context'
+import { useHydrated } from '@/lib/hooks/use-hydrated'
 import { gsap, isReducedMotion } from '@/lib/motion'
 
 export function CartIcon() {
   const { itemCount, isLoaded, openDrawer } = useCart()
+  const hydrated = useHydrated()
   const pathname = usePathname()
   const badgeRef = useRef<HTMLSpanElement>(null)
   const prevCountRef = useRef(itemCount)
+  const displayCount = hydrated && isLoaded ? itemCount : 0
 
   useEffect(() => {
     if (badgeRef.current && itemCount > prevCountRef.current && !isReducedMotion()) {
@@ -36,7 +39,7 @@ export function CartIcon() {
       href="/bag"
       onClick={handleClick}
       className="relative flex items-center justify-center w-8.5 h-8.5 sm:w-9 sm:h-9 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 transition-all duration-200 rounded-full active:scale-95 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500"
-      aria-label="View Shopping Bag"
+      aria-label={displayCount > 0 ? `View Shopping Bag (${displayCount})` : 'View Shopping Bag'}
     >
       <svg
         className="h-4.5 w-4.5"
@@ -53,12 +56,12 @@ export function CartIcon() {
       </svg>
 
       {/* Cart quantity badge */}
-      {isLoaded && itemCount > 0 && (
+      {hydrated && isLoaded && displayCount > 0 && (
         <span
           ref={badgeRef}
           className="absolute -top-0.5 -right-0.5 flex h-3.5 min-w-3.5 px-0.5 items-center justify-center rounded-full text-[9px] font-bold bg-btn-accent-bg text-btn-accent-text border border-gold-400/40 font-price shadow-2xs"
         >
-          {itemCount}
+          {displayCount}
         </span>
       )}
     </Link>

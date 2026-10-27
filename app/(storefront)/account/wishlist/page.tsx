@@ -237,8 +237,8 @@ export default async function WishlistPage() {
         ) : (
           /* Populated Items */
           <div className="space-y-3.5 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
-            {wishlistProducts.map((product) => (
-              <WishlistItem key={product.id} product={product} />
+            {wishlistProducts.map((product, idx) => (
+              <WishlistItem key={product.id} product={product} priority={idx === 0} />
             ))}
           </div>
         )}

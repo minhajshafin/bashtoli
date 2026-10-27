@@ -54,25 +54,39 @@ export function WishlistProvider({
     let mounted = true
     async function initWishlist() {
       if (isLoggedIn) {
-        // 1. Merge guest items from localStorage if any
-        const guestIds = getGuestWishlist()
-        if (guestIds.length > 0) {
-          const res = await mergeGuestWishlistAction(guestIds)
-          if (!res.error) {
-            localStorage.removeItem(GUEST_WISHLIST_KEY)
+        try {
+          // 1. Merge guest items from localStorage if any
+          const guestIds = getGuestWishlist()
+          if (guestIds.length > 0) {
+            const res = await mergeGuestWishlistAction(guestIds)
+            if (!res.error) {
+              localStorage.removeItem(GUEST_WISHLIST_KEY)
+            }
+          }
+          // 2. Fetch authenticated user's wishlist and merge with any existing optimistic items
+          const dbIds = await fetchUserWishlistAction()
+          if (mounted) {
+            setWishlistIds((prev) => Array.from(new Set([...prev, ...dbIds])))
+          }
+        } catch (err) {
+          console.error('Failed to load user wishlist:', err)
+        } finally {
+          if (mounted) {
+            setIsLoaded(true)
           }
         }
-        // 2. Fetch authenticated user's wishlist and merge with any existing optimistic items
-        const dbIds = await fetchUserWishlistAction()
-        if (mounted) {
-          setWishlistIds((prev) => Array.from(new Set([...prev, ...dbIds])))
-          setIsLoaded(true)
-        }
       } else {
-        const guest = getGuestWishlist()
-        if (mounted) {
-          setWishlistIds(guest)
-          setIsLoaded(true)
+        try {
+          const guest = getGuestWishlist()
+          if (mounted) {
+            setWishlistIds(guest)
+          }
+        } catch (err) {
+          console.error('Failed to load guest wishlist:', err)
+        } finally {
+          if (mounted) {
+            setIsLoaded(true)
+          }
         }
       }
     }

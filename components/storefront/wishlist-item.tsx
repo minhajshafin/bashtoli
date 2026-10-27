@@ -29,6 +29,7 @@ export interface MappedWishlistItem {
 
 interface WishlistItemProps {
   product: MappedWishlistItem
+  priority?: boolean
 }
 
 /**
@@ -36,7 +37,7 @@ interface WishlistItemProps {
  * Renders a tactile, thumb-friendly horizontal card on mobile (< 640px)
  * and an expansive artisanal vertical card on desktop (>= 640px).
  */
-export function WishlistItem({ product }: WishlistItemProps) {
+export function WishlistItem({ product, priority = false }: WishlistItemProps) {
   const router = useRouter()
   const { addItem } = useCart()
   const { toast } = useToast()
@@ -97,6 +98,8 @@ export function WishlistItem({ product }: WishlistItemProps) {
                 src={product.imageUrl}
                 alt={product.name}
                 fill
+                priority={priority}
+                loading={priority ? undefined : 'lazy'}
                 sizes="96px"
                 className="object-cover object-center"
               />
@@ -213,6 +216,8 @@ export function WishlistItem({ product }: WishlistItemProps) {
                 src={product.imageUrl}
                 alt={product.name}
                 fill
+                priority={priority}
+                loading={priority ? undefined : 'lazy'}
                 sizes="(max-width: 1200px) 33vw, 25vw"
                 className="object-cover object-center hover:scale-105 transition-transform duration-500"
               />

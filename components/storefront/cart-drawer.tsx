@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/lib/cart/cart-context'
+import { useHydrated } from '@/lib/hooks/use-hydrated'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 import { gsap, isReducedMotion } from '@/lib/motion'
 
@@ -18,6 +19,7 @@ export function CartDrawer() {
     updateQty,
     removeItem,
   } = useCart()
+  const hydrated = useHydrated()
 
   const [isClosing, setIsClosing] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -152,7 +154,7 @@ export function CartDrawer() {
             >
               Your Selection
             </h2>
-            {isLoaded && itemCount > 0 && (
+            {hydrated && isLoaded && itemCount > 0 && (
               <span className="rounded-full bg-gold-500/20 px-2 py-0.5 text-xs font-bold text-forest-800 font-price">
                 {itemCount}
               </span>

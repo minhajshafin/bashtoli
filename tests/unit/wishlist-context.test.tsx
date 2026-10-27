@@ -80,4 +80,22 @@ describe('WishlistProvider Hydration & isLoaded Safety', () => {
       expect(badge).toBeDefined()
     })
   })
+
+  it('sets isLoaded=true and logs error when fetchUserWishlistAction rejects', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const { fetchUserWishlistAction } = await import('@/lib/actions/wishlist')
+    vi.mocked(fetchUserWishlistAction).mockRejectedValueOnce(new Error('Network error'))
+
+    render(
+      <WishlistProvider isLoggedIn={true}>
+        <WishlistConsumer />
+      </WishlistProvider>
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('is-loaded').textContent).toBe('true')
+    })
+    expect(consoleSpy).toHaveBeenCalledWith('Failed to load user wishlist:', expect.any(Error))
+    consoleSpy.mockRestore()
+  })
 })
