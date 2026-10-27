@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { validateCartItems, type ValidatedCartItem } from '@/lib/queries/cart'
+import { sanitizeActionError } from '@/lib/utils/action-error'
 
 /** Maximum quantity allowed per line item — prevents unreasonably large cart entries. */
 const MAX_CART_QTY = 99
@@ -27,7 +28,7 @@ export async function checkCartItemsAvailability(
   try {
     return await validateCartItems(variantIds)
   } catch (error) {
-    console.error('Failed to validate cart items:', error)
+    sanitizeActionError('cart:validate', error)
     return []
   }
 }
@@ -132,7 +133,7 @@ export async function fetchDbCart(): Promise<CartItem[]> {
 
     return cartItems
   } catch (err) {
-    console.error('Fetch DB Cart Error:', err)
+    sanitizeActionError('cart:fetch', err)
     return []
   }
 }
@@ -180,8 +181,7 @@ export async function addToDbCartAction(variantId: string, qty: number): Promise
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
-    console.error('Add to DB cart error:', err)
-    return { error: 'Failed to update cart.' }
+    return { error: sanitizeActionError('cart:add', err, 'Failed to update cart.') }
   }
 }
 
@@ -217,8 +217,7 @@ export async function updateDbCartQtyAction(variantId: string, qty: number): Pro
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
-    console.error('Update DB cart qty error:', err)
-    return { error: 'Failed to update quantity.' }
+    return { error: sanitizeActionError('cart:updateQty', err, 'Failed to update quantity.') }
   }
 }
 
@@ -254,8 +253,7 @@ export async function removeFromDbCartAction(variantId: string): Promise<{ error
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
-    console.error('Remove from DB cart error:', err)
-    return { error: 'Failed to remove item.' }
+    return { error: sanitizeActionError('cart:remove', err, 'Failed to remove item.') }
   }
 }
 
@@ -290,8 +288,7 @@ export async function clearDbCartAction(): Promise<{ error: string | null }> {
     revalidatePath('/cart')
     return { error: null }
   } catch (err) {
-    console.error('Clear DB cart error:', err)
-    return { error: 'Failed to clear cart.' }
+    return { error: sanitizeActionError('cart:clear', err, 'Failed to clear cart.') }
   }
 }
 
@@ -401,7 +398,7 @@ export async function mergeGuestCartAction(
 
     // 5. Save merged items
     if (upserts.length > 0) {
-      const { error } = await supabase.from('cart_items').upsert(upserts)
+      const { error } = await supabase.from('cart_items').upsert(upserts, { onConflict: 'cart_id,variant_id' })
       if (error) throw error
     }
 
@@ -409,7 +406,6 @@ export async function mergeGuestCartAction(
     revalidatePath('/cart')
     return { error: null, success: true, notifications }
   } catch (err) {
-    console.error('Merge guest cart error:', err)
-    return { error: 'Failed to merge guest cart.' }
+    return { error: sanitizeActionError('cart:merge', err, 'Failed to merge guest cart.') }
   }
 }

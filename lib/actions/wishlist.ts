@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { sanitizeActionError } from '@/lib/utils/action-error'
 
 /**
  * Server Action: Adds a product to the user's wishlist.
@@ -36,8 +37,9 @@ export async function addToWishlistAction(productId: string): Promise<{ error: s
 
     if (error) throw error
   } catch (err) {
-    console.error('Add to wishlist error:', err)
-    return { error: 'Failed to add item to wishlist. Please try again.' }
+    return {
+      error: sanitizeActionError('wishlist:add', err, 'Failed to add item to wishlist. Please try again.'),
+    }
   }
 
   // Refresh page states
@@ -76,8 +78,9 @@ export async function removeFromWishlistAction(productId: string): Promise<{ err
 
     if (error) throw error
   } catch (err) {
-    console.error('Remove from wishlist error:', err)
-    return { error: 'Failed to remove item. Please try again.' }
+    return {
+      error: sanitizeActionError('wishlist:remove', err, 'Failed to remove item. Please try again.'),
+    }
   }
 
   revalidatePath('/account/wishlist')
@@ -115,7 +118,7 @@ export async function checkWishlistStatusAction(productId: string): Promise<bool
     if (error) throw error
     return !!data
   } catch (err) {
-    console.error('Check wishlist status error:', err)
+    sanitizeActionError('wishlist:check', err)
     return false
   }
 }
@@ -147,7 +150,7 @@ export async function fetchUserWishlistAction(): Promise<string[]> {
     if (error) throw error
     return (data || []).map((w) => w.product_id)
   } catch (err) {
-    console.error('Fetch wishlist error:', err)
+    sanitizeActionError('wishlist:fetch', err)
     return []
   }
 }
@@ -183,7 +186,8 @@ export async function mergeGuestWishlistAction(guestIds: string[]): Promise<{ er
     if (error) throw error
     return { error: null }
   } catch (err) {
-    console.error('Merge guest wishlist error:', err)
-    return { error: 'Failed to merge guest wishlist.' }
+    return {
+      error: sanitizeActionError('wishlist:merge', err, 'Failed to merge guest wishlist.'),
+    }
   }
 }

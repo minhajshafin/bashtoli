@@ -77,9 +77,13 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
     e.preventDefault()
     e.stopPropagation()
     startTransition(async () => {
-      await removeFromWishlistAction(product.id)
-      toast(`Removed "${product.name}" from your wishlist.`, 'info')
-      router.refresh()
+      const res = await removeFromWishlistAction(product.id)
+      if (res?.error) {
+        toast(res.error, 'error')
+      } else {
+        toast(`Removed "${product.name}" from your wishlist.`, 'info')
+        router.refresh()
+      }
     })
   }
 

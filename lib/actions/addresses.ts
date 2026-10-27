@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { addressSchema } from '@/lib/validations/address'
+import { sanitizeActionError } from '@/lib/utils/action-error'
 
 export type AddressActionState = {
   error: string | null
@@ -81,8 +82,9 @@ export async function addAddressAction(
 
     if (error) throw error
   } catch (err) {
-    console.error('Add address error:', err)
-    return { error: 'Failed to save address. Please try again.' }
+    return {
+      error: sanitizeActionError('addresses:add', err, 'Failed to save address. Please try again.'),
+    }
   }
 
   // Refresh caching
@@ -156,8 +158,9 @@ export async function editAddressAction(
 
     if (error) throw error
   } catch (err) {
-    console.error('Edit address error:', err)
-    return { error: 'Failed to update address. Please try again.' }
+    return {
+      error: sanitizeActionError('addresses:edit', err, 'Failed to update address. Please try again.'),
+    }
   }
 
   revalidatePath('/account/addresses')
@@ -191,8 +194,9 @@ export async function deleteAddressAction(addressId: string): Promise<{ error: s
 
     if (error) throw error
   } catch (err) {
-    console.error('Delete address error:', err)
-    return { error: 'Failed to delete address. Please try again.' }
+    return {
+      error: sanitizeActionError('addresses:delete', err, 'Failed to delete address. Please try again.'),
+    }
   }
 
   revalidatePath('/account/addresses')
@@ -231,8 +235,9 @@ export async function setDefaultAddressAction(addressId: string): Promise<{ erro
 
     if (error) throw error
   } catch (err) {
-    console.error('Set default address error:', err)
-    return { error: 'Failed to set default address. Please try again.' }
+    return {
+      error: sanitizeActionError('addresses:setDefault', err, 'Failed to set default address. Please try again.'),
+    }
   }
 
   revalidatePath('/account/addresses')

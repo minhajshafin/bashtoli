@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { mapCancelOrderError } from '@/lib/utils/action-error'
 
 /**
  * Server Action: Allows an authenticated customer to self-cancel their pending order.
@@ -26,8 +27,7 @@ export async function customerCancelOrderAction(
     })
 
     if (rpcError) {
-      console.error('Failed to cancel order:', rpcError)
-      return { error: rpcError.message || 'Failed to cancel the order. Please try again.' }
+      return { error: mapCancelOrderError(rpcError) }
     }
 
     revalidateTag('products', 'max')
@@ -42,7 +42,6 @@ export async function customerCancelOrderAction(
 
     return { error: null, success: true }
   } catch (err) {
-    console.error('Error cancelling order:', err)
-    return { error: 'Failed to cancel the order. Please try again.' }
+    return { error: mapCancelOrderError(err) }
   }
 }

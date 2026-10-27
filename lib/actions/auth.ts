@@ -10,6 +10,7 @@ import {
   resetPasswordSchema,
 } from '@/lib/validations/auth'
 import { safeRedirectPath } from '@/lib/utils/safe-redirect'
+import { sanitizeActionError, mapAuthError } from '@/lib/utils/action-error'
 
 export type LoginState = {
   error: string | null
@@ -71,6 +72,7 @@ export async function loginAction(
           error: 'Please verify your email address before logging in. Check your inbox for the confirmation link.',
         }
       }
+      sanitizeActionError('auth:login', error)
       return {
         error: 'Invalid email or password. Please try again.',
       }
@@ -98,9 +100,8 @@ export async function loginAction(
       targetPath = '/products'
     }
   } catch (err) {
-    console.error('Login action error:', err)
     return {
-      error: 'An unexpected authentication error occurred. Please try again.',
+      error: sanitizeActionError('auth:login', err, 'An unexpected authentication error occurred. Please try again.'),
     }
   }
 
@@ -164,7 +165,7 @@ export async function signupAction(
 
     if (error) {
       return {
-        error: error.message || 'Failed to sign up. Please try again.',
+        error: mapAuthError(error),
       }
     }
 
@@ -173,9 +174,8 @@ export async function signupAction(
       success: true,
     }
   } catch (err) {
-    console.error('Signup action error:', err)
     return {
-      error: 'An unexpected signup error occurred. Please try again.',
+      error: mapAuthError(err),
     }
   }
 }
@@ -230,10 +230,10 @@ export async function forgotPasswordAction(
     })
 
     if (error) {
-      console.error('resetPasswordForEmail error:', error)
+      sanitizeActionError('auth:forgotPassword', error)
     }
   } catch (err) {
-    console.error('Forgot password action unexpected error:', err)
+    sanitizeActionError('auth:forgotPassword', err)
   }
 
   return {
@@ -270,7 +270,7 @@ export async function resetPasswordAction(
 
     if (error) {
       return {
-        error: error.message || 'Failed to update your password. Please make sure your reset link is still valid.',
+        error: mapAuthError(error),
       }
     }
 
@@ -279,9 +279,8 @@ export async function resetPasswordAction(
       success: true,
     }
   } catch (err) {
-    console.error('Reset password action error:', err)
     return {
-      error: 'An unexpected error occurred while resetting your password.',
+      error: mapAuthError(err),
     }
   }
 }

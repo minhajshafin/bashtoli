@@ -2,6 +2,7 @@
 
 import { suggestionSchema, type SuggestionInput } from '@/lib/validations/suggestion'
 import { sendSuggestionEmail } from '@/lib/email/resend'
+import { sanitizeActionError } from '@/lib/utils/action-error'
 
 export type SuggestionActionResponse = {
   success: boolean
@@ -50,7 +51,7 @@ export async function submitSuggestionAction(
   if (!emailResult.success) {
     return {
       success: false,
-      error: emailResult.error || 'Failed to send suggestion. Please try again.',
+      error: sanitizeActionError('suggestion:send', emailResult.error, 'Failed to send suggestion. Please try again.'),
     }
   }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { submitSuggestionAction } from '@/lib/actions/suggestions'
 import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
@@ -10,11 +10,13 @@ export function SuggestAnItem() {
   const [suggestion, setSuggestion] = useState('')
   const [honeypot, setHoneypot] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const isSubmittingRef = useRef(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (isSubmittingRef.current) return
     setErrorMessage(null)
 
     if (!suggestion.trim()) {
@@ -22,6 +24,7 @@ export function SuggestAnItem() {
       return
     }
 
+    isSubmittingRef.current = true
     setIsSubmitting(true)
 
     try {
@@ -44,6 +47,7 @@ export function SuggestAnItem() {
     } catch {
       setErrorMessage('A network error occurred. Please check your connection and try again.')
     } finally {
+      isSubmittingRef.current = false
       setIsSubmitting(false)
     }
   }

@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { sanitizeActionError } from '@/lib/utils/action-error'
 
 interface GuestOrderSummary {
   id: string
@@ -25,8 +26,10 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
     const { data: rpcOrders, error: rpcError } = await supabase.rpc('find_unclaimed_guest_orders')
 
     if (rpcError) {
-      console.error('Error finding unclaimed guest orders RPC:', rpcError)
-      return { orders: [], error: 'Failed to search for unclaimed orders.' }
+      return {
+        orders: [],
+        error: sanitizeActionError('claim-guest-orders:find', rpcError, 'Failed to search for unclaimed orders.'),
+      }
     }
 
     return {
@@ -39,8 +42,10 @@ export async function findUnclaimedGuestOrders(): Promise<{ orders: GuestOrderSu
       error: null,
     }
   } catch (err) {
-    console.error('Error finding unclaimed guest orders:', err)
-    return { orders: [], error: 'Failed to search for unclaimed orders.' }
+    return {
+      orders: [],
+      error: sanitizeActionError('claim-guest-orders:find', err, 'Failed to search for unclaimed orders.'),
+    }
   }
 }
 
@@ -66,15 +71,17 @@ export async function claimGuestOrdersAction(orderIds: string[]): Promise<{ erro
     })
 
     if (rpcError) {
-      console.error('Error claiming guest orders RPC:', rpcError)
-      return { error: 'Failed to claim orders.' }
+      return {
+        error: sanitizeActionError('claim-guest-orders:claim', rpcError, 'Failed to claim orders.'),
+      }
     }
 
     revalidatePath('/account/orders')
     revalidatePath('/account')
     return { error: null, success: true, claimed: rpcCount ?? orderIds.length }
   } catch (err) {
-    console.error('Error claiming guest orders:', err)
-    return { error: 'Failed to claim orders.' }
+    return {
+      error: sanitizeActionError('claim-guest-orders:claim', err, 'Failed to claim orders.'),
+    }
   }
 }

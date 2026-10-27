@@ -55,17 +55,55 @@ describe('customerCancelOrderAction', () => {
     expect(mockRevalidatePath).toHaveBeenCalledWith('/account/orders')
   })
 
-  it('returns RPC error message if order cancellation fails', async () => {
+  it('maps whitelisted cancel_order error messages to user-friendly messages', async () => {
+    const cases = [
+      {
+        raw: 'Order not found',
+        expected: 'Order not found. Please verify the order details.',
+      },
+      {
+        raw: 'Unauthorized: Not the order owner',
+        expected: 'You are not authorized to cancel this order.',
+      },
+      {
+        raw: 'Only pending orders can be cancelled',
+        expected: 'Only pending orders can be cancelled.',
+      },
+      {
+        raw: 'Orders can only be cancelled within 24 hours of placement.',
+        expected: 'Orders can only be cancelled within 24 hours of placement.',
+      },
+    ]
+
+    for (const { raw, expected } of cases) {
+      mockGetUser.mockResolvedValueOnce({
+        data: { user: { id: 'cust-user-1' } },
+        error: null,
+      })
+      mockRpc.mockResolvedValueOnce({
+        error: { message: raw },
+      })
+
+      const res = await customerCancelOrderAction('test-order-id')
+      expect(res).toEqual({ error: expected })
+    }
+  })
+
+  it('sanitizes raw DB errors and never leaks DB strings to the customer', async () => {
     mockGetUser.mockResolvedValueOnce({
       data: { user: { id: 'cust-user-1' } },
       error: null,
     })
+    const rawDbError = 'new row for relation "orders" violates check constraint "orders_status_check"'
     mockRpc.mockResolvedValueOnce({
-      error: { message: 'Only pending orders can be cancelled' },
+      error: { message: rawDbError },
     })
 
     const res = await customerCancelOrderAction('test-order-id')
-    expect(res).toEqual({ error: 'Only pending orders can be cancelled' })
+    expect(res).toEqual({ error: 'Failed to cancel the order. Please try again.' })
+    expect(res.error).not.toContain(rawDbError)
+    expect(res.error).not.toContain('check constraint')
+    expect(res.error).not.toContain('orders_status_check')
   })
 
   it('handles unexpected exceptions safely', async () => {

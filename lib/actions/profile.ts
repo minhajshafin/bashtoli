@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { profileSchema, passwordChangeSchema } from '@/lib/validations/profile'
+import { sanitizeActionError, mapAuthError } from '@/lib/utils/action-error'
 
 export type ProfileUpdateState = {
   error: string | null
@@ -74,7 +75,6 @@ export async function updateProfileAction(
       .eq('id', user.id)
 
     if (profileError) {
-      console.error('Profile table update error:', profileError)
       throw profileError
     }
 
@@ -128,8 +128,9 @@ export async function updateProfileAction(
       }
     }
   } catch (err) {
-    console.error('Update profile error:', err)
-    return { error: 'Failed to update profile. Please try again.' }
+    return {
+      error: sanitizeActionError('profile:update', err, 'Failed to update profile. Please try again.'),
+    }
   }
 
   // Invalidate caches
@@ -183,7 +184,7 @@ export async function updatePasswordAction(
 
     if (error) {
       return {
-        error: error.message || 'Failed to update password. Please try again.',
+        error: mapAuthError(error),
       }
     }
 
@@ -192,9 +193,8 @@ export async function updatePasswordAction(
       success: true,
     }
   } catch (err) {
-    console.error('Update password error:', err)
     return {
-      error: 'An unexpected error occurred while updating your password.',
+      error: mapAuthError(err),
     }
   }
 }
@@ -249,18 +249,16 @@ export async function deleteAccountAction(
     const { error: deleteError } = await adminClient.auth.admin.deleteUser(user.id)
 
     if (deleteError) {
-      console.error('Delete user admin error:', deleteError)
       return {
-        error: deleteError.message || 'Failed to delete account. Please try again.',
+        error: sanitizeActionError('profile:deleteAccount', deleteError, 'Failed to delete account. Please try again.'),
       }
     }
 
     // 3. Sign out session & clear cookies
     await supabase.auth.signOut()
   } catch (err) {
-    console.error('Delete account action unexpected error:', err)
     return {
-      error: 'An unexpected error occurred while deleting your account. Please try again.',
+      error: sanitizeActionError('profile:deleteAccount', err, 'An unexpected error occurred while deleting your account. Please try again.'),
     }
   }
 

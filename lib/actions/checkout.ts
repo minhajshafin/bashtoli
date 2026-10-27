@@ -7,6 +7,7 @@ import { sendOrderEmails } from '@/lib/email/resend'
 import { headers } from 'next/headers'
 import { checkCheckoutRateLimit } from '@/lib/supabase/rate-limit'
 import { revalidatePath, revalidateTag } from 'next/cache'
+import { mapCheckoutError, sanitizeActionError } from '@/lib/utils/action-error'
 
 export type CheckoutActionState = {
   error: string | null
@@ -76,7 +77,9 @@ export async function submitCheckout(
     .in('id', variantIds)
 
   if (dbError || !dbVariants) {
-    return { error: 'Failed to verify items in your cart. Please try again.' }
+    return {
+      error: sanitizeActionError('checkout:preflight', dbError, 'Failed to verify items in your cart. Please try again.'),
+    }
   }
 
   // Two separate arrays:
@@ -154,19 +157,7 @@ export async function submitCheckout(
   })
 
   if (rpcError) {
-    console.error('Checkout place_order RPC error:', rpcError)
-
-    if (rpcError.message.includes('INSUFFICIENT_STOCK')) {
-      return {
-        error: 'One or more items in your cart do not have enough stock. Please adjust quantities and try again.',
-      }
-    }
-    if (rpcError.message.includes('ITEM_INACTIVE')) {
-      return {
-        error: 'One or more items in your cart are no longer available. Please refresh and try again.',
-      }
-    }
-    return { error: 'Failed to place order. Please try again.' }
+    return { error: mapCheckoutError(rpcError) }
   }
 
   const result = rpcData as PlaceOrderResult
@@ -224,7 +215,7 @@ export async function submitCheckout(
     )
   } catch (err) {
     // Email failure should not block the checkout response.
-    console.error('sendOrderEmails failed:', err)
+    sanitizeActionError('checkout:sendOrderEmails', err)
   }
 
   return {

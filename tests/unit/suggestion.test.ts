@@ -136,7 +136,7 @@ describe('submitSuggestionAction', () => {
     })
   })
 
-  it('propagates email sending failures gracefully', async () => {
+  it('propagates email sending failures gracefully with sanitized user-facing error', async () => {
     vi.spyOn(resendModule, 'sendSuggestionEmail').mockResolvedValue({
       success: false,
       error: 'Resend API error: Rate limit reached',
@@ -148,6 +148,7 @@ describe('submitSuggestionAction', () => {
     })
 
     expect(response.success).toBe(false)
-    expect(response.error).toBe('Resend API error: Rate limit reached')
+    expect(response.error).toBe('Failed to send suggestion. Please try again.')
+    expect(response.error).not.toContain('Resend')
   })
 })

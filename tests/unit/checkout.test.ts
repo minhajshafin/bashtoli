@@ -257,4 +257,85 @@ describe('submitCheckout server action', () => {
       })
     )
   })
+
+  it('sanitizes raw DB errors and never leaks DB strings to the customer', async () => {
+    mockFrom.mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        in: vi.fn().mockResolvedValue({
+          data: [
+            {
+              id: 'd1111111-1111-1111-1111-111111111111',
+              price: 150,
+              active: true,
+              stock_qty: 10,
+              product_id: 'f1111111-1111-1111-1111-111111111111',
+              products: {
+                id: 'f1111111-1111-1111-1111-111111111111',
+                name: 'Bamboo Pen',
+                slug: 'bamboo-pen',
+                active: true,
+              },
+            },
+          ],
+          error: null,
+        }),
+      }),
+    })
+
+    const rawDbError = 'duplicate key value violates unique constraint "orders_order_number_key" DETAIL: Key (order_number)=(ORD-123) already exists.'
+    mockRpc.mockResolvedValueOnce({
+      data: null,
+      error: { message: rawDbError },
+    })
+
+    const res = await submitCheckout(VALID_FORM, SAMPLE_CART)
+    expect(res.error).toBe("We couldn't place your order. Please try again.")
+    expect(res.error).not.toContain(rawDbError)
+    expect(res.error).not.toContain('unique constraint')
+    expect(res.error).not.toContain('orders_order_number_key')
+  })
+
+  it('maps known place_order exceptions by prefix to user-friendly messages', async () => {
+    mockFrom.mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        in: vi.fn().mockResolvedValue({
+          data: [
+            {
+              id: 'd1111111-1111-1111-1111-111111111111',
+              price: 150,
+              active: true,
+              stock_qty: 10,
+              product_id: 'f1111111-1111-1111-1111-111111111111',
+              products: {
+                id: 'f1111111-1111-1111-1111-111111111111',
+                name: 'Bamboo Pen',
+                slug: 'bamboo-pen',
+                active: true,
+              },
+            },
+          ],
+          error: null,
+        }),
+      }),
+    })
+
+    const prefixCases = [
+      { prefix: 'INSUFFICIENT_STOCK: d111 has 0 left', expected: 'One or more items in your cart do not have enough stock.' },
+      { prefix: 'ITEM_INACTIVE: f111 is inactive', expected: 'One or more items in your cart are no longer available.' },
+      { prefix: 'ITEM_NOT_FOUND: x999 missing', expected: 'One or more items in your cart could not be found.' },
+      { prefix: 'INVALID_ZONE: invalid zone null', expected: 'Please select a valid delivery zone.' },
+      { prefix: 'INVALID_QTY: item qty is 0', expected: 'Please enter a valid item quantity.' },
+      { prefix: 'INVALID_ITEMS: empty array', expected: 'Your cart is empty or contains invalid items.' },
+    ]
+
+    for (const { prefix, expected } of prefixCases) {
+      mockRpc.mockResolvedValueOnce({
+        data: null,
+        error: { message: prefix },
+      })
+      const res = await submitCheckout(VALID_FORM, SAMPLE_CART)
+      expect(res.error).toContain(expected)
+      expect(res.error).not.toContain(prefix)
+    }
+  })
 })

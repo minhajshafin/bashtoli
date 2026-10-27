@@ -111,16 +111,18 @@ export function WishlistProvider({
         nextState ? Array.from(new Set([...prev, productId])) : prev.filter((id) => id !== productId)
       )
 
-      if (nextState) {
-        toast(
-          productName ? `Added "${productName}" to your wishlist!` : 'Added to your wishlist!',
-          'success'
-        )
-      } else {
-        toast(
-          productName ? `Removed "${productName}" from your wishlist` : 'Removed from your wishlist',
-          'info'
-        )
+      const showSuccessToast = () => {
+        if (nextState) {
+          toast(
+            productName ? `Added "${productName}" to your wishlist!` : 'Added to your wishlist!',
+            'success'
+          )
+        } else {
+          toast(
+            productName ? `Removed "${productName}" from your wishlist` : 'Removed from your wishlist',
+            'info'
+          )
+        }
       }
 
       if (isLoggedIn) {
@@ -134,12 +136,14 @@ export function WishlistProvider({
           toast(res.error, 'error')
           return alreadyWishlisted
         }
+        showSuccessToast()
       } else {
         const currentGuest = getGuestWishlist()
         const updated = nextState
           ? [...currentGuest.filter((id) => id !== productId), productId]
           : currentGuest.filter((id) => id !== productId)
         saveGuestWishlist(updated)
+        showSuccessToast()
       }
 
       return nextState

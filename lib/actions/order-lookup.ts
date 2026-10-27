@@ -5,6 +5,7 @@ import { orderLookupSchema } from '@/lib/validations/order-lookup'
 import { headers, cookies } from 'next/headers'
 import { checkOrderLookupRateLimit } from '@/lib/supabase/rate-limit'
 import { setOrderVerificationCookie } from '@/lib/utils/order-token'
+import { sanitizeActionError } from '@/lib/utils/action-error'
 
 export type OrderLookupActionState = {
   error: string | null
@@ -49,7 +50,7 @@ export async function lookupOrder(formData: {
     .maybeSingle()
 
   if (error || !order) {
-    if (error) console.error('Lookup database error:', error)
+    if (error) sanitizeActionError('order-lookup', error)
     return {
       error: 'Order not found. Please double-check the order number and phone number.',
     }
