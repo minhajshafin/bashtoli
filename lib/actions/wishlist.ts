@@ -89,39 +89,6 @@ export async function removeFromWishlistAction(productId: string): Promise<{ err
   return { error: null, success: true }
 }
 
-/**
- * Helper Server Action: Checks if a product is in the user's wishlist.
- */
-export async function checkWishlistStatusAction(productId: string): Promise<boolean> {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) return false
-
-  try {
-    let db = supabase
-    try {
-      db = createAdminClient()
-    } catch {
-      // Fall back to user client
-    }
-
-    const { data, error } = await db
-      .from('wishlist')
-      .select('id')
-      .eq('user_id', user.id)
-      .eq('product_id', productId)
-      .maybeSingle()
-
-    if (error) throw error
-    return !!data
-  } catch (err) {
-    sanitizeActionError('wishlist:check', err)
-    return false
-  }
-}
 
 /**
  * Helper Server Action: Fetches all product IDs in the user's wishlist.

@@ -9,6 +9,7 @@
  * Usage:
  *   const supabase = await createClient()
  *   await assertStaffOrAdmin(supabase)   // throws on failure
+ *   await assertAdmin(supabase)          // throws on failure
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
@@ -43,6 +44,37 @@ export async function assertStaffOrAdmin(
     (profile.role !== 'staff' && profile.role !== 'admin')
   ) {
     throw new Error('Unauthorized: Staff or admin access required.')
+  }
+
+  return user.id
+}
+
+/**
+ * Asserts that the currently authenticated user has the 'admin' role.
+ * Throws a descriptive Error on failure.
+ *
+ * Returns the authenticated user's ID on success.
+ */
+export async function assertAdmin(
+  client: SupabaseClient<Database>,
+  customMessage: string = 'Unauthorized: Admin access required.'
+): Promise<string> {
+  const {
+    data: { user },
+  } = await client.auth.getUser()
+
+  if (!user) {
+    throw new Error('Unauthenticated: You must be logged in.')
+  }
+
+  const { data: profile } = await client
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || profile.role !== 'admin') {
+    throw new Error(customMessage)
   }
 
   return user.id

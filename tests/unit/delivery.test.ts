@@ -50,3 +50,26 @@ describe('getDeliveryFee()', () => {
     )
   })
 })
+
+// ── Migration Synchronization (Drift Prevention) ─────────────
+describe('Delivery Fee Synchronization with Database Migration', () => {
+  it('strictly matches the fee constants defined in 004_functions_and_triggers.sql', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+
+    const migrationPath = path.resolve(process.cwd(), 'supabase/migrations/004_functions_and_triggers.sql')
+    const sql = fs.readFileSync(migrationPath, 'utf8')
+
+    const insideMatch = sql.match(/p_delivery_zone\s*=\s*'inside_dhaka'\s*THEN\s*v_delivery_fee\s*:=\s*(\d+);/)
+    const outsideMatch = sql.match(/p_delivery_zone\s*=\s*'outside_dhaka'\s*THEN\s*v_delivery_fee\s*:=\s*(\d+);/)
+
+    expect(insideMatch).not.toBeNull()
+    expect(outsideMatch).not.toBeNull()
+
+    const dbInsideDhaka = Number(insideMatch![1])
+    const dbOutsideDhaka = Number(outsideMatch![1])
+
+    expect(DELIVERY_FEES.inside_dhaka).toBe(dbInsideDhaka)
+    expect(DELIVERY_FEES.outside_dhaka).toBe(dbOutsideDhaka)
+  })
+})

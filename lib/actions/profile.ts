@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { profileSchema, passwordChangeSchema } from '@/lib/validations/profile'
 import { sanitizeActionError, mapAuthError } from '@/lib/utils/action-error'
+import { clearUserDefaultAddresses } from '@/lib/actions/addresses'
 
 export type ProfileUpdateState = {
   error: string | null
@@ -106,6 +107,7 @@ export async function updateProfileAction(
           .maybeSingle()
 
         if (firstAddress) {
+          await clearUserDefaultAddresses(supabase, user.id)
           // Update the first address to be default
           await supabase
             .from('addresses')

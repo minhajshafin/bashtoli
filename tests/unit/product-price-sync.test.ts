@@ -36,7 +36,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 import { updateProduct, createProduct } from '@/lib/actions/products'
-import { updateVariantsBulk } from '@/lib/actions/variants'
+import { updateVariantsBulk } from '@/lib/actions/variants-bulk'
 
 // RFC 4122 compliant UUIDs for Zod .uuid()
 const PROD_UUID_1 = 'c1111111-1111-4111-8111-111111111111'

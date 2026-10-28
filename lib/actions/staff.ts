@@ -3,8 +3,7 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { promoteUserSchema, demoteUserSchema } from '@/lib/validations/staff'
 import { revalidatePath } from 'next/cache'
-import type { Database } from '@/lib/supabase/database.types'
-import type { SupabaseClient } from '@supabase/supabase-js'
+import { assertAdmin } from '@/lib/actions/admin-guard'
 
 export type PromoteState = {
   error: string | null
@@ -20,31 +19,6 @@ export type StaffMember = {
   role: 'customer' | 'staff' | 'admin'
 }
 
-/**
- * Helper: Asserts that the calling user has the 'admin' role.
- * Only administrators are authorized to manage staff roles.
- */
-async function assertCallerIsAdmin(client: SupabaseClient<Database>): Promise<string> {
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-
-  if (!user) {
-    throw new Error('Unauthenticated: You must be logged in.')
-  }
-
-  const { data: profile } = await client
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (!profile || profile.role !== 'admin') {
-    throw new Error('Unauthorized: Only administrators can manage staff accounts.')
-  }
-
-  return user.id
-}
 
 /**
  * Retrieves the list of all accounts with 'staff' or 'admin' roles.
@@ -59,7 +33,7 @@ export async function fetchStaffList(): Promise<StaffMember[]> {
   const client = await createClient()
 
   try {
-    await assertCallerIsAdmin(client)
+    await assertAdmin(client, 'Unauthorized: Only administrators can manage staff accounts.')
 
     const adminClient = createAdminClient()
 
@@ -106,7 +80,7 @@ export async function promoteUserAction(
   const client = await createClient()
 
   try {
-    await assertCallerIsAdmin(client)
+    await assertAdmin(client, 'Unauthorized: Only administrators can manage staff accounts.')
 
     const email = formData.get('email') as string
 
@@ -196,7 +170,7 @@ export async function demoteUserAction(
   const client = await createClient()
 
   try {
-    const callerId = await assertCallerIsAdmin(client)
+    const callerId = await assertAdmin(client, 'Unauthorized: Only administrators can manage staff accounts.')
 
     // Validate request parameter
     const parsed = demoteUserSchema.safeParse({ userId })

@@ -1,22 +1,10 @@
 'use client'
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { createContext, useContext } from 'react'
 import { AlertTriangle, AlertCircle, HelpCircle, X } from 'lucide-react'
+import { useConfirmState, type BaseConfirmOptions } from '@/components/ui/use-confirm'
 
-export interface AdminConfirmOptions {
-  title: string
-  description?: string
-  confirmText?: string
-  cancelText?: string
-  variant?: 'danger' | 'warning' | 'default'
-}
+export type AdminConfirmOptions = BaseConfirmOptions
 
 interface AdminConfirmContextType {
   confirm: (options: AdminConfirmOptions) => Promise<boolean>
@@ -35,66 +23,14 @@ export function AdminConfirmDialogProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [options, setOptions] = useState<AdminConfirmOptions>({ title: '' })
-  const resolveRef = useRef<((value: boolean) => void) | null>(null)
-  const confirmButtonRef = useRef<HTMLButtonElement>(null)
-
-  const confirm = useCallback((opts: AdminConfirmOptions) => {
-    return new Promise<boolean>((resolve) => {
-      setOptions(opts)
-      resolveRef.current = resolve
-      setIsOpen(true)
-    })
-  }, [])
-
-  const handleConfirm = useCallback(() => {
-    setIsOpen(false)
-    if (resolveRef.current) {
-      resolveRef.current(true)
-      resolveRef.current = null
-    }
-  }, [])
-
-  const handleCancel = useCallback(() => {
-    setIsOpen(false)
-    if (resolveRef.current) {
-      resolveRef.current(false)
-      resolveRef.current = null
-    }
-  }, [])
-
-  // Close on Escape key
-  useEffect(() => {
-    if (!isOpen) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        handleCancel()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, handleCancel])
-
-  // Lock body scroll & autofocus confirm button
-  useEffect(() => {
-    if (isOpen) {
-      const originalOverflow = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-
-      const timer = setTimeout(() => {
-        confirmButtonRef.current?.focus()
-      }, 50)
-
-      return () => {
-        document.body.style.overflow = originalOverflow
-        clearTimeout(timer)
-      }
-    }
-  }, [isOpen])
+  const {
+    isOpen,
+    options,
+    confirm,
+    handleConfirm,
+    handleCancel,
+    confirmButtonRef,
+  } = useConfirmState<AdminConfirmOptions>({ title: '' })
 
   const variant = options.variant || 'default'
 

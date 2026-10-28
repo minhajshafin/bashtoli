@@ -1,14 +1,9 @@
 'use client'
 
-import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
+import React, { createContext, useContext } from 'react'
+import { useConfirmState, type BaseConfirmOptions } from './use-confirm'
 
-export interface ConfirmOptions {
-  title: string
-  description?: string
-  confirmText?: string
-  cancelText?: string
-  variant?: 'danger' | 'warning' | 'default'
-}
+export type ConfirmOptions = BaseConfirmOptions
 
 interface ConfirmContextType {
   confirm: (options: ConfirmOptions) => Promise<boolean>
@@ -17,67 +12,14 @@ interface ConfirmContextType {
 const ConfirmDialogContext = createContext<ConfirmContextType | null>(null)
 
 export function ConfirmDialogProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [options, setOptions] = useState<ConfirmOptions>({ title: '' })
-  const resolveRef = useRef<((value: boolean) => void) | null>(null)
-  const confirmButtonRef = useRef<HTMLButtonElement>(null)
-
-  const confirm = useCallback((opts: ConfirmOptions) => {
-    return new Promise<boolean>((resolve) => {
-      setOptions(opts)
-      resolveRef.current = resolve
-      setIsOpen(true)
-    })
-  }, [])
-
-  const handleConfirm = useCallback(() => {
-    setIsOpen(false)
-    if (resolveRef.current) {
-      resolveRef.current(true)
-      resolveRef.current = null
-    }
-  }, [])
-
-  const handleCancel = useCallback(() => {
-    setIsOpen(false)
-    if (resolveRef.current) {
-      resolveRef.current(false)
-      resolveRef.current = null
-    }
-  }, [])
-
-  // Close on Escape key
-  useEffect(() => {
-    if (!isOpen) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        handleCancel()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, handleCancel])
-
-  // Lock body scroll when dialog is open & auto-focus confirm button
-  useEffect(() => {
-    if (isOpen) {
-      const originalOverflow = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-
-      // Focus button after mount
-      const timer = setTimeout(() => {
-        confirmButtonRef.current?.focus()
-      }, 50)
-
-      return () => {
-        document.body.style.overflow = originalOverflow
-        clearTimeout(timer)
-      }
-    }
-  }, [isOpen])
+  const {
+    isOpen,
+    options,
+    confirm,
+    handleConfirm,
+    handleCancel,
+    confirmButtonRef,
+  } = useConfirmState<ConfirmOptions>({ title: '' })
 
   const variant = options.variant || 'default'
 

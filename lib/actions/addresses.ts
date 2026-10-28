@@ -4,6 +4,22 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { addressSchema } from '@/lib/validations/address'
 import { sanitizeActionError } from '@/lib/utils/action-error'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/lib/supabase/database.types'
+
+/**
+ * Unsets any existing default address for a given user.
+ */
+export async function clearUserDefaultAddresses(
+  supabase: SupabaseClient<Database>,
+  userId: string
+): Promise<void> {
+  await supabase
+    .from('addresses')
+    .update({ is_default: false })
+    .eq('user_id', userId)
+    .eq('is_default', true)
+}
 
 export type AddressActionState = {
   error: string | null
@@ -64,11 +80,7 @@ export async function addAddressAction(
 
     // If setting as default, clear existing default flag for this user
     if (parsed.data.is_default) {
-      await supabase
-        .from('addresses')
-        .update({ is_default: false })
-        .eq('user_id', user.id)
-        .eq('is_default', true)
+      await clearUserDefaultAddresses(supabase, user.id)
     }
 
     // Insert new address record
@@ -137,11 +149,7 @@ export async function editAddressAction(
   try {
     // If setting as default, clear existing defaults first
     if (parsed.data.is_default) {
-      await supabase
-        .from('addresses')
-        .update({ is_default: false })
-        .eq('user_id', user.id)
-        .eq('is_default', true)
+      await clearUserDefaultAddresses(supabase, user.id)
     }
 
     // Update matching record
@@ -220,11 +228,7 @@ export async function setDefaultAddressAction(addressId: string): Promise<{ erro
 
   try {
     // 1. Unset existing defaults
-    await supabase
-      .from('addresses')
-      .update({ is_default: false })
-      .eq('user_id', user.id)
-      .eq('is_default', true)
+    await clearUserDefaultAddresses(supabase, user.id)
 
     // 2. Set new default
     const { error } = await supabase

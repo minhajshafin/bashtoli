@@ -11,6 +11,7 @@ import {
 } from '@/lib/validations/auth'
 import { safeRedirectPath } from '@/lib/utils/safe-redirect'
 import { sanitizeActionError, mapAuthError } from '@/lib/utils/action-error'
+import { getBaseUrl } from '@/lib/utils/url'
 
 export type LoginState = {
   error: string | null
@@ -143,13 +144,8 @@ export async function signupAction(
 
   const supabase = await createClient()
 
-  let appUrl = process.env.NEXT_PUBLIC_APP_URL
-  if (!appUrl) {
-    const headersList = await headers()
-    const host = headersList.get('x-forwarded-host') || headersList.get('host')
-    const protocol = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'development' ? 'http' : 'https')
-    appUrl = host ? `${protocol}://${host}` : 'http://localhost:3000'
-  }
+  const headersList = await headers()
+  const appUrl = getBaseUrl(headersList)
 
   try {
     const { error } = await supabase.auth.signUp({
@@ -213,13 +209,8 @@ export async function forgotPasswordAction(
 
   // Use NEXT_PUBLIC_APP_URL — do NOT derive the redirect base URL solely from
   // the Host header, which is client-controlled (Host Header Injection). (L-NEW-2)
-  let appUrl = process.env.NEXT_PUBLIC_APP_URL
-  if (!appUrl) {
-    const headersList = await headers()
-    const host = headersList.get('x-forwarded-host') || headersList.get('host')
-    const protocol = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'development' ? 'http' : 'https')
-    appUrl = host ? `${protocol}://${host}` : 'http://localhost:3000'
-  }
+  const headersList = await headers()
+  const appUrl = getBaseUrl(headersList)
 
   // Set redirection to auth callback path
   const redirectTo = `${appUrl}/api/auth/callback?redirectTo=/reset-password`

@@ -4,8 +4,8 @@ import React, { useEffect, useState, useRef, useCallback, Suspense } from 'react
 import { usePathname, useSearchParams } from 'next/navigation'
 
 /** Custom browser events to programmatically control the progress bar if needed */
-export const ROUTE_PROGRESS_START_EVENT = 'bashtoli:route-progress-start'
-export const ROUTE_PROGRESS_DONE_EVENT = 'bashtoli:route-progress-done'
+const ROUTE_PROGRESS_START_EVENT = 'bashtoli:route-progress-start'
+const ROUTE_PROGRESS_DONE_EVENT = 'bashtoli:route-progress-done'
 
 /**
  * Programmatically start the top route progress bar

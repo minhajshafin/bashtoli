@@ -5,7 +5,7 @@ import { unstable_cache } from 'next/cache'
 
 export type HeroSlideRow = Database['public']['Tables']['hero_slides']['Row']
 
-export const DEFAULT_FALLBACK_SLIDE: HeroSlideRow = {
+const DEFAULT_FALLBACK_SLIDE: HeroSlideRow = {
   id: 'default-fallback-slide',
   image_url: '/logo-text.svg',
   alt_text: 'Bashtoli Stationery',

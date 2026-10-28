@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { updateVariantsBulk } from '@/lib/actions/variants'
+import { updateVariantsBulk } from '@/lib/actions/variants-bulk'
 import { useProductStudio } from '@/components/admin/product-studio-context'
 import type { Database } from '@/lib/supabase/database.types'
 

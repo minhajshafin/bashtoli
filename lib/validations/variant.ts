@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const optionInputSchema = z.object({
+const optionInputSchema = z.object({
   name: z
     .string()
     .min(1, 'Option name is required')
@@ -39,5 +39,4 @@ export const variantInlineUpdateSchema = z.object({
   active: z.boolean(),
 })
 
-export type OptionInputType = z.infer<typeof optionInputSchema>
 export type VariantInlineUpdateType = z.infer<typeof variantInlineUpdateSchema>

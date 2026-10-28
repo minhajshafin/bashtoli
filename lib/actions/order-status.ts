@@ -4,6 +4,7 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { orderStatusSchema } from '@/lib/validations/order-status'
 import { resend } from '@/lib/email/resend'
 import { OrderStatusUpdateEmail } from '@/lib/email/templates/order-status-update'
+import { assertStaffOrAdmin } from '@/lib/actions/admin-guard'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import React from 'react'
 
@@ -48,24 +49,12 @@ export async function updateOrderStatusAction(
 ): Promise<{ error: string | null; success?: boolean }> {
   const client = await createClient()
 
-  // 1. Authenticate user
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-
-  if (!user) {
-    return { error: 'You must be logged in to modify order statuses.' }
-  }
-
-  // 2. Validate user role is staff or admin
-  const { data: profile } = await client
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (!profile || (profile.role !== 'staff' && profile.role !== 'admin')) {
-    return { error: 'Unauthorized: Admin or staff role required.' }
+  // 1. Authenticate user & validate staff or admin role
+  let userId: string
+  try {
+    userId = await assertStaffOrAdmin(client)
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Unauthorized: Admin or staff role required.' }
   }
 
   // 3. Validate request schema
@@ -119,7 +108,7 @@ export async function updateOrderStatusAction(
       .insert({
         order_id: orderId,
         status: nextStatus,
-        changed_by: user.id,
+        changed_by: userId,
       })
 
     if (historyError) {
@@ -172,16 +161,14 @@ export async function updateOrderStatusAction(
               from: 'Bashtoli <orders@bashtoli.com>',
               to: customerEmail,
               subject: `Update on your Bashtoli Order ${order.order_number}`,
-              react: (
-                <OrderStatusUpdateEmail
-                  orderNumber={order.order_number}
-                  accessToken={order.access_token}
-                  customerName={order.customer_name}
-                  status={nextStatus as 'confirmed' | 'shipped' | 'delivered'}
-                  address={order.address}
-                  total={Number(order.total)}
-                />
-              ),
+              react: React.createElement(OrderStatusUpdateEmail, {
+                orderNumber: order.order_number,
+                accessToken: order.access_token,
+                customerName: order.customer_name,
+                status: nextStatus as 'confirmed' | 'shipped' | 'delivered',
+                address: order.address,
+                total: Number(order.total),
+              }),
             })
             .then((res) => {
               if (res.error) {
