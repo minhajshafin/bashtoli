@@ -1,30 +1,19 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import React from 'react'
 import { cookies } from 'next/headers'
-import { OrderStatus } from '@/components/storefront/order-status'
-import { OrderLookupForm } from '@/components/storefront/order-lookup-form'
-import { OrderReferencePill } from '@/components/storefront/order-reference-pill'
-import { WhatsAppLink } from '@/components/storefront/whatsapp-link'
-import { CancelOrderButton } from '@/components/storefront/cancel-order-button'
-import { CheckoutSteps } from '@/components/storefront/checkout-steps'
-import { PrintReceiptButton } from '@/components/storefront/print-receipt-button'
-import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
-import { timingSafeEqualStrings, isOrderCookieVerified } from '@/lib/utils/order-token'
+import { isOrderCookieVerified } from '@/lib/utils/order-token'
 import {
-  CheckCircle2,
-  Clock,
-  MapPin,
-  Truck,
-  Store,
-  Banknote,
-  ShoppingBag,
-  ArrowRight,
-  ShieldCheck,
-  Phone,
-  Mail,
-} from 'lucide-react'
+  resolveOrderAccess,
+  type FullOrderDTO,
+  type FullOrderItemDTO,
+  type RedactedOrderDTO,
+} from '@/lib/order/access'
+import { FullOrderView } from '@/components/storefront/order/full-order-view'
+import {
+  PartialOrderView,
+  OrderPhoneVerificationGate,
+} from '@/components/storefront/order/partial-order-view'
 
 interface OrderPageProps {
   params: Promise<{
@@ -44,17 +33,13 @@ export async function generateMetadata({ params }: OrderPageProps) {
   }
 }
 
-/**
- * Checks if a pending order is cancelable (placed within the last 24 hours).
- */
-function isOrderCancelable(createdAtStr: string, status: string): boolean {
-  if (status !== 'pending') return false
-  const createdAt = new Date(createdAtStr)
-  return createdAt.getTime() > Date.now() - 24 * 60 * 60 * 1000
-}
-
 export const instant = false
 
+/**
+ * Order Confirmation & Tracking Page Orchestrator.
+ * Queries minimum columns for access decision first, then delegates rendering to
+ * FullOrderView or PartialOrderView / OrderPhoneVerificationGate.
+ */
 export default async function OrderConfirmationPage({
   params,
   searchParams,
@@ -65,418 +50,130 @@ export default async function OrderConfirmationPage({
   const resolvedSearchParams = await searchParams
   const tokenParam = resolvedSearchParams?.token
 
-  // Use admin client to query order details securely
+  // 1. Fetch only the minimum columns required for the access decision
   const adminDb = createAdminClient()
-
-  // 1. Fetch order details
-  const { data: order, error: orderError } = await adminDb
+  const { data: initialOrder, error: orderError } = await adminDb
     .from('orders')
-    .select('*')
+    .select('id, order_number, user_id, access_token')
     .eq('order_number', orderNumber)
     .maybeSingle()
 
-  if (orderError || !order) {
-    if (orderError) console.error('Error fetching order details:', orderError)
-    notFound()
+  if (orderError) {
+    console.error('Error fetching order for access check:', orderError)
   }
 
-  // 2. Access control logic:
-  // Full view ONLY for:
-  // - Owner (authenticated session where user.id === order.user_id)
-  // - Staff or admin role
-  // - Valid token matching order.access_token (constant-time compare)
+  // 2. Fetch authenticated user and profile role if a session exists
   const client = await createClient()
   const {
     data: { user },
   } = await client.auth.getUser()
 
-  let isStaffOrAdmin = false
+  let role: string | null = null
   if (user) {
     const { data: profile } = await client
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .maybeSingle()
-    if (profile?.role === 'staff' || profile?.role === 'admin') {
-      isStaffOrAdmin = true
-    }
+    role = profile?.role ?? null
   }
 
-  const isOwner = Boolean(user && order.user_id && order.user_id === user.id)
-  const hasValidToken = timingSafeEqualStrings(tokenParam, order.access_token)
-  const isFullView = isOwner || isStaffOrAdmin || hasValidToken
-
-  // 3. If not full view, check for signed httpOnly phone-verification cookie
+  // 3. Check for signed httpOnly phone-verification cookie
   const cookieStore = await cookies()
-  const isCookieVerified = isOrderCookieVerified(cookieStore, order.order_number)
+  const cookieVerified = initialOrder
+    ? isOrderCookieVerified(cookieStore, initialOrder.order_number)
+    : false
 
-  // 4. If neither full view nor verified cookie, show phone verification gate
-  if (!isFullView && !isCookieVerified) {
-    return (
-      <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center px-4 py-8 sm:py-16 pb-28 sm:pb-20 overflow-hidden">
-        <CheckoutBackgroundArt />
-        <div className="relative z-10 w-full max-w-md bg-cream-100/80 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xs space-y-6 text-center animate-fade-in backdrop-blur-xs">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-2 shadow-xs border border-forest-800">
-            <ShieldCheck className="h-6 w-6 stroke-[2]" />
-          </div>
-          <div className="space-y-1.5">
-            <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-              Security Verification
-            </p>
-            <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 font-display">
-              Verify Phone Number
-            </h1>
-            <p className="text-xs sm:text-[13px] text-forest-600 leading-relaxed max-w-xs mx-auto font-sans">
-              To view tracking information for order{' '}
-              <span className="font-semibold text-forest-950 font-mono">{orderNumber}</span>
-              , please enter the phone number provided at checkout.
-            </p>
-          </div>
-
-          <OrderLookupForm initialOrderNumber={orderNumber} />
-        </div>
-      </div>
-    )
-  }
-
-  // 5. Partial View for verified phone guest tracking:
-  // Shows ONLY order status and item names/quantities.
-  // NEVER address, phone, email, or customer name.
-  if (!isFullView) {
-    const { data: itemsData, error: itemsError } = await adminDb
-      .from('order_items')
-      .select('id, product_name, qty')
-      .eq('order_id', order.id)
-
-    if (itemsError) {
-      console.error('Error fetching partial order items:', itemsError)
-    }
-
-    const items = itemsData || []
-
-    return (
-      <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden">
-        <CheckoutBackgroundArt />
-        <div className="relative z-10 mx-auto max-w-2xl space-y-6 sm:space-y-8">
-          <div className="text-center space-y-3">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-1 shadow-xs border border-forest-800">
-              <CheckCircle2 className="h-7 w-7 stroke-[2]" />
-            </div>
-
-            <div className="flex justify-center">
-              <OrderReferencePill orderNumber={order.order_number} size="md" />
-            </div>
-
-            <div className="space-y-1">
-              <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
-                Order Tracking
-              </h1>
-              <p className="text-xs sm:text-[13px] text-forest-600 font-sans max-w-md mx-auto leading-relaxed">
-                Guest tracking view. Recipient contact and address details are hidden for privacy.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-cream-100/75 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-2xs space-y-6">
-            {/* Status Stepper */}
-            <div className="pb-5 border-b border-forest-200/80">
-              <OrderStatus status={order.status} createdAt={order.created_at} />
-            </div>
-
-            {/* Ordered Items: ONLY item names and quantities */}
-            <div className="space-y-3 pt-1">
-              <div className="flex items-center gap-1.5">
-                <ShoppingBag className="h-3.5 w-3.5 text-forest-500" />
-                <h3 className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                  Ordered Items ({items.length})
-                </h3>
-              </div>
-              <div className="divide-y divide-forest-200/70 border-t border-b border-forest-200/70">
-                {items.map((item) => (
-                  <div key={item.id} className="flex justify-between items-center py-3 text-xs sm:text-sm font-sans gap-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="font-medium text-forest-950 truncate">{item.product_name}</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-cream-200/80 text-[11px] font-mono font-medium text-forest-700">
-                        Qty: {item.qty}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-3 pt-2">
-            <WhatsAppLink orderNumber={order.order_number} className="w-full sm:w-auto" />
-            <Link
-              href="/products"
-              className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all cursor-pointer w-full sm:w-auto"
-            >
-              <span>Continue Shopping</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // 6. Full View: Owner, Staff/Admin, or Matching Token
-  const { data: itemsData, error: itemsError } = await adminDb
-    .from('order_items')
-    .select('*')
-    .eq('order_id', order.id)
-    .eq('order_id', order.id)
-
-  if (itemsError) {
-    console.error('Error fetching order items:', itemsError)
-  }
-
-  const items = itemsData || []
-  const orderDate = new Date(order.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  // 4. Resolve access decision
+  const access = resolveOrderAccess({
+    order: initialOrder,
+    user,
+    role,
+    token: tokenParam,
+    cookieVerified,
   })
 
-  const isPendingAndCancelable = isOrderCancelable(order.created_at, order.status)
+  // 5. Handle routing based on resolved access level
+  if (access === 'not_found') {
+    notFound()
+  }
+
+  if (access === 'gate') {
+    const gateDTO: RedactedOrderDTO = {
+      order_number: initialOrder!.order_number,
+      status: 'pending',
+      items: [],
+    }
+    return <OrderPhoneVerificationGate order={gateDTO} />
+  }
+
+  if (access === 'partial') {
+    const [{ data: partialOrder, error: partialOrderError }, { data: partialItems, error: partialItemsError }] =
+      await Promise.all([
+        adminDb
+          .from('orders')
+          .select('status, created_at')
+          .eq('id', initialOrder!.id)
+          .single(),
+        adminDb
+          .from('order_items')
+          .select('id, product_name, qty')
+          .eq('order_id', initialOrder!.id),
+      ])
+
+    if (partialOrderError) {
+      console.error('Error fetching partial order details:', partialOrderError)
+    }
+    if (partialItemsError) {
+      console.error('Error fetching partial order items:', partialItemsError)
+    }
+
+    const partialDTO: RedactedOrderDTO = {
+      order_number: initialOrder!.order_number,
+      status: partialOrder?.status ?? 'pending',
+      created_at: partialOrder?.created_at,
+      items: (partialItems || []).map((i) => ({
+        id: i.id,
+        product_name: i.product_name,
+        qty: i.qty,
+      })),
+    }
+
+    return <PartialOrderView order={partialDTO} />
+  }
+
+  // access === 'full'
+  const [{ data: fullOrder, error: fullOrderError }, { data: fullItems, error: fullItemsError }] =
+    await Promise.all([
+      adminDb
+        .from('orders')
+        .select(
+          'id, order_number, customer_name, phone, guest_email, address, notes, fulfillment_type, delivery_zone, subtotal, delivery_fee, total, status, created_at'
+        )
+        .eq('id', initialOrder!.id)
+        .single(),
+      adminDb
+        .from('order_items')
+        .select('id, product_name, qty, price_at_purchase')
+        .eq('order_id', initialOrder!.id),
+    ])
+
+  if (fullOrderError || !fullOrder) {
+    if (fullOrderError) console.error('Error fetching full order details:', fullOrderError)
+    notFound()
+  }
+
+  if (fullItemsError) {
+    console.error('Error fetching full order items:', fullItemsError)
+  }
+
+  const isOwner = Boolean(user?.id && initialOrder!.user_id && initialOrder!.user_id === user.id)
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden">
-      <CheckoutBackgroundArt />
-      <div className="relative z-10 mx-auto max-w-3xl space-y-6 sm:space-y-8">
-        {/* 3-Step Visual Progress Track */}
-        <div className="print:hidden">
-          <CheckoutSteps currentStep={3} />
-        </div>
-
-        {/* Celebratory Header Banner */}
-        <div className="text-center space-y-3">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-1 shadow-xs border border-forest-800">
-            <CheckCircle2 className="h-7 w-7 stroke-[2]" />
-          </div>
-
-          <div className="flex justify-center">
-            <OrderReferencePill orderNumber={order.order_number} size="md" />
-          </div>
-
-          <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl lg:text-[2.2rem] font-medium text-forest-950 tracking-tight font-display">
-              Thank you, {order.customer_name.split(' ')[0]}!
-            </h1>
-            <p className="text-xs sm:text-[13px] text-forest-600 font-sans max-w-md mx-auto leading-relaxed">
-              Your stationery goods are confirmed. We are carefully packaging your items at our Dhaka studio.
-            </p>
-          </div>
-        </div>
-
-        {/* Main Order Card / Receipt */}
-        <div className="bg-cream-100/75 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-2xs space-y-6 sm:space-y-7 print:bg-white print:border-none print:shadow-none print:p-0">
-          {/* Header row: Order ID + Date */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-forest-200/80">
-            <div>
-              <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                Official Order Reference
-              </p>
-              <div className="mt-1">
-                <OrderReferencePill orderNumber={order.order_number} size="sm" />
-              </div>
-            </div>
-            <div className="sm:text-right">
-              <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                Placement Timestamp
-              </p>
-              <p className="text-xs sm:text-sm font-medium text-forest-700 mt-1 font-sans flex sm:justify-end items-center gap-1.5">
-                <Clock className="h-3.5 w-3.5 text-forest-400" />
-                {orderDate}
-              </p>
-            </div>
-          </div>
-
-          {/* Stepper block */}
-          <div className="pb-5 border-b border-forest-200/80 print:hidden">
-            <OrderStatus status={order.status} createdAt={order.created_at} />
-          </div>
-
-          {/* Delivery Details & Fulfillment Method */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Delivery Info */}
-            <div className="rounded-2xl bg-cream-50/90 border border-forest-200/70 p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-forest-500" />
-                <h3 className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                  Recipient Details
-                </h3>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-forest-950 font-sans">{order.customer_name}</p>
-                <a
-                  href={`tel:${order.phone}`}
-                  className="inline-flex items-center gap-1 text-xs font-mono font-medium text-forest-700 hover:text-gold-600 transition-colors mt-0.5"
-                >
-                  <Phone className="h-3 w-3 text-forest-400" />
-                  <span>{order.phone}</span>
-                </a>
-              </div>
-              <p className="text-xs sm:text-[13px] text-forest-600 leading-relaxed whitespace-pre-line font-sans pt-0.5">
-                {order.address}
-              </p>
-              {order.guest_email && (
-                <div className="flex items-center gap-1.5 text-xs text-forest-500 font-mono pt-1">
-                  <Mail className="h-3 w-3 text-forest-400" />
-                  <span>{order.guest_email}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Options */}
-            <div className="rounded-2xl bg-cream-50/90 border border-forest-200/70 p-4 sm:p-5 space-y-2.5">
-              <div className="flex items-center gap-1.5">
-                {order.fulfillment_type === 'pickup' ? (
-                  <Store className="h-3.5 w-3.5 text-forest-500" />
-                ) : (
-                  <Truck className="h-3.5 w-3.5 text-forest-500" />
-                )}
-                <h3 className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                  Fulfillment &amp; Payment
-                </h3>
-              </div>
-              <div className="space-y-2 text-xs font-sans">
-                <div className="flex justify-between items-center">
-                  <span className="text-forest-500">Method</span>
-                  <span className="font-semibold text-forest-950 capitalize">
-                    {order.fulfillment_type === 'pickup' ? 'Store Pickup' : 'Home Delivery'}
-                  </span>
-                </div>
-                {order.fulfillment_type === 'delivery' && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-forest-500">Region</span>
-                    <span className="font-semibold text-forest-950 capitalize">
-                      {order.delivery_zone?.replace('_', ' ')}
-                    </span>
-                  </div>
-                )}
-                <div className="flex justify-between items-center">
-                  <span className="text-forest-500">Payment Type</span>
-                  <span className="font-semibold text-forest-950">Cash on Delivery (COD)</span>
-                </div>
-              </div>
-
-              {/* Cash on Delivery / Pickup Reassurance Reminder */}
-              {order.fulfillment_type === 'delivery' ? (
-                <div className="mt-2.5 rounded-xl bg-gold-400/10 border border-gold-500/25 p-3 text-xs text-forest-900 flex items-start gap-2.5">
-                  <Banknote className="h-4 w-4 text-gold-600 shrink-0 mt-0.5" />
-                  <div className="space-y-0.5">
-                    <p className="font-semibold text-forest-950 font-sans">Cash on Delivery Reminder</p>
-                    <p className="text-forest-600 text-[11px] leading-relaxed font-sans">
-                      Please keep <span className="font-bold text-forest-950 font-price">৳{order.total.toLocaleString()}</span> in exact cash ready for the courier upon parcel delivery.
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="mt-2.5 rounded-xl bg-forest-900/5 border border-forest-800/15 p-3 text-xs text-forest-900 flex items-start gap-2.5">
-                  <Store className="h-4 w-4 text-forest-800 shrink-0 mt-0.5" />
-                  <div className="space-y-0.5">
-                    <p className="font-semibold text-forest-950 font-sans">Store Pickup · Dhaka Studio</p>
-                    <p className="text-forest-600 text-[11px] leading-relaxed font-sans">
-                      We will notify you via SMS/WhatsApp when your package is ready for collection at our studio.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Customer notes if any */}
-          {order.notes && (
-            <div className="rounded-xl bg-cream-50 border border-forest-200/80 p-3.5 text-xs space-y-1">
-              <p className="font-sans font-semibold uppercase tracking-wider text-gold-600 text-[10px]">
-                Customer Instructions
-              </p>
-              <p className="text-forest-700 italic leading-relaxed">{order.notes}</p>
-            </div>
-          )}
-
-          {/* Purchased Items breakdown */}
-          <div className="space-y-3 pt-1">
-            <div className="flex items-center gap-1.5">
-              <ShoppingBag className="h-3.5 w-3.5 text-forest-500" />
-              <h3 className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
-                Purchased Items ({items.length})
-              </h3>
-            </div>
-            <div className="divide-y divide-forest-200/70 border-t border-b border-forest-200/70">
-              {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-center py-3 text-xs sm:text-sm font-sans gap-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-forest-950 truncate">{item.product_name}</p>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-cream-200/80 text-[11px] font-mono font-medium text-forest-700">
-                        Qty: {item.qty}
-                      </span>
-                      {item.qty > 1 && (
-                        <span className="text-[11px] text-forest-500 font-price">
-                          ৳{item.price_at_purchase.toLocaleString()} each
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="font-semibold text-forest-950 font-price text-sm sm:text-base">
-                      ৳{(item.price_at_purchase * item.qty).toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Total Cost card block */}
-          <div className="space-y-2.5 bg-cream-200/60 p-4 sm:p-5 rounded-2xl border border-forest-200/80">
-            <div className="flex justify-between text-xs sm:text-[13px] font-sans">
-              <span className="text-forest-600">Subtotal</span>
-              <span className="font-semibold text-forest-950 font-price">৳{order.subtotal.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between text-xs sm:text-[13px] font-sans">
-              <span className="text-forest-600">Shipping &amp; Delivery</span>
-              <span className="font-semibold text-forest-950 font-price">
-                {order.delivery_fee === 0 ? (
-                  <span className="text-emerald-700 font-semibold uppercase tracking-wider text-xs">Free</span>
-                ) : (
-                  `৳${order.delivery_fee.toLocaleString()}`
-                )}
-              </span>
-            </div>
-            <hr className="border-forest-200/80 my-1" />
-            <div className="flex justify-between items-baseline pt-1">
-              <span className="text-sm font-semibold text-forest-950 font-sans">Total (Pay on Delivery)</span>
-              <span className="text-xl sm:text-2xl font-bold text-forest-950 font-price">
-                ৳{order.total.toLocaleString()}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons: Full-width stacked on mobile, row on tablet/desktop */}
-        <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-3 pt-2 print:hidden">
-          <WhatsAppLink orderNumber={order.order_number} className="w-full sm:w-auto" />
-          <Link
-            href="/products"
-            className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all cursor-pointer w-full sm:w-auto"
-          >
-            <span>Continue Shopping</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-          <PrintReceiptButton className="w-full sm:w-auto" />
-          {isOwner && isPendingAndCancelable && (
-            <CancelOrderButton orderId={order.id} className="w-full sm:w-auto" />
-          )}
-        </div>
-      </div>
-    </div>
+    <FullOrderView
+      order={fullOrder as FullOrderDTO}
+      items={(fullItems || []) as FullOrderItemDTO[]}
+      isOwner={isOwner}
+    />
   )
 }
