@@ -10,13 +10,13 @@ import {
   clearGuestCart,
 } from './guest-cart'
 import {
-  fetchDbCart,
   addToDbCartAction,
   updateDbCartQtyAction,
   removeFromDbCartAction,
   clearDbCartAction,
-  mergeGuestCartAction,
 } from '@/lib/actions/cart'
+import { mergeGuestCartAction } from '@/lib/actions/cart-merge'
+import { fetchDbCart } from '@/lib/queries/cart'
 import { useToast } from '@/components/ui/toast'
 
 interface CartContextType {

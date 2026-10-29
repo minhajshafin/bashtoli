@@ -1,5 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { requireUser } from '@/lib/supabase/require-user'
 import React from 'react'
 import { fetchCustomerOrders } from '@/lib/queries/customer-orders'
 import { findUnclaimedGuestOrders } from '@/lib/actions/claim-guest-orders'
@@ -23,16 +22,7 @@ export const instant = false
  * Server component that retrieves and shows customer checkouts and matching claimable guest orders.
  */
 export default async function OrderHistoryPage() {
-  const supabase = await createClient()
-
-  // Verify auth session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login?redirectTo=/account/orders')
-  }
+  await requireUser('/account/orders')
 
   // 1. Fetch user order history
   const orders = await fetchCustomerOrders()

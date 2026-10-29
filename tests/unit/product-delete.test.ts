@@ -23,7 +23,7 @@ vi.mock('next/cache', () => ({
   revalidateTag: vi.fn(),
 }))
 
-import { deleteProduct } from '@/lib/actions/products'
+import { deleteProduct } from '@/lib/actions/product-delete'
 
 describe('deleteProduct server action', () => {
   beforeEach(() => {

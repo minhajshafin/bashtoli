@@ -4,6 +4,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import { CartProvider, useCart } from '@/lib/cart/cart-context'
 import { getGuestCart, saveGuestCart } from '@/lib/cart/guest-cart'
 import * as cartActions from '@/lib/actions/cart'
+import * as cartMergeActions from '@/lib/actions/cart-merge'
 
 const mockToast = vi.fn()
 
@@ -11,7 +12,7 @@ vi.mock('@/components/ui/toast', () => ({
   useToast: () => ({ toast: mockToast }),
 }))
 
-vi.mock('@/lib/actions/cart', () => ({
+vi.mock('@/lib/queries/cart', () => ({
   fetchDbCart: vi.fn().mockResolvedValue([
     {
       variant_id: 'var-1',
@@ -32,11 +33,17 @@ vi.mock('@/lib/actions/cart', () => ({
       qty: 1,
     },
   ]),
+}))
+
+vi.mock('@/lib/actions/cart-merge', () => ({
+  mergeGuestCartAction: vi.fn().mockResolvedValue({ error: null, success: true }),
+}))
+
+vi.mock('@/lib/actions/cart', () => ({
   addToDbCartAction: vi.fn().mockResolvedValue({ error: null }),
   updateDbCartQtyAction: vi.fn().mockResolvedValue({ error: null }),
   removeFromDbCartAction: vi.fn().mockResolvedValue({ error: null }),
   clearDbCartAction: vi.fn().mockResolvedValue({ error: null }),
-  mergeGuestCartAction: vi.fn().mockResolvedValue({ error: null, success: true }),
 }))
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -165,7 +172,7 @@ describe('CartProvider Debounce Cancellation and Merge Safety', () => {
       },
     ])
 
-    vi.mocked(cartActions.mergeGuestCartAction).mockResolvedValueOnce({
+    vi.mocked(cartMergeActions.mergeGuestCartAction).mockResolvedValueOnce({
       error: 'Network failure merging cart',
     })
 
@@ -201,7 +208,7 @@ describe('CartProvider Debounce Cancellation and Merge Safety', () => {
       },
     ])
 
-    vi.mocked(cartActions.mergeGuestCartAction).mockRejectedValueOnce(
+    vi.mocked(cartMergeActions.mergeGuestCartAction).mockRejectedValueOnce(
       new Error('Fetch threw connection timeout')
     )
 

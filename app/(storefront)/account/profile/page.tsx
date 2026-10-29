@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { requireUser } from '@/lib/supabase/require-user'
 import { ProfileForm } from '@/components/storefront/profile-form'
 import Link from 'next/link'
 import React from 'react'
@@ -18,15 +18,8 @@ export const instant = false
  * Server component that authenticates the user and provides profile details to the interactive client form.
  */
 export default async function ProfilePage() {
+  const user = await requireUser('/account/profile')
   const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login?redirectTo=/account/profile')
-  }
 
   const { data: profile } = await supabase
     .from('profiles')

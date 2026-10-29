@@ -20,9 +20,17 @@ vi.mock('@/lib/motion', () => ({
   isReducedMotion: () => false,
 }))
 
-vi.mock('@/lib/actions/cart', () => ({
+vi.mock('@/lib/queries/cart', () => ({
   fetchDbCart: vi.fn().mockResolvedValue([]),
+  checkCartItemsAvailability: vi.fn().mockResolvedValue([]),
+  validateCartItems: vi.fn().mockResolvedValue([]),
+}))
+
+vi.mock('@/lib/actions/cart-merge', () => ({
   mergeGuestCartAction: vi.fn().mockResolvedValue({ error: null }),
+}))
+
+vi.mock('@/lib/actions/cart', () => ({
   addToDbCartAction: vi.fn().mockResolvedValue({ error: null }),
   updateDbCartQtyAction: vi.fn().mockResolvedValue({ error: null }),
   removeFromDbCartAction: vi.fn().mockResolvedValue({ error: null }),

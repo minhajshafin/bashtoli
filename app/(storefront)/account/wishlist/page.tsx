@@ -1,5 +1,5 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { requireUser } from '@/lib/supabase/require-user'
 import React from 'react'
 import Link from 'next/link'
 import { WishlistItem, type MappedWishlistItem } from '@/components/storefront/wishlist-item'
@@ -28,16 +28,8 @@ const QUICK_CATEGORIES = [
  * with live stock levels, and renders mobile-first cards with 1-tap Add to Bag capability.
  */
 export default async function WishlistPage() {
+  const user = await requireUser('/account/wishlist')
   const supabase = await createClient()
-
-  // Verify auth session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login?redirectTo=/account/wishlist')
-  }
 
   let dbClient = supabase
   try {

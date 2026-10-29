@@ -1,6 +1,6 @@
 import React from 'react'
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { requireUser } from '@/lib/supabase/require-user'
 import { AccountLayoutWrapper } from '@/components/storefront/account-layout-wrapper'
 
 export async function generateMetadata() {
@@ -20,15 +20,8 @@ export default async function AccountLayout({
 }: {
   children: React.ReactNode
 }) {
+  const user = await requireUser('/account')
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  // Redirect to login if not authenticated
-  if (!user) {
-    redirect('/login?redirectTo=/account')
-  }
 
   // Retrieve matching profile
   const { data: profile } = await supabase

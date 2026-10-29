@@ -13,8 +13,8 @@ import {
 import {
   toggleProductActive,
   toggleProductFeatured,
-  deleteProduct,
-} from '@/lib/actions/products'
+} from '@/lib/actions/product-status'
+import { deleteProduct } from '@/lib/actions/product-delete'
 import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 import { useToast } from '@/components/ui/toast'
 import type { Database } from '@/lib/supabase/database.types'

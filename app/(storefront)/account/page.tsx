@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { requireUser } from '@/lib/supabase/require-user'
 import { fetchCustomerOrders } from '@/lib/queries/customer-orders'
 import {
   Package,
@@ -23,15 +23,8 @@ export async function generateMetadata() {
 export const instant = false
 
 export default async function AccountPage() {
+  const user = await requireUser('/account')
   const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login?redirectTo=/account')
-  }
 
   // Fetch profile, customer orders, and wishlist count in parallel
   const [{ data: profile }, orders, { count: wishlistCount }] = await Promise.all([

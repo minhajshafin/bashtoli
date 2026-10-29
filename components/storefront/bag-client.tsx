@@ -8,8 +8,7 @@ import { CartItemRow } from '@/components/storefront/cart-item'
 import { CartSummary } from '@/components/storefront/cart-summary'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
-import { checkCartItemsAvailability } from '@/lib/actions/cart'
-import type { ValidatedCartItem } from '@/lib/queries/cart'
+import { checkCartItemsAvailability, type ValidatedCartItem } from '@/lib/queries/cart'
 import { ArrowLeft, Trash2 } from 'lucide-react'
 
 export function BagClient() {

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { requireUser } from '@/lib/supabase/require-user'
 import { AddressesDashboard } from '@/components/storefront/addresses-dashboard'
 import React from 'react'
 
@@ -16,6 +17,7 @@ export const instant = false
  * Loads customer addresses server-side and renders the dashboard.
  */
 export default async function AddressesPage() {
+  await requireUser('/account/addresses')
   const supabase = await createClient()
 
   const { data: addresses, error } = await supabase

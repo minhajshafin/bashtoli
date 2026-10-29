@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useCart } from '@/lib/cart/cart-context'
 import { DeliveryZoneSelect } from './delivery-zone-select'
 import { submitCheckout, type CheckoutActionState } from '@/lib/actions/checkout'
-import { checkCartItemsAvailability } from '@/lib/actions/cart'
+import { checkCartItemsAvailability } from '@/lib/queries/cart'
 import { DELIVERY_FEES } from '@/lib/config/delivery'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 

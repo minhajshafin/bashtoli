@@ -14,9 +14,9 @@ import {
 import {
   createProduct,
   updateProduct,
-  deleteProduct,
   type ProductActionState,
 } from '@/lib/actions/products'
+import { deleteProduct } from '@/lib/actions/product-delete'
 import { slugify } from '@/lib/validations/category'
 import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 import { useToast } from '@/components/ui/toast'
