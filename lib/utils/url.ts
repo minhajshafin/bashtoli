@@ -26,5 +26,9 @@ export function getBaseUrl(reqHeaders?: Headers | null): string {
     }
   }
 
-  return process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://bashtoli.com'
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('NEXT_PUBLIC_APP_URL is required in production')
+  }
+
+  return 'http://localhost:3000'
 }

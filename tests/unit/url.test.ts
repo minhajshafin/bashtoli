@@ -31,11 +31,11 @@ describe('lib/utils/url.ts: getBaseUrl', () => {
     expect(getBaseUrl(headers)).toBe('http://localhost:3000')
   })
 
-  it('falls back to default when no env or headers provided', () => {
+  it('falls back to default in development and throws in production when no env or headers provided', () => {
     vi.stubEnv('NODE_ENV', 'development')
     expect(getBaseUrl()).toBe('http://localhost:3000')
 
     vi.stubEnv('NODE_ENV', 'production')
-    expect(getBaseUrl()).toBe('https://bashtoli.com')
+    expect(() => getBaseUrl()).toThrow(/NEXT_PUBLIC_APP_URL is required in production/i)
   })
 })

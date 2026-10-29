@@ -2,7 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { safeRedirectPath } from '@/lib/utils/safe-redirect'
-import { getBaseUrl } from '@/lib/utils/url'
 
 /**
  * API route to exchange Supabase authentication codes for cookie-backed sessions.
@@ -39,7 +38,7 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const baseUrl = getBaseUrl() || origin
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/+$/, '') || origin
       return NextResponse.redirect(`${baseUrl}${target}`)
     }
   }

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
   return (
-    <WishlistProvider isLoggedIn={false}>
+    <WishlistProvider isLoggedIn={false} initialWishlistIds={[]} pending>
       <CartProvider isLoggedIn={false}>
         <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
           {/* Guest Header Fallback */}
@@ -66,19 +66,27 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
   } = await supabase.auth.getUser()
 
   let profile = null
+  let initialWishlistIds: string[] | undefined = undefined
   if (user) {
-    const { data: prof } = await supabase
-      .from('profiles')
-      .select('full_name, role')
-      .eq('id', user.id)
-      .maybeSingle()
+    const [{ data: prof }, { data: wl }] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('full_name, role')
+        .eq('id', user.id)
+        .maybeSingle(),
+      supabase
+        .from('wishlist')
+        .select('product_id')
+        .eq('user_id', user.id),
+    ])
     profile = prof
+    initialWishlistIds = (wl || []).map((w) => w.product_id)
   }
 
   const isStaffOrAdmin = profile?.role === 'staff' || profile?.role === 'admin'
 
   return (
-    <WishlistProvider isLoggedIn={!!user}>
+    <WishlistProvider isLoggedIn={!!user} initialWishlistIds={initialWishlistIds}>
       <CartProvider isLoggedIn={!!user}>
         <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
           {/* Sticky Header */}

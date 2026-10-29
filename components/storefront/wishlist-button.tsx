@@ -22,8 +22,9 @@ export function WishlistButton({
   variant = 'detail',
   className = '',
 }: WishlistButtonProps) {
-  const { isWishlisted: checkWishlist, toggleWishlist } = useWishlist()
-  const [isPending, setIsPending] = useState(false)
+  const { isWishlisted: checkWishlist, toggleWishlist, isPending: isAuthPending } = useWishlist()
+  const [isActionPending, setIsActionPending] = useState(false)
+  const isPending = isActionPending || isAuthPending
 
   const isWishlisted = checkWishlist(productId)
 
@@ -33,11 +34,11 @@ export function WishlistButton({
 
     if (isPending) return
 
-    setIsPending(true)
+    setIsActionPending(true)
     try {
       await toggleWishlist(productId, productName)
     } finally {
-      setIsPending(false)
+      setIsActionPending(false)
     }
   }
 
@@ -47,6 +48,7 @@ export function WishlistButton({
         type="button"
         onClick={handleToggle}
         disabled={isPending}
+        aria-busy={isPending ? 'true' : undefined}
         className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-forest-950/70 hover:bg-forest-950/95 backdrop-blur-md text-text-inverse border border-border-gold-subtle hover:border-border-gold active:scale-90 transition-all duration-200 cursor-pointer ${className}`}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
@@ -76,6 +78,7 @@ export function WishlistButton({
       type="button"
       onClick={handleToggle}
       disabled={isPending}
+      aria-busy={isPending ? 'true' : undefined}
       className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer ${
         isWishlisted
           ? 'border-terracotta-400 bg-terracotta-100 text-terracotta-600'
