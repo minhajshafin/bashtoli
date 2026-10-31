@@ -35,7 +35,7 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - `supabase/migrations/001–006`: source of truth for schema, RLS, functions.
 - `supabase/scripts/`: `master-schema.sql`, `seed-test-data.sql`, `bootstrap-admin.sql`.
 - `supabase/tests/place_order_smoke.sql`: transactional SQL smoke test suite for `place_order`.
-- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md`. Update when behavior changes.
+- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md` (`docs/audit/` is gitignored working material). Update when behavior changes.
 
 ## Supabase Client Rules
 - `createClient()` (user session, RLS applies): default for everything.
@@ -71,7 +71,7 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - COD only. Do not add payment-gateway code or UI.
 - Orders are created only through the `place_order` RPC (atomic: price lookup, stock decrement, order number, status history, items). `place_order` takes an idempotency key (checkout generates one per attempt).
 - Order numbers come from SQL `generate_order_number` only.
-- Customers cancel orders only via the `cancel_order` RPC, never direct UPDATE. Status changes go through `updateOrderStatusAction` / `customerCancelOrderAction`. Cancellation restores stock via `increment_stock`.
+- Status changes go through `updateOrderStatusAction` / `customerCancelOrderAction`. Cancellation restores stock via `increment_stock`.
 - No discount or coupon logic exists. Do not add any without a written spec.
 
 ## Code Conventions
@@ -88,6 +88,8 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 ## Testing
 - Unit: Vitest (`tests/unit`).
 - E2E: Playwright (`tests/e2e`), run with one worker. Requires `ORDER_COOKIE_SECRET` and `E2E_SUPABASE_URL` in `.env.local`. E2E tests must never run against production (`E2E_SUPABASE_URL` guard).
+- E2E locators must ignore hidden elements (getByRole, or `text=... >> visible=true`), never `.first()` to dodge strict mode, because the Suspense fallback briefly duplicates content.
+- Per-run E2E users are deleted in afterAll; the globalSetup prunes stale e2e-claim/e2e-admin users.
 - SQL smoke test: `supabase/tests/place_order_smoke.sql`, run in the SQL editor of a NON-production project.
 
 ## Verification

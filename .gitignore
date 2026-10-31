@@ -43,4 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-docs
+
+# audit working material
+docs/audit/
