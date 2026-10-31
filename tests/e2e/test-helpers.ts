@@ -1,6 +1,19 @@
+/**
+ * E2E Locators and Suspense Streaming:
+ * app/(storefront)/layout.tsx streams a guest StorefrontLayoutFallback containing
+ * page content before swapping in the real shell. During this swap, the DOM briefly
+ * contains both a visible fallback copy and a hidden streamed copy.
+ *
+ * Locators that match hidden elements (e.g. locator('text=...')) can match two elements
+ * and fail Playwright strict mode. E2E locators must therefore ignore hidden elements:
+ * - headings: page.getByRole('heading', { name: '...' })
+ * - buttons: page.getByRole('button', { name: '...' })
+ * - plain text with no role: page.locator('text=... >> visible=true')
+ */
+
 import fs from 'node:fs'
 import path from 'node:path'
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js'
 import type { Page } from '@playwright/test'
 import { expect } from '@playwright/test'
 
@@ -127,6 +140,119 @@ export async function ensureTestCatalog(): Promise<void> {
 }
 
 /**
+ * Checks if a Supabase auth error indicates the user is already registered.
+ */
+function isAlreadyRegisteredError(error: { code?: string; message?: string }): boolean {
+  const code = (error.code ?? '').toLowerCase()
+  const msg = (error.message ?? '').toLowerCase()
+  return (
+    code === 'email_exists' ||
+    code === 'user_already_exists' ||
+    msg.includes('already registered') ||
+    msg.includes('already been registered') ||
+    msg.includes('user already exists') ||
+    msg.includes('email exists')
+  )
+}
+
+/**
+ * Finds an auth user by email, paginating auth.admin.listUsers({ page, perPage: 1000 })
+ * until the email is found or the last page is reached.
+ */
+export async function findUserByEmail(
+  email: string,
+  client?: SupabaseClient
+): Promise<User | null> {
+  const supabase = client ?? getAdminClient()
+  const targetEmail = email.toLowerCase()
+  let page = 1
+
+  while (true) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+    if (error || !data?.users || data.users.length === 0) {
+      break
+    }
+
+    const found = data.users.find((u) => u.email?.toLowerCase() === targetEmail)
+    if (found) {
+      return found
+    }
+
+    if (data.nextPage) {
+      page = data.nextPage
+    } else if (data.lastPage && page < data.lastPage) {
+      page++
+    } else {
+      break
+    }
+  }
+
+  return null
+}
+
+/**
+ * Deletes a test user by user ID using administrative service-role privileges.
+ */
+export async function deleteTestUser(userId: string, client?: SupabaseClient): Promise<void> {
+  const supabase = client ?? getAdminClient()
+  const { error } = await supabase.auth.admin.deleteUser(userId)
+  if (error) {
+    console.warn(`Failed to delete test user ${userId}:`, error.message)
+  }
+}
+
+/**
+ * Prunes stale E2E test auth users whose email matches /^e2e-(claim|admin)-.*@example\.com$/
+ * and are older than 1 hour.
+ * Must NOT delete the fixed e2e-wishlist-user.
+ * Runs only after the E2E_SUPABASE_URL guard has passed (enforced via getAdminClient).
+ */
+export async function pruneStaleTestUsers(client?: SupabaseClient): Promise<number> {
+  const supabase = client ?? getAdminClient()
+  const staleRegex = /^e2e-(claim|admin)-.*@example\.com$/i
+  const oneHourAgo = Date.now() - 60 * 60 * 1000
+  let page = 1
+  let deletedCount = 0
+
+  while (true) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 1000 })
+    if (error || !data?.users || data.users.length === 0) {
+      break
+    }
+
+    for (const user of data.users) {
+      const email = user.email ?? ''
+      // Safety: Never delete the fixed wishlist user
+      if (email.toLowerCase().includes('wishlist')) {
+        continue
+      }
+
+      if (staleRegex.test(email)) {
+        const createdAt = new Date(user.created_at).getTime()
+        if (createdAt < oneHourAgo) {
+          const { error: delErr } = await supabase.auth.admin.deleteUser(user.id)
+          if (!delErr) {
+            deletedCount++
+          } else {
+            console.warn(`Failed to prune stale test user ${email} (${user.id}):`, delErr.message)
+          }
+        }
+      }
+    }
+
+    if (data.nextPage) {
+      page = data.nextPage
+    } else if (data.lastPage && page < data.lastPage) {
+      page++
+    } else {
+      break
+    }
+  }
+
+  return deletedCount
+}
+
+/**
  * Creates or retrieves a confirmed admin user for testing with profiles.role = 'admin'.
  */
 export async function createOrGetTestAdmin(
@@ -135,9 +261,8 @@ export async function createOrGetTestAdmin(
 ): Promise<{ id: string; email: string; password: string }> {
   const supabase = getAdminClient()
 
-  // Check if user already exists
-  const { data: users } = await supabase.auth.admin.listUsers()
-  const existing = users?.users.find((u) => u.email?.toLowerCase() === email.toLowerCase())
+  // Check if user already exists across all paginated users
+  const existing = await findUserByEmail(email, supabase)
 
   let userId: string
 
@@ -156,10 +281,26 @@ export async function createOrGetTestAdmin(
       email_confirm: true,
       user_metadata: { full_name: 'E2E Admin' },
     })
-    if (error || !newUser.user) {
-      throw new Error(`Failed to create test admin ${email}: ${error?.message}`)
+    if (error) {
+      if (isAlreadyRegisteredError(error)) {
+        const fallback = await findUserByEmail(email, supabase)
+        if (!fallback) {
+          throw new Error(`Failed to create test admin ${email}: already registered but lookup failed: ${error.message}`)
+        }
+        userId = fallback.id
+        await supabase.auth.admin.updateUserById(userId, {
+          password,
+          email_confirm: true,
+          user_metadata: { full_name: 'E2E Admin' },
+        })
+      } else {
+        throw new Error(`Failed to create test admin ${email}: ${error.message}`)
+      }
+    } else if (!newUser?.user) {
+      throw new Error(`Failed to create test admin ${email}: no user returned`)
+    } else {
+      userId = newUser.user.id
     }
-    userId = newUser.user.id
   }
 
   // Update profile to admin role
@@ -189,9 +330,8 @@ export async function createOrGetTestCustomer(
 ): Promise<{ id: string; email: string; password: string; phone: string }> {
   const supabase = getAdminClient()
 
-  // Check if user already exists
-  const { data: users } = await supabase.auth.admin.listUsers()
-  const existing = users?.users.find((u) => u.email?.toLowerCase() === email.toLowerCase())
+  // Check if user already exists across all paginated users
+  const existing = await findUserByEmail(email, supabase)
 
   let userId: string
 
@@ -210,10 +350,26 @@ export async function createOrGetTestCustomer(
       email_confirm: true,
       user_metadata: { full_name: fullName },
     })
-    if (error || !newUser.user) {
-      throw new Error(`Failed to create test customer ${email}: ${error?.message}`)
+    if (error) {
+      if (isAlreadyRegisteredError(error)) {
+        const fallback = await findUserByEmail(email, supabase)
+        if (!fallback) {
+          throw new Error(`Failed to create test customer ${email}: already registered but lookup failed: ${error.message}`)
+        }
+        userId = fallback.id
+        await supabase.auth.admin.updateUserById(userId, {
+          password,
+          email_confirm: true,
+          user_metadata: { full_name: fullName },
+        })
+      } else {
+        throw new Error(`Failed to create test customer ${email}: ${error.message}`)
+      }
+    } else if (!newUser?.user) {
+      throw new Error(`Failed to create test customer ${email}: no user returned`)
+    } else {
+      userId = newUser.user.id
     }
-    userId = newUser.user.id
   }
 
   // Update profile phone and full name
@@ -233,7 +389,7 @@ export async function createOrGetTestCustomer(
  */
 export async function loginViaUI(page: Page, email: string, password = 'mypassword123'): Promise<void> {
   await page.goto('/login')
-  await expect(page.locator('h1')).toContainText(/Welcome Back|Member Sign In/i)
+  await expect(page.getByRole('heading', { name: /Welcome Back|Member Sign In/i })).toBeVisible()
 
   await page.fill('input#email', email)
   await page.fill('input#password', password)

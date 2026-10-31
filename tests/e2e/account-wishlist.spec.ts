@@ -44,7 +44,7 @@ test.describe('Account Wishlist Persistence & Interactions', () => {
 
     // 2. Navigate to product detail page
     await page.goto('/products/e2e-test-bamboo-product')
-    await expect(page.locator('h1', { hasText: 'E2E Test Bamboo Product' }).first()).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'E2E Test Bamboo Product' })).toBeVisible()
 
     const addWishlistButton = page.locator('button[aria-label="Add to wishlist"]:visible').first()
     await expect(addWishlistButton).toBeVisible({ timeout: 15000 })
@@ -58,7 +58,7 @@ test.describe('Account Wishlist Persistence & Interactions', () => {
     // 3. Navigate to /account/wishlist
     await page.goto('/account/wishlist')
     await expect(page).toHaveURL(/\/account\/wishlist/)
-    await expect(page.locator('h1', { hasText: /My Wishlist/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /My Wishlist/i })).toBeVisible()
 
     // 4. Verify the product appears on the wishlist page
     const pageBody = page.locator('body')

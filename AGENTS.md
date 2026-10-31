@@ -22,14 +22,20 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 ## Layout
 - `app/(storefront)`, `app/(auth)`, `app/admin`, `app/api/{auth,search}`
 - `proxy.ts`: Next 16 replacement for `middleware.ts`. Handles session refresh, admin guard, rate limiting (logic in `lib/supabase/middleware.ts`). Do not create `middleware.ts`.
-- `lib/actions/`: all mutations (Server Actions)
-- `lib/queries/`: all reads
-- `lib/validations/`: Zod schemas, one file per domain
-- `lib/supabase/`: `client.ts` (browser), `server.ts` (`createClient`, `createPublicClient`, `createAdminClient`), `rate-limit.ts`, `database.types.ts`
-- `lib/config/delivery.ts`: client-side delivery fee estimate
-- `components/{admin,storefront,ui}`: UI only; no queries or business logic
-- `supabase/migrations/001–006`: source of truth for schema, RLS, functions
-- `docs/`: `architecture.md`, `database.md`, `open-items.md`. Update when behavior changes.
+- `lib/env.ts`: environment validation schema (validated at boot via `instrumentation.ts`).
+- `lib/actions/`: all mutations (Server Actions; includes `admin-guard`, `cart-merge`, `variants-bulk`, `product-delete`, `product-status`).
+- `lib/queries/`: all reads (includes `cart.ts`).
+- `lib/order/access.ts`: pure order access resolution (`resolveOrderAccess`) and DTO contracts.
+- `lib/hooks/use-hydrated.ts`: client hydration state hook (`useSyncExternalStore`).
+- `lib/utils/`: utilities (`url`, `safe-redirect`, `action-error`, `order-token`).
+- `lib/validations/`: Zod schemas, one file per domain.
+- `lib/supabase/`: `client.ts` (browser), `server.ts` (`createClient`, `createPublicClient`, `createAdminClient`), `require-user.ts` (cached auth guard), `rate-limit.ts`, `database.types.ts`.
+- `lib/config/delivery.ts`: client-side delivery fee estimate.
+- `components/{admin,storefront,ui}`: UI only; no queries or business logic (includes `components/storefront/{skeletons,profile}/`).
+- `supabase/migrations/001–006`: source of truth for schema, RLS, functions.
+- `supabase/scripts/`: `master-schema.sql`, `seed-test-data.sql`, `bootstrap-admin.sql`.
+- `supabase/tests/place_order_smoke.sql`: transactional SQL smoke test suite for `place_order`.
+- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md`. Update when behavior changes.
 
 ## Supabase Client Rules
 - `createClient()` (user session, RLS applies): default for everything.
@@ -41,14 +47,19 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 ## Security Rules (never violate)
 - Server Actions are public HTTP endpoints. Authenticate and authorize inside every action. `proxy.ts` is not sufficient.
   - Staff actions: `assertStaffOrAdmin()` from `lib/actions/admin-guard.ts`.
-  - Admin-only actions (staff management): verify `role === 'admin'`.
+  - Admin-only actions (staff management): verify `role === 'admin'` via `assertAdmin()`.
+- Customer-facing and public Server Actions never return raw `error.message` (use `lib/utils/action-error.ts`, and log only code+message, never details).
+- Every `/account/*` page and layout calls `requireUser()`.
+- Order page access always goes through `resolveOrderAccess` and the partial/gate views only ever receive the redacted DTO.
+- Customers cancel orders only via the `cancel_order` RPC, never direct UPDATE.
+- Environment variables are read through `lib/env.ts` for anything required in production.
 - The client is untrusted. Price, delivery fee, total, and stock are computed in the SQL function `place_order`. Never accept them from the request.
 - `lib/config/delivery.ts` must mirror the fees in `place_order`. Change both together and update the test.
 - Every table has RLS enabled. A new table or column ships with its policy in the same migration.
 - RLS cannot restrict columns. Any UPDATE policy open to non-staff users needs a column-guard trigger or must go through a `SECURITY DEFINER` RPC (e.g. `profiles.role`, `orders.status/total/user_id`).
 - New SQL functions: `REVOKE EXECUTE ... FROM PUBLIC, anon, authenticated` unless intentionally public. `SECURITY DEFINER` functions set `search_path`.
 - Validate all input server-side with Zod: type, length, format. Never interpolate user input into PostgREST filter strings (`.or()`, `.ilike()`).
-- Redirect targets (`redirectTo`, `next`) must be validated same-origin relative paths.
+- Redirect targets (`redirectTo`, `next`) must be validated same-origin relative paths (via `safeRedirectPath`).
 - Do not add new places where phone, email, or address appear in URLs or logs.
 - Rate-limit sensitive public endpoints (checkout, order lookup, auth, search).
 - Never log secrets or PII.
@@ -58,9 +69,9 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 
 ## Business Rules
 - COD only. Do not add payment-gateway code or UI.
-- Orders are created only through the `place_order` RPC (atomic: price lookup, stock decrement, order number, status history, items).
+- Orders are created only through the `place_order` RPC (atomic: price lookup, stock decrement, order number, status history, items). `place_order` takes an idempotency key (checkout generates one per attempt).
 - Order numbers come from SQL `generate_order_number` only.
-- Status changes go through `updateOrderStatusAction` / `customerCancelOrderAction`. Cancellation restores stock via `increment_stock`.
+- Customers cancel orders only via the `cancel_order` RPC, never direct UPDATE. Status changes go through `updateOrderStatusAction` / `customerCancelOrderAction`. Cancellation restores stock via `increment_stock`.
 - No discount or coupon logic exists. Do not add any without a written spec.
 
 ## Code Conventions
@@ -68,10 +79,16 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - Server Components by default; `"use client"` only when needed, kept small.
 - Mutations only in `lib/actions`, reads only in `lib/queries`.
 - Follow the existing action return pattern; no empty `catch`.
-- Target ≤300 lines per file. Split when touching an oversized file; do not grow it.
-- No duplicated logic: extract on the second copy. Known duplicates to consolidate: base-URL resolution (`lib/actions/auth.ts`), default-address reset (`addresses.ts`, `profile.ts`), confirm dialogs, error boundaries.
+- Target ≤300 lines per file is a guideline; do not split a file solely to reach the number.
+- Client-only state (localStorage, matchMedia, counts) must never be read during render without `useHydrated()`.
+- No duplicated logic: extract on the second copy.
 - Delete dead code; do not comment it out.
 - Match existing naming and formatting. Do not reformat unrelated code.
+
+## Testing
+- Unit: Vitest (`tests/unit`).
+- E2E: Playwright (`tests/e2e`), run with one worker. Requires `ORDER_COOKIE_SECRET` and `E2E_SUPABASE_URL` in `.env.local`. E2E tests must never run against production (`E2E_SUPABASE_URL` guard).
+- SQL smoke test: `supabase/tests/place_order_smoke.sql`, run in the SQL editor of a NON-production project.
 
 ## Verification
 Before declaring done, run and report verbatim:

@@ -1,10 +1,24 @@
 import { test, expect } from '@playwright/test'
-import { ensureTestCatalog, createOrGetTestAdmin, createTestGuestOrder, loginViaUI } from './test-helpers'
+import {
+  ensureTestCatalog,
+  createOrGetTestAdmin,
+  createTestGuestOrder,
+  loginViaUI,
+  deleteTestUser,
+} from './test-helpers'
 
 test.describe('Admin Order Lifecycle & Fulfillment', () => {
+  let createdAdminId: string | undefined
+
   test.beforeAll(async () => {
     await ensureTestCatalog()
     await createTestGuestOrder('admin-order-seed@example.com')
+  })
+
+  test.afterAll(async () => {
+    if (createdAdminId) {
+      await deleteTestUser(createdAdminId)
+    }
   })
 
   test('admin should view orders list, inspect order details, and transition status', async ({ page }) => {
@@ -12,6 +26,7 @@ test.describe('Admin Order Lifecycle & Fulfillment', () => {
     const adminEmail = `e2e-admin-orders-${Date.now()}@example.com`
     const adminPassword = `AdminPass_${Date.now()}_${Math.random().toString(36).slice(2, 8)}!`
     const admin = await createOrGetTestAdmin(adminEmail, adminPassword)
+    createdAdminId = admin.id
 
     // Log in via UI as admin
     await loginViaUI(page, admin.email, admin.password)
@@ -29,8 +44,8 @@ test.describe('Admin Order Lifecycle & Fulfillment', () => {
 
     // 4. Verify order details page snapshot
     await expect(page).toHaveURL(/\/admin\/orders\/[0-9a-fA-F-]+/)
-    await expect(page.locator('h1', { hasText: /ORD-/i })).toBeVisible()
-    await expect(page.locator('h2:has-text("Purchased Items")')).toBeVisible()
+    await expect(page.getByRole('heading', { name: /ORD-/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Purchased Items' })).toBeVisible()
 
     // 5. Test status transition
     const statusSelect = page.locator('select#order-status-select-input')

@@ -20,7 +20,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
 
     // 3. Open product details and add to bag
     await expect(page).toHaveURL(/\/products\/e2e-test-bamboo-product/)
-    await expect(page.locator('h1', { hasText: 'E2E Test Bamboo Product' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'E2E Test Bamboo Product' })).toBeVisible()
 
     const addToBagButton = page.getByRole('button', { name: 'Add to Bag', exact: true })
     await expect(addToBagButton).toBeVisible()
@@ -41,7 +41,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
 
     // 4. Verify bag page load and item presence
     await expect(page).toHaveURL(/\/bag/)
-    await expect(page.locator('h1', { hasText: /Shopping Bag/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Shopping Bag/i })).toBeVisible()
     await expect(page.locator('body')).toContainText('E2E Test Bamboo Product')
 
     // Click "Proceed to Checkout"
@@ -51,7 +51,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
 
     // 5. Fill out shipping details in checkout form
     await expect(page).toHaveURL(/\/checkout/)
-    await expect(page.locator('h1', { hasText: 'Checkout' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Checkout' })).toBeVisible()
 
     await page.fill('#customer_name', 'Playwright E2E Client')
     await page.fill('#phone', '01712345678')
@@ -60,19 +60,19 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     await page.fill('#notes', 'Deliver after 5 PM, drop with security guard.')
 
     // Choose Inside Dhaka shipping zone
-    const zoneButton = page.locator('button:has-text("Inside Dhaka")')
+    const zoneButton = page.getByRole('button', { name: 'Inside Dhaka' })
     await expect(zoneButton).toBeVisible()
     await zoneButton.click()
 
     // Submit Cash on Delivery order
-    const placeOrderButton = page.locator('button:has-text("Place Order")').first()
+    const placeOrderButton = page.getByRole('button', { name: 'Place Order' })
     await expect(placeOrderButton).toBeVisible()
     await placeOrderButton.click()
 
     // 6. Verify order confirmation screen and tracking details with ?token= query param
     // Sequence matches ORD-YYYYMMDD-NNNN?token=[a-f0-9]{64}
     await page.waitForURL(/\/order\/ORD-\d{8}-\d{4}\?token=[a-f0-9]{64}/, { timeout: 25000 })
-    await expect(page.locator('h1', { hasText: /Thank you/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Thank you/i })).toBeVisible()
 
     const pageBody = page.locator('body')
     await expect(pageBody).toContainText('Playwright E2E Client')
@@ -98,7 +98,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     await page.goto(`/order/${guestOrder.order_number}`)
 
     // 3. Verify Verification Gate is rendered
-    await expect(page.locator('h1', { hasText: 'Verify Phone Number' })).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('heading', { name: 'Verify Phone Number' })).toBeVisible({ timeout: 15000 })
     await expect(page.locator('body')).toContainText('Security Verification')
     // PII must NOT be visible in verification gate
     await expect(page.locator('body')).not.toContainText(customerName)
@@ -107,7 +107,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
 
     // 4. Submit phone number verification
     await page.fill('input#phone', testPhone)
-    await page.click('button[type="submit"]:has-text("Track Order")')
+    await page.getByRole('button', { name: 'Track Order' }).click()
 
     // 5. Verify redirect / URL does NOT leak phone in query parameters
     await expect(page).toHaveURL(`/order/${guestOrder.order_number}`)
@@ -115,7 +115,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     expect(page.url()).not.toContain('token=')
 
     // 6. Verify Partial View is rendered
-    await expect(page.locator('h1', { hasText: 'Order Tracking' })).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('heading', { name: 'Order Tracking' })).toBeVisible({ timeout: 15000 })
     await expect(page.locator('body')).toContainText('Ordered Items')
     await expect(page.locator('body')).toContainText('E2E Test Bamboo Product')
 
@@ -142,7 +142,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     await page.goto(`/order/${guestOrder.order_number}?token=${guestOrder.access_token}`)
 
     // Full view rendered: recipient name, address, items, and thank you / order confirmation
-    await expect(page.locator('h1', { hasText: /Thank you/i })).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('heading', { name: /Thank you/i })).toBeVisible({ timeout: 15000 })
     await expect(page.locator('body')).toContainText(customerName)
     await expect(page.locator('body')).toContainText('123 Test Street')
     await expect(page.locator('body')).toContainText('E2E Test Bamboo Product')
@@ -161,18 +161,18 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     const page = await context.newPage()
 
     await page.goto('/order/lookup')
-    await expect(page.locator('h1', { hasText: 'Track Your Order' })).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('heading', { name: 'Track Your Order' })).toBeVisible({ timeout: 15000 })
 
     await page.fill('input#order_number', guestOrder.order_number)
     await page.fill('input#phone', testPhone)
-    await page.click('button[type="submit"]:has-text("Track Order")')
+    await page.getByRole('button', { name: 'Track Order' }).click()
 
     // Navigates to /order/[orderNumber] without phone in URL
     await expect(page).toHaveURL(`/order/${guestOrder.order_number}`, { timeout: 15000 })
     expect(page.url()).not.toContain('phone=')
 
     // Partial view rendered
-    await expect(page.locator('h1', { hasText: 'Order Tracking' })).toBeVisible({ timeout: 15000 })
+    await expect(page.getByRole('heading', { name: 'Order Tracking' })).toBeVisible({ timeout: 15000 })
     await expect(page.locator('body')).not.toContainText(customerName)
     await expect(page.locator('body')).not.toContainText('123 Test Street')
 

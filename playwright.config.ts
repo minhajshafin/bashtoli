@@ -5,6 +5,7 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  globalSetup: './tests/e2e/global-setup.ts',
   // Run tests sequentially to avoid concurrent database locks or state pollution
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
