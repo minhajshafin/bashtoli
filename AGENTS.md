@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # AGENTS.md
 
-Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deployed to production, real customers soon. Cash on delivery (COD) only; there is no payment gateway.
+Bashtoli: e-commerce site for a local stationery shop. Live in production: real customers, real cash-on-delivery (COD) orders. There is no payment gateway.
 
 ## Stack
 - Next.js 16 (App Router), React 19, TypeScript (strict), Tailwind
@@ -18,6 +18,21 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - Vercel (hosting), Upstash Redis (rate limiting), Resend (email), Zod (validation)
 - Tests: Vitest (unit, `tests/unit`), Playwright (E2E, `tests/e2e`)
 - Package manager: npm. Use the script names in `package.json`; never invent commands.
+
+## Environments & Releases
+- Local (`.env.local`) and Vercel Preview use the STAGING Supabase project. Vercel Production uses the PRODUCTION Supabase project. Preview and local must never point at the production database.
+- Agents have no production credentials. Never ask for, use, print, or write production keys or URLs. Production database changes are applied by the owner only.
+- `main` deploys to production. Work on a branch, validate on the Preview deployment, and merge to `main` only when Verification passes. Never commit directly to `main`.
+- Schema changes go to staging first, are verified (SQL smoke test + Playwright), and are then applied to production by the owner.
+- `seed-test-data.sql`, `place_order_smoke.sql`, and the E2E suite run on staging only, never on production.
+- Every variable required by `lib/env.ts` must exist in BOTH the Production and Preview Vercel scopes. A missing variable fails the production boot by design.
+
+## Production Safety (never violate)
+- No destructive or bulk SQL (DELETE/UPDATE without a tight WHERE, TRUNCATE, DROP) against production without a verified backup and explicit owner approval.
+- Never delete or rewrite orders, order items, or status history. They are financial records; correct them with a new status/history entry.
+- Hotfixes: smallest possible change, the same Verification as any other change, no skipping staging.
+- If you find a data leak or auth bypass, stop and report file:line and impact to the owner before shipping a fix.
+- Any secret that appears in chat, logs, a report, or a commit must be rotated immediately.
 
 ## Layout
 - `app/(storefront)`, `app/(auth)`, `app/admin`, `app/api/{auth,search}`
@@ -32,10 +47,10 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - `lib/supabase/`: `client.ts` (browser), `server.ts` (`createClient`, `createPublicClient`, `createAdminClient`), `require-user.ts` (cached auth guard), `rate-limit.ts`, `database.types.ts`.
 - `lib/config/delivery.ts`: client-side delivery fee estimate.
 - `components/{admin,storefront,ui}`: UI only; no queries or business logic (includes `components/storefront/{skeletons,profile}/`).
-- `supabase/migrations/001–006`: source of truth for schema, RLS, functions.
-- `supabase/scripts/`: `master-schema.sql`, `seed-test-data.sql`, `bootstrap-admin.sql`.
-- `supabase/tests/place_order_smoke.sql`: transactional SQL smoke test suite for `place_order`.
-- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md` (`docs/audit/` is gitignored working material). Update when behavior changes.
+- `supabase/migrations/`: source of truth for schema, RLS, functions. `001–006` are shipped and immutable.
+- `supabase/scripts/`: `master-schema.sql`, `seed-test-data.sql` (staging only), `bootstrap-admin.sql`.
+- `supabase/tests/place_order_smoke.sql`: transactional SQL smoke test for `place_order` (staging only).
+- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md`, `redesign.md` (create when the redesign starts). `docs/audit/` is gitignored working material. Update docs when behavior changes.
 
 ## Supabase Client Rules
 - `createClient()` (user session, RLS applies): default for everything.
@@ -50,7 +65,7 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
   - Admin-only actions (staff management): verify `role === 'admin'` via `assertAdmin()`.
 - Customer-facing and public Server Actions never return raw `error.message` (use `lib/utils/action-error.ts`, and log only code+message, never details).
 - Every `/account/*` page and layout calls `requireUser()`.
-- Order page access always goes through `resolveOrderAccess` and the partial/gate views only ever receive the redacted DTO.
+- Order page access always goes through `resolveOrderAccess`, and the partial/gate views only ever receive the redacted DTO.
 - Customers cancel orders only via the `cancel_order` RPC, never direct UPDATE.
 - Environment variables are read through `lib/env.ts` for anything required in production.
 - The client is untrusted. Price, delivery fee, total, and stock are computed in the SQL function `place_order`. Never accept them from the request.
@@ -64,7 +79,7 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - Rate-limit sensitive public endpoints (checkout, order lookup, auth, search).
 - Never log secrets or PII.
 - Never reveal, print, quote, or copy secrets into chat, reports, docs, commit messages, test output, or logs. Secrets include `.env*` values, API keys, tokens, JWTs (`eyJ...`), the service-role key, and passwords. When searching or grepping, exclude `.env*` files and redact matches (show variable names and file:line only, never values). If a secret is found in a tracked file or output, report only its location and tell the user to rotate it.
-- `NEXT_PUBLIC_` only for values safe in the browser. New env vars go in `.env.example` (no real values) and `docs/`.
+- `NEXT_PUBLIC_` only for values safe in the browser. New env vars go in `.env.example` (no real values), `lib/env.ts`, and `docs/`.
 - No new dependencies without stating why. `react-dom` is a required runtime dependency; do not remove it.
 
 ## Business Rules
@@ -73,6 +88,17 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 - Order numbers come from SQL `generate_order_number` only.
 - Status changes go through `updateOrderStatusAction` / `customerCancelOrderAction`. Cancellation restores stock via `increment_stock`.
 - No discount or coupon logic exists. Do not add any without a written spec.
+
+## UI/UX Redesign
+Presentation changes only. A redesign must never alter a behavior contract or weaken a security rule.
+- **Invariants to preserve:** `resolveOrderAccess` and the redacted DTO on the order page; `requireUser()` on every account page; server-side pricing and the checkout idempotency key; `useHydrated()` for any client-only state; wishlist and cart controls staying disabled until the auth-aware shell has mounted (`pending` mode in the Suspense fallback); input validation and rate limiting.
+- **Process:** one page or flow per change, on a branch, reviewed on a Preview deployment. Update E2E specs and unit tests in the same change. Separate commits for restyling and for logic moves.
+- **Deferred refactors:** the oversized components listed in `docs/open-items.md` (product-form, hero-slides-manager, category-collage-manager, product-client, checkout-form, order-list, variant-table, product-card) are split during the redesign of the page that owns them, never as a separate pre-redesign cleanup.
+- **Design tokens:** use the existing Tailwind theme tokens (forest, gold, cream, etc.). Add new tokens to the theme; no inline hex values or arbitrary values.
+- **Accessibility baseline:** semantic headings, labelled controls, visible focus, full keyboard operation, AA contrast, touch targets of at least 44px, and verification at a 360px-wide viewport. Rebuild modals and drawers on native `<dialog>` with `showModal()` for focus trapping.
+- **Images and motion:** `next/image` with `sizes` always set; `priority` only on the single LCP image per page; animations respect `prefers-reduced-motion`; no new visual-effect libraries without justification.
+- **Copy:** do not change legal text (privacy, terms) or business facts (address, hours, phone, WhatsApp) without the owner's confirmation. Changing a heading or button name means updating the E2E specs that match it.
+- Record decisions and progress in `docs/redesign.md`.
 
 ## Code Conventions
 - No `any`, `@ts-ignore`, or `@ts-nocheck`. Regenerate `database.types.ts` instead of casting RPC calls.
@@ -87,10 +113,10 @@ Bashtoli: e-commerce site for a local stationery shop. Pre-launch: not yet deplo
 
 ## Testing
 - Unit: Vitest (`tests/unit`).
-- E2E: Playwright (`tests/e2e`), run with one worker. Requires `ORDER_COOKIE_SECRET` and `E2E_SUPABASE_URL` in `.env.local`. E2E tests must never run against production (`E2E_SUPABASE_URL` guard).
-- E2E locators must ignore hidden elements (getByRole, or `text=... >> visible=true`), never `.first()` to dodge strict mode, because the Suspense fallback briefly duplicates content.
-- Per-run E2E users are deleted in afterAll; the globalSetup prunes stale e2e-claim/e2e-admin users.
-- SQL smoke test: `supabase/tests/place_order_smoke.sql`, run in the SQL editor of a NON-production project.
+- E2E: Playwright (`tests/e2e`), one worker. Requires `ORDER_COOKIE_SECRET` and `E2E_SUPABASE_URL` in `.env.local`. E2E tests must never run against production (`E2E_SUPABASE_URL` guard).
+- E2E locators must ignore hidden elements (`getByRole`, or `text=... >> visible=true`), never `.first()` to dodge strict mode, because the Suspense fallback briefly duplicates content.
+- Per-run E2E users are deleted in `afterAll`; `globalSetup` prunes stale `e2e-claim` / `e2e-admin` users.
+- SQL smoke test: `supabase/tests/place_order_smoke.sql`, run in the SQL editor of the staging project only.
 
 ## Verification
 Before declaring done, run and report verbatim:
@@ -98,14 +124,14 @@ Before declaring done, run and report verbatim:
 2. `npx tsc --noEmit`
 3. Vitest
 4. `npm run build`
-5. Playwright, if the change touches checkout, auth, admin, or orders
+5. Playwright, if the change touches checkout, auth, admin, orders, or any UI covered by an E2E spec
 
-Never claim success without running them.
+Never claim success without running them. For UI changes also check a phone-width viewport on the Preview deployment.
 
 ## Change Discipline
 - Smallest diff that solves the task. One concern per change; separate refactors from behavior changes.
 - Plan first, and wait for approval, for anything touching auth, RLS, orders, pricing, migrations, or env vars.
-- Pre-launch: no production database exists, so fix schema, RLS, and function problems directly in the original migrations (001–006). Do not add patch migrations for them. Keep `supabase/scripts/master-schema.sql` identical in content to the concatenated migrations. Once the first production deploy happens, this changes: migrations become append-only and this line must be updated by the owner.
+- **Schema (post-launch):** migrations `001–006` are shipped and immutable; never edit them. Every schema change is a new numbered migration (`007_...` onward). Regenerate `supabase/scripts/master-schema.sql` so it equals the concatenation of all migrations. A migration must be backward compatible with the code currently in production: add columns nullable or with defaults; never drop or rename a column, or change a function signature that production code still calls, in the same release as the code that stops using it (expand, deploy, then contract in a later release). Include the matching RLS and GRANT/REVOKE statements in the same migration, make it idempotent where possible, and drop an old function signature explicitly rather than leaving an overload.
 - No deleting files or renaming env vars without approval.
 - When asked to write a report or doc to a file, write it there only. Do not repeat its contents in chat; reply with the file path.
 
