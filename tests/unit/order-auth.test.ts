@@ -66,10 +66,10 @@ describe('Order Token & Authorization Utilities', () => {
 
     it('fails closed (verify returns false, sign throws) when secret is missing or < 32 chars', () => {
       const originalSecret = process.env.ORDER_COOKIE_SECRET
-      const originalServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+      const originalSecretKey = process.env.SUPABASE_SECRET_KEY
       try {
         delete process.env.ORDER_COOKIE_SECRET
-        process.env.SUPABASE_SERVICE_ROLE_KEY = 'should-never-be-used-as-fallback-service-key-32'
+        process.env.SUPABASE_SECRET_KEY = 'sb_secret_should_never_be_used_as_fallback_32'
 
         // 1. Missing secret
         expect(() => signOrderVerification(ORDER_NUMBER)).toThrow(
@@ -89,7 +89,7 @@ describe('Order Token & Authorization Utilities', () => {
         expect(verifyOrderVerification(ORDER_NUMBER, signed32, exact32)).toBe(true)
       } finally {
         if (originalSecret !== undefined) process.env.ORDER_COOKIE_SECRET = originalSecret
-        if (originalServiceKey !== undefined) process.env.SUPABASE_SERVICE_ROLE_KEY = originalServiceKey
+        if (originalSecretKey !== undefined) process.env.SUPABASE_SECRET_KEY = originalSecretKey
       }
     })
 

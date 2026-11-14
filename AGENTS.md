@@ -55,7 +55,8 @@ Bashtoli: e-commerce site for a local stationery shop. Live in production: real 
 ## Supabase Client Rules
 - `createClient()` (user session, RLS applies): default for everything.
 - `createPublicClient()`: anonymous reads of public catalog data.
-- `createAdminClient()` (service role, bypasses RLS): server-only, after an explicit authorization check, with a one-line comment stating why RLS cannot be used. Do not add new uses without approval.
+- `createAdminClient()` (secret key, bypasses RLS): server-only, after an explicit authorization check, with a one-line comment stating why RLS cannot be used. Do not add new uses without approval.
+- Legacy anon/service_role keys are never used. Secret keys are server-only, and where more than one backend component needs one, use a separate named secret key per component.
 - Browser client uses the publishable key only.
 - Modules holding secrets import `server-only`. Client components must never import `lib/supabase/server.ts`, directly or transitively.
 
@@ -78,7 +79,7 @@ Bashtoli: e-commerce site for a local stationery shop. Live in production: real 
 - Do not add new places where phone, email, or address appear in URLs or logs.
 - Rate-limit sensitive public endpoints (checkout, order lookup, auth, search).
 - Never log secrets or PII.
-- Never reveal, print, quote, or copy secrets into chat, reports, docs, commit messages, test output, or logs. Secrets include `.env*` values, API keys, tokens, JWTs (`eyJ...`), the service-role key, and passwords. When searching or grepping, exclude `.env*` files and redact matches (show variable names and file:line only, never values). If a secret is found in a tracked file or output, report only its location and tell the user to rotate it.
+- Never reveal, print, quote, or copy secrets into chat, reports, docs, commit messages, test output, or logs. Secrets include `.env*` values, API keys, tokens, JWTs (`eyJ...`), `sb_secret_` keys, the secret key, and passwords. When searching or grepping, exclude `.env*` files and redact matches (show variable names and file:line only, never values). If a secret is found in a tracked file or output, report only its location and tell the user to rotate it.
 - `NEXT_PUBLIC_` only for values safe in the browser. New env vars go in `.env.example` (no real values), `lib/env.ts`, and `docs/`.
 - No new dependencies without stating why. `react-dom` is a required runtime dependency; do not remove it.
 

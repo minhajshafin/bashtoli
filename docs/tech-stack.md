@@ -33,14 +33,14 @@
 | Variable | Scope | Required In Production | Purpose |
 |---|---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Client & Server | Yes | Base URL for the Supabase project |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client & Server | Yes | Anonymous public API key for client-side queries |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server only | Yes | Secret service-role key for backend server actions and atomic RPCs (**never expose to client**) |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Client & Server | Yes | Publishable API key for client-side queries (`sb_publishable_...`) |
+| `SUPABASE_SECRET_KEY` | Server only | Yes | Secret key for backend server actions and atomic RPCs (`sb_secret_...`, **never expose to client**) |
 | `UPSTASH_REDIS_REST_URL` | Server only | Yes | Upstash serverless Redis REST endpoint for distributed rate limiting |
 | `UPSTASH_REDIS_REST_TOKEN` | Server only | Yes | REST token for authenticating Upstash Redis queries |
 | `RESEND_API_KEY` | Server only | Yes | API key for dispatching transactional emails |
 | `ADMIN_NOTIFICATION_EMAIL` | Server only | Yes | Recipient inbox for new order alerts and customer item suggestions |
 | `SUGGESTION_RECIPIENT_EMAIL` | Server only | Optional | Dedicated inbox for customer product suggestions (falls back to admin email) |
-| `ORDER_COOKIE_SECRET` | Server only | Optional | Secret key for signing guest order phone verification cookies (falls back to service-role key) |
+| `ORDER_COOKIE_SECRET` | Server only | Yes | Secret key for signing guest order phone verification cookies (min 32 characters) |
 | `NEXT_PUBLIC_APP_URL` | Client & Server | Yes | Production canonical URL (e.g. `https://bashtoli.com`) for SEO meta tags and sitemaps |
 
 ---
@@ -78,6 +78,6 @@
 
 ## 5. Security & Architecture Guardrails
 
-- **Secret Isolation**: `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, and `UPSTASH_REDIS_REST_TOKEN` are strictly isolated to server runtimes and verified to never appear in client browser bundles.
+- **Secret Isolation**: `SUPABASE_SECRET_KEY`, `RESEND_API_KEY`, and `UPSTASH_REDIS_REST_TOKEN` are strictly isolated to server runtimes and verified to never appear in client browser bundles.
 - **Fail-Open Rate Limiting**: If Redis network connectivity experiences downtime, rate limiters gracefully log an operational warning and allow customer checkout and authentication requests to proceed.
 - **Strict Server Validation**: All checkout, account, and administrative mutations are validated server-side using Zod schemas before database queries or RPC calls are triggered.

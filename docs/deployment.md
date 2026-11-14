@@ -39,7 +39,7 @@
 
 See [Tech Stack — Environment Variables](./tech-stack.md#environment-variables-planned) for the full list.
 
-**Critical:** `SUPABASE_SERVICE_ROLE_KEY` must never be exposed to the client. Verify with `grep` that it does not appear in client bundles.
+**Critical:** `SUPABASE_SECRET_KEY` must never be exposed to the client. Verify with `grep` that it does not appear in client bundles.
 
 ## Vercel Configuration
 

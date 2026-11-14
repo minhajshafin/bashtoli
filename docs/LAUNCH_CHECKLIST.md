@@ -40,14 +40,14 @@ This checklist tracks the operational, infrastructure, security, and verificatio
 
 ## 4. Vercel Hosting & Environment Configuration
 
-Configure the following environment variables in Vercel under Project Settings -> **Environment Variables**. Every variable below is required by `lib/env.ts` in production and must be set across **BOTH** the **Production** and **Preview** scopes.
+Configure the following environment variables in Vercel under Project Settings -> **Environment Variables**. Every variable below is required by `lib/env.ts` in production and must be set across **BOTH** the **Production** and **Preview** scopes. The production project uses publishable (`sb_publishable_...`) and secret (`sb_secret_...`) keys only; legacy anon/service_role keys are never added to Vercel.
 
 > [!IMPORTANT]
 > Variables are listed by NAME ONLY. Never log, share, or commit real secret values.
 
 - [ ] `NEXT_PUBLIC_SUPABASE_URL` (Production & Preview)
-- [ ] `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (Production & Preview)
-- [ ] `SUPABASE_SERVICE_ROLE_KEY` (Production & Preview)
+- [ ] `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (Production & Preview — must start with `sb_publishable_`)
+- [ ] `SUPABASE_SECRET_KEY` (Production & Preview — must start with `sb_secret_`)
 - [ ] `ORDER_COOKIE_SECRET` (Production & Preview — minimum 32 characters)
 - [ ] `UPSTASH_REDIS_REST_URL` (Production & Preview)
 - [ ] `UPSTASH_REDIS_REST_TOKEN` (Production & Preview)
@@ -66,6 +66,7 @@ Configure the following environment variables in Vercel under Project Settings -
 ## 6. Security Hygiene & Cleanup
 
 - [ ] **Pre-Push Repository Hygiene & Secret Audit**: Before the first push: confirm the repo visibility, run the secret scan from step 2, and confirm docs/audit/ is not tracked (git ls-files docs/audit returns nothing).
+- [ ] **Staging Key Migration & Legacy Deactivation**: Staging migrated to publishable (`sb_publishable_...`) and secret (`sb_secret_...`) keys, and its legacy anon/service_role keys deactivated after verification.
 - [ ] **Tear Down Development Database**: Delete the pre-launch development Supabase project once production data has been verified.
 - [ ] **Purge Dev Credentials**: Audit Vercel environment variables to guarantee no legacy development API keys, database URLs, or secret tokens remain in any environment.
 - [ ] **Error Monitoring & Logging**: Decide on and establish centralized error monitoring and alerting (e.g., Sentry, Vercel Log Drains, or alert webhooks) for critical runtime exceptions.

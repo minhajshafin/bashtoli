@@ -22,7 +22,7 @@ import { expect } from '@playwright/test'
  */
 export function loadEnv(): void {
   if (
-    process.env.SUPABASE_SERVICE_ROLE_KEY &&
+    process.env.SUPABASE_SECRET_KEY &&
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
     process.env.E2E_SUPABASE_URL
   ) {
@@ -48,14 +48,14 @@ export function loadEnv(): void {
 }
 
 /**
- * Creates an administrative Supabase client using the service-role key.
+ * Creates an administrative Supabase client using the secret key.
  */
 export function getAdminClient(): SupabaseClient {
   loadEnv()
 
   const e2eUrl = process.env.E2E_SUPABASE_URL
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const key = process.env.SUPABASE_SECRET_KEY
 
   if (!e2eUrl || e2eUrl !== url) {
     throw new Error(
@@ -64,7 +64,7 @@ export function getAdminClient(): SupabaseClient {
   }
 
   if (!url || !key) {
-    throw new Error('Supabase URL or Service Role Key missing in environment.')
+    throw new Error('Supabase URL or Secret Key missing in environment.')
   }
 
   return createClient(url, key, {

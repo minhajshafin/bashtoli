@@ -59,7 +59,7 @@ npx playwright show-report
 ### Debugging & Troubleshooting
 
 - **Server Action Timing:** When asserting mutations triggered by Server Actions, ensure locators assert on state changes or wait for pending button states to clear (`await expect(button).toBeEnabled()`).
-- **Database Authentication & RLS:** Test helpers leverage `getAdminClient()` using `SUPABASE_SERVICE_ROLE_KEY` to bypass schema caching anomalies during automated tests while standard Server Actions run against customer sessions.
+- **Database Authentication & RLS:** Test helpers leverage `getAdminClient()` using `SUPABASE_SECRET_KEY` to bypass schema caching anomalies during automated tests while standard Server Actions run against customer sessions.
 - **Accidental Production Safety Guard (`E2E_SUPABASE_URL`):** `getAdminClient()` in `tests/e2e/test-helpers.ts` strictly validates that `process.env.E2E_SUPABASE_URL` is set and exactly equals `process.env.NEXT_PUBLIC_SUPABASE_URL`. This safeguard prevents accidental test fixture execution or database seeding against an unintended or production database instance. Both variables must match in `.env.local` for E2E tests to run.
 - **Port Conflicts:** The Playwright configuration automatically starts a dev server on port 3000 via `webServer: { command: 'next dev', url: 'http://localhost:3000', reuseExistingServer: !process.env.CI }`. Ensure port 3000 is available or already running the current commit.
 

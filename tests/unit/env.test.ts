@@ -1,13 +1,13 @@
 // @vitest-environment node
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { validateEnv } from '@/lib/env'
 
 describe('Environment Variable Validation (lib/env.ts)', () => {
   const VALID_BASE_VARS = {
     NODE_ENV: 'development',
     NEXT_PUBLIC_SUPABASE_URL: 'https://test-project.supabase.co',
-    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_anon_test_key_123',
-    SUPABASE_SERVICE_ROLE_KEY: 'test_service_role_secret_key_abc',
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test_anon_key_123',
+    SUPABASE_SECRET_KEY: 'sb_secret_test_secret_key_abc',
     ORDER_COOKIE_SECRET: 'this_is_a_strictly_32_char_secret_key!',
   }
 
@@ -50,6 +50,71 @@ describe('Environment Variable Validation (lib/env.ts)', () => {
 
     it('does not require production-only vars (Upstash, Resend, App URL) in dev', () => {
       expect(() => validateEnv(VALID_BASE_VARS)).not.toThrow()
+    })
+
+    it('accepts legacy JWT-style values outside production and logs a warning with variable name', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const legacyVars = {
+        ...VALID_BASE_VARS,
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.legacy_anon',
+        SUPABASE_SECRET_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.legacy_secret',
+      }
+      expect(() => validateEnv(legacyVars)).not.toThrow()
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY')
+      )
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('SUPABASE_SECRET_KEY')
+      )
+      warnSpy.mockRestore()
+    })
+  })
+
+  describe('Key Prefix Validation & Supabase Key Modernization', () => {
+    it('accepts new sb_publishable_ and sb_secret_ prefixes in both dev and production', () => {
+      const devResult = validateEnv(VALID_BASE_VARS)
+      expect(devResult.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY).toBe('sb_publishable_test_anon_key_123')
+      expect(devResult.SUPABASE_SECRET_KEY).toBe('sb_secret_test_secret_key_abc')
+
+      const prodResult = validateEnv(VALID_PROD_VARS)
+      expect(prodResult.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY).toBe('sb_publishable_test_anon_key_123')
+      expect(prodResult.SUPABASE_SECRET_KEY).toBe('sb_secret_test_secret_key_abc')
+    })
+
+    it('rejects legacy JWT-style keys in production mode', () => {
+      const invalidPublishableJwt = {
+        ...VALID_PROD_VARS,
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.legacy_anon',
+      }
+      expect(() => validateEnv(invalidPublishableJwt)).toThrowError(
+        /NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY \(Must start with sb_publishable_\)/
+      )
+
+      const invalidSecretJwt = {
+        ...VALID_PROD_VARS,
+        SUPABASE_SECRET_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.legacy_secret',
+      }
+      expect(() => validateEnv(invalidSecretJwt)).toThrowError(
+        /SUPABASE_SECRET_KEY \(Must start with sb_secret_\)/
+      )
+    })
+
+    it('rejects a publishable value placed in the secret variable', () => {
+      const devMisplaced = {
+        ...VALID_BASE_VARS,
+        SUPABASE_SECRET_KEY: 'sb_publishable_accidental_publishable_key',
+      }
+      expect(() => validateEnv(devMisplaced)).toThrowError(
+        /SUPABASE_SECRET_KEY/
+      )
+
+      const prodMisplaced = {
+        ...VALID_PROD_VARS,
+        SUPABASE_SECRET_KEY: 'sb_publishable_accidental_publishable_key',
+      }
+      expect(() => validateEnv(prodMisplaced)).toThrowError(
+        /SUPABASE_SECRET_KEY/
+      )
     })
   })
 

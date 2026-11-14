@@ -48,8 +48,8 @@ All production secrets are securely managed in the **Vercel Project Settings →
 |---|---|---|---|
 | `NEXT_PUBLIC_APP_URL` | Production & Preview | Base URL for auth redirects, canonical tags, and OpenGraph metadata (`https://bashtoli.com` or `https://bashtoli.vercel.app`). | Public |
 | `NEXT_PUBLIC_SUPABASE_URL` | All Environments | Supabase project API endpoint (`https://ephzabuabxvjlueshjuc.supabase.co`). | Public |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | All Environments | Client-side public key restricted by Row-Level Security (RLS) policies. | Public |
-| `SUPABASE_SERVICE_ROLE_KEY` | Production Server-Only | Elevated service key for admin backend operations (role verification, system triggers). Never exposed to browser bundles. | **Strictly Confidential** |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | All Environments | Client-side publishable key restricted by Row-Level Security (RLS) policies. | Public |
+| `SUPABASE_SECRET_KEY` | Production Server-Only | Elevated secret key for admin backend operations (role verification, system triggers). Never exposed to browser bundles. | **Strictly Confidential** |
 | `RESEND_API_KEY` | Production Server-Only | API key used by Next.js Server Actions to dispatch transactional emails via Resend. | **Strictly Confidential** |
 | `UPSTASH_REDIS_REST_URL` | Production Server-Only | Upstash Redis REST connection endpoint for sliding-window rate limiters. | Private |
 | `UPSTASH_REDIS_REST_TOKEN` | Production Server-Only | Upstash Redis REST access token. | **Strictly Confidential** |

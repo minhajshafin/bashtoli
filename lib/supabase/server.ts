@@ -58,7 +58,7 @@ export function createPublicClient() {
 }
 
 /**
- * Creates a Supabase client that uses the SERVICE ROLE key.
+ * Creates a Supabase client that uses the SECRET key.
  * This client BYPASSES Row-Level Security entirely.
  *
  * ⚠️  Use ONLY in trusted Server Actions / Route Handlers where you need
@@ -67,16 +67,16 @@ export function createPublicClient() {
  *   - Restocking inventory on cancellation
  *   - Admin role management
  *
- * NEVER expose this client or the service role key to the browser.
+ * NEVER expose this client or the secret key to the browser.
  */
 export function createAdminClient() {
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set')
+  if (!process.env.SUPABASE_SECRET_KEY) {
+    throw new Error('SUPABASE_SECRET_KEY is not set')
   }
 
   return createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    process.env.SUPABASE_SECRET_KEY,
     {
       auth: {
         autoRefreshToken: false,

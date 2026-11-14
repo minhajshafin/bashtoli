@@ -70,6 +70,7 @@ The following items are deferred for post-launch evaluation after the store owne
 | **Formal Returns & Exchange Portal** | Low | New customer return request workflow | Owner handles returns via phone/WhatsApp during initial launch phase. |
 | **Advanced Sales & Inventory Reporting** | Low | Additional charts and CSV export endpoints | Basic operational metrics and low-stock alerts are sufficient for initial order volume. |
 | **Automated Inventory Reservation** | Low | Temporary cart hold with countdown timer | Not needed for current order volume; transactional stock decrement at order creation is sufficient. |
+| **Supabase JWT Signing Keys** | Low | Auth token signing architecture | Migrate to Supabase JWT signing keys (separate from API keys; user access tokens are still signed by the shared JWT secret). Not required for launch. |
 
 ---
 
