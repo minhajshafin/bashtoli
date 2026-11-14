@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import sharp from 'sharp'
-import { assertScriptTarget } from './_guard'
+import { assertScriptTarget, loadScriptEnv } from './_guard'
 
 // ============================================================================
 // Types & Palette Configuration
@@ -804,6 +804,7 @@ export async function executeReset({
 // ============================================================================
 
 export async function main() {
+  loadScriptEnv()
   assertScriptTarget()
 
   if (process.env.NODE_ENV === 'production') {

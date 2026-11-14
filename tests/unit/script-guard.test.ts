@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { assertScriptTarget } from '../../scripts/_guard'
+import { assertScriptTarget, loadScriptEnv } from '../../scripts/_guard'
 
 describe('scripts/_guard.ts: assertScriptTarget', () => {
   const originalEnv = { ...process.env }
@@ -97,5 +97,12 @@ describe('scripts/_guard.ts: assertScriptTarget', () => {
         'https://different-target.supabase.co'
       )
     ).toThrowError(/Safety check failed/)
+  })
+
+  it('loadScriptEnv skips execution in VITEST environment to prevent test interference', () => {
+    expect(process.env.VITEST).toBeDefined()
+    delete process.env.TEST_LOAD_ENV_VAR
+    loadScriptEnv()
+    expect(process.env.TEST_LOAD_ENV_VAR).toBeUndefined()
   })
 })
