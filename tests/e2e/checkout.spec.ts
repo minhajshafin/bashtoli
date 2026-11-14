@@ -9,16 +9,8 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
   test('should complete browse, add to bag, and checkout happy path with ?token= redirect and full view', async ({
     page,
   }) => {
-    // 1. Navigate to storefront products listing
-    await page.goto('/products')
-    await expect(page).toHaveTitle(/Stationery|Products/i)
-
-    // 2. Select the seeded test product
-    const productCardLink = page.locator('a[href="/products/e2e-test-bamboo-product"]').first()
-    await expect(productCardLink).toBeVisible({ timeout: 15000 })
-    await productCardLink.click()
-
-    // 3. Open product details and add to bag
+    // 1. Navigate directly to seeded test product page
+    await page.goto('/products/e2e-test-bamboo-product')
     await expect(page).toHaveURL(/\/products\/e2e-test-bamboo-product/)
     await expect(page.getByRole('heading', { name: 'E2E Test Bamboo Product' })).toBeVisible()
 

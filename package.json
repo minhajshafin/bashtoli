@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "seed:demo": "jiti scripts/import-demo-catalog.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

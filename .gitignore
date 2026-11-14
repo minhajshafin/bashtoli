@@ -46,3 +46,8 @@ next-env.d.ts
 
 # audit working material
 docs/audit/
+
+# internal client & owner documentation
+docs/handover.md
+docs/admin-guide.md
+docs/prd.md

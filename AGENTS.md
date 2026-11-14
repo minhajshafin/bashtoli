@@ -49,8 +49,10 @@ Bashtoli: e-commerce site for a local stationery shop. Live in production: real 
 - `components/{admin,storefront,ui}`: UI only; no queries or business logic (includes `components/storefront/{skeletons,profile}/`).
 - `supabase/migrations/`: source of truth for schema, RLS, functions. `001–006` are shipped and immutable.
 - `supabase/scripts/`: `master-schema.sql`, `seed-test-data.sql` (staging only), `bootstrap-admin.sql`.
+- `supabase/seed/`: `demo-catalog.json` (version 4; staging 50-product realistic demo catalog).
+- `scripts/`: `import-demo-catalog.ts` (`seed:demo`; dry run default, requires `--apply` and `--confirm-host`), `seed-db.ts`, `_guard.ts` (`assertScriptTarget`).
 - `supabase/tests/place_order_smoke.sql`: transactional SQL smoke test for `place_order` (staging only).
-- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md`, `redesign.md` (create when the redesign starts). `docs/audit/` is gitignored working material. Update docs when behavior changes.
+- `docs/`: `architecture.md`, `database.md`, `open-items.md`, `LAUNCH_CHECKLIST.md`, `demo-catalog.md`, `redesign.md` (create when the redesign starts). `docs/audit/` is gitignored working material. Update docs when behavior changes.
 
 ## Supabase Client Rules
 - `createClient()` (user session, RLS applies): default for everything.

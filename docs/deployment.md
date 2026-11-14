@@ -102,10 +102,10 @@ A default admin account has been created for the **development** Supabase projec
 
 | Field    | Value                  |
 |----------|------------------------|
-| Email    | `admin@example.com`    |
-| Password | `mypassword123`        |
+| Email    | `<set in Supabase>`    |
+| Password | `<set in Supabase>`    |
 | Role     | `admin`                |
-| UUID     | `570f141c-c3c1-45fb-aec5-93a463932bfc` |
+| UUID     | `<set in Supabase>`    |
 
 > [!CAUTION]
 > **Change these credentials before going to production.**
@@ -186,7 +186,7 @@ Bashtoli uses a zero-dependency, cloud-native observability stack optimized for 
 - [ ] Vercel Analytics active in RootLayout
 - [ ] Upstash Redis credentials set in Vercel production environment
 - [ ] Supabase RLS policies and guest order claiming RPC active
-- [ ] Resend domain verified (`orders@bashtoli.com`) with production API key
+- [ ] Resend domain verified (`<set in Vercel>`) with production API key
 - [ ] Owner has verified real product catalog, pricing, and initial stock
 - [ ] About/Contact pages and WhatsApp contact link populated
 

@@ -1,6 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
+import { assertScriptTarget } from './_guard'
 
 async function seed() {
+  assertScriptTarget()
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SECRET_KEY
 

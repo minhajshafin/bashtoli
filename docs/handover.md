@@ -4,8 +4,8 @@
 **Project:** Artisanal E-Commerce Web Application  
 **Platform Version:** 1.0.0 (Production Release)  
 **Completion Date:** September 2026  
-**Primary Repository:** `minhajshafin/bashtoli` (Branch: `main`)  
-**Production URL:** [https://bashtoli.vercel.app](https://bashtoli.vercel.app) *(Custom domain: `bashtoli.com`)*  
+**Primary Repository:** `<owner-account>/bashtoli` (Branch: `main`)  
+**Production URL:** `<set in Vercel>` *(Custom domain: `bashtoli.com`)*  
 
 ---
 
@@ -28,11 +28,11 @@ The production application relies on managed, serverless cloud services configur
 
 | Service | Provider | Purpose | Region / Tier | Production Identifier / Dashboard |
 |---|---|---|---|---|
-| **Hosting & CDN** | Vercel | Next.js compute, Edge CDN, SSL, & Analytics | `sin1` (Singapore) / Pro | Project: `bashtoli` |
-| **Database & Auth** | Supabase | PostgreSQL 15, Auth engine, & Storage buckets | `ap-southeast-1` (Singapore) | Project ID: `ephzabuabxvjlueshjuc` |
+| **Hosting & CDN** | Vercel | Next.js compute, Edge CDN, SSL, & Analytics | `sin1` (Singapore) / Pro | Project: `<set in Vercel>` |
+| **Database & Auth** | Supabase | PostgreSQL 15, Auth engine, & Storage buckets | `ap-southeast-1` (Singapore) | Project ID: `<set in Vercel>` |
 | **Object Storage** | Supabase Storage | Product photos (`product-images`) & Category covers (`category-covers`) | Public read / Authenticated write | Max 5MB per upload |
-| **Rate Limiter** | Upstash Redis | Sliding-window DDoS and abuse protection | Singapore Serverless | Database: `bashtoli-ratelimit` |
-| **Transactional Email**| Resend | Order confirmation & admin notification emails | Global / Verified Domain | Sender: `orders@bashtoli.com` |
+| **Rate Limiter** | Upstash Redis | Sliding-window DDoS and abuse protection | Singapore Serverless | Database: `<set in Vercel>` |
+| **Transactional Email**| Resend | Order confirmation & admin notification emails | Global / Verified Domain | Sender: `<set in Vercel>` |
 | **Real User Metrics** | @vercel/analytics | Core Web Vitals (LCP, INP, CLS) & visitor traffic | Privacy-preserving (Zero PII) | Vercel Analytics tab |
 
 ---
@@ -46,8 +46,8 @@ All production secrets are securely managed in the **Vercel Project Settings →
 
 | Variable Name | Environment | Purpose | Security Level |
 |---|---|---|---|
-| `NEXT_PUBLIC_APP_URL` | Production & Preview | Base URL for auth redirects, canonical tags, and OpenGraph metadata (`https://bashtoli.com` or `https://bashtoli.vercel.app`). | Public |
-| `NEXT_PUBLIC_SUPABASE_URL` | All Environments | Supabase project API endpoint (`https://ephzabuabxvjlueshjuc.supabase.co`). | Public |
+| `NEXT_PUBLIC_APP_URL` | Production & Preview | Base URL for auth redirects, canonical tags, and OpenGraph metadata (`https://bashtoli.com` or `<set in Vercel>`). | Public |
+| `NEXT_PUBLIC_SUPABASE_URL` | All Environments | Supabase project API endpoint (`<set in Vercel>`). | Public |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | All Environments | Client-side publishable key restricted by Row-Level Security (RLS) policies. | Public |
 | `SUPABASE_SECRET_KEY` | Production Server-Only | Elevated secret key for admin backend operations (role verification, system triggers). Never exposed to browser bundles. | **Strictly Confidential** |
 | `RESEND_API_KEY` | Production Server-Only | API key used by Next.js Server Actions to dispatch transactional emails via Resend. | **Strictly Confidential** |
@@ -162,7 +162,7 @@ If a customer reports receiving an HTTP 429 ("Too Many Requests") error:
 ## 7. Handover Checklist & Sign-Off
 
 - [x] **Source Code**: Fully pushed and synchronized to GitHub `main` branch.
-- [x] **Production Deployment**: Live and functional on Vercel (`https://bashtoli.vercel.app`).
+- [x] **Production Deployment**: Live and functional on Vercel (`<set in Vercel>`).
 - [x] **Database & Migrations**: Consolidated 001–006 migrations applied to production Supabase.
 - [x] **Initial Admin User**: Store owner account bootstrapped with `admin` privileges.
 - [x] **Rate Limiting**: Upstash Redis sliding-window active with fail-open safety.

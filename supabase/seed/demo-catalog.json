@@ -1,0 +1,1804 @@
+{
+  "version": 4,
+  "description": "Realistic demo stationery catalog for Bashtoli staging environment",
+  "categories": [
+    {
+      "name": "Notebooks & Journals",
+      "slug": "notebooks-and-journals",
+      "sort_order": 1,
+      "is_featured": true,
+      "featured_order": 1,
+      "color_token": "forest",
+      "description": "Everyday school notebooks, hardbound diaries, and handcrafted paper journals."
+    },
+    {
+      "name": "Pens & Pencils",
+      "slug": "pens-and-pencils",
+      "sort_order": 2,
+      "is_featured": true,
+      "featured_order": 2,
+      "color_token": "ink",
+      "description": "Smooth ballpoints, everyday pencils, and precision writing instruments."
+    },
+    {
+      "name": "Art & Drawing",
+      "slug": "art-and-drawing",
+      "sort_order": 3,
+      "is_featured": true,
+      "featured_order": 3,
+      "color_token": "terracotta",
+      "description": "Sketchbooks, artist pencils, watercolors, acrylics, and fine brushes."
+    },
+    {
+      "name": "Paper & Printing",
+      "slug": "paper-and-printing",
+      "sort_order": 4,
+      "is_featured": true,
+      "featured_order": 4,
+      "color_token": "cream",
+      "description": "Multipurpose copy paper reams, cardstock sheets, and printable sticker packs."
+    },
+    {
+      "name": "Desk & Office",
+      "slug": "desk-and-office",
+      "sort_order": 5,
+      "is_featured": true,
+      "featured_order": 5,
+      "color_token": "slate",
+      "description": "Staplers, scissors, adhesive tapes, file folders, and desktop organizers."
+    },
+    {
+      "name": "Math & Geometry",
+      "slug": "math-and-geometry",
+      "sort_order": 6,
+      "is_featured": true,
+      "featured_order": 6,
+      "color_token": "ocean",
+      "description": "Student compass sets, acrylic drafting rulers, and scientific calculators."
+    },
+    {
+      "name": "Gift & Craft",
+      "slug": "gift-and-craft",
+      "sort_order": 7,
+      "is_featured": true,
+      "featured_order": 7,
+      "color_token": "gold",
+      "description": "Handmade gift wrap, decorative washi tapes, and letterpress greeting cards."
+    },
+    {
+      "name": "Study & Exam Essentials",
+      "slug": "study-and-exam-essentials",
+      "sort_order": 8,
+      "is_featured": false,
+      "featured_order": 0,
+      "color_token": "moss",
+      "description": "Highlighter sets, index flags, exam clipboards, and clear pencil cases."
+    }
+  ],
+  "hero_slides": [
+    {
+      "badge_text": "Artisan Stationery",
+      "badge_color_preset": "forest",
+      "link_url": "/products?category=notebooks-and-journals",
+      "subtext": "Hand-bound journals, jute diaries, and bamboo pens crafted with care.",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "badge_text": "Study & Exam Season",
+      "badge_color_preset": "ocean",
+      "link_url": "/products?category=study-and-exam-essentials",
+      "subtext": "Highlighters, geometry sets, and essential desk tools ready for test day.",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "badge_text": "Paper & Craft Studio",
+      "badge_color_preset": "gold",
+      "link_url": "/products?category=gift-and-craft",
+      "subtext": "Block-printed gift wraps, washi tapes, and premium printing reams.",
+      "sort_order": 3,
+      "active": true
+    }
+  ],
+  "products": [
+    {
+      "name": "Classic Ruled School Notebook",
+      "slug": "classic-ruled-school-notebook",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "school notebook",
+      "description": "Sturdy bound notebook featuring smooth 70 GSM off-white lined paper. Designed with reinforced stitching to withstand daily school and college use. Includes a personal details front page and subject divider margins.",
+      "active": true,
+      "featured": true,
+      "image_label": "Classic Ruled School Notebook",
+      "image_color": "forest",
+      "image_slots": 3,
+      "image_labels": [
+        "Cover and Binding",
+        "Ruled Page Spread",
+        "Stitching Detail"
+      ],
+      "options": [
+        {
+          "name": "Size",
+          "values": [
+            "A5",
+            "B5"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-NB-SCH-A5",
+          "price": 80,
+          "stock_qty": 140,
+          "active": true,
+          "option_values": {
+            "Size": "A5"
+          }
+        },
+        {
+          "sku": "DEMO-NB-SCH-B5",
+          "price": 120,
+          "stock_qty": 90,
+          "active": true,
+          "option_values": {
+            "Size": "B5"
+          }
+        }
+      ],
+      "base_price": 80
+    },
+    {
+      "name": "Hardcover Cloth-Bound Journal",
+      "slug": "hardcover-cloth-bound-journal",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "hardcover journal",
+      "description": "Elegant bookcloth hardcover journal filled with bleed-resistant 100 GSM ivory pages. Opens flat at 180 degrees for comfortable two-page writing and note taking. Finished with an elastic closure band and dual satin ribbon page markers.",
+      "active": true,
+      "featured": true,
+      "image_label": "Hardcover Cloth-Bound Journal",
+      "image_color": "forest",
+      "image_slots": 3,
+      "image_labels": [
+        "Cloth Front Cover",
+        "180 Degree Flat Spread",
+        "Ribbon Marker and Band"
+      ],
+      "options": [
+        {
+          "name": "Page Style",
+          "values": [
+            "Ruled",
+            "Dot Grid",
+            "Blank"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-JRN-CLOTH-RUL",
+          "price": 350,
+          "stock_qty": 65,
+          "active": true,
+          "option_values": {
+            "Page Style": "Ruled"
+          }
+        },
+        {
+          "sku": "DEMO-JRN-CLOTH-DOT",
+          "price": 380,
+          "stock_qty": 50,
+          "active": true,
+          "option_values": {
+            "Page Style": "Dot Grid"
+          }
+        },
+        {
+          "sku": "DEMO-JRN-CLOTH-BLK",
+          "price": 350,
+          "stock_qty": 40,
+          "active": true,
+          "option_values": {
+            "Page Style": "Blank"
+          }
+        }
+      ],
+      "base_price": 350
+    },
+    {
+      "name": "Hand-Pressed Jute Fiber Diary",
+      "slug": "hand-pressed-jute-fiber-diary",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "handmade-paper journal",
+      "description": "Artisanal diary bound in textured natural jute weave with a wrap-around cord closure. Contains thick deckle-edge cotton rag paper suitable for calligraphy, sketching, and fountain pens. Handcrafted by local paper artisans using traditional hand-loom fibers.",
+      "active": true,
+      "featured": false,
+      "image_label": "Hand-Pressed Jute Fiber Diary",
+      "image_color": "forest",
+      "image_slots": 3,
+      "image_labels": [
+        "Textured Jute Cover",
+        "Deckle Edge Pages",
+        "Wrap Cord Detail"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-JRN-JUTE-NAT",
+          "price": 550,
+          "stock_qty": 4,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 550
+    },
+    {
+      "name": "Twin-Wire Spiral Lecture Notebook",
+      "slug": "twin-wire-spiral-lecture-notebook",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "school notebook",
+      "description": "Flexible poly-cover notebook with durable twin-wire binding that allows 360-degree rotation. Features micro-perforated ruled sheets for clean page removal. Ideal for fast university lectures and daily task journaling.",
+      "active": true,
+      "featured": false,
+      "image_label": "Twin-Wire Spiral Lecture Notebook",
+      "image_color": "forest",
+      "image_slots": 1,
+      "image_labels": [
+        "Wire-Bound Front View"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-NB-SPIRAL-A4",
+          "price": 110,
+          "stock_qty": 80,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 110
+    },
+    {
+      "name": "পাকা বাঁধাই খতিয়ান খাতা রেজিস্টার",
+      "slug": "hardcover-ledger-khata-register",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "ledger register",
+      "description": "টেকসই লাল কাপড়ে মোড়ানো শক্ত বাঁধাইযুক্ত খতিয়ান রেজিস্টার খাতা। ভেতরের পৃষ্ঠায় হিসাব সংরক্ষণের জন্য লাল ও নীল কালিতে স্পষ্ট কলাম ও মার্জিন টানা রয়েছে। ৮০ জিএসএম পুরু কাগজের কারণে লেখার কালি অপর পৃষ্ঠায় ছড়ায় না এবং দীর্ঘ বছর নিরাপদে সংরক্ষণ করা যায়।",
+      "active": true,
+      "featured": false,
+      "image_label": "পাকা বাঁধাই খতিয়ান খাতা রেজিস্টার",
+      "image_color": "forest",
+      "image_slots": 1,
+      "image_labels": [
+        "লাল কাপড়ে মোড়ানো খতিয়ান রেজিস্টার খাতা"
+      ],
+      "stress": "bengali-locale",
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-NB-KHT-200",
+          "price": 220,
+          "stock_qty": 130,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 220
+    },
+    {
+      "name": "Lokta Heritage Botanical Journal",
+      "slug": "lokta-heritage-botanical-journal",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "handmade-paper journal",
+      "description": "Traditional sun-dried lokta bush paper bound in cotton bookcloth. Each page displays subtle natural petal flecks and distinctive textural grain. Finished with a sturdy stitched spine that opens flat for journaling and calligraphy.",
+      "active": false,
+      "featured": false,
+      "image_label": "Lokta Heritage Botanical Journal",
+      "image_color": "forest",
+      "image_slots": 1,
+      "image_labels": [
+        "Lokta Paper Cover"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-JRN-LOKTA-A5",
+          "price": 750,
+          "stock_qty": 25,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 750
+    },
+    {
+      "name": "Pocket Memo Notepad Pack",
+      "slug": "pocket-memo-notepad-pack",
+      "category_slug": "notebooks-and-journals",
+      "item_type": "school notebook",
+      "description": "Compact top-stapled pocket notepads engineered for quick field reminders and shopping lists. Made with water-resistant kraft paper covers and clean micro-grid paper. Fits effortlessly into shirt pockets and small pouches.",
+      "active": true,
+      "featured": false,
+      "image_label": "Pocket Memo Notepad Pack",
+      "image_color": "forest",
+      "image_slots": 1,
+      "image_labels": [
+        "Pocket Notepad Stacks"
+      ],
+      "options": [
+        {
+          "name": "Pack Size",
+          "values": [
+            "2-Pack",
+            "3-Pack"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-NB-MEMO-2PK",
+          "price": 90,
+          "stock_qty": 110,
+          "active": true,
+          "option_values": {
+            "Pack Size": "2-Pack"
+          }
+        },
+        {
+          "sku": "DEMO-NB-MEMO-3PK",
+          "price": 130,
+          "stock_qty": 75,
+          "active": true,
+          "option_values": {
+            "Pack Size": "3-Pack"
+          }
+        }
+      ],
+      "base_price": 90
+    },
+    {
+      "name": "Smooth-Glide Ballpoint Pen",
+      "slug": "smooth-glide-ballpoint-pen",
+      "category_slug": "pens-and-pencils",
+      "item_type": "single pen",
+      "description": "Dependable 0.7mm tungsten-carbide tip ballpoint pen with quick-dry oil-based ink. Ergonomic grooved rubber grip prevents finger fatigue during lengthy exam sessions. Transparent hexagonal barrel allows instant ink-level checks.",
+      "active": true,
+      "featured": false,
+      "image_label": "Smooth-Glide Ballpoint Pen",
+      "image_color": "ink",
+      "image_slots": 1,
+      "image_labels": [
+        "Ballpoint Pen Trio"
+      ],
+      "options": [
+        {
+          "name": "Ink Color",
+          "values": [
+            "Black",
+            "Blue",
+            "Red",
+            "Green",
+            "Violet",
+            "Orange"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-PEN-GLIDE-BLK",
+          "price": 15,
+          "stock_qty": 120,
+          "active": true,
+          "option_values": {
+            "Ink Color": "Black"
+          }
+        },
+        {
+          "sku": "DEMO-PEN-GLIDE-BLU",
+          "price": 15,
+          "stock_qty": 140,
+          "active": true,
+          "option_values": {
+            "Ink Color": "Blue"
+          }
+        },
+        {
+          "sku": "DEMO-PEN-GLIDE-RED",
+          "price": 15,
+          "stock_qty": 0,
+          "active": true,
+          "option_values": {
+            "Ink Color": "Red"
+          }
+        },
+        {
+          "sku": "DEMO-PEN-GLIDE-GRN",
+          "price": 15,
+          "stock_qty": 60,
+          "active": true,
+          "option_values": {
+            "Ink Color": "Green"
+          }
+        },
+        {
+          "sku": "DEMO-PEN-GLIDE-VLT",
+          "price": 15,
+          "stock_qty": 50,
+          "active": true,
+          "option_values": {
+            "Ink Color": "Violet"
+          }
+        },
+        {
+          "sku": "DEMO-PEN-GLIDE-ORG",
+          "price": 15,
+          "stock_qty": 45,
+          "active": true,
+          "option_values": {
+            "Ink Color": "Orange"
+          }
+        }
+      ],
+      "base_price": 15,
+      "stress": "six-variants"
+    },
+    {
+      "name": "Everyday Retractable Gel Pen 5-Pack",
+      "slug": "everyday-retractable-gel-pen-5-pack",
+      "category_slug": "pens-and-pencils",
+      "item_type": "pen pack",
+      "description": "Pack of five 0.5mm needle-point retractable gel pens delivering crisp dark strokes. Fast-drying smudge-free ink formula prevents blurring on porous paper. Built with a spring-loaded metal pocket clip for easy transport.",
+      "active": true,
+      "featured": false,
+      "image_label": "Everyday Retractable Gel Pen 5-Pack",
+      "image_color": "ink",
+      "image_slots": 1,
+      "image_labels": [
+        "Pack of 5 Gel Pens"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PEN-GEL-5PK",
+          "price": 120,
+          "stock_qty": 95,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 120
+    },
+    {
+      "name": "Turned Bamboo Rollerball Pen",
+      "slug": "turned-bamboo-rollerball-pen",
+      "category_slug": "pens-and-pencils",
+      "item_type": "premium pen",
+      "description": "Solid hand-turned natural bamboo casing fitted with antique brass finish metal hardware. Uses international standard ceramic rollerball refills for fluid friction-free writing. Presented in a matching magnetic bamboo gift presentation box.",
+      "active": true,
+      "featured": true,
+      "image_label": "Turned Bamboo Rollerball Pen",
+      "image_color": "ink",
+      "image_slots": 3,
+      "image_labels": [
+        "Turned Bamboo Pen Body",
+        "Brass Clip and Cap View",
+        "Wooden Presentation Case"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PEN-BAM-ROLL",
+          "price": 450,
+          "stock_qty": 2,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 450
+    },
+    {
+      "name": "Natural Graphite Writing Pencil",
+      "slug": "natural-graphite-writing-pencil",
+      "category_slug": "pens-and-pencils",
+      "item_type": "pencil",
+      "description": "Hexagonal cedarwood writing pencil loaded with break-resistant HB graphite lead. Provides uniform tonal shading and effortless sharpening with standard sharpeners. Finished with a smooth matte green lacquer coating and dipped crown end.",
+      "active": true,
+      "featured": false,
+      "image_label": "Natural Graphite Writing Pencil",
+      "image_color": "ink",
+      "image_slots": 1,
+      "image_labels": [
+        "HB Graphite Pencil Single"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PCL-HB-SGL",
+          "price": 10,
+          "stock_qty": 180,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 10
+    },
+    {
+      "name": "Dry-Erase Whiteboard Marker 4-Pack",
+      "slug": "dry-erase-whiteboard-marker-4-pack",
+      "category_slug": "pens-and-pencils",
+      "item_type": "whiteboard marker 4-pack",
+      "description": "Four-color dry-erase marker set containing black, blue, red, and green bullet-tip pens. Formulated with alcohol-based low-odor ink that wipes off dry-erase boards cleanly with a standard felt eraser. Suitable for classroom teaching, office meetings, and presentation boards.",
+      "active": true,
+      "featured": false,
+      "image_label": "Dry-Erase Whiteboard Marker 4-Pack",
+      "image_color": "ink",
+      "image_slots": 1,
+      "image_labels": [
+        "Set of Four Color Whiteboard Markers"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PEN-WBM-4PK",
+          "price": 180,
+          "stock_qty": 95,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 180
+    },
+    {
+      "name": "Fine-Liner Technical Drawing Pen Set",
+      "slug": "fine-liner-technical-drawing-pen-set",
+      "category_slug": "pens-and-pencils",
+      "item_type": "pen pack",
+      "description": "Pigmented black ink technical pens with durable metal-clad fine tips. Formulated for precision architectural drawings, line art, and detailed journal outlines. Quick-drying ink resists feathering on standard paper and allows clean line definition under ink washes.",
+      "active": true,
+      "featured": false,
+      "image_label": "Fine-Liner Technical Drawing Pen Set",
+      "image_color": "ink",
+      "image_slots": 1,
+      "image_labels": [
+        "Drawing Pens in Plastic Sleeve"
+      ],
+      "options": [
+        {
+          "name": "Set Size",
+          "values": [
+            "3-Piece",
+            "5-Piece"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-PEN-FINE-3PC",
+          "price": 220,
+          "stock_qty": 70,
+          "active": true,
+          "option_values": {
+            "Set Size": "3-Piece"
+          }
+        },
+        {
+          "sku": "DEMO-PEN-FINE-5PC",
+          "price": 250,
+          "stock_qty": 45,
+          "active": true,
+          "option_values": {
+            "Set Size": "5-Piece"
+          }
+        }
+      ],
+      "base_price": 220
+    },
+    {
+      "name": "Brushed Steel Fountain Pen",
+      "slug": "brushed-steel-fountain-pen",
+      "category_slug": "pens-and-pencils",
+      "item_type": "premium pen",
+      "description": "Weighted brushed stainless steel fountain pen sporting a polished fine iridium nib. Compatible with standard international cartridges or the included rotary piston converter. Delivers consistent ink flow suited for formal document signing and journaling.",
+      "active": true,
+      "featured": false,
+      "image_label": "Brushed Steel Fountain Pen",
+      "image_color": "ink",
+      "image_slots": 1,
+      "image_labels": [
+        "Steel Fountain Pen Angled"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PEN-STEEL-FNT",
+          "price": 650,
+          "stock_qty": 35,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 650
+    },
+    {
+      "name": "Artist Pre-Sharpened Colored Pencils",
+      "slug": "artist-pre-sharpened-colored-pencils",
+      "category_slug": "art-and-drawing",
+      "item_type": "colored pencils",
+      "description": "Soft-core wax-based colored pencils offering rich color saturation and smooth blending. Enclosed in a compact protective embossed tin case for portable field sketching. Pre-sharpened 3.3mm cores resist shattering under medium drawing pressure.",
+      "active": true,
+      "featured": true,
+      "image_label": "Artist Pre-Sharpened Colored Pencils",
+      "image_color": "terracotta",
+      "image_slots": 3,
+      "image_labels": [
+        "Tin Box Open with Pencils",
+        "Color Swatches Demonstration",
+        "Pencil Tip Close-up"
+      ],
+      "options": [
+        {
+          "name": "Pack Size",
+          "values": [
+            "12 Colors",
+            "24 Colors"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-ART-COL-12PK",
+          "price": 280,
+          "stock_qty": 80,
+          "active": true,
+          "option_values": {
+            "Pack Size": "12 Colors"
+          }
+        },
+        {
+          "sku": "DEMO-ART-COL-24PK",
+          "price": 420,
+          "stock_qty": 55,
+          "active": true,
+          "option_values": {
+            "Pack Size": "24 Colors"
+          }
+        }
+      ],
+      "base_price": 280
+    },
+    {
+      "name": "Compact Watercolor Cake Palette",
+      "slug": "compact-watercolor-cake-palette",
+      "category_slug": "art-and-drawing",
+      "item_type": "watercolor set",
+      "description": "Set of 18 rich pigment watercolor cakes in a pocket-sized travel palette with mixing wells. Includes a mini refillable water brush pen and sponge for painting outdoors. Water-soluble cakes dissolve cleanly with vivid transparency on watercolor paper.",
+      "active": true,
+      "featured": false,
+      "image_label": "Compact Watercolor Cake Palette",
+      "image_color": "terracotta",
+      "image_slots": 1,
+      "image_labels": [
+        "Open Watercolor Tin Palette"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-ART-WTR-18CK",
+          "price": 240,
+          "stock_qty": 60,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 240
+    },
+    {
+      "name": "Heavyweight Mixed Media Sketchbook",
+      "slug": "heavyweight-mixed-media-sketchbook",
+      "category_slug": "art-and-drawing",
+      "item_type": "sketchbook",
+      "description": "Wire-bound hardcover sketchbook featuring 200 GSM heavy rough tooth watercolor paper. Handles gouache, ink washes, dry pastels, and graphite without buckling or warping. Contains 40 perforated micro-sheet pages with sturdy protective chipboard backing.",
+      "active": true,
+      "featured": false,
+      "image_label": "Heavyweight Mixed Media Sketchbook",
+      "image_color": "terracotta",
+      "image_slots": 3,
+      "image_labels": [
+        "Cover and Wire Binding",
+        "Textured Paper Close-up",
+        "Watercolor Wash Spread"
+      ],
+      "options": [
+        {
+          "name": "Size",
+          "values": [
+            "A4",
+            "A5"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-ART-SKB-A4",
+          "price": 320,
+          "stock_qty": 40,
+          "active": true,
+          "option_values": {
+            "Size": "A4"
+          }
+        },
+        {
+          "sku": "DEMO-ART-SKB-A5",
+          "price": 220,
+          "stock_qty": 0,
+          "active": true,
+          "option_values": {
+            "Size": "A5"
+          }
+        }
+      ],
+      "base_price": 220
+    },
+    {
+      "name": "Dual-Tip Alcohol Art Marker 6-Pack",
+      "slug": "dual-tip-alcohol-art-marker-6-pack",
+      "category_slug": "art-and-drawing",
+      "item_type": "marker set",
+      "description": "Versatile illustration markers featuring a flexible brush tip on one end and broad chisel on the other. Quick-drying alcohol ink blends seamlessly without streak marks on marker paper. Comes in a clear reusable tabletop standing plastic case.",
+      "active": true,
+      "featured": false,
+      "image_label": "Dual-Tip Alcohol Art Marker 6-Pack",
+      "image_color": "terracotta",
+      "image_slots": 1,
+      "image_labels": [
+        "Marker Set in Acrylic Case"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-ART-MKR-6PK",
+          "price": 380,
+          "stock_qty": 50,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 380
+    },
+    {
+      "name": "Studio Acrylic Paint Tube Starter Set",
+      "slug": "studio-acrylic-paint-tube-starter-set",
+      "category_slug": "art-and-drawing",
+      "item_type": "acrylic set",
+      "description": "Twelve 22ml tubes of high-viscosity acrylic paint offering a rich satin finish. Suitable for canvas boards, terracotta, primed wood, and heavyweight paper. Mixes cleanly to produce a broad spectrum of rich intermediate tones.",
+      "active": true,
+      "featured": false,
+      "image_label": "Studio Acrylic Paint Tube Starter Set",
+      "image_color": "terracotta",
+      "image_slots": 1,
+      "image_labels": [
+        "Box of 12 Acrylic Tubes"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-ART-ACR-12TB",
+          "price": 520,
+          "stock_qty": 3,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 520
+    },
+    {
+      "name": "Fine Detail Round Watercolor Brush",
+      "slug": "fine-detail-round-watercolor-brush",
+      "category_slug": "art-and-drawing",
+      "item_type": "brush",
+      "description": "Synthetic golden Taklon hair round brush offering superior snap and excellent paint holding belly. Nickel-plated seamless brass ferrule crimped securely to a balanced lacquered wooden handle. Designed for intricate botanical lines and precise detail rendering.",
+      "active": true,
+      "featured": false,
+      "image_label": "Fine Detail Round Watercolor Brush",
+      "image_color": "terracotta",
+      "image_slots": 1,
+      "image_labels": [
+        "Detail Brush Trio"
+      ],
+      "options": [
+        {
+          "name": "Brush Size",
+          "values": [
+            "Size 2",
+            "Size 6",
+            "Size 10"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-ART-BRSH-SZ2",
+          "price": 120,
+          "stock_qty": 65,
+          "active": true,
+          "option_values": {
+            "Brush Size": "Size 2"
+          }
+        },
+        {
+          "sku": "DEMO-ART-BRSH-SZ6",
+          "price": 160,
+          "stock_qty": 50,
+          "active": true,
+          "option_values": {
+            "Brush Size": "Size 6"
+          }
+        },
+        {
+          "sku": "DEMO-ART-BRSH-SZ10",
+          "price": 210,
+          "stock_qty": 35,
+          "active": true,
+          "option_values": {
+            "Brush Size": "Size 10"
+          }
+        }
+      ],
+      "base_price": 120
+    },
+    {
+      "name": "Multipurpose A4 Copy Paper Ream",
+      "slug": "multipurpose-a4-copy-paper-ream",
+      "category_slug": "paper-and-printing",
+      "item_type": "A4 ream",
+      "description": "Standard 500-sheet ream of 80 GSM high-opacity copy paper for inkjet and laser printers. Engineered for continuous high-speed printing and sharp text reproduction. Balanced paper formulation maintains page brightness during long-term file archiving.",
+      "active": true,
+      "featured": true,
+      "image_label": "Multipurpose A4 Copy Paper Ream",
+      "image_color": "cream",
+      "image_slots": 1,
+      "image_labels": [
+        "Wrapped 500 Sheet Ream"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PPR-A4-500",
+          "price": 520,
+          "stock_qty": 150,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 520
+    },
+    {
+      "name": "Pastel Colored Craft Paper 50-Pack",
+      "slug": "pastel-colored-craft-paper-50-pack",
+      "category_slug": "paper-and-printing",
+      "item_type": "colored paper pack",
+      "description": "Assortment of fifty sheets of 80 GSM dyed pastel paper in soft yellow, pink, green, and blue. Ideal for origami crafts, classroom activities, scrapbooking, and colorful office dividers. Paper cuts cleanly with standard craft scissors and paper punches.",
+      "active": true,
+      "featured": false,
+      "image_label": "Pastel Colored Craft Paper 50-Pack",
+      "image_color": "cream",
+      "image_slots": 1,
+      "image_labels": [
+        "Pastel Paper Pack Fan"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PPR-PST-50PK",
+          "price": 140,
+          "stock_qty": 90,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 140
+    },
+    {
+      "name": "Matte Printable Adhesive Sticker Paper",
+      "slug": "matte-printable-adhesive-sticker-paper",
+      "category_slug": "paper-and-printing",
+      "item_type": "sticker paper",
+      "description": "Full-sheet self-adhesive A4 paper with a matte finish designed for inkjet and laser printing. Peel-and-stick backing features easy-split score lines for quick label application. Ink absorbs quickly without bleeding, making it optimal for custom shipping labels and decals.",
+      "active": true,
+      "featured": false,
+      "image_label": "Matte Printable Adhesive Sticker Paper",
+      "image_color": "cream",
+      "image_slots": 1,
+      "image_labels": [
+        "A4 Sticker Sheet Pack"
+      ],
+      "options": [
+        {
+          "name": "Sheet Count",
+          "values": [
+            "20 Sheets",
+            "50 Sheets"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-PPR-STK-20SH",
+          "price": 180,
+          "stock_qty": 70,
+          "active": true,
+          "option_values": {
+            "Sheet Count": "20 Sheets"
+          }
+        },
+        {
+          "sku": "DEMO-PPR-STK-50SH",
+          "price": 280,
+          "stock_qty": 40,
+          "active": true,
+          "option_values": {
+            "Sheet Count": "50 Sheets"
+          }
+        }
+      ],
+      "base_price": 180
+    },
+    {
+      "name": "Heavyweight Cardstock Paper 25-Pack",
+      "slug": "heavyweight-cardstock-paper-25-pack",
+      "category_slug": "paper-and-printing",
+      "item_type": "colored paper pack",
+      "description": "Pack of twenty-five 220 GSM thick white cardstock sheets engineered for brochures and report covers. Compatible with heavy-duty paper feeds and scoring tools for custom greetings. Smooth satin surface holds pigment inks and ballpoint pens without feathering.",
+      "active": true,
+      "featured": false,
+      "image_label": "Heavyweight Cardstock Paper 25-Pack",
+      "image_color": "cream",
+      "image_slots": 1,
+      "image_labels": [
+        "Thick Cardstock Sheet Stack"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PPR-CRD-25PK",
+          "price": 160,
+          "stock_qty": 85,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 160
+    },
+    {
+      "name": "Peel-and-Seal Mailing Envelope Pack",
+      "slug": "peel-and-seal-mailing-envelope-pack",
+      "category_slug": "paper-and-printing",
+      "item_type": "envelope pack",
+      "description": "Pack of twenty-five eighty GSM white paper mailing envelopes with self-adhesive peel-and-seal flap closures. Features an internal security pattern print to keep letters, invoices, and certificates confidential during transit. Suitable for business correspondence, official documentation, and invitation deliveries.",
+      "active": true,
+      "featured": false,
+      "image_label": "Peel-and-Seal Mailing Envelope Pack",
+      "image_color": "cream",
+      "image_slots": 1,
+      "image_labels": [
+        "Security Tinted Peel and Seal Envelopes"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PPR-ENV-DL",
+          "price": 60,
+          "stock_qty": 150,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 60
+    },
+    {
+      "name": "Super-Bright Recycled Office Paper Ream",
+      "slug": "super-bright-recycled-office-paper-ream",
+      "category_slug": "paper-and-printing",
+      "item_type": "A4 ream",
+      "description": "High-opacity 75 GSM paper engineered for everyday office copying and draft double-sided documentation. Features smooth surface texture calibrated for high-speed laser and inkjet printing without paper jams. Packaged in a protective moisture-barrier wrapper containing five hundred precision-cut sheets.",
+      "active": false,
+      "featured": false,
+      "image_label": "Super-Bright Recycled Office Paper Ream",
+      "image_color": "cream",
+      "image_slots": 1,
+      "image_labels": [
+        "Eco Ream Packaging"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-PPR-REC-500",
+          "price": 480,
+          "stock_qty": 40,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 480
+    },
+    {
+      "name": "Compact All-Metal Desktop Stapler",
+      "slug": "compact-all-metal-desktop-stapler",
+      "category_slug": "desk-and-office",
+      "item_type": "stapler",
+      "description": "Heavy-duty steel chassis stapler capable of fastening up to 25 sheets of 80 GSM paper with ease. Features a reversible anvil for permanent fastening or temporary paper tacking. Fitted with a non-skid rubberized base pad that prevents desktop scratching.",
+      "active": true,
+      "featured": true,
+      "image_label": "Compact All-Metal Desktop Stapler",
+      "image_color": "slate",
+      "image_slots": 3,
+      "image_labels": [
+        "Stapler Side Profile",
+        "Top View Open Loading",
+        "Base Anvil Detail"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-OFC-STP-MET",
+          "price": 190,
+          "stock_qty": 75,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 190
+    },
+    {
+      "name": "Heavy-Duty Metal Two-Hole Punch with Integrated Paper Guide and Waste Confetti Compartment",
+      "slug": "heavy-duty-metal-two-hole-paper-punch",
+      "category_slug": "desk-and-office",
+      "item_type": "two-hole paper punch",
+      "description": "All-metal manual desktop paper hole punch engineered with dual hardened steel punch heads capable of perforating up to thirty sheets of standard eighty GSM copy paper in a single downward pressing stroke. Fitted with an extendable graduated centering paper guide ruler that locks into standard page sizes to guarantee consistent symmetrical double-punched binder holes across filing cabinets and ring folders. The textured non-skid rubber base protects polished office desk surfaces during heavy document preparation while doubling as a flip-open waste tray that catches paper confetti circles for fast cleanup.",
+      "active": true,
+      "featured": false,
+      "image_label": "Heavy-Duty Metal Two-Hole Paper Punch",
+      "image_color": "slate",
+      "image_slots": 1,
+      "image_labels": [
+        "Steel Two-Hole Punch with Margin Guide"
+      ],
+      "stress": "long-text",
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-DSK-PCH-HVY",
+          "price": 260,
+          "stock_qty": 70,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 260
+    },
+    {
+      "name": "Clear Cellulose Stationery Tape",
+      "slug": "clear-cellulose-stationery-tape",
+      "category_slug": "desk-and-office",
+      "item_type": "tape",
+      "description": "Transparent plant-derived cellulose adhesive tape designed for clean document mending and gift wrapping. Unwinds smoothly from standard 1-inch core desktop dispensers without splitting or curling. Pressure-sensitive adhesive bonds instantly to paper, cardboard, and light plastic.",
+      "active": true,
+      "featured": false,
+      "image_label": "Clear Cellulose Stationery Tape",
+      "image_color": "slate",
+      "image_slots": 1,
+      "image_labels": [
+        "Cellulose Tape Rolls"
+      ],
+      "options": [
+        {
+          "name": "Width",
+          "values": [
+            "0.5-inch",
+            "1-inch"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-OFC-TAP-05IN",
+          "price": 40,
+          "stock_qty": 130,
+          "active": true,
+          "option_values": {
+            "Width": "0.5-inch"
+          }
+        },
+        {
+          "sku": "DEMO-OFC-TAP-10IN",
+          "price": 65,
+          "stock_qty": 85,
+          "active": true,
+          "option_values": {
+            "Width": "1-inch"
+          }
+        }
+      ],
+      "base_price": 40
+    },
+    {
+      "name": "Stainless Steel Ergonomic Office Scissors",
+      "slug": "stainless-steel-ergonomic-office-scissors",
+      "category_slug": "desk-and-office",
+      "item_type": "scissors",
+      "description": "Seven-inch precision-ground stainless steel scissors suitable for paper, cardstock, and fabric craft. Ergonomic soft-grip handles allow ambidextrous cutting comfort for left and right-handed users. Heavy-duty pivot screw ensures blade alignment and crisp cuts along the entire blade edge.",
+      "active": true,
+      "featured": false,
+      "image_label": "Stainless Steel Ergonomic Office Scissors",
+      "image_color": "slate",
+      "image_slots": 1,
+      "image_labels": [
+        "Office Scissors Open View"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-OFC-SCI-7IN",
+          "price": 130,
+          "stock_qty": 80,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 130
+    },
+    {
+      "name": "Felt Surface Document Ink Stamp Pad",
+      "slug": "felt-surface-document-ink-stamp-pad",
+      "category_slug": "desk-and-office",
+      "item_type": "ink stamp pad",
+      "description": "Classic metal-cased office ink pad filled with dense water-based stamping ink. The high-density woven felt pad delivers crisp impressions without flooding rubber stamp lettering or seal borders. Fitted with an airtight snap-closure lid that prevents ink evaporation during storage on office desks.",
+      "active": true,
+      "featured": false,
+      "image_label": "Felt Surface Document Ink Stamp Pad",
+      "image_color": "slate",
+      "image_slots": 0,
+      "image_labels": [],
+      "stress": "zero-images",
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-DSK-STP-BLK",
+          "price": 90,
+          "stock_qty": 160,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 90
+    },
+    {
+      "name": "Expanding Poly Document File Folder",
+      "slug": "expanding-poly-document-file-folder",
+      "category_slug": "desk-and-office",
+      "item_type": "file folder",
+      "description": "Multi-pocket durable polypropylene folder equipped with tabbed divider sleeves and color insert labels. Elastic cord with button latch secures up to 200 A4 document pages for transport. Water-resistant wipe-clean material protects vital receipts, bills, and certificates.",
+      "active": true,
+      "featured": false,
+      "image_label": "Expanding Poly Document File Folder",
+      "image_color": "slate",
+      "image_slots": 1,
+      "image_labels": [
+        "Expanding File Accordion"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-OFC-FLD-EXP",
+          "price": 95,
+          "stock_qty": 70,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 95
+    },
+    {
+      "name": "Steel Wire Mesh Desktop Organizer",
+      "slug": "steel-wire-mesh-desktop-organizer",
+      "category_slug": "desk-and-office",
+      "item_type": "desk organizer",
+      "description": "Powder-coated steel mesh caddy designed to tidy pens, sticky pads, clips, and office scissors. Sturdy perforated metal construction provides visibility while resisting dust accumulation. Fitted with protective rubber feet to safeguard wooden desks from scuffs.",
+      "active": true,
+      "featured": false,
+      "image_label": "Steel Wire Mesh Desktop Organizer",
+      "image_color": "slate",
+      "image_slots": 3,
+      "image_labels": [
+        "Organizer Front View",
+        "Top Down Compartment Layout",
+        "Loaded Stationary Showcase"
+      ],
+      "options": [
+        {
+          "name": "Compartments",
+          "values": [
+            "3-Slot",
+            "5-Slot"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-OFC-ORG-3SLT",
+          "price": 340,
+          "stock_qty": 55,
+          "active": true,
+          "option_values": {
+            "Compartments": "3-Slot"
+          }
+        },
+        {
+          "sku": "DEMO-OFC-ORG-5SLT",
+          "price": 480,
+          "stock_qty": 35,
+          "active": true,
+          "option_values": {
+            "Compartments": "5-Slot"
+          }
+        }
+      ],
+      "base_price": 340
+    },
+    {
+      "name": "Complete Student Metal Geometry Box",
+      "slug": "complete-student-metal-geometry-box",
+      "category_slug": "math-and-geometry",
+      "item_type": "geometry box",
+      "description": "Nine-piece mathematical instrument set packed in a classic illustrated metal tin box. Contains metal die-cast compass, divider, 15cm ruler, 180-degree protractor, set squares, mini pencil, and eraser. Calibrated metric markings provide clear legibility for technical school examinations.",
+      "active": true,
+      "featured": true,
+      "image_label": "Complete Student Metal Geometry Box",
+      "image_color": "ocean",
+      "image_slots": 3,
+      "image_labels": [
+        "Tin Geometry Box Case",
+        "Instruments Arranged Inside",
+        "Compass and Protractor Detail"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-MTH-GEO-BOX",
+          "price": 220,
+          "stock_qty": 90,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 220
+    },
+    {
+      "name": "Shatter-Resistant Clear Acrylic Ruler",
+      "slug": "shatter-resistant-clear-acrylic-ruler",
+      "category_slug": "math-and-geometry",
+      "item_type": "ruler",
+      "description": "Transparent acrylic measuring ruler with dual-edge millimeter and centimeter graduation marks. Beveled drawing edge prevents ink dragging and smudging when ruling technical lines. Built from flexible shatter-resistant plastic that survives accidental drops in classrooms.",
+      "active": true,
+      "featured": false,
+      "image_label": "Shatter-Resistant Clear Acrylic Ruler",
+      "image_color": "ocean",
+      "image_slots": 1,
+      "image_labels": [
+        "Clear Acrylic Ruler Pair"
+      ],
+      "options": [
+        {
+          "name": "Length",
+          "values": [
+            "15cm",
+            "30cm"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-MTH-RUL-15CM",
+          "price": 25,
+          "stock_qty": 140,
+          "active": true,
+          "option_values": {
+            "Length": "15cm"
+          }
+        },
+        {
+          "sku": "DEMO-MTH-RUL-30CM",
+          "price": 45,
+          "stock_qty": 110,
+          "active": true,
+          "option_values": {
+            "Length": "30cm"
+          }
+        }
+      ],
+      "base_price": 25
+    },
+    {
+      "name": "Quick-Drying Correction Fluid Bottle with Foam Applicator",
+      "slug": "quick-drying-correction-fluid-bottle",
+      "category_slug": "math-and-geometry",
+      "item_type": "correction fluid bottle",
+      "description": "Fast-drying white opaque fluid formulated for covering ink mistakes on written and printed documents. Features a wedge-shaped foam applicator tip for precise spot corrections and full-line coverage. Dispenses smoothly from a spill-resistant twenty milliliter plastic bottle.",
+      "active": true,
+      "featured": false,
+      "image_label": "Quick-Drying Correction Fluid Bottle",
+      "image_color": "ocean",
+      "image_slots": 1,
+      "image_labels": [
+        "White Correction Fluid Bottle with Foam Tip"
+      ],
+      "stress": "sold-out",
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-CRX-FLD-STD",
+          "price": 50,
+          "stock_qty": 0,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 50
+    },
+    {
+      "name": "Multi-Function Advanced Scientific Calculator",
+      "slug": "multi-function-advanced-scientific-calculator",
+      "category_slug": "math-and-geometry",
+      "item_type": "scientific calculator",
+      "description": "Two-line textbook display scientific calculator equipped with 240 integrated math and engineering functions. Performs fraction calculations, coordinate conversions, permutations, combinations, and statistics. Hard slide-on protective case prevents screen scratches during backpack transport.",
+      "active": true,
+      "featured": false,
+      "image_label": "Multi-Function Advanced Scientific Calculator",
+      "image_color": "ocean",
+      "image_slots": 1,
+      "image_labels": [
+        "Scientific Calculator with Slide Case"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-MTH-CALC-SCI",
+          "price": 950,
+          "stock_qty": 5,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 950
+    },
+    {
+      "name": "Dust-Free Eraser and Metal Sharpener Combo Pack",
+      "slug": "dust-free-eraser-and-metal-sharpener-combo-pack",
+      "category_slug": "math-and-geometry",
+      "item_type": "eraser and sharpener combo pack",
+      "description": "Compact desk set containing two soft vinyl erasers and one twin-hole metal pencil sharpener. The erasers roll up graphite pencil markings cleanly into single strands without tearing paper fibers. High-carbon steel sharpener blades produce smooth pencil points for standard and jumbo pencils.",
+      "active": true,
+      "featured": false,
+      "image_label": "Dust-Free Eraser and Metal Sharpener Combo Pack",
+      "image_color": "ocean",
+      "image_slots": 1,
+      "image_labels": [
+        "Vinyl Erasers and Dual Metal Sharpener"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-MTH-ERS-SET",
+          "price": 40,
+          "stock_qty": 140,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 40
+    },
+    {
+      "name": "Hand-Block Printed Floral Gift Wrap",
+      "slug": "hand-block-printed-floral-gift-wrap",
+      "category_slug": "gift-and-craft",
+      "item_type": "gift wrap",
+      "description": "Heavyweight 90 GSM kraft wrapping paper hand-stamped with traditional carved wooden blocks. Delivers a rustic artisanal charm to festival presents, wedding favors, and holiday packages. Each large sheet measures 70x50 cm and folds cleanly along crisp package corners.",
+      "active": true,
+      "featured": true,
+      "image_label": "Hand-Block Printed Floral Gift Wrap",
+      "image_color": "gold",
+      "image_slots": 3,
+      "image_labels": [
+        "Folded Wrapping Sheet Stack",
+        "Hand-Block Motif Close-up",
+        "Wrapped Present Styling"
+      ],
+      "options": [
+        {
+          "name": "Pattern",
+          "values": [
+            "Marigold",
+            "Geometric Tile",
+            "Paisley"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-GFT-WRP-MAR",
+          "price": 65,
+          "stock_qty": 90,
+          "active": true,
+          "option_values": {
+            "Pattern": "Marigold"
+          }
+        },
+        {
+          "sku": "DEMO-GFT-WRP-GEO",
+          "price": 65,
+          "stock_qty": 70,
+          "active": true,
+          "option_values": {
+            "Pattern": "Geometric Tile"
+          }
+        },
+        {
+          "sku": "DEMO-GFT-WRP-PAI",
+          "price": 65,
+          "stock_qty": 80,
+          "active": true,
+          "option_values": {
+            "Pattern": "Paisley"
+          }
+        }
+      ],
+      "base_price": 65
+    },
+    {
+      "name": "Letterpress Botanical Congratulations Card",
+      "slug": "letterpress-botanical-congratulations-card",
+      "category_slug": "gift-and-craft",
+      "item_type": "greeting cards",
+      "description": "Heavy 300 GSM cotton rag card deeply debossed on a traditional mechanical platen press. Paired with a matching gummed peel-and-seal kraft envelope. Blank inside to welcome handwritten congratulatory messages and warm seasonal wishes.",
+      "active": true,
+      "featured": false,
+      "image_label": "Letterpress Botanical Congratulations Card",
+      "image_color": "gold",
+      "image_slots": 1,
+      "image_labels": [
+        "Debossed Greeting Card with Envelope"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-GFT-CRD-BOT",
+          "price": 85,
+          "stock_qty": 60,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 85
+    },
+    {
+      "name": "Decorative Botanical Washi Tape Set",
+      "slug": "decorative-botanical-washi-tape-set",
+      "category_slug": "gift-and-craft",
+      "item_type": "washi tape",
+      "description": "Rice-paper-style decorative masking tapes featuring watercolor leaf and floral foliage patterns. Peels and repositions effortlessly without tearing paper surfaces or leaving sticky residue. Suitable for bullet journal borders, greeting card borders, and craft gift accents.",
+      "active": true,
+      "featured": false,
+      "image_label": "Decorative Botanical Washi Tape Set",
+      "image_color": "gold",
+      "image_slots": 1,
+      "image_labels": [
+        "Washi Tape Stack Sets"
+      ],
+      "options": [
+        {
+          "name": "Set Count",
+          "values": [
+            "3-Roll Set",
+            "5-Roll Set"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-GFT-WSH-3RL",
+          "price": 150,
+          "stock_qty": 65,
+          "active": true,
+          "option_values": {
+            "Set Count": "3-Roll Set"
+          }
+        },
+        {
+          "sku": "DEMO-GFT-WSH-5RL",
+          "price": 220,
+          "stock_qty": 25,
+          "active": true,
+          "option_values": {
+            "Set Count": "5-Roll Set"
+          }
+        }
+      ],
+      "base_price": 150
+    },
+    {
+      "name": "Reinforced Kraft Paper Gift Bag Bundle",
+      "slug": "reinforced-kraft-paper-gift-bag-bundle",
+      "category_slug": "gift-and-craft",
+      "item_type": "gift wrap",
+      "description": "Bundle of three durable brown kraft paper gift bags with twisted paper handles. Reinforced cardboard bottom insert maintains bag shape when carrying books and stationery sets. Can be personalized using stamps, calligraphy pens, or decorative washi tapes.",
+      "active": true,
+      "featured": false,
+      "image_label": "Reinforced Kraft Paper Gift Bag Bundle",
+      "image_color": "gold",
+      "image_slots": 1,
+      "image_labels": [
+        "Three Kraft Gift Bags"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-GFT-BAG-3PK",
+          "price": 110,
+          "stock_qty": 75,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 110
+    },
+    {
+      "name": "Embossed Calligraphy Greeting Card Pack",
+      "slug": "embossed-calligraphy-greeting-card-pack",
+      "category_slug": "gift-and-craft",
+      "item_type": "greeting cards",
+      "description": "Four-pack of celebration greeting cards finished with tactile raised gold foil embossing. Printed on three hundred GSM ivory cardstock with matching pastel envelopes. Designed with blank interiors for personal congratulations, milestones, and festival greetings.",
+      "active": true,
+      "featured": false,
+      "image_label": "Embossed Calligraphy Greeting Card Pack",
+      "image_color": "gold",
+      "image_slots": 1,
+      "image_labels": [
+        "Pack of 4 Embossed Cards"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-GFT-CRD-4PK",
+          "price": 140,
+          "stock_qty": 50,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 140
+    },
+    {
+      "name": "Foil-Accented Metallic Craft Washi Tape",
+      "slug": "foil-accented-metallic-craft-washi-tape",
+      "category_slug": "gift-and-craft",
+      "item_type": "washi tape",
+      "description": "Shimmering copper and silver hot-stamped masking tape designed for decorative journaling and gift borders. Repositionable rice-paper-style base tears cleanly by hand without scissors. Leaves clean paper surfaces upon removal without sticky adhesive residue.",
+      "active": false,
+      "featured": false,
+      "image_label": "Foil-Accented Metallic Craft Washi Tape",
+      "image_color": "gold",
+      "image_slots": 1,
+      "image_labels": [
+        "Metallic Washi Rolls"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-GFT-WSH-MET",
+          "price": 95,
+          "stock_qty": 30,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 95
+    },
+    {
+      "name": "Pastel Chisel-Tip Highlighter Set",
+      "slug": "pastel-chisel-tip-highlighter-set",
+      "category_slug": "study-and-exam-essentials",
+      "item_type": "highlighter set",
+      "description": "Soft muted pastel highlighters that mark important study notes without obscuring text. Water-based ink formula resists bleeding through standard textbook pages and thin notebook paper. Versatile chisel nib delivers both 1mm fine underlining and 4mm broad highlighting.",
+      "active": true,
+      "featured": false,
+      "image_label": "Pastel Chisel-Tip Highlighter Set",
+      "image_color": "moss",
+      "image_slots": 1,
+      "image_labels": [
+        "Highlighter Set in Clear Pouch"
+      ],
+      "options": [
+        {
+          "name": "Pack Size",
+          "values": [
+            "4-Color",
+            "6-Color"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-EXM-HLT-4PK",
+          "price": 180,
+          "stock_qty": 105,
+          "active": true,
+          "option_values": {
+            "Pack Size": "4-Color"
+          }
+        },
+        {
+          "sku": "DEMO-EXM-HLT-6PK",
+          "price": 240,
+          "stock_qty": 70,
+          "active": true,
+          "option_values": {
+            "Pack Size": "6-Color"
+          }
+        }
+      ],
+      "base_price": 180
+    },
+    {
+      "name": "Self-Adhesive Repositionable Sticky Notes",
+      "slug": "self-adhesive-repositionable-sticky-notes",
+      "category_slug": "study-and-exam-essentials",
+      "item_type": "sticky notes",
+      "description": "Square 3x3 inch memo pads coated with dependable repositionable adhesive along the top edge. Adheres reliably to laptop monitors, textbook margins, whiteboards, and desk surfaces. Removes cleanly without tearing paper or leaving gummy adhesive marks.",
+      "active": true,
+      "featured": false,
+      "image_label": "Self-Adhesive Repositionable Sticky Notes",
+      "image_color": "moss",
+      "image_slots": 1,
+      "image_labels": [
+        "Stacked Sticky Note Pads"
+      ],
+      "options": [
+        {
+          "name": "Color Scheme",
+          "values": [
+            "Neon Bright",
+            "Pastel Soft"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "sku": "DEMO-EXM-STK-NEON",
+          "price": 65,
+          "stock_qty": 130,
+          "active": true,
+          "option_values": {
+            "Color Scheme": "Neon Bright"
+          }
+        },
+        {
+          "sku": "DEMO-EXM-STK-PST",
+          "price": 65,
+          "stock_qty": 115,
+          "active": true,
+          "option_values": {
+            "Color Scheme": "Pastel Soft"
+          }
+        }
+      ],
+      "base_price": 65
+    },
+    {
+      "name": "Vinyl-Coated Rustproof Paper Clips 100-Pack",
+      "slug": "vinyl-coated-rustproof-paper-clips-100-pack",
+      "category_slug": "study-and-exam-essentials",
+      "item_type": "paper clips",
+      "description": "One hundred 28mm spring-steel wire paper clips coated in smooth assorted vinyl colors. Rounded edges glide easily over paper sheets without scratching or tearing confidential exams. Protective coating shields the internal steel from humidity and prevents corrosion.",
+      "active": true,
+      "featured": false,
+      "image_label": "Vinyl-Coated Rustproof Paper Clips 100-Pack",
+      "image_color": "moss",
+      "image_slots": 1,
+      "image_labels": [
+        "Clip Tub with 100 Clips"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-EXM-CLP-100",
+          "price": 40,
+          "stock_qty": 150,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 40
+    },
+    {
+      "name": "Transparent Exam Clipboard with Storage Pocket",
+      "slug": "transparent-exam-clipboard-with-storage-pocket",
+      "category_slug": "study-and-exam-essentials",
+      "item_type": "file folder",
+      "description": "Rigid shatter-resistant clear acrylic clipboard designed for holding examination sheets and writing pads. Features a low-profile metal wire spring clip with rubberized corner grips to firmly clamp papers. Includes a transparent rear sleeve to slide admission forms, timetables, and student ID cards.",
+      "active": true,
+      "featured": false,
+      "image_label": "Transparent Exam Clipboard with Storage Pocket",
+      "image_color": "moss",
+      "image_slots": 1,
+      "image_labels": [
+        "Clear Exam Clipboard Front"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-EXM-BRD-CLR",
+          "price": 80,
+          "stock_qty": 90,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 80
+    },
+    {
+      "name": "Clear Zippered Exam Pencil Case",
+      "slug": "clear-zippered-exam-pencil-case",
+      "category_slug": "study-and-exam-essentials",
+      "item_type": "desk organizer",
+      "description": "Transparent heavy-gauge clear vinyl pencil case providing direct visibility of enclosed stationery. Fitted with a nylon zipper and smooth-glide metal pull to hold pens, rulers, and geometry tools. Flexible plastic construction easily wipes clean and withstands repeated school use.",
+      "active": true,
+      "featured": false,
+      "image_label": "Clear Zippered Exam Pencil Case",
+      "image_color": "moss",
+      "image_slots": 1,
+      "image_labels": [
+        "Transparent Pencil Case"
+      ],
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-EXM-CSE-CLR",
+          "price": 280,
+          "stock_qty": 75,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 280
+    },
+    {
+      "name": "এফোর সাইজ মার্জিনযুক্ত পরীক্ষার রাইটিং প্যাড",
+      "slug": "exam-writing-pad-a4-with-margin",
+      "category_slug": "study-and-exam-essentials",
+      "item_type": "exam writing pad",
+      "description": "স্কুল, কলেজ ও বিশ্ববিদ্যালয়ের পরীক্ষার অনুশীলনের জন্য বিশেষ মার্জিনযুক্ত এফোর সাইজের রাইটিং প্যাড। প্রতি পৃষ্ঠার বাম পাশে ও ওপরে দেড় ইঞ্চি স্ট্যান্ডার্ড মার্জিন প্রিন্ট করা রয়েছে। ৭০ জিএসএম মসৃণ অফ-হোয়াইট কাগজে বলপেন এবং জেলপেন দিয়ে স্বাচ্ছন্দ্যে দ্রুত লেখা যায়।",
+      "active": true,
+      "featured": false,
+      "image_label": "এফোর সাইজ মার্জিনযুক্ত পরীক্ষার রাইটিং প্যাড",
+      "image_color": "moss",
+      "image_slots": 1,
+      "image_labels": [
+        "মার্জিন টানা পরীক্ষার ফুলস্কেপ রাইটিং প্যাড"
+      ],
+      "stress": "bengali-locale",
+      "options": [],
+      "variants": [
+        {
+          "sku": "DEMO-EXM-PAD-50S",
+          "price": 70,
+          "stock_qty": 180,
+          "active": true,
+          "option_values": {}
+        }
+      ],
+      "base_price": 70
+    }
+  ]
+}
