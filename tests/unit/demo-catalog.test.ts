@@ -391,23 +391,13 @@ describe('Demo Catalog (demo-catalog.json)', () => {
       }
     })
 
-    it('asserts Bengali only for the two flagged products with ASCII slugs', () => {
-      const bengaliProds = demoCatalog.products.filter((p) => p.stress === 'bengali-locale')
-      expect(bengaliProds).toHaveLength(2)
+    it('asserts all products have English names and descriptions with no Bengali characters', () => {
       const bengaliCharRegex = /[\u0980-\u09FF]/
-      for (const p of bengaliProds) {
-        expect(p.name).toMatch(bengaliCharRegex)
-        expect(p.description).toMatch(bengaliCharRegex)
+      for (const p of demoCatalog.products) {
+        expect(p.name).not.toMatch(bengaliCharRegex)
+        expect(p.description).not.toMatch(bengaliCharRegex)
         expect(p.slug).toMatch(KEBAB_CASE_REGEX)
       }
-
-      // Bengali only for the two flagged products
-      const otherBengali = demoCatalog.products.filter(
-        (p) =>
-          p.stress !== 'bengali-locale' &&
-          (bengaliCharRegex.test(p.name) || bengaliCharRegex.test(p.description))
-      )
-      expect(otherBengali).toHaveLength(0)
     })
   })
 
@@ -433,10 +423,10 @@ describe('Demo Catalog (demo-catalog.json)', () => {
         /\bfda approved\b/i,
       ]
       for (const p of demoCatalog.products) {
-        const sentences =
-          p.stress === 'bengali-locale'
-            ? p.description.split('।').map((s) => s.trim()).filter(Boolean)
-            : p.description.split(/(?<=[.?!])\s+/).map((s) => s.trim()).filter(Boolean)
+        const sentences = p.description
+          .split(/(?<=[.?!])\s+/)
+          .map((s) => s.trim())
+          .filter(Boolean)
 
         expect(sentences.length).toBeGreaterThanOrEqual(2)
         expect(sentences.length).toBeLessThanOrEqual(3)

@@ -67,21 +67,21 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const activeCategory = categories.find((cat) => cat.slug === activeCategorySlug)
 
   return (
-    <div className="relative min-h-screen bg-cream-100 bg-laid-paper flex flex-col">
-      {/* 1. Gallery Header (Deep Forest Canvas) */}
-      <div className="w-full bg-forest-950 bg-laid-paper-dark border-b border-forest-800/80">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-4 pb-3.5 sm:pt-8 sm:pb-7 lg:pt-9 lg:pb-8">
+    <div className="relative min-h-screen bg-cream-50 bg-laid-paper flex flex-col">
+      {/* 1. Gallery Header (Unified Cream Laid Paper Canvas) */}
+      <div className="w-full bg-cream-50/80 border-b border-forest-900/10">
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-5 pb-4 sm:pt-8 sm:pb-7 lg:pt-10 lg:pb-8">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2.5">
-            <span className="h-px w-3 sm:w-3.5 bg-gold-400/60" />
-            <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.24em] text-gold-400/90 font-sans font-medium">
-              Catalogue
+            <span className="h-px w-3 sm:w-3.5 bg-gold-600/70" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-forest-700 font-sans font-semibold">
+              Catalogue · Curated Goods
             </span>
           </div>
 
           {/* Main Title Row: Title on Left, Sort on Right — balanced on mobile */}
           <div className="flex items-center justify-between gap-3">
-            <h1 className="font-display font-medium text-cream-50 leading-tight text-xl sm:text-[1.85rem] lg:text-[2.25rem] tracking-[-0.015em] truncate">
+            <h1 className="font-display font-medium text-forest-950 leading-tight text-2xl sm:text-[2rem] lg:text-[2.5rem] tracking-tight truncate">
               {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
             </h1>
 
@@ -93,7 +93,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
 
           {/* Subtitle: hidden on mobile to maximize product visibility */}
-          <p className="hidden sm:block text-forest-200/75 text-xs sm:text-[13px] mt-2 font-sans font-normal leading-relaxed max-w-2xl lg:max-w-3xl text-pretty">
+          <p className="hidden sm:block text-forest-700/80 text-xs sm:text-[13px] mt-2 font-sans font-normal leading-relaxed max-w-2xl lg:max-w-3xl text-pretty">
             {activeCategory
               ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and\u00A0reflection.`
               : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily\u00A0use.`}
@@ -101,9 +101,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </div>
 
-      {/* 2. Collection Filter Ribbon (Deep Forest Ribbon — flush below sticky navbar) */}
-      <div className="w-full bg-forest-950 bg-laid-paper-dark border-b border-forest-800/80 sticky top-11 sm:top-16 z-30">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2 sm:py-3">
+      {/* 2. Collection Filter Ribbon (Sticky Alabaster Paper Ribbon) */}
+      <div className="w-full bg-cream-50/95 border-b border-forest-900/10 sticky top-11 sm:top-16 z-30">
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2 sm:py-2.5">
           <Suspense>
             <CategoryFilter categories={categories} activeCategorySlug={activeCategorySlug} />
           </Suspense>
@@ -135,10 +135,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           )}
         </div>
 
-        {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col laptop, 5-col desktop) */}
+        {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col laptop) */}
         {products.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
               {products.map((product, idx) => (
                 <ProductCard
                   key={product.id}

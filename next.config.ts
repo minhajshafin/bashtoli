@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   experimental: {
-    inlineCss: true,
     agentUpgrade: 'security',
   },
   async redirects() {

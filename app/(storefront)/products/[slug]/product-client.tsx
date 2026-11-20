@@ -9,6 +9,8 @@ import { WishlistButton } from '@/components/storefront/wishlist-button'
 import type { ProductDetailData } from '@/lib/queries/product-detail'
 import { useCart } from '@/lib/cart/cart-context'
 import { useToast } from '@/components/ui/toast'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 interface ProductDetailClientProps {
   detailData: ProductDetailData
@@ -157,9 +159,9 @@ export function ProductDetailClient({
               </span>
             )}
             {product.featured && (
-              <span className="rounded-full px-2 py-0.5 text-[9px] font-sans font-semibold uppercase tracking-[0.1em] bg-gold-400/20 text-gold-700 border border-gold-400/35">
+              <Badge variant="accent" size="sm">
                 Featured
-              </span>
+              </Badge>
             )}
           </div>
 
@@ -181,20 +183,20 @@ export function ProductDetailClient({
             {isSelectionComplete && (
               <div className="shrink-0">
                 {selectedVariant?.stock_qty === 0 ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-btn-danger-bg/10 text-btn-danger-bg border border-btn-danger-border/30">
+                  <Badge variant="danger" size="md" className="gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-btn-danger-bg" />
                     Sold Out
-                  </span>
+                  </Badge>
                 ) : selectedVariant?.stock_qty !== undefined && selectedVariant.stock_qty <= 3 ? (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-btn-warning-bg/10 text-btn-warning-border border border-btn-warning-border/30">
+                  <Badge variant="warning" size="md" className="gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-btn-warning-border animate-pulse" />
                     Only {selectedVariant.stock_qty} left
-                  </span>
+                  </Badge>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-forest-600/10 text-forest-800 border border-forest-600/25">
+                  <Badge variant="success" size="md" className="gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-forest-600" />
                     In Stock
-                  </span>
+                  </Badge>
                 )}
               </div>
             )}
@@ -353,7 +355,7 @@ export function ProductDetailClient({
 
       {/* Pinned Mobile Thumb-Zone Purchase Bar */}
       <div
-        className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-forest-950/95 backdrop-blur-xl border-t border-forest-800/80 px-4 pt-2.5 pb-[calc(env(safe-area-inset-bottom,0px)+12px)] shadow-[0_-8px_30px_rgba(10,22,15,0.4)] transition-all duration-300 ${
+        className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-forest-950/98 border-t border-forest-800/80 px-4 pt-2.5 pb-[calc(env(safe-area-inset-bottom,0px)+12px)] shadow-elevation-3 transition-[transform,opacity] duration-normal ease-smooth ${
           showStickyBar ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'
         }`}
       >
@@ -364,12 +366,12 @@ export function ProductDetailClient({
               {renderPrice()}
             </p>
             {!isSelectionComplete && options.length > 0 ? (
-              <p className="text-[10px] text-gold-400/90 font-sans font-medium truncate flex items-center gap-1">
+              <p className="text-[10px] text-gold-400 font-sans font-medium truncate flex items-center gap-1">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
                 Select options above
               </p>
             ) : (
-              <p className="text-[10px] text-cream-200/75 uppercase tracking-wider font-sans truncate font-medium">
+              <p className="text-[10px] text-cream-200/80 uppercase tracking-wider font-sans truncate font-medium">
                 {variantName}
               </p>
             )}
@@ -378,51 +380,55 @@ export function ProductDetailClient({
           {/* Action Buttons */}
           <div className="shrink-0 flex items-center gap-2">
             {!isSelectionComplete && options.length > 0 ? (
-              <button
-                type="button"
+              <Button
+                variant="accent"
+                size="md"
                 onClick={() => {
                   document.getElementById('variant-selector')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                 }}
-                className="btn-accent h-10 px-4 rounded-xl text-xs font-sans font-bold tracking-wider uppercase flex items-center gap-1.5 cursor-pointer active:scale-95"
+                className="gap-1.5"
               >
                 <span>Choose Options</span>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
                 </svg>
-              </button>
+              </Button>
             ) : selectedVariant?.stock_qty === 0 ? (
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="md"
                 disabled
-                className="h-10 px-4 rounded-xl text-xs font-sans font-semibold tracking-wider uppercase bg-forest-900/60 text-cream-200/40 border border-white/5 cursor-not-allowed"
+                className="bg-forest-900/60 text-cream-200/40 border border-white/5"
               >
                 Sold Out
-              </button>
+              </Button>
             ) : (
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
+                  size="md"
                   onClick={() => handleAddToCart(1)}
-                  className="btn-dark h-10 px-3.5 rounded-xl text-[11px] font-sans font-semibold tracking-wider uppercase flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                  className="gap-1.5 px-3"
                   aria-label="Add to Bag"
                 >
-                  <svg className="w-3.5 h-3.5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-3.5 h-3.5 text-forest-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" />
                   </svg>
                   <span>Add</span>
-                </button>
+                </Button>
 
-                <button
-                  type="button"
+                <Button
+                  variant="accent"
+                  size="md"
                   onClick={() => handleBuyNow(1)}
-                  className="btn-accent h-10 px-4 rounded-xl text-[11px] font-sans font-bold tracking-wider uppercase flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                  className="gap-1.5 px-4"
                   aria-label="Buy Now"
                 >
-                  <svg className="w-3.5 h-3.5 text-btn-accent-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-3.5 h-3.5 text-forest-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                   <span>Buy Now</span>
-                </button>
+                </Button>
               </div>
             )}
           </div>

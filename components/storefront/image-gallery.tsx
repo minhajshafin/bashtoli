@@ -166,6 +166,7 @@ export function ImageGallery({
             alt={activeImage.alt_text || fallbackName}
             fill
             priority={activeIdx === 0}
+            quality={75}
             loading={activeIdx === 0 ? undefined : 'lazy'}
             fetchPriority={activeIdx === 0 ? 'high' : undefined}
             sizes="(max-width: 640px) 96vw, (max-width: 1024px) 460px, 480px"

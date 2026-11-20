@@ -98,12 +98,12 @@ export function VariantSelector({
                     type="button"
                     disabled={isUnavailable}
                     onClick={() => onChange(opt.name, val.value)}
-                    className={`rounded-xl h-10 px-3.5 text-xs sm:text-[13px] font-sans transition-all duration-200 border cursor-pointer active:scale-95 flex items-center justify-center gap-2 ${
+                    className={`rounded-pill min-h-[40px] px-3.5 text-xs sm:text-[13px] font-sans transition-transform active:scale-95 duration-fast border cursor-pointer flex items-center justify-center gap-2 select-none ${
                       isSelected
-                        ? 'bg-forest-950 border-gold-400 text-gold-300 shadow-xs ring-1 ring-gold-400/50 font-semibold pointer-events-none'
+                        ? 'bg-forest-950 border-forest-950 text-cream-50 shadow-elevation-1 font-semibold pointer-events-none'
                         : isUnavailable
-                        ? 'bg-forest-100/30 border-dashed border-forest-200/60 text-forest-300 line-through cursor-not-allowed opacity-50'
-                        : 'bg-cream-100/60 border-forest-200/80 text-forest-850 hover:border-gold-400/50 hover:bg-cream-100 font-medium'
+                        ? 'bg-cream-100/40 border-dashed border-forest-900/15 text-forest-300 line-through cursor-not-allowed opacity-50'
+                        : 'bg-white border-forest-900/15 text-forest-800 hover:border-gold-500/60 hover:bg-cream-50 font-medium shadow-2xs'
                     }`}
                   >
                     {swatch && (

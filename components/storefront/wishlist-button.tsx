@@ -10,6 +10,7 @@ interface WishlistButtonProps {
   className?: string
   isLoggedIn?: boolean
   initialIsWishlisted?: boolean
+  theme?: 'light' | 'dark'
 }
 
 /**
@@ -22,6 +23,7 @@ export function WishlistButton({
   productName,
   variant = 'detail',
   className = '',
+  theme = 'dark',
 }: WishlistButtonProps) {
   const { toggleWishlist, isPending: isAuthPending } = useWishlistActions()
   const isWishlisted = useIsProductWishlisted(productId)
@@ -43,21 +45,28 @@ export function WishlistButton({
   }
 
   if (variant === 'card') {
+    const isLight = theme === 'light'
     return (
       <button
         type="button"
         onClick={handleToggle}
         disabled={isPending}
         aria-busy={isPending ? 'true' : undefined}
-        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-forest-950/90 hover:bg-forest-900 text-text-inverse border border-border-gold-subtle hover:border-border-gold active:scale-90 transition-all duration-200 cursor-pointer ${className}`}
+        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full transition-transform active:scale-90 duration-fast cursor-pointer ${
+          isLight
+            ? 'bg-white/95 hover:bg-white text-forest-800 border border-forest-900/10 shadow-elevation-1 hover:border-gold-500/50'
+            : 'bg-forest-950/90 hover:bg-forest-900 text-text-inverse border border-border-gold-subtle hover:border-border-gold'
+        } ${className}`}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
       >
         <svg
-          className={`h-4 w-4 transition-transform duration-200 group-hover/wishlist:scale-110 ${
+          className={`h-4 w-4 transition-transform duration-fast group-hover/wishlist:scale-110 ${
             isWishlisted
               ? 'fill-terracotta-500 text-terracotta-500 stroke-terracotta-500'
-              : 'fill-none stroke-white/90 group-hover/wishlist:stroke-white'
+              : isLight
+                ? 'fill-none stroke-forest-800/80 group-hover/wishlist:stroke-forest-950'
+                : 'fill-none stroke-white/90 group-hover/wishlist:stroke-white'
           }`}
           viewBox="0 0 24 24"
           strokeWidth="1.8"

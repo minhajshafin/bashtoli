@@ -6,6 +6,7 @@ import { createPublicClient } from '@/lib/supabase/server'
 import React from 'react'
 import { ProductJsonLd } from '@/components/storefront/json-ld'
 import { ProductBackgroundArt } from '@/components/storefront/product-background-art'
+import { Container } from '@/components/ui/container'
 
 interface ProductPageProps {
   params: Promise<{
@@ -92,7 +93,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Edge-to-edge Handcrafted Botanical Background Art */}
       <ProductBackgroundArt />
 
-      <div className="relative z-10 mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8 pt-0 sm:pt-4 pb-24 sm:pb-8 lg:min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center">
+      <Container size="lg" className="relative z-10 pt-0 sm:pt-4 pb-24 sm:pb-8 lg:min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center">
         {/* JSON-LD Schema Structured Data */}
         <ProductJsonLd
           product={data.product}
@@ -104,9 +105,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="hidden sm:block mb-2 sm:mb-3">
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 -ml-2.5 rounded-full text-xs font-sans font-medium text-forest-750 hover:text-forest-950 hover:bg-forest-900/5 transition-all group"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 -ml-3 rounded-pill text-xs font-sans font-medium text-forest-700 hover:text-forest-950 hover:bg-forest-900/5 transition-colors duration-fast group"
           >
-            <svg className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5 transition-transform duration-fast group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
             <span>Back to shop</span>
@@ -115,7 +116,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         {/* Main product view split */}
         <ProductDetailClient detailData={data} />
-      </div>
+      </Container>
     </div>
   )
 }

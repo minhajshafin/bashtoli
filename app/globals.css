@@ -1,6 +1,50 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   BASHTOLI DESIGN SYSTEM TOKENS & PERFORMANCE GUARDRAILS (Phase 2 Step 1 & 2)
+   
+   GUARDRAILS:
+   1. NO backdrop-filter on scrolling elements or product cards (prevents mobile GPU compositing stalls).
+   2. NO transition-all: always specify explicit properties (e.g. transition-transform, transition-colors, transition-opacity).
+   3. Animate ONLY transform and opacity (composite-thread safe, zero layout recalculations).
+   4. GSAP strictly isolated to Home route (hero/canvas intro); all other routes strictly CSS or Web Animations API.
+   5. UNIFIED CANVAS STRATEGY: Cream paper canvas across storefront, cart, checkout, account, and order pages.
+      Deep forest is reserved exclusively for the Masthead, Hero banner, Footer, and select accent badges.
+
+   WCAG AA CONTRAST AUDIT (Phase 1d Item 5):
+   - On White (#ffffff) / Cream Paper (#fbf8f2):
+     * Body Text (>=4.5:1): forest-950 (17.5:1), forest-900 (15.7:1), forest-800 (13.7:1),
+       forest-700 (11.3:1), forest-600 (8.6:1), forest-500 (5.8:1), terracotta-700 (9.9:1),
+       terracotta-600 (7.3:1), terracotta-500 (5.0:1), gold-700 (5.8:1), gold-800 (8.0:1).
+     * Large Text (>=3.0:1): forest-400 (3.3:1), gold-600 (3.9:1), terracotta-400 (3.2:1).
+     * DISALLOWED for text on cream/white: gold-500 (2.3:1 FAIL), gold-400 (1.6:1 FAIL),
+       gold-300 (1.2:1 FAIL), forest-300 (2.0:1 FAIL), forest-200 (1.4:1 FAIL).
+     * Price Accent on Light Canvas: ALWAYS use forest-950 (17.5:1) or gold-700 (5.8:1).
+   - On Deep Forest (#0a160f):
+     * Body Text (>=4.5:1): cream-50 (17.5:1), white (18.5:1), gold-200 (16.4:1),
+       gold-300 (14.1:1), gold-400 (10.8:1), gold-500 (7.7:1), forest-300 (9.0:1),
+       forest-200 (12.8:1), forest-400 (5.4:1), terracotta-400 (5.4:1).
+     * Large Text (>=3.0:1): terracotta-500 (3.5:1).
+   ========================================================================== */
+
 @theme {
+  /* Systematic Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Systematic Elevation (Max 3 Levels) */
+  --shadow-elevation-1: 0 1px 3px rgba(10, 22, 15, 0.04), 0 1px 2px rgba(10, 22, 15, 0.02);
+  --shadow-elevation-2: 0 4px 14px rgba(10, 22, 15, 0.07), 0 2px 4px rgba(10, 22, 15, 0.03);
+  --shadow-elevation-3: 0 12px 32px rgba(10, 22, 15, 0.12), 0 4px 8px rgba(10, 22, 15, 0.05);
+
+  /* Motion Timing Tokens */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-expressive: 400ms;
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
   /* Typography */
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
   --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -17,12 +61,14 @@
   --color-forest-200: #c3dcd0;
   --color-forest-100: #e4ede7;
 
-  /* Gold accents — Burnished Warm Brass */
-  --color-gold-600: #9a7833;
-  --color-gold-500: #c4a265;
-  --color-gold-400: #ddc391;
-  --color-gold-300: #eee0bf;
-  --color-gold-200: #f7f1e1;
+  /* Gold accents — Burnished Warm Brass & High-Contrast Antique Gold */
+  --color-gold-800: #654911; /* Contrast on cream-50: 8.01:1 (PASS AA Body) */
+  --color-gold-700: #7d5c18; /* Contrast on cream-50: 5.80:1, white: 6.15:1 (PASS AA Body) */
+  --color-gold-600: #9a7833; /* Contrast on cream-50: 3.88:1, forest-950: 4.50:1 (PASS AA Large / Forest Body) */
+  --color-gold-500: #c4a265; /* Contrast on forest-950: 7.67:1 (PASS AA Body on dark forest) */
+  --color-gold-400: #ddc391; /* Contrast on forest-950: 10.83:1 (PASS AA Body on dark forest) */
+  --color-gold-300: #eee0bf; /* Contrast on forest-950: 14.15:1 (PASS AA Body on dark forest) */
+  --color-gold-200: #f7f1e1; /* Contrast on forest-950: 16.42:1 (PASS AA Body on dark forest) */
 
   /* Cream backgrounds — Warm Alabaster Cotton Paper */
   --color-cream-50:  #fbf8f2;
@@ -125,15 +171,15 @@
   --color-link-muted-dark: #90bfa3;
   --color-link-muted-dark-hover: #eee0bf;
 
-  /* Interactive Filter Chips */
-  --color-chip-active-bg: #c4a265;
-  --color-chip-active-text: #0a160f;
-  --color-chip-active-border: #9a7833;
-  --color-chip-inactive-bg: #102218;
-  --color-chip-inactive-text: #ece3d2;
-  --color-chip-inactive-border: #1e3d2c;
-  --color-chip-inactive-hover-bg: #1e3d2c;
-  --color-chip-inactive-hover-text: #eee0bf;
+  /* Interactive Filter Chips (Unified Cream Canvas Palette) */
+  --color-chip-active-bg: #0a160f;
+  --color-chip-active-text: #fbf8f2;
+  --color-chip-active-border: #0a160f;
+  --color-chip-inactive-bg: #ffffff;
+  --color-chip-inactive-text: #1e3d2c;
+  --color-chip-inactive-border: rgba(16, 34, 24, 0.12);
+  --color-chip-inactive-hover-bg: #f6f0e4;
+  --color-chip-inactive-hover-text: #0a160f;
   --color-chip-inactive-hover-border: #c4a265;
 
   /* Semantic Form Inputs */

@@ -64,28 +64,28 @@ export function SortDropdown() {
     <div className="flex items-center gap-1.5 sm:gap-2.5">
       <span
         id="sort-label"
-        className="hidden sm:inline text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-forest-300/80 whitespace-nowrap"
+        className="hidden sm:inline text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-forest-700/80 whitespace-nowrap"
       >
         Sort by
       </span>
 
       <div ref={dropdownRef} className="relative">
-        {/* Trigger Button — Dark Green Velvet Pill with Brass Accent */}
+        {/* Trigger Button — Crisp Alabaster Paper Pill */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-labelledby="sort-label"
-          className={`flex items-center gap-1.5 sm:gap-2.5 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-sans font-medium transition-all duration-200 cursor-pointer text-cream-100 border focus:outline-none focus:ring-2 focus:ring-focus-ring ${
+          className={`flex items-center gap-1.5 sm:gap-2.5 rounded-pill px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-sans font-medium transition-[border-color,background-color,color] duration-normal cursor-pointer text-forest-950 border focus:outline-none focus:ring-2 focus:ring-focus-ring ${
             isOpen
-              ? 'border-border-gold bg-forest-800 text-gold-300'
-              : 'border-border-dark bg-forest-900/90 hover:border-border-gold hover:text-gold-200 hover:bg-forest-800/80'
+              ? 'border-gold-500 bg-cream-50 text-forest-950 shadow-elevation-1'
+              : 'border-forest-900/15 bg-white hover:border-gold-500/70 hover:bg-cream-50 shadow-elevation-1'
           }`}
         >
           <span className="truncate max-w-[120px] sm:max-w-none">{activeOption.label}</span>
           <svg
-            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-400 transition-transform duration-200 shrink-0 ${
+            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-forest-700 transition-transform duration-normal shrink-0 ${
               isOpen ? 'rotate-180' : ''
             }`}
             fill="none"
@@ -97,12 +97,12 @@ export function SortDropdown() {
           </svg>
         </button>
 
-        {/* Dropdown Menu — Glassmorphic Deep Forest Container */}
+        {/* Dropdown Menu — Solid Crisp Surface (No backdrop-filter) */}
         {isOpen && (
           <div
             role="listbox"
             aria-labelledby="sort-label"
-            className="absolute right-0 mt-2 w-52 rounded-2xl bg-forest-950/98 backdrop-blur-md border border-border-gold p-1.5 shadow-sm z-50 animate-fade-in"
+            className="absolute right-0 mt-2 w-52 rounded-md bg-white border border-forest-900/15 p-1.5 shadow-elevation-2 z-50 animate-fade-in"
           >
             {SORT_OPTIONS.map((opt) => {
               const isSelected = opt.value === currentSort
@@ -113,16 +113,16 @@ export function SortDropdown() {
                   role="option"
                   aria-selected={isSelected}
                   onClick={() => handleSelect(opt.value)}
-                  className={`flex items-center justify-between w-full px-3 py-2 text-xs rounded-xl font-sans text-left transition-colors cursor-pointer ${
+                  className={`flex items-center justify-between w-full px-3 py-2 text-xs rounded-sm font-sans text-left transition-colors duration-fast cursor-pointer ${
                     isSelected
-                      ? 'bg-btn-accent-bg text-btn-accent-text font-semibold'
-                      : 'text-cream-200 hover:bg-forest-800 hover:text-gold-300 active:bg-forest-700'
+                      ? 'bg-forest-950 text-cream-50 font-semibold'
+                      : 'text-forest-800 hover:bg-cream-100 hover:text-forest-950 active:bg-cream-200'
                   }`}
                 >
                   <span>{opt.label}</span>
                   {isSelected && (
                     <svg
-                      className="w-3.5 h-3.5 shrink-0 text-forest-950"
+                      className="w-3.5 h-3.5 shrink-0 text-gold-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

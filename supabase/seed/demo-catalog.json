@@ -261,18 +261,18 @@
       "base_price": 110
     },
     {
-      "name": "পাকা বাঁধাই খতিয়ান খাতা রেজিস্টার",
+      "name": "Hardcover Cloth-Bound Ledger Register",
       "slug": "hardcover-ledger-khata-register",
       "category_slug": "notebooks-and-journals",
       "item_type": "ledger register",
-      "description": "টেকসই লাল কাপড়ে মোড়ানো শক্ত বাঁধাইযুক্ত খতিয়ান রেজিস্টার খাতা। ভেতরের পৃষ্ঠায় হিসাব সংরক্ষণের জন্য লাল ও নীল কালিতে স্পষ্ট কলাম ও মার্জিন টানা রয়েছে। ৮০ জিএসএম পুরু কাগজের কারণে লেখার কালি অপর পৃষ্ঠায় ছড়ায় না এবং দীর্ঘ বছর নিরাপদে সংরক্ষণ করা যায়।",
+      "description": "Traditional hardcover ledger book bound in durable red book-cloth. Ruled with precise red and blue ledger margins for accounting and records. 80 GSM ink-resistant paper prevents feathering and bleed-through for archival preservation.",
       "active": true,
       "featured": false,
-      "image_label": "পাকা বাঁধাই খতিয়ান খাতা রেজিস্টার",
+      "image_label": "Hardcover Cloth-Bound Ledger Register",
       "image_color": "forest",
       "image_slots": 1,
       "image_labels": [
-        "লাল কাপড়ে মোড়ানো খতিয়ান রেজিস্টার খাতা"
+        "Red cloth-bound ledger register book"
       ],
       "stress": "bengali-locale",
       "options": [],
@@ -1774,18 +1774,18 @@
       "base_price": 280
     },
     {
-      "name": "এফোর সাইজ মার্জিনযুক্ত পরীক্ষার রাইটিং প্যাড",
+      "name": "A4 Ruled Exam Writing Pad with Margins",
       "slug": "exam-writing-pad-a4-with-margin",
       "category_slug": "study-and-exam-essentials",
       "item_type": "exam writing pad",
-      "description": "স্কুল, কলেজ ও বিশ্ববিদ্যালয়ের পরীক্ষার অনুশীলনের জন্য বিশেষ মার্জিনযুক্ত এফোর সাইজের রাইটিং প্যাড। প্রতি পৃষ্ঠার বাম পাশে ও ওপরে দেড় ইঞ্চি স্ট্যান্ডার্ড মার্জিন প্রিন্ট করা রয়েছে। ৭০ জিএসএম মসৃণ অফ-হোয়াইট কাগজে বলপেন এবং জেলপেন দিয়ে স্বাচ্ছন্দ্যে দ্রুত লেখা যায়।",
+      "description": "Specialized A4 examination writing pad designed for university, college, and school practice. Standard pre-printed 1.5-inch margins along the left and top edges. 70 GSM smooth off-white paper optimized for effortless fast writing with ballpoint and gel pens.",
       "active": true,
       "featured": false,
-      "image_label": "এফোর সাইজ মার্জিনযুক্ত পরীক্ষার রাইটিং প্যাড",
+      "image_label": "A4 Ruled Exam Writing Pad with Margins",
       "image_color": "moss",
       "image_slots": 1,
       "image_labels": [
-        "মার্জিন টানা পরীক্ষার ফুলস্কেপ রাইটিং প্যাড"
+        "Pre-margined A4 examination writing pad"
       ],
       "stress": "bengali-locale",
       "options": [],
