@@ -168,7 +168,7 @@ export function ImageGallery({
             priority={activeIdx === 0}
             loading={activeIdx === 0 ? undefined : 'lazy'}
             fetchPriority={activeIdx === 0 ? 'high' : undefined}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 480px"
+            sizes="(max-width: 640px) 96vw, (max-width: 1024px) 460px, 480px"
             className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
           />

@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useCart } from '@/lib/cart/cart-context'
 import { useHydrated } from '@/lib/hooks/use-hydrated'
-import { gsap, isReducedMotion } from '@/lib/motion'
+import { isReducedMotion } from '@/lib/utils/reduced-motion'
 
 export function CartIcon() {
   const { itemCount, isLoaded, openDrawer } = useCart()
@@ -17,10 +17,13 @@ export function CartIcon() {
 
   useEffect(() => {
     if (badgeRef.current && itemCount > prevCountRef.current && !isReducedMotion()) {
-      gsap.fromTo(
-        badgeRef.current,
-        { scale: 0.6 },
-        { scale: 1, duration: 0.35, ease: 'back.out(2.5)', overwrite: 'auto' }
+      badgeRef.current.animate(
+        [
+          { transform: 'scale(0.6)' },
+          { transform: 'scale(1.2)', offset: 0.6 },
+          { transform: 'scale(1)' },
+        ],
+        { duration: 350, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }
       )
     }
     prevCountRef.current = itemCount

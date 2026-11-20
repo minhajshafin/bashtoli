@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Store, Heart, ShoppingBag, User } from 'lucide-react'
-import { gsap, isReducedMotion } from '@/lib/motion'
+import { isReducedMotion } from '@/lib/utils/reduced-motion'
 import { useCart } from '@/lib/cart/cart-context'
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
 import { useHydrated } from '@/lib/hooks/use-hydrated'
@@ -53,7 +53,7 @@ export function MobileBottomDock() {
     if (!indicator) return
 
     if (!targetEl) {
-      gsap.to(indicator, { opacity: 0, duration: 0.25, ease: 'power2.out' })
+      indicator.style.opacity = '0'
       return
     }
 
@@ -61,29 +61,21 @@ export function MobileBottomDock() {
     const targetY = targetEl.offsetTop
     const targetW = targetEl.offsetWidth
     const targetH = targetEl.offsetHeight
+    const scaleX = targetW ? targetW / 40 : 1
+    const scaleY = targetH ? targetH / 40 : 1
 
     if (isFirstRender.current || isReducedMotion()) {
       isFirstRender.current = false
-      gsap.set(indicator, {
-        x: targetX,
-        y: targetY,
-        width: targetW,
-        height: targetH,
-        opacity: 1,
-      })
+      indicator.style.transition = 'none'
+      indicator.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) scale(${scaleX}, ${scaleY})`
+      indicator.style.opacity = '1'
       return
     }
 
-    // Set width and height once; animate pure hardware-accelerated x/y transforms
-    gsap.set(indicator, { width: targetW, height: targetH })
-    gsap.to(indicator, {
-      x: targetX,
-      y: targetY,
-      opacity: 1,
-      duration: 0.35,
-      ease: 'power3.out',
-      overwrite: 'auto',
-    })
+    // Hardware-accelerated translate3d + scale transforms only
+    indicator.style.transition = 'transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease'
+    indicator.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) scale(${scaleX}, ${scaleY})`
+    indicator.style.opacity = '1'
   }, [activeIndex, isHiddenRoute, hydrated])
 
   // Reposition indicator immediately on window resize / orientation change
@@ -93,12 +85,12 @@ export function MobileBottomDock() {
       const targetEl = activeIndex >= 0 ? itemRefs.current[activeIndex] : null
       const indicator = indicatorRef.current
       if (!indicator || !targetEl) return
-      gsap.set(indicator, {
-        x: targetEl.offsetLeft,
-        y: targetEl.offsetTop,
-        width: targetEl.offsetWidth,
-        height: targetEl.offsetHeight,
-      })
+      const targetW = targetEl.offsetWidth
+      const targetH = targetEl.offsetHeight
+      const scaleX = targetW ? targetW / 40 : 1
+      const scaleY = targetH ? targetH / 40 : 1
+      indicator.style.transition = 'none'
+      indicator.style.transform = `translate3d(${targetEl.offsetLeft}px, ${targetEl.offsetTop}px, 0) scale(${scaleX}, ${scaleY})`
     }
 
     window.addEventListener('resize', handleResize)
@@ -121,11 +113,11 @@ export function MobileBottomDock() {
         ref={dockRef}
         className="relative pointer-events-auto flex items-center justify-between gap-1 px-3 py-1.5 rounded-full bg-forest-950 border border-gold-500/30 shadow-2xl shadow-forest-950/90 ring-1 ring-white/10 max-w-[310px] w-full"
       >
-        {/* Sliding Active Indicator (GSAP Animated) */}
+        {/* Sliding Active Indicator (Pure CSS Transform / Scale Animated) */}
         <div
           ref={indicatorRef}
           aria-hidden="true"
-          className="absolute top-0 left-0 w-10 h-10 rounded-full bg-gold-400/15 border border-gold-400/35 shadow-xs pointer-events-none z-0 flex items-center justify-center opacity-0"
+          className="absolute top-0 left-0 w-10 h-10 rounded-full bg-gold-400/15 border border-gold-400/35 shadow-xs pointer-events-none z-0 flex items-center justify-center opacity-0 will-change-transform"
         />
 
         {/* 1. Home */}

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useCart } from '@/lib/cart/cart-context'
 import { useHydrated } from '@/lib/hooks/use-hydrated'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
-import { gsap, isReducedMotion } from '@/lib/motion'
+import { isReducedMotion } from '@/lib/utils/reduced-motion'
 
 export function CartDrawer() {
   const {
@@ -70,21 +70,21 @@ export function CartDrawer() {
   useEffect(() => {
     if (!isDrawerOpen || isClosing || isReducedMotion() || !itemListRef.current) return
 
-    const items = itemListRef.current.querySelectorAll('.cart-drawer-item')
-    if (items.length > 0) {
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 10 },
+    const items = itemListRef.current.querySelectorAll<HTMLElement>('.cart-drawer-item')
+    items.forEach((item, index) => {
+      item.animate(
+        [
+          { opacity: '0', transform: 'translateY(10px)' },
+          { opacity: '1', transform: 'translateY(0)' },
+        ],
         {
-          opacity: 1,
-          y: 0,
-          duration: 0.28,
-          stagger: 0.035,
-          ease: 'power2.out',
-          clearProps: 'transform,opacity',
+          duration: 280,
+          delay: index * 35,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          fill: 'both',
         }
       )
-    }
+    })
   }, [isDrawerOpen, isClosing, cart.length])
 
   // Close on Escape key

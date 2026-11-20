@@ -15,7 +15,7 @@ test.describe('Customer Suggestions & Honeypot Bot Defense', () => {
     await page.fill('#suggestion-message', 'We would love handcrafted bamboo tea strainers and pen holders!')
 
     // Submit form
-    const submitBtn = page.getByRole('button', { name: 'Leave Note' })
+    const submitBtn = page.getByRole('button', { name: /Leave Note/i })
     await expect(submitBtn).toBeVisible()
     await submitBtn.click()
 
@@ -42,7 +42,7 @@ test.describe('Customer Suggestions & Honeypot Bot Defense', () => {
     await page.fill('#suggestion-message', 'Visit spam site for special discounts!')
 
     // Submit form
-    const submitBtn = page.getByRole('button', { name: 'Leave Note' })
+    const submitBtn = page.getByRole('button', { name: /Leave Note/i })
     await expect(submitBtn).toBeVisible()
     await submitBtn.click()
 

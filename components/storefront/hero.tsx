@@ -9,7 +9,7 @@ import {
   BADGE_COLOR_PRESETS,
   DEFAULT_FALLBACK_SLIDE,
   type HeroSlideItem,
-} from '@/lib/validations/hero-slides'
+} from '@/lib/constants/hero-slides'
 import { BambooPaperWatermark, DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 
@@ -19,7 +19,10 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
   useEffect(() => {
     if (activeSlides.length <= 1) return
-    const timer = setInterval(() => setSlide((s) => (s + 1) % activeSlides.length), 4500)
+    const timer = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      setSlide((s) => (s + 1) % activeSlides.length)
+    }, 5500)
     return () => clearInterval(timer)
   }, [activeSlides.length])
 
@@ -49,9 +52,6 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 fetchPriority={i === 0 ? 'high' : undefined}
                 sizes="(max-width: 640px) 320px, (max-width: 1024px) 320px, 360px"
                 className="object-cover transition-transform duration-1000 ease-out"
-                style={{
-                  filter: 'brightness(0.94) saturate(1.08)',
-                }}
               />
             ) : null
 
@@ -62,7 +62,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 style={{
                   opacity: i === slide ? 1 : 0,
                   pointerEvents: i === slide ? 'auto' : 'none',
-                  transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                  transition: slide === 0 ? 'none' : 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               >
                 {s.link_url ? (

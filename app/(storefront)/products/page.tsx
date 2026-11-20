@@ -143,8 +143,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <ProductCard
                   key={product.id}
                   product={product}
-                  priority={idx === 0}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  priority={idx < 2}
+                  loading={idx < 2 ? 'eager' : 'lazy'}
                 />
               ))}
             </div>

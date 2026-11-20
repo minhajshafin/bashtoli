@@ -6,13 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 // Register ScrollTrigger only on the client
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
-}/**
- * Check if the user has requested reduced motion
- */
-export function isReducedMotion(): boolean {
-  if (typeof window === 'undefined') return true
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
+}import { isReducedMotion } from '@/lib/utils/reduced-motion'
+export { isReducedMotion }
 
 export interface HorizontalLoopTimeline extends gsap.core.Timeline {
   next: (vars?: gsap.TweenVars) => gsap.core.Tween

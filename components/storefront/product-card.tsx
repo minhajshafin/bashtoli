@@ -138,6 +138,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
       {/* 1. Full-Bleed Product Image Canvas */}
       <Link
         href={`/products/${product.slug}`}
+        prefetch={false}
         className="absolute inset-0 block w-full h-full overflow-hidden"
         tabIndex={-1}
         aria-hidden="true"
@@ -151,7 +152,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
               priority={priority}
               loading={priority ? undefined : loading}
               fetchPriority={priority ? 'high' : undefined}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 20vw, 320px"
+              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 280px"
               className="object-cover transition-transform duration-500 ease-out"
               style={{
                 filter: isSoldOut ? 'grayscale(0.4) opacity(0.8)' : 'none',
@@ -164,7 +165,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                 alt={secondaryAltText}
                 fill
                 loading="lazy"
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 20vw, 320px"
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 280px"
                 className="object-cover transition-opacity duration-500 ease-out"
                 style={{
                   opacity: hovered ? 1 : 0,
@@ -282,6 +283,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
           <h3 className="font-display font-semibold text-xs sm:text-[15px] text-cream-50 tracking-tight leading-snug truncate flex-1">
             <Link
               href={`/products/${product.slug}`}
+              prefetch={false}
               className="hover:text-text-accent transition-colors"
             >
               {product.name}
