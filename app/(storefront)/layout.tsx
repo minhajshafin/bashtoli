@@ -10,7 +10,6 @@ import { NavHeader } from '@/components/storefront/nav-header'
 import { CartDrawer } from '@/components/storefront/cart-drawer'
 import { MobileBottomDock } from '@/components/storefront/mobile-bottom-dock'
 import { RouteProgressBar } from '@/components/storefront/route-progress-bar'
-import { MotionListener } from '@/components/storefront/motion-listener'
 
 export const metadata: Metadata = {
   title: {
@@ -132,7 +131,6 @@ export default function StorefrontLayout({
         <Suspense fallback={null}>
           <RouteProgressBar />
         </Suspense>
-        <MotionListener />
         <Suspense fallback={<StorefrontLayoutFallback>{children}</StorefrontLayoutFallback>}>
           <AuthAwareShell>{children}</AuthAwareShell>
         </Suspense>

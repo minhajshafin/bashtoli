@@ -16,7 +16,7 @@ export default function OrderLookupPage() {
     <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center bg-cream-50 px-4 py-8 sm:py-16 pb-32 sm:pb-20 overflow-hidden">
       <CheckoutBackgroundArt />
 
-      <div className="relative z-10 w-full max-w-md bg-cream-100/80 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xs space-y-6 text-center animate-fade-in backdrop-blur-xs">
+      <div className="relative z-10 w-full max-w-md bg-cream-100/95 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xs space-y-6 text-center">
         {/* Icon Badge */}
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-1 shadow-xs border border-forest-800">
           <Search className="h-6 w-6 stroke-[2]" />

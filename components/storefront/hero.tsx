@@ -30,7 +30,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
   return (
     <div className="relative w-full max-w-[320px] sm:max-w-[320px] lg:max-w-[350px] mx-auto">
       {/* Tactile Frame Glint */}
-      <div className="relative p-1.5 sm:p-2 rounded-2xl sm:rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-sm backdrop-blur-xs">
+      <div className="relative p-1.5 sm:p-2 rounded-2xl sm:rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-sm">
         {/* Slides Viewport: 16:10 cinematic on mobile, 4:5 on sm+ */}
         <div className="relative aspect-[16/10] sm:aspect-[4/5] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-forest-950 shadow-inner">
           {activeSlides.map((s, i) => {
@@ -46,6 +46,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 fill
                 priority={i === 0}
                 loading={i === 0 ? undefined : 'lazy'}
+                fetchPriority={i === 0 ? 'high' : undefined}
                 sizes="(max-width: 640px) 320px, (max-width: 1024px) 320px, 360px"
                 className="object-cover transition-transform duration-1000 ease-out"
                 style={{
@@ -77,7 +78,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Floating Curation Pill Badge */}
           <div
-            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] lg:text-[11px] font-semibold z-10 pointer-events-none rounded-full backdrop-blur-md transition-all duration-400 font-sans tracking-wider uppercase shadow-xs"
+            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] lg:text-[11px] font-semibold z-10 pointer-events-none rounded-full transition-all duration-400 font-sans tracking-wider uppercase shadow-xs"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,
@@ -89,7 +90,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Minimal Linear Slide Indicators */}
           {activeSlides.length > 1 && (
-            <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-forest-950/70 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-forest-800/80">
+            <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-forest-950 px-2.5 py-1.5 rounded-full border border-forest-800/80">
               {activeSlides.map((_, i) => (
                 <button
                   key={i}
@@ -159,14 +160,6 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
         { opacity: 0, y: 8 },
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out', clearProps: 'opacity,transform' },
         0.55
-      )
-
-      // Slideshow frame gentle entrance
-      tl.fromTo(
-        '.hero-frame',
-        { opacity: 0, scale: 0.97 },
-        { opacity: 1, scale: 1, duration: 0.85, ease: 'power2.out', clearProps: 'opacity,transform' },
-        0.2
       )
     }, containerRef)
 

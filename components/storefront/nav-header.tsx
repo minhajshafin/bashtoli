@@ -70,9 +70,9 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full transition-colors duration-200 ${
         scrolled
-          ? 'bg-forest-950/98 backdrop-blur-md border-b border-forest-800'
+          ? 'bg-forest-950 border-b border-forest-800'
           : 'bg-forest-950 border-b border-forest-800/70'
       }`}
     >
@@ -246,7 +246,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             </button>
 
             {accountOpen && (
-              <div className="absolute top-[calc(100%+8px)] right-0 bg-forest-950/98 backdrop-blur-md border border-border-gold rounded-2xl p-1.5 shadow-sm min-w-44 z-50 animate-fade-in">
+              <div className="absolute top-[calc(100%+8px)] right-0 bg-forest-950 border border-border-gold rounded-2xl p-1.5 shadow-lg min-w-44 z-50 animate-fade-in">
                 {isLoggedIn ? (
                   <>
                     <div className="px-3.5 py-2 border-b border-forest-800 mb-1">

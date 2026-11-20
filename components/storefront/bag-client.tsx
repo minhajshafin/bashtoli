@@ -9,6 +9,7 @@ import { CartSummary } from '@/components/storefront/cart-summary'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 import { checkCartItemsAvailability, type ValidatedCartItem } from '@/lib/queries/cart'
+import { BagPageSkeleton } from '@/components/storefront/skeletons'
 import { ArrowLeft, Trash2 } from 'lucide-react'
 
 export function BagClient() {
@@ -50,11 +51,7 @@ export function BagClient() {
   }, [isLoaded, cartKey])
 
   if (!isLoaded) {
-    return (
-      <div className="relative min-h-[calc(100dvh-5rem)] bg-forest-950 bg-laid-paper-dark flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-3 border-gold-400 border-t-transparent" />
-      </div>
-    )
+    return <BagPageSkeleton />
   }
 
   const hasUnavailableItems =

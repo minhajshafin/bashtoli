@@ -16,7 +16,7 @@ interface ProductCardProps {
   priority?: boolean
 }
 
-export function ProductCard({ product, loading = 'lazy', priority = false }: ProductCardProps) {
+export const ProductCard = React.memo(function ProductCard({ product, loading = 'lazy', priority = false }: ProductCardProps) {
   const router = useRouter()
   const [hovered, setHovered] = useState(false)
   const [isNavigating, setIsNavigating] = useState(false)
@@ -150,8 +150,9 @@ export function ProductCard({ product, loading = 'lazy', priority = false }: Pro
               fill
               priority={priority}
               loading={priority ? undefined : loading}
+              fetchPriority={priority ? 'high' : undefined}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 20vw, 320px"
-              className="object-cover transition-all duration-700 ease-out"
+              className="object-cover transition-transform duration-500 ease-out"
               style={{
                 filter: isSoldOut ? 'grayscale(0.4) opacity(0.8)' : 'none',
                 transform: hovered && !secondaryImageUrl ? 'scale(1.08)' : 'scale(1)',
@@ -197,14 +198,14 @@ export function ProductCard({ product, loading = 'lazy', priority = false }: Pro
       <div className="absolute top-2.5 sm:top-3 inset-x-2.5 sm:inset-x-3 z-25 flex items-center justify-between pointer-events-none">
         <div>
           {isSoldOut ? (
-            <span className="inline-flex items-center rounded-full bg-terracotta-600/95 backdrop-blur-md px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-sm border border-terracotta-400/30 font-sans pointer-events-auto truncate max-w-[100px] sm:max-w-none">
+            <span className="inline-flex items-center rounded-full bg-terracotta-700/95 px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-sm border border-terracotta-400/30 font-sans pointer-events-auto truncate max-w-[100px] sm:max-w-none">
               Sold Out
             </span>
           ) : (
             <div className="relative flex items-center">
               {/* Resting Curation Badge (visible when not hovered / on mobile touch) */}
               <span
-                className={`inline-flex items-center rounded-full bg-forest-950/80 backdrop-blur-md px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-gold-300 uppercase shadow-xs border border-gold-400/30 font-sans transition-opacity duration-300 truncate max-w-[95px] sm:max-w-[140px] ${
+                className={`inline-flex items-center rounded-full bg-forest-950/95 px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider text-gold-300 uppercase shadow-xs border border-gold-400/30 font-sans transition-opacity duration-300 truncate max-w-[95px] sm:max-w-[140px] ${
                   hovered || isJustAdded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
                 }`}
               >
@@ -225,7 +226,7 @@ export function ProductCard({ product, loading = 'lazy', priority = false }: Pro
                   onClick={handleAddToCart}
                   aria-label={`Add ${product.name} to bag`}
                   title={isJustAdded ? 'Added to Bag' : '+ Add to Bag'}
-                  className={`h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full backdrop-blur-md text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap ${
+                  className={`h-8 sm:h-8.5 px-3 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap ${
                     isJustAdded
                       ? 'bg-forest-900 text-gold-300 border border-gold-400/70 shadow-2xs'
                       : 'bg-forest-950/90 hover:bg-btn-accent-bg hover:text-btn-accent-text hover:border-btn-accent-border text-cream-50 border border-border-gold'
@@ -271,18 +272,7 @@ export function ProductCard({ product, loading = 'lazy', priority = false }: Pro
         </div>
       </div>
 
-      {/* 4. Feathered Progressive Blur Layer (Smooth transition from sharp to blur) */}
-      <div
-        className="absolute inset-x-0 bottom-0 top-[28%] pointer-events-none z-10"
-        style={{
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,1) 75%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,1) 75%)',
-        }}
-      />
-
-      {/* 5. Atmospheric Dark Gradient Scrim (Smooth fade from transparent to forest-950) */}
+      {/* 4. Atmospheric Dark Gradient Scrim (Smooth fade from transparent to forest-950) */}
       <div className="absolute inset-x-0 bottom-0 top-[25%] pointer-events-none z-11 bg-gradient-to-t from-forest-950 via-forest-950/80 to-transparent" />
 
       {/* 6. Card Info & Actions Content Layer */}
@@ -341,4 +331,6 @@ export function ProductCard({ product, loading = 'lazy', priority = false }: Pro
       </div>
     </div>
   )
-}
+})
+
+ProductCard.displayName = 'ProductCard'

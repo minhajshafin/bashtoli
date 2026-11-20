@@ -12,6 +12,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
   const trackRef = useRef<HTMLDivElement>(null)
   const loopRef = useRef<HorizontalLoopTimeline | null>(null)
   const isHoveredRef = useRef(false)
+  const isIntersectingRef = useRef(false)
 
   // Ensure enough items to span any viewport seamlessly
   const displayProducts = useMemo(() => {
@@ -36,12 +37,40 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
 
     const loop = horizontalLoop(items, {
       speed: reduced ? 0 : 0.45, // Gentle, silky-smooth continuous glide
-      paused: reduced,
+      paused: true, // Start paused until IntersectionObserver confirms viewport visibility
       repeat: -1,
       paddingRight: gap,
     })
 
     loopRef.current = loop
+
+    const checkShouldPlay = () => {
+      if (isReducedMotion() || isHoveredRef.current || document.hidden || !isIntersectingRef.current) {
+        loopRef.current?.pause()
+      } else {
+        loopRef.current?.play()
+      }
+    }
+
+    // IntersectionObserver to pause loop when off-screen
+    let observer: IntersectionObserver | null = null
+    if (containerRef.current && typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0]
+          isIntersectingRef.current = entry?.isIntersecting ?? false
+          checkShouldPlay()
+        },
+        { rootMargin: '100px 0px' }
+      )
+      observer.observe(containerRef.current)
+    }
+
+    // Page Visibility listener to pause when backgrounded
+    const handleVisibilityChange = () => {
+      checkShouldPlay()
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     // Resize handler to adjust layout if window changes
     let resizeTimer: NodeJS.Timeout
@@ -53,10 +82,11 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
         const newGap = window.innerWidth >= 640 ? 24 : 12
         loopRef.current = horizontalLoop(items, {
           speed: reduced ? 0 : 0.45,
-          paused: reduced || isHoveredRef.current,
+          paused: true,
           repeat: -1,
           paddingRight: newGap,
         })
+        checkShouldPlay()
       }, 200)
     }
 
@@ -65,6 +95,8 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
     return () => {
       clearTimeout(resizeTimer)
       window.removeEventListener('resize', handleResize)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      observer?.disconnect()
       loop.kill()
       gsap.set(items, { clearProps: 'all' })
     }
@@ -77,7 +109,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       duration: 0.65,
       ease: 'power2.out',
       onComplete: () => {
-        if (!isHoveredRef.current && !isReducedMotion()) {
+        if (!isHoveredRef.current && !isReducedMotion() && !document.hidden && isIntersectingRef.current) {
           loopRef.current?.play()
         }
       },
@@ -90,7 +122,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       duration: 0.65,
       ease: 'power2.out',
       onComplete: () => {
-        if (!isHoveredRef.current && !isReducedMotion()) {
+        if (!isHoveredRef.current && !isReducedMotion() && !document.hidden && isIntersectingRef.current) {
           loopRef.current?.play()
         }
       },
@@ -104,7 +136,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
 
   const handleMouseLeave = () => {
     isHoveredRef.current = false
-    if (!isReducedMotion()) {
+    if (!isReducedMotion() && !document.hidden && isIntersectingRef.current) {
       loopRef.current?.play()
     }
   }

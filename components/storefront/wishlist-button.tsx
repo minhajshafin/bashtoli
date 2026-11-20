@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useWishlist } from '@/lib/wishlist/wishlist-context'
+import { useWishlistActions, useIsProductWishlisted } from '@/lib/wishlist/wishlist-context'
 
 interface WishlistButtonProps {
   productId: string
@@ -15,6 +15,7 @@ interface WishlistButtonProps {
 /**
  * Wishlist Toggle Button.
  * Accessible, optimistic heart toggle with instant toast notification.
+ * Uses fine-grained per-item subscription via useIsProductWishlisted to prevent grid re-renders.
  */
 export function WishlistButton({
   productId,
@@ -22,11 +23,10 @@ export function WishlistButton({
   variant = 'detail',
   className = '',
 }: WishlistButtonProps) {
-  const { isWishlisted: checkWishlist, toggleWishlist, isPending: isAuthPending } = useWishlist()
+  const { toggleWishlist, isPending: isAuthPending } = useWishlistActions()
+  const isWishlisted = useIsProductWishlisted(productId)
   const [isActionPending, setIsActionPending] = useState(false)
   const isPending = isActionPending || isAuthPending
-
-  const isWishlisted = checkWishlist(productId)
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -49,7 +49,7 @@ export function WishlistButton({
         onClick={handleToggle}
         disabled={isPending}
         aria-busy={isPending ? 'true' : undefined}
-        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-forest-950/70 hover:bg-forest-950/95 backdrop-blur-md text-text-inverse border border-border-gold-subtle hover:border-border-gold active:scale-90 transition-all duration-200 cursor-pointer ${className}`}
+        className={`group/wishlist flex h-8 w-8 sm:h-8.5 sm:w-8.5 items-center justify-center rounded-full bg-forest-950/90 hover:bg-forest-900 text-text-inverse border border-border-gold-subtle hover:border-border-gold active:scale-90 transition-all duration-200 cursor-pointer ${className}`}
         aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
       >

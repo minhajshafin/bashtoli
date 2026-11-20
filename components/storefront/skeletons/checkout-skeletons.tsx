@@ -174,3 +174,51 @@ export function CheckoutPageSkeleton() {
     </div>
   )
 }
+
+/**
+ * Order Confirmation & Status Page Skeleton.
+ */
+export function OrderConfirmationSkeleton() {
+  return (
+    <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden">
+      <div className="relative z-10 mx-auto max-w-3xl space-y-6 sm:space-y-8">
+        <div className="flex flex-col items-center text-center space-y-3">
+          <div className="h-14 w-14 rounded-2xl skeleton-shimmer" />
+          <div className="h-4 w-32 rounded-full skeleton-shimmer opacity-70" />
+          <div className="h-8 w-64 rounded-xl skeleton-shimmer" />
+          <div className="h-3.5 w-80 rounded-md skeleton-shimmer opacity-60" />
+        </div>
+        <div className="p-6 rounded-2xl bg-cream-50 border border-forest-200/90 shadow-md space-y-4">
+          <div className="h-4 w-44 rounded-md skeleton-shimmer" />
+          <div className="space-y-3">
+            <div className="h-14 w-full rounded-xl skeleton-shimmer opacity-80" />
+            <div className="h-14 w-full rounded-xl skeleton-shimmer opacity-80" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Order Lookup Page Skeleton.
+ */
+export function OrderLookupSkeleton() {
+  return (
+    <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center bg-cream-50 px-4 py-8 sm:py-16 pb-32 sm:pb-20 overflow-hidden">
+      <div className="relative z-10 w-full max-w-md bg-cream-100/95 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xs space-y-6 text-center">
+        <div className="mx-auto h-14 w-14 rounded-2xl skeleton-shimmer" />
+        <div className="space-y-2">
+          <div className="h-3 w-28 mx-auto rounded-md skeleton-shimmer opacity-70" />
+          <div className="h-8 w-48 mx-auto rounded-xl skeleton-shimmer" />
+          <div className="h-3.5 w-72 mx-auto rounded-md skeleton-shimmer opacity-60" />
+        </div>
+        <div className="space-y-4 pt-2">
+          <div className="h-11 w-full rounded-xl skeleton-shimmer" />
+          <div className="h-11 w-full rounded-xl skeleton-shimmer" />
+          <div className="h-11 w-full rounded-xl skeleton-shimmer opacity-90" />
+        </div>
+      </div>
+    </div>
+  )
+}

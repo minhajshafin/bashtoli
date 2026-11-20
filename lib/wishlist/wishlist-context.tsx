@@ -1,6 +1,15 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+  useSyncExternalStore,
+} from 'react'
 import {
   addToWishlistAction,
   removeFromWishlistAction,
@@ -10,6 +19,7 @@ import {
 import { useToast } from '@/components/ui/toast'
 
 const GUEST_WISHLIST_KEY = 'bashtoli_guest_wishlist'
+const emptySubscribe = () => () => {}
 
 function getGuestWishlist(): string[] {
   if (typeof window === 'undefined') return []
@@ -28,7 +38,20 @@ function saveGuestWishlist(ids: string[]) {
   } catch {}
 }
 
-interface WishlistContextType {
+export interface WishlistStateContextType {
+  wishlistIds: string[]
+  isLoaded: boolean
+  isPending: boolean
+}
+
+export interface WishlistActionsContextType {
+  toggleWishlist: (productId: string, productName?: string) => Promise<boolean>
+  isWishlisted: (productId: string) => boolean
+  subscribe: (listener: () => void) => () => void
+  isPending: boolean
+}
+
+export interface WishlistContextType {
   wishlistIds: string[]
   isLoaded: boolean
   isPending: boolean
@@ -36,7 +59,8 @@ interface WishlistContextType {
   toggleWishlist: (productId: string, productName?: string) => Promise<boolean>
 }
 
-const WishlistContext = createContext<WishlistContextType | null>(null)
+const WishlistStateContext = createContext<WishlistStateContextType | null>(null)
+const WishlistActionsContext = createContext<WishlistActionsContextType | null>(null)
 
 export function WishlistProvider({
   children,
@@ -51,8 +75,30 @@ export function WishlistProvider({
 }) {
   const [wishlistIds, setWishlistIds] = useState<string[]>(initialWishlistIds ?? [])
   const [isLoaded, setIsLoaded] = useState(false)
+  const wishlistIdsRef = useRef<string[]>(initialWishlistIds ?? [])
   const locallyToggledIdsRef = useRef<Set<string>>(new Set())
+  const listenersRef = useRef<Set<() => void>>(new Set())
+  const isLoggedInRef = useRef(isLoggedIn)
+  const pendingRef = useRef(pending)
   const { toast } = useToast()
+
+  const notifyListeners = useCallback(() => {
+    listenersRef.current.forEach((fn) => fn())
+  }, [])
+
+  const subscribe = useCallback((listener: () => void) => {
+    listenersRef.current.add(listener)
+    return () => {
+      listenersRef.current.delete(listener)
+    }
+  }, [])
+
+  useEffect(() => {
+    isLoggedInRef.current = isLoggedIn
+    pendingRef.current = pending
+    wishlistIdsRef.current = wishlistIds
+    notifyListeners()
+  }, [isLoggedIn, pending, wishlistIds, notifyListeners])
 
   // Stable primitive key to prevent re-running effect on equal array re-renders
   const hasInitialIds = initialWishlistIds !== undefined
@@ -125,24 +171,28 @@ export function WishlistProvider({
   }, [isLoggedIn, hasInitialIds, initialIdsKey])
 
   const isWishlisted = useCallback(
-    (productId: string) => wishlistIds.includes(productId),
-    [wishlistIds]
+    (productId: string) => wishlistIdsRef.current.includes(productId),
+    []
   )
 
   const toggleWishlist = useCallback(
     async (productId: string, productName?: string): Promise<boolean> => {
       // While auth is pending (fallback skeleton), mutations are disallowed
-      if (pending) {
-        return wishlistIds.includes(productId)
+      if (pendingRef.current) {
+        return wishlistIdsRef.current.includes(productId)
       }
 
       // Mark this product ID as locally modified to protect it from stale in-flight initial loads
       locallyToggledIdsRef.current.add(productId)
 
-      const alreadyWishlisted = wishlistIds.includes(productId)
+      const alreadyWishlisted = wishlistIdsRef.current.includes(productId)
       const nextState = !alreadyWishlisted
 
-      // Optimistic state update: immediate synchronous state change
+      // Optimistic synchronous update of ref and state
+      wishlistIdsRef.current = nextState
+        ? Array.from(new Set([...wishlistIdsRef.current, productId]))
+        : wishlistIdsRef.current.filter((id) => id !== productId)
+
       setWishlistIds((prev) =>
         nextState ? Array.from(new Set([...prev, productId])) : prev.filter((id) => id !== productId)
       )
@@ -161,7 +211,7 @@ export function WishlistProvider({
         }
       }
 
-      if (isLoggedIn) {
+      if (isLoggedInRef.current) {
         const action = nextState ? addToWishlistAction : removeFromWishlistAction
         const res = await action(productId)
         if (res.error) {
@@ -185,20 +235,76 @@ export function WishlistProvider({
 
       return nextState
     },
-    [wishlistIds, isLoggedIn, toast, pending]
+    [toast]
+  )
+
+  const stateValue = useMemo(
+    () => ({
+      wishlistIds,
+      isLoaded,
+      isPending: pending,
+    }),
+    [wishlistIds, isLoaded, pending]
+  )
+
+  const actionsValue = useMemo(
+    () => ({
+      toggleWishlist,
+      isWishlisted,
+      subscribe,
+      isPending: pending,
+    }),
+    [toggleWishlist, isWishlisted, subscribe, pending]
   )
 
   return (
-    <WishlistContext.Provider value={{ wishlistIds, isLoaded, isPending: pending, isWishlisted, toggleWishlist }}>
-      {children}
-    </WishlistContext.Provider>
+    <WishlistStateContext.Provider value={stateValue}>
+      <WishlistActionsContext.Provider value={actionsValue}>
+        {children}
+      </WishlistActionsContext.Provider>
+    </WishlistStateContext.Provider>
   )
 }
 
-export function useWishlist() {
-  const ctx = useContext(WishlistContext)
+export function useWishlistState(): WishlistStateContextType {
+  const ctx = useContext(WishlistStateContext)
   if (!ctx) {
-    throw new Error('useWishlist must be used within a WishlistProvider')
+    throw new Error('useWishlistState must be used within a WishlistProvider')
   }
   return ctx
+}
+
+export function useWishlistActions(): WishlistActionsContextType {
+  const ctx = useContext(WishlistActionsContext)
+  if (!ctx) {
+    throw new Error('useWishlistActions must be used within a WishlistProvider')
+  }
+  return ctx
+}
+
+export function useIsProductWishlisted(productId: string): boolean {
+  const actions = useContext(WishlistActionsContext)
+  return useSyncExternalStore(
+    actions ? actions.subscribe : emptySubscribe,
+    () => (actions ? actions.isWishlisted(productId) : false),
+    () => false
+  )
+}
+
+export function useWishlist(): WishlistContextType {
+  const state = useContext(WishlistStateContext)
+  const actions = useContext(WishlistActionsContext)
+  if (!state || !actions) {
+    throw new Error('useWishlist must be used within a WishlistProvider')
+  }
+  return useMemo(
+    () => ({
+      wishlistIds: state.wishlistIds,
+      isLoaded: state.isLoaded,
+      isPending: state.isPending,
+      isWishlisted: (productId: string) => state.wishlistIds.includes(productId),
+      toggleWishlist: actions.toggleWishlist,
+    }),
+    [state.wishlistIds, state.isLoaded, state.isPending, actions.toggleWishlist]
+  )
 }

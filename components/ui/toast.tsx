@@ -102,7 +102,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             {/* Hairline Countdown Progress Bar */}
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-forest-800/60 overflow-hidden rounded-full">
               <div
-                className={`h-full animate-toast-countdown ${
+                className={`h-full w-full animate-toast-countdown ${
                   t.type === 'error'
                     ? 'bg-terracotta-400'
                     : t.type === 'info'

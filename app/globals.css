@@ -646,10 +646,10 @@ input[type="search"]::-webkit-search-results-decoration {
 
 @keyframes toastCountdown {
   0% {
-    width: 100%;
+    transform: scaleX(1);
   }
   100% {
-    width: 0%;
+    transform: scaleX(0);
   }
 }
 
@@ -659,6 +659,8 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .animate-toast-countdown {
   animation: toastCountdown 3s linear forwards;
+  transform-origin: left;
+  will-change: transform;
 }
 
 /* Shimmer animations for theme-aligned skeletons */

@@ -74,14 +74,13 @@ export function MobileBottomDock() {
       return
     }
 
-    // Smooth spring physics slide to target button position
+    // Set width and height once; animate pure hardware-accelerated x/y transforms
+    gsap.set(indicator, { width: targetW, height: targetH })
     gsap.to(indicator, {
       x: targetX,
       y: targetY,
-      width: targetW,
-      height: targetH,
       opacity: 1,
-      duration: 0.45,
+      duration: 0.35,
       ease: 'power3.out',
       overwrite: 'auto',
     })
@@ -120,7 +119,7 @@ export function MobileBottomDock() {
     >
       <div
         ref={dockRef}
-        className="relative pointer-events-auto flex items-center justify-between gap-1 px-3 py-1.5 rounded-full bg-forest-950/90 backdrop-blur-xl border border-gold-500/30 shadow-2xl shadow-forest-950/90 ring-1 ring-white/10 max-w-[310px] w-full"
+        className="relative pointer-events-auto flex items-center justify-between gap-1 px-3 py-1.5 rounded-full bg-forest-950 border border-gold-500/30 shadow-2xl shadow-forest-950/90 ring-1 ring-white/10 max-w-[310px] w-full"
       >
         {/* Sliding Active Indicator (GSAP Animated) */}
         <div

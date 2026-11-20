@@ -136,7 +136,7 @@ export function ImageGallery({
           <Link
             href="/products"
             onClick={(e) => e.stopPropagation()}
-            className="sm:hidden absolute top-3 left-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-forest-950/70 backdrop-blur-md text-cream-100 border border-white/10 active:scale-90 transition-transform shadow-sm"
+            className="sm:hidden absolute top-3 left-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-forest-950/90 text-cream-100 border border-white/10 active:scale-90 transition-transform shadow-sm"
             aria-label="Back to all products"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
@@ -167,14 +167,15 @@ export function ImageGallery({
             fill
             priority={activeIdx === 0}
             loading={activeIdx === 0 ? undefined : 'lazy'}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
-            className="object-cover transition-all duration-300 group-hover:scale-[1.02]"
+            fetchPriority={activeIdx === 0 ? 'high' : undefined}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 480px"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             onError={() => setFailedImages((prev) => ({ ...prev, [activeImage.url]: true }))}
           />
 
           {/* Mobile Centered Carousel Indicator Dots */}
           {images.length > 1 && (
-            <div className="sm:hidden absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-forest-950/70 backdrop-blur-md border border-forest-800/60 shadow-xs">
+            <div className="sm:hidden absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-forest-950/90 border border-forest-800/60 shadow-xs">
               {images.map((_, idx) => (
                 <button
                   key={idx}
