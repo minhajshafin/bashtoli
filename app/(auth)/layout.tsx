@@ -53,7 +53,7 @@ export default function AuthLayout({
               />
               <div className="text-left">
                 <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold leading-none">
-                  বাঁশতলী &nbsp;·&nbsp; Est. 2026
+                  Bashtoli &nbsp;·&nbsp; Est. 2026
                 </p>
                 <h2 className="text-sm font-medium text-cream-100 font-display tracking-tight mt-0.5">
                   Bashtoli Stationery
@@ -80,7 +80,7 @@ export default function AuthLayout({
 
             <div className="mt-6 max-w-xs">
               <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold mb-1.5">
-                বাঁশতলী &nbsp;·&nbsp; Est. 2026
+                Bashtoli &nbsp;·&nbsp; Est. 2026
               </p>
               <h2 className="text-lg font-medium text-cream-100 font-display tracking-tight">
                 Bashtoli Stationery

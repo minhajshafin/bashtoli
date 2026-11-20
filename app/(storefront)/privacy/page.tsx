@@ -136,7 +136,7 @@ export default function PrivacyPolicyPage() {
                 </h2>
               </div>
               <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
-                At বাঁশতলী (Bashtoli Stationery), we respect your privacy and are committed to safeguarding the personal details you share with us. This policy outlines the types of information we collect, how it is used to fulfill your stationery orders, and the measures we take to keep your data secure.
+                At Bashtoli Stationery, we respect your privacy and are committed to safeguarding the personal details you share with us. This policy outlines the types of information we collect, how it is used to fulfill your stationery orders, and the measures we take to keep your data secure.
               </p>
             </section>
 

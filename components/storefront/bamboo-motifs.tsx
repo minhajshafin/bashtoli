@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * Artisanal Bamboo & Paper Suite (বাঁশতলী Stationery)
+ * Artisanal Bamboo & Paper Suite (Bashtoli Stationery)
  * Combines Papermaker's Screen Watermarks + Minimalist Sumi-e Bamboo Leaf.
  */
 

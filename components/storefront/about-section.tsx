@@ -52,7 +52,7 @@ export function AboutSection() {
 
           {/* Body Narrative: desktop only */}
           <p className="hidden sm:block text-[11px] sm:text-[13px] leading-relaxed text-forest-800/80 font-sans font-normal">
-            বাঁশতলী began as a modest weekend stall — born from a fondness for fountain pens, honest bamboo paper, and stationery made with care. Every notebook, pencil, and paper pack is held, tested, and handwritten with before it earns a spot on our shelves.
+            Bashtoli began as a modest weekend stall — born from a fondness for fountain pens, honest bamboo paper, and stationery made with care. Every notebook, pencil, and paper pack is held, tested, and handwritten with before it earns a spot on our shelves.
           </p>
 
           {/* Minimal Footnote Quote: desktop only */}

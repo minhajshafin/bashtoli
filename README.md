@@ -1,4 +1,4 @@
-# Bashtoli (বাঁশতলী)
+# Bashtoli Stationery
 
 Modern e-commerce platform for a local stationery shop—focused on everyday stationery, notebooks, writing instruments, paper supplies, and desk essentials. Built with Next.js 16 (App Router), Supabase (PostgreSQL, Auth & Storage), Upstash Redis (Edge Rate Limiting), and Tailwind CSS.
 

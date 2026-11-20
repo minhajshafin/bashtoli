@@ -155,11 +155,12 @@ export function ProductBackgroundArt() {
             textAnchor="middle"
             fill="var(--color-terracotta-500)"
             fillOpacity="0.45"
-            fontSize="15"
+            fontSize="12"
             fontFamily="serif"
             fontWeight="600"
+            letterSpacing="0.08em"
           >
-            বাঁশতলী
+            BASHTOLI
           </text>
           <text
             x="40"
@@ -171,7 +172,7 @@ export function ProductBackgroundArt() {
             fontFamily="sans-serif"
             letterSpacing="0.16em"
           >
-            DHAKA · ২০২৬
+            DHAKA · 2026
           </text>
         </svg>
       </div>

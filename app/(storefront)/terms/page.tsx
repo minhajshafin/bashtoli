@@ -136,7 +136,7 @@ export default function TermsOfServicePage() {
                 </h2>
               </div>
               <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
-                By browsing or ordering items from বাঁশতলী (Bashtoli Stationery), you agree to these standard store terms. If you do not agree with any part, please refrain from using the store or placing delivery orders.
+                By browsing or ordering items from Bashtoli Stationery, you agree to these standard store terms. If you do not agree with any part, please refrain from using the store or placing delivery orders.
               </p>
             </section>
 

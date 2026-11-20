@@ -220,8 +220,8 @@ export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProp
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-forest-500 font-display text-sm">
-                          বাঁ
+                        <div className="w-full h-full flex items-center justify-center text-forest-500 font-display text-sm font-semibold">
+                          B
                         </div>
                       )}
                     </div>
