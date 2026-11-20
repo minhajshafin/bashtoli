@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   experimental: {
     inlineCss: true,
+    agentUpgrade: 'security',
   },
   async redirects() {
     return [
