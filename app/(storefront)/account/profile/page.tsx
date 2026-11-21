@@ -47,10 +47,10 @@ export default async function ProfilePage() {
   return (
     <div className="space-y-6">
       {/* Top Utility Navigation Row */}
-      <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-forest-800/80">
+      <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-border-primary">
         <Link
           href="/account"
-          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors uppercase tracking-wider group cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors uppercase tracking-wider group cursor-pointer"
         >
           <svg
             className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5"
@@ -63,19 +63,19 @@ export default async function ProfilePage() {
           </svg>
           <span>Account Overview</span>
         </Link>
-        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-forest-400">
+        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-secondary">
           CUSTOMER PORTAL
         </span>
       </div>
 
-      <div className="border-b border-forest-800/80 pb-5">
-        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/90 mb-1">
+      <div className="border-b border-border-primary pb-5">
+        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-text-accent mb-1">
           — ACCOUNT PREFERENCES · BASHTOLI STATIONERY
         </p>
-        <h1 className="text-2xl sm:text-3xl text-cream-50 font-medium tracking-tight font-display">
+        <h1 className="text-2xl sm:text-3xl text-text-primary font-medium tracking-tight font-display">
           Profile Settings
         </h1>
-        <p className="text-xs sm:text-[13px] text-forest-300 mt-1 font-sans leading-relaxed">
+        <p className="text-xs sm:text-[13px] text-text-secondary mt-1 font-sans leading-relaxed">
           Manage your account information, default checkout details, and password.
         </p>
       </div>

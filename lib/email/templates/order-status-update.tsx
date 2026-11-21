@@ -55,7 +55,7 @@ export function OrderStatusUpdateEmail({
 
       <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#fafaf9', borderRadius: '8px' }}>
         <p style={{ margin: '0 0 6px 0' }}><strong>Delivery Address:</strong> {address}</p>
-        <p style={{ margin: '0', fontWeight: 'bold', fontSize: '16px' }}>Total Amount: ৳{total.toLocaleString()} (COD)</p>
+        <p style={{ margin: '0', fontWeight: 'bold', fontSize: '16px' }}>Total Amount: Tk {total.toLocaleString()} (COD)</p>
       </div>
 
       <div style={{ marginTop: '24px', textAlign: 'center' }}>

@@ -7,6 +7,7 @@ import { useCart } from '@/lib/cart/cart-context'
 import { useHydrated } from '@/lib/hooks/use-hydrated'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 import { isReducedMotion } from '@/lib/utils/reduced-motion'
+import { formatPrice } from '@/lib/utils/format-price'
 
 export function CartDrawer() {
   const {
@@ -178,7 +179,7 @@ export function CartDrawer() {
           <div className="flex items-center justify-between text-xs font-medium mb-1.5">
             <span className="text-forest-700">
               {amountRemaining > 0 ? (
-                <>Add <strong className="text-forest-950 font-price">৳{amountRemaining.toLocaleString()}</strong> for complimentary gift packaging</>
+                <>Add <strong className="text-forest-950 font-price">{formatPrice(amountRemaining)}</strong> for complimentary gift packaging</>
               ) : (
                 <span className="text-emerald-700 font-semibold flex items-center gap-1">
                   <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
@@ -251,7 +252,7 @@ export function CartDrawer() {
                     {item.variant_name}
                   </p>
                   <p className="font-price text-xs font-semibold text-forest-900 mt-1">
-                    ৳{(item.price * item.qty).toLocaleString()}
+                    {formatPrice(item.price * item.qty)}
                   </p>
 
                   {/* Quantity bar & Actions */}
@@ -309,7 +310,7 @@ export function CartDrawer() {
             <div className="flex items-center justify-between text-xs text-forest-600">
               <span>Estimated Subtotal</span>
               <span className="font-price text-base font-bold text-forest-950">
-                ৳{subtotal.toLocaleString()}
+                {formatPrice(subtotal)}
               </span>
             </div>
 

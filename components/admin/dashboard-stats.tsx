@@ -67,7 +67,7 @@ export function DashboardStats({ metrics }: DashboardStatsProps) {
       {/* Today's Revenue */}
       <StatCard
         label="Today's Revenue"
-        value={`৳${metrics.todayRevenue.toLocaleString()}`}
+        value={`Tk ${metrics.todayRevenue.toLocaleString()}`}
         sublabel="Gross processed today"
         accent={{
           bg: 'bg-emerald-50',

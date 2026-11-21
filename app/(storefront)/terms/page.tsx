@@ -150,7 +150,7 @@ export default function TermsOfServicePage() {
                 </h2>
               </div>
               <p className="text-[13px] sm:text-sm text-forest-800 leading-relaxed font-normal">
-                All prices are stated clearly in Bangladeshi Taka (৳ BDT) and include applicable local taxes.
+                All prices are stated clearly in Bangladeshi Taka (BDT, Tk) and include applicable local taxes.
               </p>
               <div className="space-y-2.5 pt-1">
                 <div className="p-3.5 rounded-xl bg-cream-50/80 border border-forest-200/60 text-xs sm:text-[13px] text-forest-800 space-y-1">
@@ -181,8 +181,8 @@ export default function TermsOfServicePage() {
                 We deliver nationwide across Bangladesh using trusted courier networks:
               </p>
               <ul className="space-y-2 text-[13px] sm:text-sm text-forest-700 pl-4 list-disc marker:text-gold-600">
-                <li><strong>Inside Dhaka (৳70):</strong> Typically delivered within 24 to 48 hours of dispatch.</li>
-                <li><strong>Outside Dhaka (৳120):</strong> Delivered within 3 to 5 business days across divisional and district hubs.</li>
+                <li><strong>Inside Dhaka (Tk 70):</strong> Typically delivered within 24 to 48 hours of dispatch.</li>
+                <li><strong>Outside Dhaka (Tk 120):</strong> Delivered within 3 to 5 business days across divisional and district hubs.</li>
                 <li><strong>Store Pickup (Free):</strong> Orders can be collected from our shop location in Dhaka at no shipping cost.</li>
               </ul>
             </section>

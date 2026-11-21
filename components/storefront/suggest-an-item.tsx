@@ -27,12 +27,16 @@ export function SuggestAnItem() {
     isSubmittingRef.current = true
     setIsSubmitting(true)
 
+    const form = e.currentTarget
+    const hpInput = form.elements.namedItem('b_hp_check') as HTMLInputElement | null
+    const effectiveHoneypot = hpInput?.value ?? honeypot
+
     try {
       const res = await submitSuggestionAction({
         name,
         contact,
         suggestion,
-        honeypot,
+        honeypot: effectiveHoneypot,
       })
 
       if (res.success) {
@@ -122,7 +126,7 @@ export function SuggestAnItem() {
                 onChange={(e) => setHoneypot(e.target.value)}
                 tabIndex={-1}
                 autoComplete="off"
-                className="hidden"
+                className="opacity-0 absolute -z-10 pointer-events-none h-0 w-0"
                 aria-hidden="true"
                 aria-label="Do not fill this field"
               />

@@ -13,11 +13,19 @@ export async function generateMetadata() {
   }
 }
 
-import { Suspense } from 'react'
+
+interface SignupPageProps {
+  searchParams?: Promise<{
+    redirectTo?: string
+  }>
+}
 
 export const instant = false
 
-export default async function SignupPage() {
+export default async function SignupPage({ searchParams }: SignupPageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const rawRedirectTo = resolvedSearchParams?.redirectTo
+
   const supabase = await createClient()
   const {
     data: { user },
@@ -28,9 +36,5 @@ export default async function SignupPage() {
     redirect('/products')
   }
 
-  return (
-    <Suspense>
-      <AuthForm type="signup" />
-    </Suspense>
-  )
+  return <AuthForm type="signup" redirectTo={rawRedirectTo || ''} />
 }

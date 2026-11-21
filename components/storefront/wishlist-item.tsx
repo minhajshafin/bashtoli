@@ -9,6 +9,7 @@ import { removeFromWishlistAction } from '@/lib/actions/wishlist'
 import { useCart } from '@/lib/cart/cart-context'
 import { useToast } from '@/components/ui/toast'
 import { Trash2, ShoppingBag, Check } from 'lucide-react'
+import { formatPrice } from '@/lib/utils/format-price'
 
 export interface MappedWishlistItem {
   id: string
@@ -45,7 +46,6 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
   const [isJustAdded, setIsJustAdded] = useState(false)
 
   const activePrice = product.defaultVariant?.price ?? product.base_price
-  const priceFormatted = activePrice.toLocaleString()
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -148,7 +148,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
 
             <div className="mt-2 flex items-baseline justify-between">
               <span className="text-base font-bold font-price text-forest-950">
-                ৳{priceFormatted}
+                {formatPrice(activePrice)}
               </span>
               {product.defaultVariant?.name && product.defaultVariant.name !== 'Standard' && (
                 <span className="text-[10px] font-mono text-forest-600 bg-cream-100 px-1.5 py-0.5 rounded border border-forest-200/60 truncate max-w-[120px]">
@@ -275,7 +275,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
 
           <div className="mt-3 flex items-baseline justify-between">
             <p className="text-base font-bold text-forest-950 font-price">
-              ৳{priceFormatted}
+              {formatPrice(activePrice)}
             </p>
             {product.defaultVariant?.name && product.defaultVariant.name !== 'Standard' && (
               <span className="text-[11px] font-mono text-forest-500 truncate max-w-[140px]">

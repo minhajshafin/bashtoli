@@ -30,75 +30,58 @@ export function AccountLayoutWrapper({
   const pathname = usePathname()
   const isWishlist = pathname === '/account/wishlist'
   const isOverview = pathname === '/account'
-  const isDarkCanvas = true
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] overflow-hidden transition-colors duration-300 bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 py-4 sm:py-8 lg:py-16 pb-36 sm:pb-24">
+    <div className="relative min-h-[calc(100dvh-5rem)] overflow-hidden bg-bg-canvas text-text-primary selection:bg-gold-500/20 py-4 sm:py-8 lg:py-16 pb-36 sm:pb-24">
       <CheckoutBackgroundArt
-        variant="dark"
-        className="opacity-40"
+        variant="light"
+        className="opacity-20"
       />
 
       <div
-        className={`relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] w-full flex-1 px-4 sm:px-6 lg:px-8 xl:px-10`}
+        className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] w-full flex-1 px-4 sm:px-6 lg:px-8 xl:px-10"
       >
         <div className="lg:grid lg:grid-cols-12 lg:gap-10 xl:gap-12 items-start">
           {/* Sidebar / Top Navigation Rail */}
           <aside
             className={`lg:col-span-4 pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r lg:pr-8 xl:pr-10 ${
               isWishlist ? 'hidden lg:block' : 'block'
-            } border-forest-800/80`}
+            } border-border-primary`}
           >
             <div className="space-y-3 sm:space-y-6">
               {/* Customer Identity Card: Shown on mobile ONLY on /account (the hub). On subpages, hidden on mobile so content starts immediately! */}
               <div
                 className={`${
                   isOverview ? 'flex' : 'hidden lg:flex'
-                } items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border shadow-xl backdrop-blur-xs transition-colors border-forest-800/90 bg-forest-900/80 text-cream-50`}
+                } items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border border-border-primary bg-white/95 text-text-primary shadow-subtle`}
               >
                 <div
-                  className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-display text-lg sm:text-xl font-medium shadow-xs border ${
-                    isDarkCanvas
-                      ? 'bg-forest-950 text-gold-400 border-gold-500/40 ring-2 ring-gold-400/10'
-                      : 'bg-forest-900 text-gold-400 border-forest-800'
-                  }`}
+                  className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-display text-lg sm:text-xl font-medium shadow-xs border bg-forest-900 text-gold-400 border-forest-800"
                 >
                   {userInitial}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p
-                      className={`text-[10px] font-sans font-semibold uppercase tracking-[0.2em] ${
-                        isDarkCanvas ? 'text-gold-400/90' : 'text-forest-600/90'
-                      }`}
-                    >
+                    <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-text-accent">
                       Customer
                     </p>
                     {role && role !== 'customer' && (
-                      <span className="inline-flex items-center rounded-full bg-gold-400/20 px-2 py-0.2 text-[9px] font-mono font-bold uppercase tracking-wider text-gold-700 border border-gold-400/40">
+                      <span className="inline-flex items-center rounded-full bg-gold-100 px-2 py-0.2 text-[9px] font-mono font-bold uppercase tracking-wider text-gold-800 border border-gold-300/80">
                         {role}
                       </span>
                     )}
                   </div>
-                  <h2
-                    className={`text-sm sm:text-lg font-medium font-display truncate mt-0.5 ${
-                      isDarkCanvas ? 'text-cream-50' : 'text-forest-950'
-                    }`}
-                  >
+                  <h2 className="text-sm sm:text-lg font-medium font-display truncate mt-0.5 text-text-primary">
                     {displayName}
                   </h2>
-                  <p
-                    className={`text-xs truncate font-mono ${
-                      isDarkCanvas ? 'text-forest-400' : 'text-forest-600'
-                    }`}
-                  >
+                  <p className="text-xs truncate font-mono text-text-secondary">
                     {email}
                   </p>
                 </div>
               </div>
 
               {/* Navigation Tabs (Horizontal on mobile, vertical list on desktop) */}
-              <AccountNav isDark={isDarkCanvas} />
+              <AccountNav isDark={false} />
             </div>
           </aside>
 

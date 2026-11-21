@@ -127,10 +127,10 @@ export default async function WishlistPage() {
   return (
     <div className="w-full">
       {/* Top Utility Navigation Row */}
-      <div className="mb-4 flex items-center justify-between pb-3 sm:pb-4 border-b border-forest-800/80">
+      <div className="mb-4 flex items-center justify-between pb-3 sm:pb-4 border-b border-border-primary">
         <Link
           href="/products"
-          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors uppercase tracking-wider group cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors uppercase tracking-wider group cursor-pointer"
         >
           <svg
             className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5"
@@ -143,32 +143,32 @@ export default async function WishlistPage() {
           </svg>
           <span>Back to Shop</span>
         </Link>
-        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-forest-400">
+        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-secondary">
           CURATED ARCHIVE
         </span>
       </div>
 
       {/* Masthead Header */}
-      <section className="mb-6 pb-5 border-b border-forest-800/80">
+      <section className="mb-6 pb-5 border-b border-border-primary">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 mb-1.5">
               <span className="h-px w-5 bg-gold-400/60" />
-              <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/90">
+              <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-text-accent">
                 Saved Items · Bashtoli Stationery
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-cream-50 tracking-tight font-display">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-text-primary tracking-tight font-display">
                 My Wishlist
               </h1>
               {wishlistProducts.length > 0 && (
-                <span className="rounded-full bg-gold-400/15 border border-gold-400/35 px-2.5 py-0.5 text-xs font-bold text-gold-300 font-price">
+                <span className="rounded-full bg-gold-100 border border-gold-300 px-2.5 py-0.5 text-xs font-bold text-gold-800 font-price">
                   {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'}
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-[13px] text-cream-200/70 mt-1 font-sans leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-[13px] text-text-secondary mt-1 font-sans leading-relaxed max-w-xl">
               Handcrafted notebooks and stationeries you have saved to purchase or review later.
             </p>
           </div>
@@ -207,7 +207,7 @@ export default async function WishlistPage() {
                   <Link
                     key={label}
                     href={href}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/90 bg-white px-3.5 py-2 text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-all shadow-2xs"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-forest-200/90 bg-white px-3.5 py-2 text-xs font-sans font-medium text-forest-800 hover:border-gold-500/60 hover:text-gold-700 active:scale-95 transition-colors shadow-2xs"
                   >
                     <Icon className="h-3.5 w-3.5 text-gold-600" />
                     <span>{label}</span>
@@ -219,7 +219,7 @@ export default async function WishlistPage() {
             <div className="pt-3 border-t border-forest-200/70 max-w-xs mx-auto">
               <Link
                 href="/products"
-                className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-all shadow-xs"
+                className="w-full inline-flex h-12 items-center justify-center gap-2 rounded-xl btn-primary text-xs font-sans font-semibold tracking-wide active:scale-95 transition-colors shadow-xs"
               >
                 <span>Explore All Stationery Goods</span>
                 <ArrowRight className="h-4 w-4" />

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import React from 'react'
+import { formatPrice } from '@/lib/utils/format-price'
 
 interface CartSummaryProps {
   subtotal: number
@@ -36,17 +37,17 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
         <div className="flex items-center justify-between text-xs sm:text-[13px] font-sans">
           <span className="text-forest-600">Items Subtotal</span>
           <span className="font-semibold text-forest-950 font-price">
-            ৳{subtotal.toLocaleString()}
+            {formatPrice(subtotal)}
           </span>
         </div>
 
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs font-sans text-forest-600">
             <span>Estimated Delivery Fee</span>
-            <span className="text-[11px] text-forest-700 font-mono font-medium">৳70 / ৳120</span>
+            <span className="text-[11px] text-forest-700 font-mono font-medium">Tk 70 / Tk 120</span>
           </div>
           <p className="text-[10px] text-forest-500 font-sans leading-tight">
-            ৳70 Inside Dhaka · ৳120 Outside Dhaka · Free Studio Pickup
+            Tk 70 Inside Dhaka · Tk 120 Outside Dhaka · Free Studio Pickup
           </p>
         </div>
 
@@ -59,7 +60,7 @@ export function CartSummary({ subtotal, hasUnavailableItems, isCartEmpty }: Cart
             <span className="text-[10px] text-forest-500 font-sans">Before courier selection</span>
           </div>
           <span className="text-lg sm:text-xl font-bold text-forest-950 font-price">
-            ৳{subtotal.toLocaleString()}
+            {formatPrice(subtotal)}
           </span>
         </div>
       </div>

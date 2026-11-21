@@ -284,7 +284,7 @@ export function ProductList({ products }: { products: ProductWithCategory[] }) {
 
                 {/* Price */}
                 <td className="px-6 py-4 text-right font-black text-slate-900 whitespace-nowrap">
-                  ৳{product.base_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  Tk {product.base_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </td>
 
                 {/* Smart Status Toggle (Consolidated Published + Status) */}

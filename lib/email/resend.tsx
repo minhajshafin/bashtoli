@@ -1,12 +1,20 @@
 import { Resend } from 'resend'
-import React from 'react'
-import { OrderAlertEmail } from './templates/order-alert'
-import { OrderConfirmationEmail } from './templates/order-confirmation'
-import { SuggestionAlertEmail } from './templates/suggestion-alert'
+import { renderOrderAlertEmailHtml } from './templates/order-alert'
+import { renderOrderConfirmationEmailHtml } from './templates/order-confirmation'
+import { renderSuggestionAlertEmailHtml } from './templates/suggestion-alert'
 
 const resendApiKey = process.env.RESEND_API_KEY
 // Initialize client only if API key is provided
 export const resend = resendApiKey && resendApiKey !== 're_dummy_api_key_for_testing' ? new Resend(resendApiKey) : null
+
+function getSenderEmail(configured?: string, fallback: string = 'Bashtoli Orders <orders@bashtoli.com>'): string {
+  if (!configured) return fallback
+  // Resend strictly forbids sending from public webmail domains like @gmail.com, @yahoo.com
+  if (/@(gmail|yahoo|hotmail|outlook)\.com/i.test(configured)) {
+    return 'onboarding@resend.dev'
+  }
+  return configured
+}
 
 interface OrderItemInfo {
   product_name: string
@@ -46,7 +54,7 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
     return
   }
 
-  const fromAddress = process.env.RESEND_FROM_EMAIL || 'Bashtoli Orders <orders@bashtoli.com>'
+  const fromAddress = getSenderEmail(process.env.RESEND_FROM_EMAIL, 'Bashtoli Orders <orders@bashtoli.com>')
   const dispatches: Promise<void>[] = []
 
   // 1. Send Admin Alert Email
@@ -56,21 +64,19 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
         const res = await resend.emails.send({
           from: fromAddress,
           to: adminEmail,
-          subject: `New Order ${order.order_number} - ৳${Number(order.total).toLocaleString()}`,
-          react: (
-            <OrderAlertEmail
-              orderNumber={order.order_number}
-              customerName={order.customer_name}
-              phone={order.phone}
-              address={order.address}
-              fulfillmentType={order.fulfillment_type}
-              deliveryZone={order.delivery_zone || null}
-              deliveryFee={Number(order.delivery_fee)}
-              subtotal={Number(order.subtotal)}
-              total={Number(order.total)}
-              items={items}
-            />
-          ),
+          subject: `New Order ${order.order_number} - Tk ${Number(order.total).toLocaleString()}`,
+          html: renderOrderAlertEmailHtml({
+            orderNumber: order.order_number,
+            customerName: order.customer_name,
+            phone: order.phone,
+            address: order.address,
+            fulfillmentType: order.fulfillment_type,
+            deliveryZone: order.delivery_zone || null,
+            deliveryFee: Number(order.delivery_fee),
+            subtotal: Number(order.subtotal),
+            total: Number(order.total),
+            items: items,
+          }),
         })
         if (res.error) {
           console.error(`[Resend Error] Admin alert send failed for ${order.order_number}:`, res.error)
@@ -92,16 +98,14 @@ export async function sendOrderEmails(order: OrderInfo, items: OrderItemInfo[]) 
             from: fromAddress,
             to: order.guest_email!.trim(),
             subject: `Your Bashtoli Order ${order.order_number} has been received!`,
-            react: (
-              <OrderConfirmationEmail
-                orderNumber={order.order_number}
-                accessToken={order.access_token}
-                customerName={order.customer_name}
-                address={order.address}
-                total={Number(order.total)}
-                items={items}
-              />
-            ),
+            html: renderOrderConfirmationEmailHtml({
+              orderNumber: order.order_number,
+              accessToken: order.access_token,
+              customerName: order.customer_name,
+              address: order.address,
+              total: Number(order.total),
+              items: items,
+            }),
           })
           if (res.error) {
             console.error(
@@ -144,9 +148,7 @@ export async function sendSuggestionEmail(
     process.env.ADMIN_NOTIFICATION_EMAIL ||
     'bashtoli.computer@gmail.com'
 
-  const fromEmail =
-    process.env.RESEND_FROM_EMAIL ||
-    'Bashtoli Suggestions <orders@bashtoli.com>'
+  const fromEmail = getSenderEmail(process.env.RESEND_FROM_EMAIL, 'Bashtoli Suggestions <orders@bashtoli.com>')
 
   const isEmail = Boolean(data.contact && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact.trim()))
   const replyTo = isEmail && data.contact ? data.contact.trim() : undefined
@@ -174,13 +176,11 @@ export async function sendSuggestionEmail(
       to: recipientEmail,
       replyTo: replyTo,
       subject: `New Item Suggestion from ${senderTitle}`,
-      react: (
-        <SuggestionAlertEmail
-          name={data.name}
-          contact={data.contact}
-          suggestion={data.suggestion}
-        />
-      ),
+      html: renderSuggestionAlertEmailHtml({
+        name: data.name,
+        contact: data.contact,
+        suggestion: data.suggestion,
+      }),
     })
 
     if (res.error) {

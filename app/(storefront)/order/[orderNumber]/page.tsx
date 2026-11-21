@@ -2,6 +2,7 @@ import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { cookies } from 'next/headers'
+import { connection } from 'next/server'
 import { isOrderCookieVerified } from '@/lib/utils/order-token'
 import {
   resolveOrderAccess,
@@ -44,13 +45,18 @@ export default async function OrderConfirmationPage({
   params,
   searchParams,
 }: OrderPageProps) {
+  await connection()
+
   const resolvedParams = await params
   const { orderNumber } = resolvedParams
 
   const resolvedSearchParams = await searchParams
   const tokenParam = resolvedSearchParams?.token
 
-  // 1. Fetch only the minimum columns required for the access decision
+  // 1. Check for signed httpOnly phone-verification cookie (dynamic access check)
+  const cookieStore = await cookies()
+
+  // 2. Fetch only the minimum columns required for the access decision
   const adminDb = createAdminClient()
   const { data: initialOrder, error: orderError } = await adminDb
     .from('orders')
@@ -62,7 +68,7 @@ export default async function OrderConfirmationPage({
     console.error('Error fetching order for access check:', orderError)
   }
 
-  // 2. Fetch authenticated user and profile role if a session exists
+  // 3. Fetch authenticated user and profile role if a session exists
   const client = await createClient()
   const {
     data: { user },
@@ -78,8 +84,6 @@ export default async function OrderConfirmationPage({
     role = profile?.role ?? null
   }
 
-  // 3. Check for signed httpOnly phone-verification cookie
-  const cookieStore = await cookies()
   const cookieVerified = initialOrder
     ? isOrderCookieVerified(cookieStore, initialOrder.order_number)
     : false

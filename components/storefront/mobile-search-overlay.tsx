@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Search, X, ArrowRight, BookOpen, PenTool, Sparkles } from 'lucide-react'
+import { formatPrice } from '@/lib/utils/format-price'
 
 interface SearchProduct {
   id: string
@@ -238,7 +239,7 @@ export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProp
                           </span>
                         )}
                         <span className="text-xs font-bold text-gold-400 font-price">
-                          ৳{product.price.toLocaleString('en-BD')}
+                          {formatPrice(product.price)}
                         </span>
                       </div>
                     </div>

@@ -23,14 +23,17 @@ export function BagClient() {
     .sort()
     .join(',')
 
-  // Validate cart items against the database on mount or when cart keys change
+  // Validate cart items against the database deferred to idle so initial render/hydration remains instantaneous
   useEffect(() => {
     if (!isLoaded || cart.length === 0) return
 
+    let cancelled = false
     async function validateItems() {
       setIsValidating(true)
       const variantIds = cart.map((item) => item.variant_id)
       const results = await checkCartItemsAvailability(variantIds)
+
+      if (cancelled) return
 
       const statusMap: Record<string, ValidatedCartItem> = {}
       for (const res of results) {
@@ -45,7 +48,19 @@ export function BagClient() {
       setIsValidating(false)
     }
 
-    validateItems()
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(validateItems, { timeout: 2500 })
+      return () => {
+        cancelled = true
+        window.cancelIdleCallback(idleId)
+      }
+    } else {
+      const timer = setTimeout(validateItems, 1200)
+      return () => {
+        cancelled = true
+        clearTimeout(timer)
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, cartKey])
 
@@ -194,28 +209,22 @@ export function BagClient() {
             {/* Category Exploration Pills */}
             <div className="mt-6 pt-5 border-t border-forest-900/10 flex flex-wrap justify-center gap-2">
               <Link
-                href="/products?category=notebooks"
+                href="/products?category=notebooks-and-journals"
                 className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
-                📖 Notebooks
+                Notebooks &amp; Journals
               </Link>
               <Link
-                href="/products?category=writing-tools"
+                href="/products?category=study-and-exam-essentials"
                 className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
-                ✒️ Writing Tools
+                Writing Tools
               </Link>
               <Link
-                href="/products?category=calligraphy-ink"
+                href="/products?category=gift-and-craft"
                 className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
-                🪶 Calligraphy Ink
-              </Link>
-              <Link
-                href="/products?category=desk-goods"
-                className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
-              >
-                🪵 Desk Goods
+                Paper &amp; Craft Studio
               </Link>
             </div>
 

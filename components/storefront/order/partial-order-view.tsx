@@ -19,22 +19,22 @@ export interface PartialOrderViewProps {
  */
 export function OrderPhoneVerificationGate({ order }: PartialOrderViewProps) {
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center px-4 py-8 sm:py-16 pb-28 sm:pb-20 overflow-hidden">
-      <CheckoutBackgroundArt />
-      <div className="relative z-10 w-full max-w-md bg-cream-100/80 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-2xs space-y-6 text-center animate-fade-in backdrop-blur-xs">
+    <div className="relative min-h-[calc(100dvh-5rem)] flex items-center justify-center px-4 py-8 sm:py-16 pb-28 sm:pb-20 overflow-hidden bg-bg-canvas">
+      <CheckoutBackgroundArt className="opacity-20" />
+      <div className="relative z-10 w-full max-w-md bg-white/95 border border-border-primary rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-atelier space-y-6 text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-2 shadow-xs border border-forest-800">
           <ShieldCheck className="h-6 w-6 stroke-[2]" />
         </div>
         <div className="space-y-1.5">
-          <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-600/90">
+          <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-text-accent">
             Security Verification
           </p>
-          <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 font-display">
+          <h1 className="text-2xl sm:text-3xl font-medium text-text-primary font-display">
             Verify Phone Number
           </h1>
-          <p className="text-xs sm:text-[13px] text-forest-600 leading-relaxed max-w-xs mx-auto font-sans">
+          <p className="text-xs sm:text-[13px] text-text-secondary leading-relaxed max-w-xs mx-auto font-sans">
             To view tracking information for order{' '}
-            <span className="font-semibold text-forest-950 font-mono">{order.order_number}</span>
+            <span className="font-semibold text-text-primary font-mono">{order.order_number}</span>
             , please enter the phone number provided at checkout.
           </p>
         </div>
@@ -54,8 +54,8 @@ export function PartialOrderView({ order }: PartialOrderViewProps) {
   const items = order.items || []
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden">
-      <CheckoutBackgroundArt />
+    <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden bg-bg-canvas">
+      <CheckoutBackgroundArt className="opacity-20" />
       <div className="relative z-10 mx-auto max-w-2xl space-y-6 sm:space-y-8">
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 mb-1 shadow-xs border border-forest-800">
@@ -67,16 +67,16 @@ export function PartialOrderView({ order }: PartialOrderViewProps) {
           </div>
 
           <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-medium text-forest-950 tracking-tight font-display">
+            <h1 className="text-2xl sm:text-3xl font-medium text-text-primary tracking-tight font-display">
               Order Tracking
             </h1>
-            <p className="text-xs sm:text-[13px] text-forest-600 font-sans max-w-md mx-auto leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-text-secondary font-sans max-w-md mx-auto leading-relaxed">
               Guest tracking view. Recipient contact and address details are hidden for privacy.
             </p>
           </div>
         </div>
 
-        <div className="bg-cream-100/75 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-2xs space-y-6">
+        <div className="bg-white/95 border border-border-primary rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-atelier space-y-6">
           {/* Status Stepper */}
           <div className="pb-5 border-b border-forest-200/80">
             <OrderStatus status={order.status} createdAt={order.created_at} />
@@ -111,7 +111,7 @@ export function PartialOrderView({ order }: PartialOrderViewProps) {
           <WhatsAppLink orderNumber={order.order_number} className="w-full sm:w-auto" />
           <Link
             href="/products"
-            className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all cursor-pointer w-full sm:w-auto"
+            className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs active:scale-[0.98] transition-colors cursor-pointer w-full sm:w-auto"
           >
             <span>Continue Shopping</span>
             <ArrowRight className="h-4 w-4" />

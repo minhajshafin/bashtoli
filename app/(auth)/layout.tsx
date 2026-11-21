@@ -20,16 +20,16 @@ export default function AuthLayout({
 }) {
   return (
     <ToastProvider>
-      <div className="relative min-h-screen flex items-center justify-center bg-forest-900 text-cream-100 font-sans antialiased selection:bg-gold-500/30 selection:text-cream-100 overflow-x-hidden p-4 sm:p-8 lg:p-12">
+      <div className="relative min-h-screen flex items-center justify-center bg-bg-canvas text-text-primary font-sans antialiased selection:bg-gold-500/20 selection:text-text-primary overflow-x-hidden p-4 sm:p-8 lg:p-12">
         {/* Ambient background art */}
-        <CheckoutBackgroundArt className="text-gold-400/[0.05]" />
+        <CheckoutBackgroundArt className="text-gold-800/[0.04]" />
 
-        {/* Ambient lighting */}
+        {/* Ambient paper gradient */}
         <div
           className="fixed inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse at 30% 40%, rgba(201,169,110,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(13,31,21,0.5) 0%, transparent 65%)',
+              'radial-gradient(ellipse at 30% 30%, rgba(196,162,101,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(16,34,24,0.03) 0%, transparent 65%)',
           }}
           aria-hidden="true"
         />
@@ -41,7 +41,7 @@ export default function AuthLayout({
             <Link
               href="/"
               aria-label="Bashtoli Home"
-              className="group inline-flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-2xl px-3 py-1.5"
+              className="group inline-flex items-center gap-3 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500 rounded-2xl px-3 py-1.5"
             >
               <Image
                 src="/logo-round.svg"
@@ -49,13 +49,13 @@ export default function AuthLayout({
                 width={40}
                 height={40}
                 priority
-                className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-md shrink-0"
+                className="w-10 h-10 object-contain drop-shadow-xs shrink-0"
               />
               <div className="text-left">
-                <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold leading-none">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-text-accent font-semibold leading-none">
                   Bashtoli &nbsp;·&nbsp; Est. 2026
                 </p>
-                <h2 className="text-sm font-medium text-cream-100 font-display tracking-tight mt-0.5">
+                <h2 className="text-sm font-medium text-text-primary font-display tracking-tight mt-0.5">
                   Bashtoli Stationery
                 </h2>
               </div>
@@ -64,7 +64,7 @@ export default function AuthLayout({
 
           {/* Desktop Left Column: Brand Emblem & Tagline (hidden on mobile, lg:flex on desktop) */}
           <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center text-center py-12">
-            <Link href="/" aria-label="Bashtoli Home" className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 rounded-3xl p-2">
+            <Link href="/" aria-label="Bashtoli Home" className="group block focus:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500 rounded-3xl p-2">
               <div className="relative flex items-center justify-center">
                 <Image
                   src="/logo-round.svg"
@@ -72,27 +72,27 @@ export default function AuthLayout({
                   width={280}
                   height={280}
                   priority
-                  className="relative z-10 w-48 h-48 md:w-56 md:h-56 object-contain transition-transform duration-500 group-hover:scale-105"
+                  className="relative z-10 w-48 h-48 md:w-56 md:h-56 object-contain"
                   style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
             </Link>
 
             <div className="mt-6 max-w-xs">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold mb-1.5">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-text-accent font-semibold mb-1.5">
                 Bashtoli &nbsp;·&nbsp; Est. 2026
               </p>
-              <h2 className="text-lg font-medium text-cream-100 font-display tracking-tight">
+              <h2 className="text-xl font-medium text-text-primary font-display tracking-tight">
                 Bashtoli Stationery
               </h2>
-              <p className="mt-1 text-xs text-forest-300 font-light leading-relaxed">
+              <p className="mt-1 text-xs text-text-secondary font-light leading-relaxed">
                 Simple pens, papers, and desk essentials crafted for everyday note-taking.
               </p>
             </div>
           </div>
 
           {/* Right Column: Auth Card Box */}
-          <div className="w-full lg:col-span-7 flex items-center justify-center">
+          <div className="w-full lg:col-span-7 flex items-center justify-center min-h-[460px]">
             {children}
           </div>
         </div>

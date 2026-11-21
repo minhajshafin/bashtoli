@@ -86,11 +86,11 @@ export default async function CheckoutPage() {
                 Dispatch &amp; Delivery · Dhaka Shop
               </span>
             </div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-forest-950 tracking-tight font-display">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-forest-950 tracking-tight font-display leading-tight">
                 Checkout · Delivery Details
               </h1>
-              <span className="rounded-pill bg-gold-400/20 border border-gold-600/30 px-2.5 py-0.5 text-xs font-bold text-gold-800 font-price">
+              <span className="rounded-pill bg-gold-400/20 border border-gold-600/30 px-2.5 py-0.5 text-xs font-bold text-gold-800 font-price shrink-0">
                 Cash on Delivery
               </span>
             </div>

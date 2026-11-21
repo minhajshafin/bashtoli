@@ -77,9 +77,9 @@ export function OrderDetail({ detail }: OrderDetailProps) {
                     <p className="text-xs text-slate-400 mt-0.5">Quantity: {item.qty}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-black text-slate-900">৳{(item.price_at_purchase * item.qty).toLocaleString()}</p>
+                    <p className="font-black text-slate-900">Tk {(item.price_at_purchase * item.qty).toLocaleString()}</p>
                     {item.qty > 1 && (
-                      <p className="text-[10px] text-slate-405 mt-0.5">৳{item.price_at_purchase.toLocaleString()} each</p>
+                      <p className="text-[10px] text-slate-405 mt-0.5">Tk {item.price_at_purchase.toLocaleString()} each</p>
                     )}
                   </div>
                 </div>
@@ -91,19 +91,19 @@ export function OrderDetail({ detail }: OrderDetailProps) {
           <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-3 shadow-xs">
             <div className="flex justify-between text-xs font-semibold text-slate-500">
               <span>Subtotal</span>
-              <span className="text-slate-900">৳{Number(order.subtotal).toLocaleString()}</span>
+              <span className="text-slate-900">Tk {Number(order.subtotal).toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-xs font-semibold text-slate-500">
               <span>Delivery Fee</span>
               <span className="text-slate-900">
-                {Number(order.delivery_fee) === 0 ? 'Free' : `৳${Number(order.delivery_fee).toLocaleString()}`}
+                {Number(order.delivery_fee) === 0 ? 'Free' : `Tk ${Number(order.delivery_fee).toLocaleString()}`}
               </span>
             </div>
             <hr className="border-slate-150" />
             <div className="flex justify-between items-baseline">
               <span className="text-sm font-bold text-slate-800">Total (COD)</span>
               <span className="text-xl font-black text-slate-900">
-                ৳{Number(order.total).toLocaleString()}
+                Tk {Number(order.total).toLocaleString()}
               </span>
             </div>
           </div>

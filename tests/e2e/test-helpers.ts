@@ -21,14 +21,6 @@ import { expect } from '@playwright/test'
  * Loads environment variables from .env.local if not already present.
  */
 export function loadEnv(): void {
-  if (
-    process.env.SUPABASE_SECRET_KEY &&
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.E2E_SUPABASE_URL
-  ) {
-    return
-  }
-
   const envPath = path.resolve(process.cwd(), '.env.local')
   if (fs.existsSync(envPath)) {
     const content = fs.readFileSync(envPath, 'utf8')
@@ -388,6 +380,7 @@ export async function createOrGetTestCustomer(
  * Helper to log in a user through the UI form.
  */
 export async function loginViaUI(page: Page, email: string, password = 'mypassword123'): Promise<void> {
+  await resetRateLimits()
   await page.goto('/login')
   await expect(page.getByRole('heading', { name: /Welcome Back|Member Sign In/i })).toBeVisible()
 
@@ -407,6 +400,7 @@ export async function createTestGuestOrder(
   phone = '01712345678',
   customerName = 'Test Guest User'
 ): Promise<{ id: string; order_number: string; access_token: string }> {
+  await resetRateLimits()
   const supabase = getAdminClient()
   await ensureTestCatalog()
 
@@ -448,5 +442,25 @@ export async function createTestGuestOrder(
   })
 
   return order
+}
+
+/**
+ * Resets Upstash Redis rate limit keys so E2E test runs on 127.0.0.1
+ * are not falsely throttled by sliding-window limiters.
+ */
+export async function resetRateLimits(): Promise<void> {
+  loadEnv()
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    try {
+      const { Redis } = await import('@upstash/redis')
+      const redis = Redis.fromEnv()
+      const keys = await redis.keys('rl:*')
+      if (keys.length > 0) {
+        await Promise.all(keys.map((k) => redis.del(k)))
+      }
+    } catch {
+      // Ignore if Redis unreachable
+    }
+  }
 }
 

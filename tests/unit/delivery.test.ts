@@ -11,11 +11,11 @@ import { DELIVERY_FEES, getDeliveryFee } from '@/lib/config/delivery'
 
 // ── DELIVERY_FEES constant ────────────────────────────────────
 describe('DELIVERY_FEES', () => {
-  it('charges ৳70 for inside_dhaka deliveries', () => {
+  it('charges Tk 70 for inside_dhaka deliveries', () => {
     expect(DELIVERY_FEES.inside_dhaka).toBe(70)
   })
 
-  it('charges ৳120 for outside_dhaka deliveries', () => {
+  it('charges Tk 120 for outside_dhaka deliveries', () => {
     expect(DELIVERY_FEES.outside_dhaka).toBe(120)
   })
 })

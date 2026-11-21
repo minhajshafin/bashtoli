@@ -4,6 +4,7 @@ import React, { useTransition, useState } from 'react'
 import { claimGuestOrdersAction } from '@/lib/actions/claim-guest-orders'
 import { useToast } from '@/components/ui/toast'
 import { AlertCircle, Link2 } from 'lucide-react'
+import { formatPrice } from '@/lib/utils/format-price'
 
 interface GuestOrder {
   id: string
@@ -67,7 +68,7 @@ export function ClaimOrdersPrompt({ initialOrders }: ClaimOrdersPromptProps) {
                 <span className="text-forest-400 mx-2">•</span>
                 <span className="text-forest-600">{dateStr}</span>
               </div>
-              <span className="font-bold text-forest-950 font-price">৳{o.total.toLocaleString()}</span>
+              <span className="font-bold text-forest-950 font-price">{formatPrice(o.total)}</span>
             </div>
           )
         })}

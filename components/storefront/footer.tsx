@@ -39,6 +39,7 @@ function FooterColumn({
             ) : (
               <Link
                 href={href}
+                prefetch={false}
                 className="text-xs font-light text-text-inverse-secondary hover:text-text-accent transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
               >
                 {label}
@@ -145,7 +146,7 @@ export function Footer() {
 
             {/* Mobile Only: Minimal Inline Navigation Links */}
             <div className="md:hidden flex items-center justify-center gap-3 text-[11px] text-forest-300 font-light mt-4 pt-3.5 border-t border-forest-800/60 w-full max-w-xs">
-              <Link href="/order/lookup" className="hover:text-text-accent transition-colors">
+              <Link href="/order/lookup" prefetch={false} className="hover:text-text-accent transition-colors">
                 Track Order
               </Link>
               <span className="text-forest-700">&middot;</span>

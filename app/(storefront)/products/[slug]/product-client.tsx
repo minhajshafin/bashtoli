@@ -11,6 +11,7 @@ import { useCart } from '@/lib/cart/cart-context'
 import { useToast } from '@/components/ui/toast'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { formatPrice, formatPriceRange } from '@/lib/utils/format-price'
 
 interface ProductDetailClientProps {
   detailData: ProductDetailData
@@ -67,12 +68,9 @@ export function ProductDetailClient({
   // Render price: single price or range if not selected yet
   const renderPrice = useCallback(() => {
     if (selectedVariant) {
-      return `৳${selectedVariant.price.toLocaleString()}`
+      return formatPrice(selectedVariant.price)
     }
-    if (lowestActivePrice === highestActivePrice) {
-      return `৳${lowestActivePrice.toLocaleString()}`
-    }
-    return `৳${lowestActivePrice.toLocaleString()} - ৳${highestActivePrice.toLocaleString()}`
+    return formatPriceRange(lowestActivePrice, highestActivePrice)
   }, [selectedVariant, lowestActivePrice, highestActivePrice])
 
   const variantName = useMemo(() => {
@@ -240,8 +238,8 @@ export function ProductDetailClient({
                 </svg>
               </summary>
               <div className="pt-2 pb-1 text-[11px] font-sans text-forest-600 leading-relaxed space-y-1.5">
-                <p>&bull; <strong>Dhaka City:</strong> 24&ndash;48 hours delivery (৳70 flat rate).</p>
-                <p>&bull; <strong>Outside Dhaka:</strong> 3&ndash;5 business days nationwide (৳120 flat rate).</p>
+                <p>&bull; <strong>Dhaka City:</strong> 24&ndash;48 hours delivery (Tk 70 flat rate).</p>
+                <p>&bull; <strong>Outside Dhaka:</strong> 3&ndash;5 business days nationwide (Tk 120 flat rate).</p>
                 <p>&bull; <strong>Cash on Delivery:</strong> Available across all 64 districts in Bangladesh.</p>
               </div>
             </details>

@@ -582,8 +582,8 @@ export function ProductForm({
                 Price (BDT) <span className="text-rose-500">*</span>
               </label>
               <div className="relative rounded-xl border border-slate-300 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all bg-white">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 font-bold text-sm select-none">
-                  ৳
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 font-bold text-xs select-none">
+                  Tk
                 </span>
                 <input
                   id="product-price"

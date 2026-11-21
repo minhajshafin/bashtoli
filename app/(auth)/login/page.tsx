@@ -19,7 +19,6 @@ export async function generateMetadata() {
   }
 }
 
-import { Suspense } from 'react'
 import { safeRedirectPath } from '@/lib/utils/safe-redirect'
 
 export const instant = false
@@ -39,9 +38,5 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     redirect(redirectTo)
   }
 
-  return (
-    <Suspense>
-      <AuthForm type="login" />
-    </Suspense>
-  )
+  return <AuthForm type="login" redirectTo={rawRedirectTo || ''} />
 }

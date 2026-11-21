@@ -47,6 +47,7 @@ const NAV_ITEMS = [
 ]
 
 export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
+  void isDark
   const pathname = usePathname()
   const activeTabRef = useRef<HTMLAnchorElement>(null)
   const navContainerRef = useRef<HTMLDivElement>(null)
@@ -79,26 +80,18 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
                 href={href}
                 ref={isActive ? activeTabRef : undefined}
                 aria-current={isActive ? 'page' : undefined}
-                className={`shrink-0 flex items-center justify-between rounded-xl px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-sans transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap ${
+                className={`shrink-0 flex items-center justify-between rounded-xl px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-sans transition-colors cursor-pointer whitespace-nowrap ${
                   isActive
-                    ? isDark
-                      ? 'bg-gold-500 text-forest-950 font-bold shadow-md border border-gold-400 ring-1 ring-gold-400/40'
-                      : 'bg-forest-950 text-cream-50 font-semibold shadow-xs ring-1 ring-gold-500/30'
-                    : isDark
-                      ? 'bg-forest-900/90 lg:bg-transparent border border-forest-800/90 lg:border-transparent text-cream-200/85 hover:bg-forest-800/90 hover:text-cream-50'
-                      : 'bg-cream-100/70 lg:bg-transparent border border-forest-200/80 lg:border-transparent text-forest-700 hover:bg-cream-200/70 hover:text-forest-950'
+                    ? 'bg-btn-primary-bg text-btn-primary-text font-semibold shadow-xs'
+                    : 'bg-white/90 lg:bg-transparent border border-border-primary lg:border-transparent text-text-secondary hover:bg-cream-100 hover:text-text-primary'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <Icon
                     className={`h-4 w-4 shrink-0 transition-colors ${
                       isActive
-                        ? isDark
-                          ? 'text-forest-950 stroke-[2.2]'
-                          : 'text-gold-400 stroke-[2.2]'
-                        : isDark
-                          ? 'text-forest-400 stroke-[1.8]'
-                          : 'text-forest-500 stroke-[1.8]'
+                        ? 'text-gold-400 stroke-[2.2]'
+                        : 'text-text-secondary stroke-[1.8]'
                     }`}
                   />
                   {/* Full label on desktop, short label on small screens */}
@@ -118,13 +111,9 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
               <button
                 type="submit"
                 aria-label="Sign Out"
-                className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2.5 text-xs font-sans font-semibold active:scale-95 transition-all cursor-pointer whitespace-nowrap ${
-                  isDark
-                    ? 'border-terracotta-500/40 bg-terracotta-950/60 text-terracotta-300 hover:bg-terracotta-900/80'
-                    : 'border-terracotta-500/30 bg-terracotta-100/50 text-terracotta-700 hover:bg-terracotta-100'
-                }`}
+                className="flex items-center gap-1.5 rounded-xl border border-terracotta-500/30 bg-terracotta-100/70 text-terracotta-800 hover:bg-terracotta-100 px-3.5 py-2.5 text-xs font-sans font-semibold transition-colors cursor-pointer whitespace-nowrap"
               >
-                <LogOut className={`h-3.5 w-3.5 ${isDark ? 'text-terracotta-400' : 'text-terracotta-600'}`} />
+                <LogOut className="h-3.5 w-3.5 text-terracotta-700" />
                 <span>Sign Out</span>
               </button>
             </form>
@@ -133,17 +122,13 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
       </div>
 
       {/* Desktop Sign Out Option */}
-      <div className={`pt-3 border-t hidden lg:block ${isDark ? 'border-forest-800/80' : 'border-forest-200/80'}`}>
+      <div className="pt-3 border-t hidden lg:block border-border-primary">
         <form action={logoutAction}>
           <button
             type="submit"
-            className={`flex items-center gap-2.5 text-xs sm:text-sm font-medium px-3.5 py-2.5 rounded-xl transition-colors w-full text-left cursor-pointer active:scale-[0.99] ${
-              isDark
-                ? 'text-terracotta-400 hover:text-terracotta-300 hover:bg-terracotta-950/40'
-                : 'text-terracotta-700 hover:text-terracotta-800 hover:bg-terracotta-100/70'
-            }`}
+            className="flex items-center gap-2.5 text-xs sm:text-sm font-medium px-3.5 py-2.5 rounded-xl transition-colors w-full text-left cursor-pointer text-terracotta-800 hover:text-terracotta-900 hover:bg-terracotta-100/70"
           >
-            <LogOut className={`h-4 w-4 shrink-0 ${isDark ? 'text-terracotta-400' : 'text-terracotta-600'}`} />
+            <LogOut className="h-4 w-4 shrink-0 text-terracotta-700" />
             <span>Sign Out</span>
           </button>
         </form>

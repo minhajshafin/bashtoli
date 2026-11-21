@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
   )
 
   return (
-    <div className="w-full max-w-md bg-cream-100/95 text-forest-950 border border-forest-200/90 rounded-3xl p-5 sm:p-8 shadow-sm selection:bg-gold-500/20 selection:text-forest-900">
+    <div className="w-full max-w-md bg-white/95 text-text-primary border border-border-primary rounded-3xl p-5 sm:p-8 shadow-atelier selection:bg-gold-500/20 selection:text-forest-900">
       {/* Back Link */}
       <div className="mb-4">
         <Link
@@ -89,7 +89,7 @@ export default function ForgotPasswordPage() {
               autoComplete="email"
               required
               disabled={isPending}
-              className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-base sm:text-sm text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-all"
+              className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-base sm:text-sm text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
               placeholder="you@example.com"
             />
             {state.fieldErrors?.email && (

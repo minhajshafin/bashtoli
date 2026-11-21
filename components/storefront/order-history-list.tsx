@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import type { CustomerOrderSummary } from '@/lib/queries/customer-orders'
 import { Clock, ChevronRight } from 'lucide-react'
+import { formatPrice } from '@/lib/utils/format-price'
 
 interface OrderHistoryListProps {
   orders: CustomerOrderSummary[]
@@ -40,12 +41,12 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
           <Link
             key={o.id}
             href={`/order/${o.order_number}`}
-            className="group block rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md text-forest-950 p-4 sm:p-5 hover:border-gold-500/60 hover:shadow-lg active:scale-[0.99] transition-all duration-200 cursor-pointer"
+            className="group block rounded-2xl border border-border-primary bg-white/95 shadow-subtle text-text-primary p-4 sm:p-5 hover:border-border-gold transition-colors cursor-pointer"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <span className="text-sm sm:text-base font-bold text-forest-950 font-mono group-hover:text-gold-700 transition-colors">
+                  <span className="text-sm sm:text-base font-bold text-text-primary font-mono group-hover:text-text-accent transition-colors">
                     {o.order_number}
                   </span>
                   <span
@@ -56,7 +57,7 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
                     {o.status.replace(/_/g, ' ')}
                   </span>
                 </div>
-                <p className="text-xs text-forest-600 font-sans flex items-center gap-1.5">
+                <p className="text-xs text-text-secondary font-sans flex items-center gap-1.5">
                   <Clock className="h-3 w-3 text-forest-400" />
                   <span>Placed on {orderDateStr}</span>
                   <span>·</span>
@@ -64,11 +65,11 @@ export function OrderHistoryList({ orders }: OrderHistoryListProps) {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between sm:justify-end gap-4 pt-3 sm:pt-0 border-t sm:border-t-0 border-forest-200/60">
-                <span className="text-base sm:text-lg font-bold text-forest-950 font-price">
-                  ৳{o.total.toLocaleString()}
+              <div className="flex items-center justify-between sm:justify-end gap-4 pt-3 sm:pt-0 border-t sm:border-t-0 border-border-subtle">
+                <span className="text-base sm:text-lg font-bold text-text-primary font-price">
+                  {formatPrice(o.total)}
                 </span>
-                <span className="inline-flex h-9 items-center justify-center gap-1 text-xs font-sans font-semibold px-4 rounded-xl bg-forest-900 text-cream-50 group-hover:bg-gold-500 group-hover:text-forest-950 transition-all shadow-xs">
+                <span className="btn-secondary inline-flex h-9 items-center justify-center gap-1 text-xs font-sans font-semibold px-4 rounded-xl">
                   <span>Track &amp; Invoice</span>
                   <ChevronRight className="h-3.5 w-3.5" />
                 </span>

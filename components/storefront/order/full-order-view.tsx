@@ -8,6 +8,7 @@ import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { PrintReceiptButton } from '@/components/storefront/print-receipt-button'
 import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 import { isOrderCancelable, type FullOrderDTO, type FullOrderItemDTO } from '@/lib/order/access'
+import { formatPrice } from '@/lib/utils/format-price'
 import {
   CheckCircle2,
   Clock,
@@ -43,8 +44,8 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
   const isPendingAndCancelable = isOrderCancelable(order.created_at, order.status)
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden">
-      <CheckoutBackgroundArt />
+    <div className="relative min-h-[calc(100dvh-5rem)] px-4 py-6 sm:py-8 sm:px-6 lg:px-8 xl:px-10 pb-20 sm:pb-16 overflow-hidden bg-bg-canvas">
+      <CheckoutBackgroundArt className="opacity-25" />
       <div className="relative z-10 mx-auto max-w-3xl space-y-6 sm:space-y-8">
         {/* 3-Step Visual Progress Track */}
         <div className="print:hidden">
@@ -72,7 +73,7 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
         </div>
 
         {/* Main Order Card / Receipt */}
-        <div className="bg-cream-100/75 border border-forest-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-2xs space-y-6 sm:space-y-7 print:bg-white print:border-none print:shadow-none print:p-0">
+        <div className="bg-white/95 border border-border-primary rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-9 shadow-subtle space-y-6 sm:space-y-7 print:bg-white print:border-none print:shadow-none print:p-0">
           {/* Header row: Order ID + Date */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-forest-200/80">
             <div>
@@ -170,7 +171,7 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
                   <div className="space-y-0.5">
                     <p className="font-semibold text-forest-950 font-sans">Cash on Delivery Reminder</p>
                     <p className="text-forest-600 text-[11px] leading-relaxed font-sans">
-                      Please keep <span className="font-bold text-forest-950 font-price">৳{order.total.toLocaleString()}</span> in exact cash ready for the courier upon parcel delivery.
+                      Please keep <span className="font-bold text-forest-950 font-price">{formatPrice(order.total)}</span> in exact cash ready for the courier upon parcel delivery.
                     </p>
                   </div>
                 </div>
@@ -217,14 +218,14 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
                       </span>
                       {item.qty > 1 && (
                         <span className="text-[11px] text-forest-500 font-price">
-                          ৳{item.price_at_purchase.toLocaleString()} each
+                          {formatPrice(item.price_at_purchase)} each
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="text-right shrink-0">
                     <p className="font-semibold text-forest-950 font-price text-sm sm:text-base">
-                      ৳{(item.price_at_purchase * item.qty).toLocaleString()}
+                      {formatPrice(item.price_at_purchase * item.qty)}
                     </p>
                   </div>
                 </div>
@@ -236,7 +237,7 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
           <div className="space-y-2.5 bg-cream-200/60 p-4 sm:p-5 rounded-2xl border border-forest-200/80">
             <div className="flex justify-between text-xs sm:text-[13px] font-sans">
               <span className="text-forest-600">Subtotal</span>
-              <span className="font-semibold text-forest-950 font-price">৳{order.subtotal.toLocaleString()}</span>
+              <span className="font-semibold text-forest-950 font-price">{formatPrice(order.subtotal)}</span>
             </div>
             <div className="flex justify-between text-xs sm:text-[13px] font-sans">
               <span className="text-forest-600">Shipping &amp; Delivery</span>
@@ -244,7 +245,7 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
                 {order.delivery_fee === 0 ? (
                   <span className="text-emerald-700 font-semibold uppercase tracking-wider text-xs">Free</span>
                 ) : (
-                  `৳${order.delivery_fee.toLocaleString()}`
+                  formatPrice(order.delivery_fee)
                 )}
               </span>
             </div>
@@ -252,7 +253,7 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
             <div className="flex justify-between items-baseline pt-1">
               <span className="text-sm font-semibold text-forest-950 font-sans">Total (Pay on Delivery)</span>
               <span className="text-xl sm:text-2xl font-bold text-forest-950 font-price">
-                ৳{order.total.toLocaleString()}
+                {formatPrice(order.total)}
               </span>
             </div>
           </div>
@@ -263,7 +264,7 @@ export function FullOrderView({ order, items, isOwner }: FullOrderViewProps) {
           <WhatsAppLink orderNumber={order.order_number} className="w-full sm:w-auto" />
           <Link
             href="/products"
-            className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all cursor-pointer w-full sm:w-auto"
+            className="inline-flex h-12 sm:h-11 items-center justify-center gap-2 rounded-xl bg-forest-900 hover:bg-forest-850 px-6 text-xs sm:text-sm font-sans font-semibold uppercase tracking-wider text-cream-50 shadow-xs active:scale-[0.98] transition-colors cursor-pointer w-full sm:w-auto"
           >
             <span>Continue Shopping</span>
             <ArrowRight className="h-4 w-4" />

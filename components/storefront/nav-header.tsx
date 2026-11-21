@@ -143,6 +143,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
 
             <Link
               href="/order/lookup"
+              prefetch={false}
               className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-all after:duration-300 ${
                 pathname === '/order/lookup'
                   ? 'text-text-accent font-semibold after:w-full'

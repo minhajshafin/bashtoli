@@ -64,7 +64,7 @@ export function OrderReferencePill({
       onKeyDown={handleKeyDown}
       aria-label={`Copy order reference ${orderNumber}`}
       title="Click to copy order reference"
-      className={`group relative inline-flex items-center rounded-full bg-forest-900 border border-forest-800 text-gold-400 font-mono font-bold tracking-wider shadow-2xs hover:bg-forest-850 hover:border-gold-500/40 active:scale-95 transition-all duration-200 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500 select-none ${sizeClasses[size]} ${className}`}
+      className={`group relative inline-flex items-center rounded-full bg-forest-900 border border-forest-800 text-gold-400 font-mono font-bold tracking-wider shadow-2xs hover:bg-forest-850 hover:border-gold-500/40 active:scale-95 transition-colors duration-200 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500 select-none ${sizeClasses[size]} ${className}`}
     >
       <span className="text-[10px] uppercase font-sans tracking-widest text-forest-400 font-semibold hidden xs:inline">
         Ref:
@@ -72,7 +72,7 @@ export function OrderReferencePill({
       <span className="text-cream-100 font-bold">{orderNumber}</span>
 
       <span
-        className={`inline-flex items-center justify-center rounded-full transition-all duration-200 ${
+        className={`inline-flex items-center justify-center rounded-full transition-colors duration-200 ${
           copied
             ? 'bg-emerald-500/20 text-emerald-400'
             : 'bg-forest-800 text-gold-400 group-hover:text-gold-300 group-hover:bg-forest-750'
@@ -86,7 +86,7 @@ export function OrderReferencePill({
       </span>
 
       <span
-        className={`text-[10px] font-sans font-semibold uppercase tracking-wider transition-all duration-200 ${
+        className={`text-[10px] font-sans font-semibold uppercase tracking-wider transition-colors duration-200 ${
           copied ? 'text-emerald-400 font-bold' : 'text-forest-400 group-hover:text-forest-300'
         }`}
       >

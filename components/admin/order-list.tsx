@@ -76,7 +76,7 @@ function downloadCSV(orders: AdminOrderSummary[]) {
     ].map(escapeCell).join(','),
   )
 
-  // UTF-8 BOM ensures Excel renders the Bengali ৳ symbol correctly
+  // UTF-8 BOM ensures Excel renders currency symbols correctly
   const csv = '\uFEFF' + [headers.map(escapeCell).join(','), ...rows].join('\n')
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
@@ -313,7 +313,7 @@ export function OrderList({ orders, totalCount, pageSize }: OrderListProps) {
 
                       {/* Total */}
                       <td className="px-6 py-4 text-right font-black text-slate-900 whitespace-nowrap">
-                        ৳{o.total.toLocaleString()}
+                        Tk {o.total.toLocaleString()}
                       </td>
 
                       {/* Status */}

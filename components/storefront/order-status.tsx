@@ -110,7 +110,7 @@ export function OrderStatus({ status, createdAt }: OrderStatusProps) {
 
               {/* Node Icon */}
               <div
-                className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors duration-200 ${
                   isCompleted
                     ? 'bg-gold-500 text-forest-950 shadow-xs'
                     : isActive
@@ -179,7 +179,7 @@ export function OrderStatus({ status, createdAt }: OrderStatusProps) {
         {/* Track Line */}
         <div className="absolute top-7 left-[12.5%] right-[12.5%] h-1 bg-cream-300/80 rounded-full -z-10" />
         <div
-          className="absolute top-7 left-[12.5%] h-1 bg-gold-500 rounded-full transition-all duration-500 -z-10"
+          className="absolute top-7 left-[12.5%] h-1 bg-gold-500 rounded-full transition-[width] duration-500 -z-10"
           style={{ width: `${(activeIndex / (steps.length - 1)) * 75}%` }}
         />
 
@@ -192,7 +192,7 @@ export function OrderStatus({ status, createdAt }: OrderStatusProps) {
             return (
               <div key={step.label} className="flex flex-col items-center">
                 <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold transition-colors duration-200 ${
                     isCompleted
                       ? 'bg-gold-500 text-forest-950 shadow-sm'
                       : isActive

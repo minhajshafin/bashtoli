@@ -9,6 +9,7 @@ import { WishlistButton } from '@/components/storefront/wishlist-button'
 import { useCart } from '@/lib/cart/cart-context'
 import { useToast } from '@/components/ui/toast'
 import { startRouteProgress } from '@/components/storefront/route-progress-bar'
+import { formatPrice } from '@/lib/utils/format-price'
 
 interface ProductCardProps {
   product: ProductWithDetails
@@ -308,7 +309,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
         <div className="pt-1.5 sm:pt-2 border-t border-forest-900/6 flex flex-col gap-1.5 sm:gap-2">
           <div className="flex items-baseline justify-between gap-1">
             <span className="font-price text-xs sm:text-[15px] font-bold text-forest-950 tabular-nums">
-              ৳{lowestPrice.toLocaleString()}
+              {formatPrice(lowestPrice)}
             </span>
             {activeVariants.length > 1 && (
               <span className="text-[9px] sm:text-[10px] text-forest-600/70 font-sans">

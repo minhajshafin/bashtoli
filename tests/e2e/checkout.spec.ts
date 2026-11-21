@@ -1,9 +1,13 @@
 import { test, expect } from '@playwright/test'
-import { ensureTestCatalog, createTestGuestOrder } from './test-helpers'
+import { ensureTestCatalog, createTestGuestOrder, resetRateLimits } from './test-helpers'
 
 test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
   test.beforeAll(async () => {
     await ensureTestCatalog()
+  })
+
+  test.beforeEach(async () => {
+    await resetRateLimits()
   })
 
   test('should complete browse, add to bag, and checkout happy path with ?token= redirect and full view', async ({
@@ -98,6 +102,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     await expect(page.locator('body')).not.toContainText('123 Test Street')
 
     // 4. Submit phone number verification
+    await resetRateLimits()
     await page.fill('input#phone', testPhone)
     await page.getByRole('button', { name: 'Track Order' }).click()
 

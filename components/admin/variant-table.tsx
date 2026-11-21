@@ -249,8 +249,8 @@ export function VariantTable({
                   {/* Price Input */}
                   <td className="px-4 py-3">
                     <div className="relative w-28">
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400 text-xs">
-                        ৳
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-slate-400 text-[10px] font-bold">
+                        Tk
                       </span>
                       <input
                         type="number"

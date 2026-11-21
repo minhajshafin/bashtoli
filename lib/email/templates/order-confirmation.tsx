@@ -38,14 +38,14 @@ export function OrderConfirmationEmail({
       <ul style={{ paddingLeft: '20px' }}>
         {items.map((item, idx) => (
           <li key={idx} style={{ marginBottom: '8px' }}>
-            <strong>{item.product_name}</strong> - {item.qty} x ৳{item.price_at_purchase.toLocaleString()}
+            <strong>{item.product_name}</strong> - {item.qty} x Tk {item.price_at_purchase.toLocaleString()}
           </li>
         ))}
       </ul>
 
       <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#fafaf9', borderRadius: '8px' }}>
         <p style={{ margin: '0 0 6px 0' }}><strong>Delivery Address:</strong> {address}</p>
-        <p style={{ margin: '0', fontWeight: 'bold', fontSize: '16px' }}>Total Amount to Pay: ৳{total.toLocaleString()} (COD)</p>
+        <p style={{ margin: '0', fontWeight: 'bold', fontSize: '16px' }}>Total Amount to Pay: Tk {total.toLocaleString()} (COD)</p>
       </div>
 
       <div style={{ marginTop: '24px', textAlign: 'center' }}>
@@ -71,4 +71,65 @@ export function OrderConfirmationEmail({
       </p>
     </div>
   )
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+export function renderOrderConfirmationEmailHtml({
+  orderNumber,
+  accessToken,
+  customerName,
+  address,
+  total,
+  items,
+}: OrderConfirmationEmailProps): string {
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bashtoli.com'
+  const trackingUrl = accessToken
+    ? `${siteUrl}/order/${encodeURIComponent(orderNumber)}?token=${encodeURIComponent(accessToken)}`
+    : `${siteUrl}/order/${encodeURIComponent(orderNumber)}`
+
+  const itemsHtml = items
+    .map(
+      (item) =>
+        `<li style="margin-bottom: 8px;"><strong>${escapeHtml(item.product_name)}</strong> - ${item.qty} x Tk ${item.price_at_purchase.toLocaleString()}</li>`
+    )
+    .join('')
+
+  return `
+    <div style="font-family: sans-serif; padding: 20px; border: 1px solid #e4e4e7; border-radius: 12px;">
+      <h2 style="color: #d97706; border-bottom: 1px solid #f4f4f5; padding-bottom: 10px;">
+        Thank You for Your Order!
+      </h2>
+      <p>Hi ${escapeHtml(customerName)},</p>
+      <p>Your Cash on Delivery order <strong>${escapeHtml(orderNumber)}</strong> has been received and is currently pending verification.</p>
+
+      <h3 style="border-bottom: 1px solid #f4f4f5; padding-bottom: 5px; margin-top: 20px;">Order Summary</h3>
+      <ul style="padding-left: 20px;">${itemsHtml}</ul>
+
+      <div style="margin-top: 20px; padding: 15px; background-color: #fafaf9; border-radius: 8px;">
+        <p style="margin: 0 0 6px 0;"><strong>Delivery Address:</strong> ${escapeHtml(address)}</p>
+        <p style="margin: 0; font-weight: bold; font-size: 16px;">Total Amount to Pay: Tk ${total.toLocaleString()} (COD)</p>
+      </div>
+
+      <div style="margin-top: 24px; text-align: center;">
+        <a
+          href="${trackingUrl}"
+          style="display: inline-block; background-color: #1b382b; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px;"
+        >
+          View / Track Order Details
+        </a>
+      </div>
+
+      <p style="margin-top: 30px; font-size: 11px; color: #71717b; text-align: center;">
+        If you have any questions, please contact our support team.
+      </p>
+    </div>
+  `
 }

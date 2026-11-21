@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { DELIVERY_FEES } from '@/lib/config/delivery'
+import { formatPrice } from '@/lib/utils/format-price'
 
 interface DeliveryZoneSelectProps {
   fulfillmentType: 'delivery' | 'pickup'
@@ -147,7 +148,7 @@ export function DeliveryZoneSelect({
                 </div>
               </div>
               <span className="text-xs font-price font-bold text-forest-950 px-2 py-1 rounded-sm bg-cream-50 border border-forest-900/15 shrink-0">
-                ৳{DELIVERY_FEES.inside_dhaka}
+                {formatPrice(DELIVERY_FEES.inside_dhaka)}
               </span>
             </button>
 
@@ -183,15 +184,18 @@ export function DeliveryZoneSelect({
                 </div>
               </div>
               <span className="text-xs font-price font-bold text-forest-950 px-2 py-1 rounded-sm bg-cream-50 border border-forest-900/15 shrink-0">
-                ৳{DELIVERY_FEES.outside_dhaka}
+                {formatPrice(DELIVERY_FEES.outside_dhaka)}
               </span>
             </button>
           </div>
           {/* Reserved slot for inline validation error to prevent layout shifts */}
           <div className="min-h-[1.25rem] text-xs">
             {error && (
-              <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
-                <span>⚠</span> {error[0]}
+              <p className="text-terracotta-600 font-medium flex items-center gap-1.5 animate-fade-in">
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 7.5h.008v.008H12v-.008Z" />
+                </svg>
+                <span>{error[0]}</span>
               </p>
             )}
           </div>
