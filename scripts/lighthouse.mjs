@@ -18,8 +18,60 @@
  */
 
 import { spawnSync } from 'child_process'
-import { existsSync, mkdirSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import path from 'path'
+
+// Load .env.local if present to read staging test guards
+const envPath = path.resolve(process.cwd(), '.env.local')
+if (existsSync(envPath)) {
+  const content = readFileSync(envPath, 'utf8')
+  for (const line of content.split('\n')) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const eqIdx = trimmed.indexOf('=')
+    if (eqIdx !== -1) {
+      const key = trimmed.slice(0, eqIdx).trim()
+      const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '')
+      if (!process.env[key]) {
+        process.env[key] = val
+      }
+    }
+  }
+}
+
+/**
+ * Reset loopback runner rate limits on staging Redis before each test iteration.
+ * 
+ * Safety Guards:
+ * 1. Strictly refuses to execute in production (VERCEL_ENV=production).
+ * 2. Restricted to verified test environments matching E2E_SUPABASE_URL.
+ * 3. Point deletions ONLY for the test runner's loopback IP (127.0.0.1).
+ *    NEVER calls keys('rl:*') or scans shared database keys.
+ * 4. Logs any connection warnings explicitly (no empty catch blocks).
+ */
+async function resetRunnerRateLimits() {
+  if (process.env.VERCEL_ENV === 'production') {
+    throw new Error('SAFETY VIOLATION: Cannot reset rate limits in production (VERCEL_ENV=production).')
+  }
+
+  const e2eUrl = process.env.E2E_SUPABASE_URL
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!e2eUrl || e2eUrl !== supabaseUrl) {
+    return
+  }
+
+  const redisUrl = process.env.UPSTASH_REDIS_REST_URL
+  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!redisUrl || !redisToken) return
+
+  try {
+    const { Redis } = await import('@upstash/redis')
+    const redis = new Redis({ url: redisUrl, token: redisToken })
+    await redis.del('rl:auth:127.0.0.1', 'rl:order:127.0.0.1', 'rl:checkout:127.0.0.1', 'rl:search:127.0.0.1')
+  } catch (err) {
+    console.warn('[lighthouse] Loopback rate limit reset notice:', err.message)
+  }
+}
 
 const CHROME_PATH = process.env.CHROME_PATH || (existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : 'google-chrome')
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
@@ -149,6 +201,7 @@ async function benchmarkRouteMethod(route, method, saveDir) {
   const runs = []
   for (let i = 1; i <= RUNS; i++) {
     process.stdout.write(`[${i}/${RUNS}] `)
+    await resetRunnerRateLimits()
     const result = runLighthouse(fullUrl, method)
     runs.push(result)
 
