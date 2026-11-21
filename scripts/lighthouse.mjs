@@ -67,7 +67,19 @@ async function resetRunnerRateLimits() {
   try {
     const { Redis } = await import('@upstash/redis')
     const redis = new Redis({ url: redisUrl, token: redisToken })
-    await redis.del('rl:auth:127.0.0.1', 'rl:order:127.0.0.1', 'rl:checkout:127.0.0.1', 'rl:search:127.0.0.1')
+    const now = Date.now()
+    const currentWindow = Math.floor(now / 60000)
+    const prefixes = ['rl:auth', 'rl:order', 'rl:checkout', 'rl:search']
+    const keysToDelete = []
+    for (const prefix of prefixes) {
+      keysToDelete.push(
+        `${prefix}:127.0.0.1`,
+        `${prefix}:127.0.0.1:${currentWindow}`,
+        `${prefix}:127.0.0.1:${currentWindow - 1}`,
+        `${prefix}:127.0.0.1:${currentWindow + 1}`
+      )
+    }
+    await redis.del(...keysToDelete)
   } catch (err) {
     console.warn('[lighthouse] Loopback rate limit reset notice:', err.message)
   }
