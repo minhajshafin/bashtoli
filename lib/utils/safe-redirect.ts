@@ -30,11 +30,16 @@ export function safeRedirectPath(
     return fallback
   }
 
-  // Prevent URL-decoded bypasses (e.g. /%5Cevil.com -> /\evil.com)
+  // Prevent URL-decoded bypasses (including multi-layer/nested encoding like /%252f%252fhost)
   try {
-    const decoded = decodeURIComponent(raw)
-    if (!SAFE_REDIRECT_REGEX.test(decoded)) {
-      return fallback
+    let current = raw
+    for (let i = 0; i < 3; i++) {
+      const decoded = decodeURIComponent(current)
+      if (!SAFE_REDIRECT_REGEX.test(decoded)) {
+        return fallback
+      }
+      if (decoded === current) break
+      current = decoded
     }
   } catch {
     // Malformed URI encoding is rejected

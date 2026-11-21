@@ -23,7 +23,7 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
   return (
     <WishlistProvider isLoggedIn={false} initialWishlistIds={[]} pending>
       <CartProvider isLoggedIn={false}>
-        <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
+        <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased [&:has(.checkout-page-root)_footer]:hidden">
           {/* Guest Header Fallback */}
           <Suspense fallback={<div className="h-11 sm:h-16 bg-forest-950 border-b border-forest-800/70" />}>
             <NavHeader
@@ -87,7 +87,7 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
   return (
     <WishlistProvider isLoggedIn={!!user} initialWishlistIds={initialWishlistIds}>
       <CartProvider isLoggedIn={!!user}>
-        <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased">
+        <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased [&:has(.checkout-page-root)_footer]:hidden">
           {/* Sticky Header */}
           <Suspense fallback={<div className="h-11 sm:h-16 bg-forest-950 border-b border-forest-800/70" />}>
             <NavHeader

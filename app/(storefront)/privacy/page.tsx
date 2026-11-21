@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
                   <li key={s.id}>
                     <a
                       href={`#${s.id}`}
-                      className="group flex items-center justify-between py-1 px-2 rounded-lg text-forest-700 hover:text-forest-950 hover:bg-forest-900/5 transition-all"
+                      className="group flex items-center justify-between py-1 px-2 rounded-lg text-forest-700 hover:text-forest-950 hover:bg-forest-900/5 transition-colors"
                     >
                       <span className="font-medium">{s.title}</span>
                       <span className="font-mono text-[11px] text-gold-600 group-hover:translate-x-0.5 transition-transform">

@@ -9,24 +9,48 @@ describe('safeRedirectPath', () => {
     expect(safeRedirectPath('/')).toBe('/')
   })
 
-  it('rejects protocol-relative and scheme-relative URLs', () => {
+  it('rejects protocol-relative, scheme-relative, and host-leading bypasses', () => {
+    expect(safeRedirectPath('//host')).toBe('/')
     expect(safeRedirectPath('//evil.com')).toBe('/')
+    expect(safeRedirectPath('//attacker.com/account')).toBe('/')
     expect(safeRedirectPath('/\\evil.com')).toBe('/')
     expect(safeRedirectPath('//')).toBe('/')
     expect(safeRedirectPath('/\\')).toBe('/')
   })
 
+  it('rejects backslash variants', () => {
+    expect(safeRedirectPath('\\host')).toBe('/')
+    expect(safeRedirectPath('/\\host')).toBe('/')
+    expect(safeRedirectPath('\\\\host')).toBe('/')
+    expect(safeRedirectPath('/\\//host')).toBe('/')
+    expect(safeRedirectPath('\\evil.com')).toBe('/')
+  })
+
   it('rejects URL-encoded backslash and slash bypasses', () => {
-    expect(safeRedirectPath('/%5Cevil.com')).toBe('/')
+    expect(safeRedirectPath('/%5Chost')).toBe('/')
     expect(safeRedirectPath('/%5cevil.com')).toBe('/')
     expect(safeRedirectPath('/%2fevil.com')).toBe('/')
     expect(safeRedirectPath('/%2FEvil.com')).toBe('/')
+    expect(safeRedirectPath('/%2F%2Fhost')).toBe('/')
+    expect(safeRedirectPath('/%5C%5Chost')).toBe('/')
+    expect(safeRedirectPath('/%252f%252fhost')).toBe('/')
   })
 
   it('rejects absolute URLs with scheme', () => {
+    expect(safeRedirectPath('https://host')).toBe('/')
     expect(safeRedirectPath('https://evil.com')).toBe('/')
+    expect(safeRedirectPath('http://host')).toBe('/')
     expect(safeRedirectPath('http://evil.com')).toBe('/')
     expect(safeRedirectPath('javascript:alert(1)')).toBe('/')
+    expect(safeRedirectPath('data:text/html,<h1>attack</h1>')).toBe('/')
+  })
+
+  it('allows only same-origin relative paths', () => {
+    expect(safeRedirectPath('/products')).toBe('/products')
+    expect(safeRedirectPath('/account')).toBe('/account')
+    expect(safeRedirectPath('/checkout')).toBe('/checkout')
+    expect(safeRedirectPath('/order/lookup?ref=123')).toBe('/order/lookup?ref=123')
+    expect(safeRedirectPath('/account/orders/123')).toBe('/account/orders/123')
   })
 
   it('rejects newline and carriage return injection', () => {

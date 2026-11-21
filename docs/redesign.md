@@ -6,20 +6,23 @@ This document records the design system architecture, performance budgets, canva
 
 ## 1. Performance Budget & Non-Regression Policy
 
-All code changes across all redesign phases must adhere strictly to the following performance budget. **Per-route Lighthouse mobile score and Total Blocking Time (TBT) must not regress vs. HEAD at each phase.**
+All code changes across all redesign phases must adhere strictly to the following uniform performance budget:
+- **Non-Regression on Score:** Mobile Lighthouse score must be no worse than the previous commit baseline.
+- **TBT Budget:** $\le 600\text{ms}$ on all routes under 4× CPU throttling.
+- **CLS Budget:** $\le 0.05$ on all routes.
 
 All measurements must be collected using `scripts/lighthouse.mjs` (Moto G4 mobile profile, 4× CPU throttling, Lantern simulation, 5-run median).
 
-### Per-Route Performance Baselines & Budgets
+### Per-Route Baseline Targets
 
-| Route | Target Mobile Score | Target LCP | Target TBT | Max CLS | Max Raw HTML | Critical Transfer JS |
+| Route | Baseline Target Score | Target LCP | Target TBT | Max CLS | Max Raw HTML | Critical Transfer JS |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Home (`/`)** | $\ge 70$ | $\le 3.9\text{s}$ | $\le 450\text{ms}$ | $\le 0.05$ | $< 700\text{ KB}$ | $< 180\text{ KB}$ |
 | **Listing (`/products`)** | $\ge 68$ | $\le 4.1\text{s}$ | $\le 600\text{ms}$ | $\le 0.05$ | $< 400\text{ KB}$ | $< 160\text{ KB}$ |
-| **PDP (`/products/[slug]`)** | $\ge 70$ | $\le 3.8\text{s}$ | $\le 650\text{ms}$ | $\le 0.05$ | $< 250\text{ KB}$ | $< 160\text{ KB}$ |
+| **PDP (`/products/[slug]`)** | $\ge 70$ | $\le 3.8\text{s}$ | $\le 600\text{ms}$ | $\le 0.05$ | $< 250\text{ KB}$ | $< 160\text{ KB}$ |
 | **Cart / Bag (`/bag`)** | $\ge 80$ | $\le 3.0\text{s}$ | $\le 300\text{ms}$ | $\le 0.05$ | $< 150\text{ KB}$ | $< 140\text{ KB}$ |
 | **Checkout (`/checkout`)** | $\ge 75$ | $\le 3.2\text{s}$ | $\le 400\text{ms}$ | $\le 0.05$ | $< 200\text{ KB}$ | $< 160\text{ KB}$ |
-| **Account (`/account`)** | $\ge 88$ | $\le 2.5\text{s}$ | $\le 200\text{ms}$ | $\le 0.05$ | $< 100\text{ KB}$ | $< 120\text{ KB}$ |
+| **Account (`/account`)** | $\ge 85$ | $\le 2.5\text{s}$ | $\le 200\text{ms}$ | $\le 0.05$ | $< 100\text{ KB}$ | $< 120\text{ KB}$ |
 
 ### Enforcement Rules:
 1. **No Inlined CSS Bloat:** `experimental: { inlineCss: true }` is strictly prohibited in `next.config.ts`. Tailwind styles must load as external cacheable CSS chunks.

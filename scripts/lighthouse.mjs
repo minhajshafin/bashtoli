@@ -221,13 +221,13 @@ async function main() {
 
     console.log(`\n### Benchmark Results (${RUNS}-Run Median Per Route - ${method.toUpperCase()})\n`)
     if (method === 'simulate') {
-      console.log(`| Route | Score | Sim LCP | Obs LCP | TBT | CLS | Script Work | Style/Layout Work | Paint Work | Subparts Check |`)
-      console.log(`| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |`)
+      console.log(`| Route | Score | Sim LCP | Obs LCP | TTFB | Load Delay | Load Duration | Render Delay | Subparts Sum | TBT | CLS |`)
+      console.log(`| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |`)
       for (const r of results) {
         const sum = r.ttfb + r.loadDelay + r.loadDuration + r.renderDelay
         const sumMatches = sum === r.simLcp ? '✓' : `≠ (${sum})`
         console.log(
-          `| \`${r.route}\` | **${r.score}** | **${(r.simLcp / 1000).toFixed(2)}s** | ${(r.observedLcp / 1000).toFixed(2)}s | **${r.tbt}ms** | ${r.cls} | ${r.scriptWork}ms | ${r.styleLayoutWork}ms | ${r.paintWork}ms | ${sumMatches} |`
+          `| \`${r.route}\` | **${r.score}** | **${(r.simLcp / 1000).toFixed(2)}s** | ${(r.observedLcp / 1000).toFixed(2)}s | ${r.ttfb}ms | ${r.loadDelay}ms | ${r.loadDuration}ms | ${r.renderDelay}ms | ${sumMatches} | **${r.tbt}ms** | ${r.cls} |`
         )
       }
     } else {

@@ -41,7 +41,7 @@ function CategoryCard({
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className={`group relative overflow-hidden cursor-pointer block w-full rounded-xl sm:rounded-2xl border border-forest-800/60 hover:border-gold-400/80 focus-visible:border-gold-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500/50 shadow-2xs transition-all duration-300 hover:-translate-y-1 ${className}`}
+      className={`group relative overflow-hidden cursor-pointer block w-full rounded-xl sm:rounded-2xl border border-border-primary hover:border-gold-500/80 focus-visible:border-gold-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500/50 shadow-subtle hover:shadow-atelier transition-transform duration-300 hover:-translate-y-1 ${className}`}
       style={style}
     >
       {/* Background Image / Fallback Gradient */}
@@ -82,7 +82,7 @@ function CategoryCard({
 
       {/* Dynamic Title Hierarchy & Sliding Micro-Cue */}
       <div
-        className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-all duration-300 ${sizeConfig.padding}`}
+        className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-transform duration-300 ${sizeConfig.padding}`}
       >
         <h3
           className={`text-cream-50 group-hover:text-gold-200 transition-colors duration-300 leading-tight ${sizeConfig.title}`}
@@ -91,7 +91,7 @@ function CategoryCard({
         </h3>
 
         {/* Micro-cue: smoothly slides up into view on hover */}
-        <div className="max-h-0 opacity-0 translate-y-2 group-hover:max-h-10 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:max-h-10 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 overflow-hidden transition-all duration-300 ease-out">
+        <div className="max-h-0 opacity-0 translate-y-2 group-hover:max-h-10 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:max-h-10 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 overflow-hidden transition-[opacity,transform] duration-300 ease-out">
           <div className="pt-2 flex items-center gap-1.5">
             <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-gold-300/90">
               Explore collection
@@ -115,9 +115,9 @@ function EmptySlotCard({
 }) {
   return (
     <div
-      className={`w-full rounded-2xl border border-dashed border-forest-800/60 bg-forest-950/30 flex items-center justify-center p-4 text-center ${className}`}
+      className={`w-full rounded-2xl border border-dashed border-border-primary bg-cream-100/60 flex items-center justify-center p-4 text-center ${className}`}
     >
-      <span className="text-[10px] uppercase tracking-[0.2em] text-forest-400/70 font-sans font-medium">
+      <span className="text-[10px] uppercase tracking-[0.2em] text-text-tertiary font-sans font-medium">
         {label}
       </span>
     </div>
@@ -133,31 +133,31 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   const [cat1, cat2, cat3, cat4, cat5, cat6, cat7] = categories
 
   return (
-    <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-900 bg-laid-paper-dark">
+    <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50 bg-laid-paper text-forest-950">
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
         {/* Section Heading — Minimal Editorial Header with Inline Text Link */}
         <ScrollReveal>
           <div className="flex items-center justify-between mb-4 sm:mb-8 lg:mb-9 gap-2">
             <div className="min-w-0 pr-2">
               <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-                <span className="h-px w-3 sm:w-4 bg-gold-400/60" />
-                <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] text-gold-400/90 font-sans font-medium">
+                <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
+                <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] text-gold-700 font-sans font-semibold">
                   Collections &middot; Archive
                 </span>
               </div>
-              <h2 className="font-display font-medium text-cream-50 leading-tight text-lg sm:text-[1.85rem] lg:text-[2.25rem] tracking-tight truncate">
+              <h2 className="font-display font-medium text-forest-950 leading-tight text-lg sm:text-[1.85rem] lg:text-[2.25rem] tracking-tight truncate">
                 Curated Collections
               </h2>
-              <p className="hidden sm:block text-xs sm:text-[13px] lg:text-sm text-forest-200/80 font-normal mt-0.5 sm:mt-1.5 leading-relaxed font-sans max-w-xl">
+              <p className="hidden sm:block text-xs sm:text-[13px] lg:text-sm text-forest-700/80 font-normal mt-0.5 sm:mt-1.5 leading-relaxed font-sans max-w-xl">
                 Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
               </p>
             </div>
 
             <Link
               href="/products"
-              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 text-[11px] sm:text-xs uppercase tracking-[0.14em] sm:tracking-[0.2em] font-sans font-medium text-gold-400 hover:text-gold-200 transition-colors duration-200 group/link pb-0.5 sm:pb-1"
+              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 text-[11px] sm:text-xs uppercase tracking-[0.14em] sm:tracking-[0.2em] font-sans font-medium text-gold-700 hover:text-gold-900 transition-colors duration-200 group/link pb-0.5 sm:pb-1"
             >
-              <span className="border-b border-gold-400/40 group-hover/link:border-gold-200 pb-0.5 transition-colors">
+              <span className="border-b border-gold-600/40 group-hover/link:border-gold-900 pb-0.5 transition-colors">
                 Explore All
               </span>
               <span className="text-xs sm:text-sm transition-transform duration-300 group-hover/link:translate-x-1">

@@ -55,7 +55,7 @@ export default async function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50 bg-laid-paper text-forest-950 py-5 sm:py-8 lg:py-10 pb-36 sm:pb-24 selection:bg-gold-500/20 selection:text-forest-900">
+    <div className="checkout-page-root min-h-screen bg-cream-50 bg-laid-paper text-forest-950 py-5 sm:py-8 lg:py-10 pb-36 sm:pb-24 selection:bg-gold-500/20 selection:text-forest-900">
       <div className="mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col justify-start">
         {/* 3-Step Visual Progress Track */}
         <div className="mb-6">

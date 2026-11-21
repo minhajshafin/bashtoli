@@ -447,9 +447,28 @@ export async function createTestGuestOrder(
 /**
  * Resets Upstash Redis rate limit keys so E2E test runs on 127.0.0.1
  * are not falsely throttled by sliding-window limiters.
+ *
+ * SAFETY GUARD:
+ * Refuses to run if executed against production environment or if
+ * the mandatory E2E staging URL guard is not present.
  */
 export async function resetRateLimits(): Promise<void> {
   loadEnv()
+
+  // 1. Guard against production environment variables
+  if (process.env.VERCEL_ENV === 'production') {
+    throw new Error('SAFETY VIOLATION: resetRateLimits() cannot be executed in production (VERCEL_ENV=production).')
+  }
+
+  // 2. Guard against missing or mismatched staging project URL
+  const e2eUrl = process.env.E2E_SUPABASE_URL
+  const currentUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!e2eUrl || e2eUrl !== currentUrl) {
+    throw new Error(
+      'SAFETY VIOLATION: resetRateLimits() is restricted to test environments with valid E2E_SUPABASE_URL.'
+    )
+  }
+
   if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     try {
       const { Redis } = await import('@upstash/redis')

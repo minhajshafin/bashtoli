@@ -132,7 +132,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           <nav className="flex items-center gap-5 lg:gap-6" aria-label="Primary Navigation">
             <Link
               href="/products"
-              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-all after:duration-300 ${
+              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-[width] after:duration-300 ${
                 isShop
                   ? 'text-text-accent font-semibold after:w-full'
                   : 'text-cream-200/80 hover:text-text-accent-hover after:w-0 hover:after:w-full'
@@ -144,7 +144,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             <Link
               href="/order/lookup"
               prefetch={false}
-              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-all after:duration-300 ${
+              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-[width] after:duration-300 ${
                 pathname === '/order/lookup'
                   ? 'text-text-accent font-semibold after:w-full'
                   : 'text-cream-200/80 hover:text-text-accent-hover after:w-0 hover:after:w-full'
@@ -174,7 +174,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search journals, pens, paper..."
-              className="w-full pl-9 pr-12 py-1.5 sm:py-2 text-[11px] sm:text-xs rounded-full bg-forest-900/60 hover:bg-forest-900/80 focus:bg-forest-900/95 text-cream-100 placeholder:text-forest-400/80 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 transition-all shadow-inner"
+              className="w-full pl-9 pr-12 py-1.5 sm:py-2 text-[11px] sm:text-xs rounded-full bg-forest-900/60 hover:bg-forest-900/80 focus:bg-forest-900/95 text-cream-100 placeholder:text-forest-400/80 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 transition-colors shadow-inner"
             />
             {searchQuery && (
               <button
@@ -205,7 +205,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             type="button"
             onClick={() => setMobileSearchOpen((o) => !o)}
             aria-label="Search"
-            className="md:hidden flex items-center justify-center w-8.5 h-8.5 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 border border-transparent hover:border-border-gold-subtle transition-all rounded-full cursor-pointer active:scale-95"
+            className="md:hidden flex items-center justify-center w-8.5 h-8.5 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 border border-transparent hover:border-border-gold-subtle transition-colors rounded-full cursor-pointer active:scale-95"
           >
             {mobileSearchOpen ? (
               <svg className="w-4.5 h-4.5 stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -222,7 +222,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           <Link
             href="/account/wishlist"
             aria-label="Wishlist"
-            className="relative hidden md:flex items-center justify-center w-8.5 h-8.5 sm:w-9 sm:h-9 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 border border-transparent hover:border-border-gold-subtle transition-all rounded-full active:scale-95"
+            className="relative hidden md:flex items-center justify-center w-8.5 h-8.5 sm:w-9 sm:h-9 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 border border-transparent hover:border-border-gold-subtle transition-colors rounded-full active:scale-95"
           >
             <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -239,7 +239,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             <button
               onClick={() => setAccountOpen((o) => !o)}
               aria-label="Account"
-              className="flex items-center justify-center w-8.5 h-8.5 sm:w-9 sm:h-9 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 border border-transparent hover:border-border-gold-subtle transition-all rounded-full cursor-pointer active:scale-95"
+              className="flex items-center justify-center w-8.5 h-8.5 sm:w-9 sm:h-9 text-gold-400 hover:text-gold-300 hover:bg-forest-800/60 border border-transparent hover:border-border-gold-subtle transition-colors rounded-full cursor-pointer active:scale-95"
             >
               <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -257,7 +257,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
                     <Link
                       href="/account"
                       onClick={() => setAccountOpen(false)}
-                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-all"
+                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-colors"
                     >
                       <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
                       My Account
@@ -265,13 +265,13 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
                     <Link
                       href="/account/orders"
                       onClick={() => setAccountOpen(false)}
-                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-all"
+                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-colors"
                     >
                       <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
                       Order History
                     </Link>
                     <form action={logoutAction}>
-                      <button type="submit" className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-terracotta-800/40 hover:text-terracotta-300 rounded-xl transition-all cursor-pointer">
+                      <button type="submit" className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-terracotta-800/40 hover:text-terracotta-300 rounded-xl transition-colors cursor-pointer">
                         <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" /></svg>
                         Sign Out
                       </button>
@@ -282,7 +282,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
                     <Link
                       href="/login"
                       onClick={() => setAccountOpen(false)}
-                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-all"
+                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-colors"
                     >
                       <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
                       Sign In
@@ -290,7 +290,7 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
                     <Link
                       href="/signup"
                       onClick={() => setAccountOpen(false)}
-                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-all"
+                      className="flex items-center gap-2.5 w-full px-3 py-1.5 text-xs text-cream-200/85 hover:bg-forest-800 hover:text-gold-300 rounded-xl transition-colors"
                     >
                       <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" /></svg>
                       Create Account

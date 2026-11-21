@@ -40,10 +40,10 @@ export default async function StorefrontHomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* 1. Hero: Welcome to Bashtoli */}
+      {/* 1. Hero: Welcome to Bashtoli (Forest Showcase) */}
       <Hero slides={heroSlides} />
 
-      {/* Wave 1: Hero (Forest) → Featured Products (Alabaster Cream) */}
+      {/* Wave Transition: Hero (Forest) → Storefront Canvas (Cream Paper) */}
       <WaveDivider variant="hero-to-products" />
 
       {/* 2. Featured Products: Curated Collection (Streams in behind Suspense) */}
@@ -51,20 +51,11 @@ export default async function StorefrontHomePage() {
         <FeaturedProducts />
       </Suspense>
 
-      {/* Wave 2: Featured Products (Alabaster Cream) → Categories (Forest Moss) */}
-      <WaveDivider variant="products-to-categories" />
-
       {/* 3. Categories: Curated Collections Grid */}
       <CategoryGrid categories={featuredCategories} />
 
-      {/* Wave 3: Categories (Forest Moss) → About Us (Alabaster Cream) */}
-      <WaveDivider variant="categories-to-about" />
-
       {/* 4. About Us: Neighbourhood Heritage & Craft */}
       <AboutSection />
-
-      {/* Wave 4: About Us (Alabaster Cream) → Suggest an Item (Deep Forest) */}
-      <WaveDivider variant="about-to-suggest" />
 
       {/* 5. Suggest an item: Community Suggestions */}
       <SuggestAnItem />

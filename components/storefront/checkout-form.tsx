@@ -346,6 +346,13 @@ export function CheckoutForm({
                     setFieldErrors((prev) => ({ ...prev, customer_name: undefined }))
                   }
                 }}
+                onBlur={() => {
+                  if (!customerName.trim()) {
+                    setFieldErrors((prev) => ({ ...prev, customer_name: ['Full name is required'] }))
+                  } else if (customerName.trim().length > 100) {
+                    setFieldErrors((prev) => ({ ...prev, customer_name: ['Name cannot exceed 100 characters'] }))
+                  }
+                }}
                 placeholder="e.g. Arif Rahman"
                 autoComplete="name"
                 disabled={isSubmitting}
@@ -389,6 +396,17 @@ export function CheckoutForm({
                     setFieldErrors((prev) => ({ ...prev, phone: undefined }))
                   }
                 }}
+                onBlur={() => {
+                  const cleaned = phone.trim()
+                  if (!cleaned) {
+                    setFieldErrors((prev) => ({ ...prev, phone: ['Phone number is required'] }))
+                  } else if (!/^(?:\+88)?01[3-9]\d{8}$/.test(cleaned)) {
+                    setFieldErrors((prev) => ({
+                      ...prev,
+                      phone: ['Invalid Bangladeshi phone number format (e.g. 017XXXXXXXX)'],
+                    }))
+                  }
+                }}
                 placeholder="e.g. 01712-345678"
                 autoComplete="tel"
                 disabled={isSubmitting}
@@ -425,6 +443,22 @@ export function CheckoutForm({
                   setAddress(e.target.value)
                   if (fieldErrors.address) {
                     setFieldErrors((prev) => ({ ...prev, address: undefined }))
+                  }
+                }}
+                onBlur={() => {
+                  const cleaned = address.trim()
+                  if (!cleaned) {
+                    setFieldErrors((prev) => ({ ...prev, address: ['Delivery address is required'] }))
+                  } else if (cleaned.length < 5) {
+                    setFieldErrors((prev) => ({
+                      ...prev,
+                      address: ['Delivery address must be at least 5 characters'],
+                    }))
+                  } else if (cleaned.length > 300) {
+                    setFieldErrors((prev) => ({
+                      ...prev,
+                      address: ['Address cannot exceed 300 characters'],
+                    }))
                   }
                 }}
                 placeholder="House / Apartment number, Road name, Block / Sector, Area, City"
@@ -494,6 +528,15 @@ export function CheckoutForm({
                   setGuestEmail(e.target.value)
                   if (fieldErrors.guest_email) {
                     setFieldErrors((prev) => ({ ...prev, guest_email: undefined }))
+                  }
+                }}
+                onBlur={() => {
+                  const cleaned = guestEmail.trim()
+                  if (cleaned && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleaned)) {
+                    setFieldErrors((prev) => ({
+                      ...prev,
+                      guest_email: ['Invalid email address'],
+                    }))
                   }
                 }}
                 placeholder="your.email@example.com (optional)"

@@ -79,7 +79,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Floating Curation Pill Badge */}
           <div
-            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] lg:text-[11px] font-semibold z-10 pointer-events-none rounded-full transition-all duration-400 font-sans tracking-wider uppercase shadow-xs"
+            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] lg:text-[11px] font-semibold z-10 pointer-events-none rounded-full transition-colors duration-400 font-sans tracking-wider uppercase shadow-xs"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,
@@ -97,7 +97,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                   key={i}
                   onClick={() => setSlide(i)}
                   aria-label={`Slide ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`h-1.5 rounded-full transition-colors duration-300 cursor-pointer ${
                     i === slide ? 'w-4 bg-btn-accent-bg' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/80'
                   }`}
                 />
@@ -109,7 +109,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
       {/* Floating Stationery Spec Note (Desktop & Tablet) */}
       <div
-        className="absolute -left-4 sm:-left-6 bottom-6 px-3.5 py-2.5 shadow-lifted hidden sm:block z-20 pointer-events-none rounded-xl bg-cream-50/95 backdrop-blur-md border border-gold-500/30 max-w-[190px] animate-fade-in"
+        className="absolute -left-4 sm:-left-6 bottom-6 px-3.5 py-2.5 shadow-lifted hidden sm:block z-20 pointer-events-none rounded-xl bg-cream-50 border border-gold-500/30 max-w-[190px] animate-fade-in"
       >
         <p className="font-display text-[13px] font-semibold text-forest-950 leading-snug tracking-[-0.01em]">
           {currentSlide.badge_text}
@@ -225,7 +225,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
             </Link>
             <Link
               href="#aboutus"
-              className="hidden sm:inline-flex btn-ghost-dark rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-medium tracking-wide border border-border-gold-subtle hover:border-border-gold items-center transition-all"
+              className="hidden sm:inline-flex btn-ghost-dark rounded-full px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-medium tracking-wide border border-border-gold-subtle hover:border-border-gold items-center transition-colors"
             >
               Our Story
             </Link>

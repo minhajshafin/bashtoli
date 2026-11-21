@@ -64,24 +64,24 @@ export function SuggestAnItem() {
   return (
     <section
       id="suggest"
-      className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 xl:px-10 bg-forest-950 bg-laid-paper-dark"
+      className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 xl:px-10 bg-cream-100 bg-laid-paper text-forest-950"
     >
       <div className="relative z-10 max-w-xl mx-auto">
         {/* Minimal Header */}
         <ScrollReveal>
           <div className="text-center mb-4 sm:mb-6">
             <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-              <span className="h-px w-3 sm:w-4 bg-gold-400/60" />
-              <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] font-sans font-medium text-gold-400/90">
+              <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
+              <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] font-sans font-semibold text-gold-700">
                 Special Requests
               </span>
             </div>
 
-            <h2 className="font-display font-medium text-cream-50 text-lg sm:text-2xl lg:text-[1.75rem] leading-snug tracking-tight mb-1 sm:mb-2">
+            <h2 className="font-display font-medium text-forest-950 text-lg sm:text-2xl lg:text-[1.75rem] leading-snug tracking-tight mb-1 sm:mb-2">
               Looking for something in particular?
             </h2>
 
-            <p className="hidden sm:block font-sans text-xs sm:text-[13px] leading-relaxed text-cream-200/75 max-w-md mx-auto text-pretty">
+            <p className="hidden sm:block font-sans text-xs sm:text-[13px] leading-relaxed text-forest-700/80 max-w-md mx-auto text-pretty">
               Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
             </p>
           </div>
@@ -89,18 +89,18 @@ export function SuggestAnItem() {
 
         {submitted ? (
           /* Confirmation State */
-          <div className="py-6 text-center animate-fade-in space-y-2.5 rounded-2xl bg-forest-900/40 border border-forest-800/80 p-6">
-            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gold-500/15 text-gold-400 border border-gold-500/30">
+          <div className="py-6 text-center animate-fade-in space-y-2.5 rounded-2xl bg-white/95 border border-border-primary p-6 shadow-atelier text-forest-950">
+            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gold-500/15 text-gold-700 border border-gold-500/30">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
             </div>
 
-            <h3 className="font-display text-base sm:text-lg text-cream-50 font-medium">
+            <h3 className="font-display text-base sm:text-lg text-forest-950 font-medium">
               Note Slipped into Logbook
             </h3>
 
-            <p className="font-sans text-xs text-cream-200/75 max-w-sm mx-auto leading-relaxed">
+            <p className="font-sans text-xs text-forest-700 max-w-sm mx-auto leading-relaxed">
               Thank you! Your suggestion has been noted for our upcoming stocking trip.
             </p>
 
@@ -108,7 +108,7 @@ export function SuggestAnItem() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="text-xs uppercase tracking-[0.16em] font-sans font-medium text-text-accent hover:text-text-accent-hover transition-colors cursor-pointer border-b border-gold-400/50 pb-0.5"
+                className="text-xs uppercase tracking-[0.16em] font-sans font-medium text-gold-700 hover:text-gold-900 transition-colors cursor-pointer border-b border-gold-600/50 pb-0.5"
               >
                 Suggest another item &rarr;
               </button>
@@ -116,7 +116,7 @@ export function SuggestAnItem() {
           </div>
         ) : (
           /* Minimal Form Card */
-          <div className="rounded-xl sm:rounded-2xl bg-forest-900/40 border border-forest-800/80 p-3 sm:p-5.5 backdrop-blur-xs">
+          <div className="rounded-2xl sm:rounded-3xl bg-white/95 border border-border-primary p-4 sm:p-7 shadow-atelier text-forest-950">
             <form onSubmit={handleSubmit} className="space-y-3">
               {/* Bot Honeypot Trap */}
               <input
@@ -142,7 +142,7 @@ export function SuggestAnItem() {
                   required
                   rows={2}
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2.5 text-xs sm:text-[13px] text-cream-50 placeholder:text-forest-400/70 font-sans resize-none leading-relaxed transition-all"
+                  className="w-full rounded-xl bg-cream-50/70 border border-border-primary focus:border-gold-600 focus:outline-none focus:ring-1 focus:ring-gold-600/30 px-3.5 py-2.5 text-xs sm:text-[13px] text-forest-950 placeholder:text-forest-400 font-sans resize-none leading-relaxed transition-colors"
                 />
               </div>
 
@@ -156,7 +156,7 @@ export function SuggestAnItem() {
                   placeholder="Your name (optional)"
                   aria-label="Your name (optional)"
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2 text-xs text-cream-50 placeholder:text-forest-400/70 font-sans transition-all"
+                  className="w-full rounded-xl bg-cream-50/70 border border-border-primary focus:border-gold-600 focus:outline-none focus:ring-1 focus:ring-gold-600/30 px-3.5 py-2 text-xs text-forest-950 placeholder:text-forest-400 font-sans transition-colors"
                 />
 
                 <input
@@ -167,27 +167,27 @@ export function SuggestAnItem() {
                   placeholder="Email or WhatsApp (optional)"
                   aria-label="Email or phone (optional)"
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-forest-950/60 border border-forest-800/80 focus:border-gold-500/60 focus:outline-none focus:ring-1 focus:ring-gold-500/20 px-3.5 py-2 text-xs text-cream-50 placeholder:text-forest-400/70 font-sans transition-all"
+                  className="w-full rounded-xl bg-cream-50/70 border border-border-primary focus:border-gold-600 focus:outline-none focus:ring-1 focus:ring-gold-600/30 px-3.5 py-2 text-xs text-forest-950 placeholder:text-forest-400 font-sans transition-colors"
                 />
               </div>
 
               {/* Error Alert */}
               {errorMessage && (
-                <p className="text-xs text-terracotta-400 py-2 px-3 bg-terracotta-800/40 border border-terracotta-600/60 rounded-xl font-sans">
+                <p className="text-xs text-terracotta-700 py-2 px-3 bg-terracotta-100/90 border border-terracotta-500/40 rounded-xl font-sans">
                   {errorMessage}
                 </p>
               )}
 
               {/* Bottom Actions Row */}
               <div className="pt-1 flex items-center justify-between gap-3">
-                <span className="text-[10px] sm:text-[11px] font-sans text-forest-400/80">
+                <span className="text-[10px] sm:text-[11px] font-sans text-forest-500">
                   Reviewed weekly &middot; No account needed
                 </span>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-accent inline-flex items-center justify-center gap-1.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-xs font-sans uppercase tracking-[0.14em] sm:tracking-[0.16em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed group shrink-0"
+                  className="btn-primary inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2 rounded-full text-[11px] sm:text-xs font-sans uppercase tracking-[0.14em] sm:tracking-[0.16em] font-semibold disabled:opacity-50 disabled:cursor-not-allowed group shrink-0 active:scale-95 transition-transform"
                 >
                   {isSubmitting ? (
                     <span>Sending…</span>

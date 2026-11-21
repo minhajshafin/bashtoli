@@ -1,10 +1,8 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
 import { DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
+import { BackToTopButton } from '@/components/storefront/back-to-top-button'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
@@ -70,23 +68,11 @@ const socials = [
 ]
 
 export function Footer() {
-  const pathname = usePathname()
   const currentYear = 2026
-
-  // Do not render footer on checkout page
-  if (pathname === '/checkout' || pathname?.startsWith('/checkout/')) {
-    return null
-  }
-
-  const scrollToTop = () => {
-    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   return (
     <footer
-      className={`relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden ${
-        pathname === '/' ? 'block' : 'hidden md:block'
-      }`}
+      className="relative border-t border-forest-800/80 bg-forest-950 bg-laid-paper-dark text-cream-100 overflow-hidden"
       id="contact"
     >
       {/* Minimalist Drifting Sumi-e Leaf Motif */}
@@ -240,19 +226,7 @@ export function Footer() {
             </Link>
           </div>
 
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="hidden sm:inline-flex group items-center gap-2 hover:text-text-accent transition-colors duration-200 cursor-pointer active:scale-95"
-          >
-            <span>Back to top</span>
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-forest-800 group-hover:border-gold-400/60 group-hover:bg-forest-800/60 transition-colors">
-              <svg className="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="6 11 12 5 18 11" />
-              </svg>
-            </span>
-          </button>
+          <BackToTopButton />
         </div>
       </div>
     </footer>

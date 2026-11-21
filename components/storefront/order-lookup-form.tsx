@@ -145,10 +145,27 @@ export function OrderLookupForm({ initialOrderNumber = '' }: OrderLookupFormProp
         {/* Recent Lookups Quick-Links (Guarded by useHydrated) */}
         {isHydrated && recentLookups.length > 0 && (
           <div className="mt-2 pl-0.5">
-            <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-text-tertiary flex items-center gap-1 mb-1">
-              <Clock className="h-3 w-3 text-text-tertiary" />
-              Recent lookups:
-            </span>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-text-tertiary flex items-center gap-1">
+                <Clock className="h-3 w-3 text-text-tertiary" />
+                Recent lookups:
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    localStorage.removeItem('bashtoli_recent_lookups')
+                    window.dispatchEvent(new Event('storage'))
+                  } catch {
+                    // Ignore storage issues
+                  }
+                }}
+                className="text-[10px] text-text-tertiary hover:text-text-primary underline cursor-pointer transition-colors"
+                aria-label="Clear recent order lookups"
+              >
+                Clear
+              </button>
+            </div>
             <div className="flex flex-wrap gap-1.5">
               {recentLookups.map((ref) => (
                 <button
