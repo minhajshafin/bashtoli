@@ -186,6 +186,24 @@ export function CheckoutForm({
     }
   }
 
+  // Validate single field on blur using shared Zod schema loaded on demand
+  const validateFieldOnBlur = async (
+    field: 'customer_name' | 'phone' | 'address' | 'guest_email',
+    val: string
+  ) => {
+    try {
+      const { checkoutSchema } = await import('@/lib/validations/checkout')
+      const schema = checkoutSchema.shape[field]
+      const result = schema.safeParse(val)
+      if (!result.success) {
+        const msg = result.error.issues[0]?.message || 'Invalid value'
+        setFieldErrors((prev) => ({ ...prev, [field]: [msg] }))
+      }
+    } catch {
+      // Fallback if import fails
+    }
+  }
+
   return (
     <div className="w-full">
       {/* Mobile Top Collapsible Order Summary (<lg) */}
@@ -346,13 +364,7 @@ export function CheckoutForm({
                     setFieldErrors((prev) => ({ ...prev, customer_name: undefined }))
                   }
                 }}
-                onBlur={() => {
-                  if (!customerName.trim()) {
-                    setFieldErrors((prev) => ({ ...prev, customer_name: ['Full name is required'] }))
-                  } else if (customerName.trim().length > 100) {
-                    setFieldErrors((prev) => ({ ...prev, customer_name: ['Name cannot exceed 100 characters'] }))
-                  }
-                }}
+                onBlur={() => validateFieldOnBlur('customer_name', customerName)}
                 placeholder="e.g. Arif Rahman"
                 autoComplete="name"
                 disabled={isSubmitting}
@@ -396,17 +408,7 @@ export function CheckoutForm({
                     setFieldErrors((prev) => ({ ...prev, phone: undefined }))
                   }
                 }}
-                onBlur={() => {
-                  const cleaned = phone.trim()
-                  if (!cleaned) {
-                    setFieldErrors((prev) => ({ ...prev, phone: ['Phone number is required'] }))
-                  } else if (!/^(?:\+88)?01[3-9]\d{8}$/.test(cleaned)) {
-                    setFieldErrors((prev) => ({
-                      ...prev,
-                      phone: ['Invalid Bangladeshi phone number format (e.g. 017XXXXXXXX)'],
-                    }))
-                  }
-                }}
+                onBlur={() => validateFieldOnBlur('phone', phone)}
                 placeholder="e.g. 01712-345678"
                 autoComplete="tel"
                 disabled={isSubmitting}
@@ -445,22 +447,7 @@ export function CheckoutForm({
                     setFieldErrors((prev) => ({ ...prev, address: undefined }))
                   }
                 }}
-                onBlur={() => {
-                  const cleaned = address.trim()
-                  if (!cleaned) {
-                    setFieldErrors((prev) => ({ ...prev, address: ['Delivery address is required'] }))
-                  } else if (cleaned.length < 5) {
-                    setFieldErrors((prev) => ({
-                      ...prev,
-                      address: ['Delivery address must be at least 5 characters'],
-                    }))
-                  } else if (cleaned.length > 300) {
-                    setFieldErrors((prev) => ({
-                      ...prev,
-                      address: ['Address cannot exceed 300 characters'],
-                    }))
-                  }
-                }}
+                onBlur={() => validateFieldOnBlur('address', address)}
                 placeholder="House / Apartment number, Road name, Block / Sector, Area, City"
                 autoComplete="street-address"
                 disabled={isSubmitting}
@@ -530,15 +517,7 @@ export function CheckoutForm({
                     setFieldErrors((prev) => ({ ...prev, guest_email: undefined }))
                   }
                 }}
-                onBlur={() => {
-                  const cleaned = guestEmail.trim()
-                  if (cleaned && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleaned)) {
-                    setFieldErrors((prev) => ({
-                      ...prev,
-                      guest_email: ['Invalid email address'],
-                    }))
-                  }
-                }}
+                onBlur={() => validateFieldOnBlur('guest_email', guestEmail)}
                 placeholder="your.email@example.com (optional)"
                 autoComplete="email"
                 disabled={isSubmitting}

@@ -53,10 +53,18 @@ describe('safeRedirectPath', () => {
     expect(safeRedirectPath('/account/orders/123')).toBe('/account/orders/123')
   })
 
-  it('rejects newline and carriage return injection', () => {
+  it('rejects newline, carriage return, tabs, and all control character bypasses', () => {
     expect(safeRedirectPath('/foo\r\nSet-Cookie:bad')).toBe('/')
     expect(safeRedirectPath('/foo\nbar')).toBe('/')
     expect(safeRedirectPath('/foo\rbar')).toBe('/')
+    expect(safeRedirectPath('/\\t/evil.com')).toBe('/')
+    expect(safeRedirectPath('/%09/evil.com')).toBe('/')
+    expect(safeRedirectPath('/%0a/evil.com')).toBe('/')
+    expect(safeRedirectPath('/%0d%0a/evil.com')).toBe('/')
+    expect(safeRedirectPath('/%00//evil.com')).toBe('/')
+    expect(safeRedirectPath('/\x00//evil.com')).toBe('/')
+    expect(safeRedirectPath('/\x1f/test')).toBe('/')
+    expect(safeRedirectPath('/\x7f/test')).toBe('/')
   })
 
   it('handles null, undefined, empty, or non-string inputs with default or custom fallback', () => {
