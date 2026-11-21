@@ -31,10 +31,10 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
   return (
     <>
       {/* 1. Mobile-Optimized Compact Item Card (< sm) */}
-      <div className="sm:hidden p-3.5 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md">
+      <div className="sm:hidden p-4 rounded-md border border-forest-900/10 bg-white shadow-elevation-1">
         <div className="flex items-start gap-3">
           {/* Thumbnail image */}
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-cream-100/70">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-sm border border-forest-900/10 bg-cream-100/70">
             {item.image_url ? (
               <Image
                 src={item.image_url}
@@ -64,55 +64,55 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
               <button
                 type="button"
                 onClick={onRemove}
-                className="p-1.5 -mr-1 -mt-1 text-forest-400 hover:text-btn-danger-bg hover:bg-terracotta-100/60 rounded-lg active:scale-90 transition-all cursor-pointer"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center -mr-2 -mt-2 text-forest-500 hover:text-btn-danger-bg hover:bg-terracotta-100/60 rounded-md transition-colors duration-fast cursor-pointer active:scale-95"
                 aria-label={`Remove ${item.name}`}
                 title="Remove item"
               >
-                <Trash2 className="h-3.5 w-3.5" />
+                <Trash2 className="h-4 w-4" />
               </button>
             </div>
 
             {/* Warnings/Status badges */}
             {!isAvailable && (
-              <span className="mt-1 inline-block self-start rounded-full bg-terracotta-100 border border-terracotta-400/40 px-2 py-0.5 text-[9px] font-sans font-medium text-terracotta-700 uppercase">
+              <span className="mt-1 inline-block self-start rounded-pill bg-terracotta-100 border border-terracotta-400/40 px-2 py-0.5 text-[9px] font-sans font-medium text-terracotta-700 uppercase">
                 {isOutOfStock ? 'Sold Out' : 'Unavailable'}
               </span>
             )}
             {hasPriceChanged && (
-              <span className="text-[10px] font-sans font-medium text-gold-600 animate-pulse">
+              <span className="text-[10px] font-sans font-medium text-gold-700 animate-pulse">
                 Price updated from ৳{item.price}
               </span>
             )}
             {isOverstocked && (
-              <span className="text-[10px] text-gold-600 font-medium">
+              <span className="text-[10px] text-gold-700 font-medium">
                 Only {dbStatus?.stock_qty} left. Adjusted.
               </span>
             )}
 
             {/* Bottom Stepper & Line Price */}
-            <div className="flex items-center justify-between mt-2 pt-2 border-t border-forest-100/80">
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-forest-900/10">
               {/* Stepper with 44px tap targets */}
-              <div className="flex items-center h-8 rounded-lg border border-forest-200/90 bg-white shadow-2xs">
+              <div className="flex items-center h-10 rounded-md border border-forest-900/15 bg-cream-50 shadow-2xs">
                 <button
                   type="button"
                   onClick={() => onQtyChange(item.qty - 1)}
                   disabled={!isAvailable || item.qty <= 1}
-                  className="flex w-8 h-full items-center justify-center text-forest-600 hover:text-forest-950 disabled:opacity-25 active:scale-90 transition-transform"
+                  className="flex min-w-[44px] h-full items-center justify-center text-forest-700 hover:text-forest-950 disabled:opacity-25 active:scale-95 transition-transform duration-fast"
                   aria-label="Decrease quantity"
                 >
-                  <Minus className="h-3 w-3" />
+                  <Minus className="h-3.5 w-3.5" />
                 </button>
-                <span className="w-7 text-center text-xs font-bold text-forest-950 select-none font-price">
+                <span className="px-1 text-center text-xs font-bold text-forest-950 select-none font-price">
                   {item.qty}
                 </span>
                 <button
                   type="button"
                   onClick={() => onQtyChange(item.qty + 1)}
                   disabled={!isAvailable || item.qty >= maxStock}
-                  className="flex w-8 h-full items-center justify-center text-forest-600 hover:text-forest-950 disabled:opacity-25 active:scale-90 transition-transform"
+                  className="flex min-w-[44px] h-full items-center justify-center text-forest-700 hover:text-forest-950 disabled:opacity-25 active:scale-95 transition-transform duration-fast"
                   aria-label="Increase quantity"
                 >
-                  <Plus className="h-3 w-3" />
+                  <Plus className="h-3.5 w-3.5" />
                 </button>
               </div>
 
@@ -122,7 +122,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
                   ৳{lineTotal.toLocaleString()}
                 </div>
                 {item.qty > 1 && (
-                  <div className="text-[10px] text-forest-500 font-price">
+                  <div className="text-[10px] text-forest-600 font-price">
                     ৳{currentPrice.toLocaleString()} each
                   </div>
                 )}
@@ -133,9 +133,9 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
       </div>
 
       {/* 2. Desktop Standard Row (sm:flex) */}
-      <div className="hidden sm:flex sm:items-center justify-between gap-4 p-5 rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md transition-all hover:shadow-lg">
+      <div className="hidden sm:flex sm:items-center justify-between gap-4 p-5 rounded-md border border-forest-900/10 bg-white shadow-elevation-1">
         <div className="flex items-center gap-4">
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-forest-200/80 bg-cream-100/70">
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-sm border border-forest-900/10 bg-cream-100/70">
             {item.image_url ? (
               <Image
                 src={item.image_url}
@@ -155,13 +155,13 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
                 {item.name}
               </h3>
               {!isAvailable && (
-                <span className="rounded-full bg-terracotta-100 border border-terracotta-400/40 px-2 py-0.5 text-[10px] font-sans font-medium tracking-wide text-terracotta-700 uppercase">
+                <span className="rounded-pill bg-terracotta-100 border border-terracotta-400/40 px-2 py-0.5 text-[10px] font-sans font-medium tracking-wide text-terracotta-700 uppercase">
                   {isOutOfStock ? 'Sold Out' : 'Unavailable'}
                 </span>
               )}
             </div>
 
-            <p className="text-xs font-mono text-forest-600/90 mt-0.5">
+            <p className="text-xs font-mono text-forest-600 mt-0.5">
               {item.variant_name}
             </p>
 
@@ -169,7 +169,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
               <div className="text-xs text-forest-950 font-semibold font-price">
                 ৳{currentPrice.toLocaleString()}
                 {hasPriceChanged && (
-                  <span className="text-[10px] font-sans font-medium text-gold-600 ml-1.5 animate-pulse">
+                  <span className="text-[10px] font-sans font-medium text-gold-700 ml-1.5 animate-pulse">
                     (Price updated from ৳{item.price})
                   </span>
                 )}
@@ -180,7 +180,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
                 </p>
               )}
               {isOverstocked && (
-                <p className="text-[10px] text-gold-600 font-medium">
+                <p className="text-[10px] text-gold-700 font-medium">
                   Only {dbStatus?.stock_qty} left in stock. Quantity adjusted.
                 </p>
               )}
@@ -189,18 +189,18 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
         </div>
 
         <div className="flex items-center justify-end gap-4">
-          <div className="flex items-center h-10 rounded-xl border border-forest-200/90 bg-white shadow-2xs">
+          <div className="flex items-center h-10 rounded-md border border-forest-900/15 bg-cream-50 shadow-2xs">
             <button
               type="button"
               onClick={() => onQtyChange(item.qty - 1)}
               disabled={!isAvailable || item.qty <= 1}
-              className="flex w-9 h-full items-center justify-center text-forest-500 hover:text-forest-950 hover:bg-cream-200/80 disabled:opacity-25 transition-colors cursor-pointer active:scale-90 touch-manipulation"
+              className="flex min-w-[44px] h-full items-center justify-center text-forest-600 hover:text-forest-950 hover:bg-cream-100 disabled:opacity-25 transition-colors duration-fast cursor-pointer active:scale-95"
               aria-label="Decrease quantity"
             >
               <Minus className="h-3.5 w-3.5" />
             </button>
 
-            <span className="w-9 text-center text-xs font-bold text-forest-950 select-none font-price">
+            <span className="w-8 text-center text-xs font-bold text-forest-950 select-none font-price">
               {item.qty}
             </span>
 
@@ -208,7 +208,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
               type="button"
               onClick={() => onQtyChange(item.qty + 1)}
               disabled={!isAvailable || item.qty >= maxStock}
-              className="flex w-9 h-full items-center justify-center text-forest-500 hover:text-forest-950 hover:bg-cream-200/80 disabled:opacity-25 transition-colors cursor-pointer active:scale-90 touch-manipulation"
+              className="flex min-w-[44px] h-full items-center justify-center text-forest-600 hover:text-forest-950 hover:bg-cream-100 disabled:opacity-25 transition-colors duration-fast cursor-pointer active:scale-95"
               aria-label="Increase quantity"
             >
               <Plus className="h-3.5 w-3.5" />
@@ -223,7 +223,7 @@ export function CartItemRow({ item, dbStatus, onQtyChange, onRemove }: CartItemP
             <button
               type="button"
               onClick={onRemove}
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-forest-400 hover:text-btn-danger-bg hover:bg-terracotta-100/60 transition-colors cursor-pointer active:scale-90 touch-manipulation"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-forest-500 hover:text-btn-danger-bg hover:bg-terracotta-100/60 transition-colors duration-fast cursor-pointer active:scale-95"
               aria-label={`Remove ${item.name}`}
               title="Remove item"
             >

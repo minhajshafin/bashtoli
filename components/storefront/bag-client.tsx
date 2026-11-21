@@ -7,7 +7,6 @@ import { useConfirm } from '@/components/ui/confirm-dialog'
 import { CartItemRow } from '@/components/storefront/cart-item'
 import { CartSummary } from '@/components/storefront/cart-summary'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
-import { CheckoutBackgroundArt } from '@/components/storefront/checkout-background-art'
 import { checkCartItemsAvailability, type ValidatedCartItem } from '@/lib/queries/cart'
 import { BagPageSkeleton } from '@/components/storefront/skeletons'
 import { ArrowLeft, Trash2 } from 'lucide-react'
@@ -73,17 +72,15 @@ export function BagClient() {
   const totalQuantity = cart.reduce((sum, item) => sum + item.qty, 0)
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] bg-forest-950 bg-laid-paper-dark text-cream-100 selection:bg-gold-500/30 overflow-hidden">
-      <CheckoutBackgroundArt variant="dark" />
-
-      <div className="relative z-10 mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-8 lg:py-10 pb-40 sm:pb-16 flex flex-col justify-start">
+    <div className="min-h-screen bg-cream-50 bg-laid-paper text-forest-950 py-5 sm:py-8 lg:py-10 pb-36 sm:pb-16 selection:bg-gold-500/20 selection:text-forest-900">
+      <div className="mx-auto max-w-[1440px] xl:max-w-[1520px] px-4 sm:px-6 lg:px-8 xl:px-10 flex flex-col justify-start">
         {/* Top Utility Navigation Row */}
-        <div className="flex items-center justify-between pb-3 mb-4 sm:mb-5 border-b border-forest-800/60">
+        <div className="flex items-center justify-between pb-3 mb-4 sm:mb-5 border-b border-forest-900/10">
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/80 hover:text-gold-300 transition-colors cursor-pointer group"
+            className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-forest-700 hover:text-forest-950 transition-colors duration-fast cursor-pointer group"
           >
-            <ArrowLeft className="h-3.5 w-3.5 text-gold-400 transition-transform group-hover:-translate-x-0.5" />
+            <ArrowLeft className="h-3.5 w-3.5 text-gold-700 transition-transform duration-fast group-hover:-translate-x-0.5" />
             <span>Continue Shopping</span>
           </Link>
 
@@ -102,41 +99,41 @@ export function BagClient() {
                   clearCart()
                 }
               }}
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-cream-300/60 hover:text-btn-danger-bg transition-colors cursor-pointer group"
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-forest-600 hover:text-btn-danger-bg transition-colors duration-fast cursor-pointer group"
             >
-              <Trash2 className="h-3.5 w-3.5 text-forest-400 group-hover:text-btn-danger-bg transition-colors" />
+              <Trash2 className="h-3.5 w-3.5 text-forest-500 group-hover:text-btn-danger-bg transition-colors duration-fast" />
               <span>Clear Bag</span>
             </button>
           )}
         </div>
 
         {/* Masthead Title & Progress Section */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-6 pb-5 border-b border-forest-800/80">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-6 pb-5 border-b border-forest-900/10">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="h-px w-5 bg-gold-400/60" />
-              <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400/90">
+              <span className="h-px w-5 bg-gold-700/60" />
+              <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-forest-700">
                 Order Review · Dhaka Shop
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-cream-50 font-display tracking-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-forest-950 font-display tracking-tight">
                 Shopping Bag
               </h1>
               {cart.length > 0 && (
-                <span className="rounded-full bg-gold-400/15 border border-gold-400/35 px-2.5 py-0.5 text-xs font-bold text-gold-300 font-price">
+                <span className="rounded-pill bg-gold-400/20 border border-gold-600/30 px-2.5 py-0.5 text-xs font-bold text-gold-800 font-price">
                   {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-[13px] text-cream-200/70 font-sans mt-1.5 max-w-md leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-forest-600 font-sans mt-1.5 max-w-md leading-relaxed">
               Review your chosen stationery pieces and desk essentials before checkout.
             </p>
           </div>
 
           {/* 3-Step Segmented Progress Track */}
           <div className="w-full md:w-auto md:min-w-[280px] lg:min-w-[340px]">
-            <CheckoutSteps currentStep={1} variant="dark" />
+            <CheckoutSteps currentStep={1} variant="light" />
           </div>
         </div>
 
@@ -145,7 +142,7 @@ export function BagClient() {
             {/* Bag items list */}
             <div className="lg:col-span-2 space-y-3 sm:space-y-3.5">
               {isValidating && Object.keys(dbStatuses).length === 0 && (
-                <div className="rounded-2xl border border-gold-400/35 bg-gold-500/10 p-4 text-xs font-sans text-gold-300 animate-pulse">
+                <div className="rounded-md border border-gold-400/40 bg-gold-400/10 p-4 text-xs font-sans text-gold-800 animate-pulse">
                   Validating inventory and prices...
                 </div>
               )}
@@ -172,8 +169,8 @@ export function BagClient() {
           </div>
         ) : (
           /* Empty Bag View */
-          <div className="rounded-3xl border border-forest-200/90 bg-cream-50 p-8 sm:p-12 text-center max-w-xl mx-auto shadow-md text-forest-950 my-6">
-            <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-2xl bg-cream-100 border border-gold-400/40 text-forest-800 shadow-2xs mb-2">
+          <div className="rounded-md border border-forest-900/10 bg-white p-8 sm:p-12 text-center max-w-xl mx-auto shadow-elevation-1 text-forest-950 my-6">
+            <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-md bg-cream-100 border border-forest-900/10 text-forest-800 shadow-2xs mb-2">
               <svg
                 className="h-7 w-7 stroke-[1.5] text-forest-700"
                 fill="none"
@@ -195,28 +192,28 @@ export function BagClient() {
             </p>
 
             {/* Category Exploration Pills */}
-            <div className="mt-6 pt-5 border-t border-forest-100 flex flex-wrap justify-center gap-2">
+            <div className="mt-6 pt-5 border-t border-forest-900/10 flex flex-wrap justify-center gap-2">
               <Link
                 href="/products?category=notebooks"
-                className="rounded-full border border-forest-200 bg-white/80 hover:border-gold-400/60 px-3.5 py-1.5 text-xs font-medium text-forest-800 hover:text-forest-950 transition-all active:scale-95 cursor-pointer shadow-2xs"
+                className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
                 📖 Notebooks
               </Link>
               <Link
                 href="/products?category=writing-tools"
-                className="rounded-full border border-forest-200 bg-white/80 hover:border-gold-400/60 px-3.5 py-1.5 text-xs font-medium text-forest-800 hover:text-forest-950 transition-all active:scale-95 cursor-pointer shadow-2xs"
+                className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
                 ✒️ Writing Tools
               </Link>
               <Link
                 href="/products?category=calligraphy-ink"
-                className="rounded-full border border-forest-200 bg-white/80 hover:border-gold-400/60 px-3.5 py-1.5 text-xs font-medium text-forest-800 hover:text-forest-950 transition-all active:scale-95 cursor-pointer shadow-2xs"
+                className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
                 🪶 Calligraphy Ink
               </Link>
               <Link
                 href="/products?category=desk-goods"
-                className="rounded-full border border-forest-200 bg-white/80 hover:border-gold-400/60 px-3.5 py-1.5 text-xs font-medium text-forest-800 hover:text-forest-950 transition-all active:scale-95 cursor-pointer shadow-2xs"
+                className="rounded-pill border border-forest-900/15 bg-cream-50 hover:border-gold-600 px-3.5 py-2 text-xs font-medium text-forest-800 hover:text-forest-950 transition-colors duration-fast active:scale-95 cursor-pointer shadow-2xs"
               >
                 🪵 Desk Goods
               </Link>
@@ -225,7 +222,7 @@ export function BagClient() {
             <div className="mt-6">
               <Link
                 href="/products"
-                className="btn-accent rounded-full inline-flex h-11 items-center justify-center px-8 text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer active:scale-95 shadow-xs"
+                className="btn-accent rounded-md inline-flex min-h-[48px] items-center justify-center px-8 text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer active:scale-95 shadow-elevation-1 transition-transform duration-fast"
               >
                 Explore Catalogue &rarr;
               </Link>

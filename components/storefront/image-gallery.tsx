@@ -22,7 +22,7 @@ interface ImageGalleryProps {
   initialIsWishlisted?: boolean
 }
 
-export function ImageGallery({
+export const ImageGallery = React.memo(function ImageGallery({
   images,
   fallbackName,
   productId,
@@ -325,5 +325,5 @@ export function ImageGallery({
       )}
     </>
   )
-}
+})
 

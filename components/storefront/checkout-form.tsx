@@ -174,14 +174,14 @@ export function CheckoutForm({
   return (
     <div className="w-full">
       {/* Mobile Top Collapsible Order Summary (<lg) */}
-      <div className="lg:hidden mb-5 rounded-2xl border border-forest-200/90 bg-cream-50 overflow-hidden shadow-md text-forest-950">
+      <div className="lg:hidden mb-5 rounded-md border border-forest-900/10 bg-white overflow-hidden shadow-elevation-1 text-forest-950">
         <button
           type="button"
           onClick={() => setIsMobileSummaryOpen(!isMobileSummaryOpen)}
-          className="w-full px-4 py-3.5 flex items-center justify-between text-xs font-sans cursor-pointer text-forest-950 touch-manipulation"
+          className="w-full px-4 py-3.5 flex items-center justify-between text-xs font-sans cursor-pointer text-forest-950 touch-manipulation transition-colors duration-fast"
         >
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-forest-900/10 text-forest-800 text-[11px]">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cream-100 text-forest-800 text-[11px]">
               🛍
             </span>
             <span className="font-semibold text-forest-950">
@@ -205,11 +205,11 @@ export function CheckoutForm({
         </button>
 
         {isMobileSummaryOpen && (
-          <div className="px-4 pb-4 pt-2 border-t border-forest-200/80 space-y-3 bg-cream-50 animate-fade-in">
+          <div className="px-4 pb-4 pt-2 border-t border-forest-900/10 space-y-3 bg-cream-50 animate-fade-in">
             <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
               {cart.map((item) => (
                 <div key={item.variant_id} className="flex items-center gap-3 text-xs">
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-white">
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-forest-900/10 bg-white">
                     {item.image_url ? (
                       <Image src={item.image_url} alt={item.name} fill sizes="48px" className="object-cover" />
                     ) : (
@@ -229,7 +229,7 @@ export function CheckoutForm({
                 </div>
               ))}
             </div>
-            <div className="pt-2.5 border-t border-forest-200/80 space-y-1.5 text-xs text-forest-700">
+            <div className="pt-2.5 border-t border-forest-900/10 space-y-1.5 text-xs text-forest-700">
               <div className="flex justify-between">
                 <span>Items Subtotal</span>
                 <span className="font-price font-medium text-forest-950">৳{subtotal.toLocaleString()}</span>
@@ -250,7 +250,7 @@ export function CheckoutForm({
         <div className="lg:col-span-2 space-y-5">
           {/* Top Error Alert */}
           {topError && (
-            <div className="rounded-2xl border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700 flex items-start gap-2.5">
+            <div className="rounded-md border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700 flex items-start gap-2.5 animate-fade-in">
               <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
               </svg>
@@ -259,17 +259,17 @@ export function CheckoutForm({
           )}
 
           {/* Card 1: Recipient Details */}
-          <div className="rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 text-forest-950">
-            <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
+          <div className="rounded-md border border-forest-900/10 bg-white p-5 sm:p-6 shadow-elevation-1 space-y-4 text-forest-950">
+            <div className="flex items-center justify-between pb-3 border-b border-forest-900/10">
               <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
                 01 · Recipient Details
               </h2>
-              <span className="text-[10px] font-mono text-forest-500">Contact for courier</span>
+              <span className="text-[10px] font-mono text-forest-600">Contact for courier</span>
             </div>
 
             {/* Saved Address Selector */}
             {savedAddresses.length > 0 && (
-              <div className="space-y-2 pb-3 border-b border-forest-200/80">
+              <div className="space-y-2 pb-3 border-b border-forest-900/10">
                 <label className="text-xs font-semibold text-forest-950 block">Saved Delivery Addresses</label>
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
                   {savedAddresses.map((addr) => {
@@ -282,13 +282,13 @@ export function CheckoutForm({
                           setPhone(addr.phone || '')
                           setAddress(addr.full_address)
                         }}
-                        className={`min-h-[44px] px-3.5 py-2 rounded-xl border text-xs truncate shrink-0 transition-all cursor-pointer touch-manipulation active:scale-95 flex items-center gap-1.5 ${
+                        className={`min-h-[44px] px-3.5 py-2 rounded-md border text-xs truncate shrink-0 transition-transform duration-fast cursor-pointer touch-manipulation active:scale-[0.98] flex items-center gap-1.5 ${
                           isSelected
-                            ? 'bg-forest-950 text-cream-50 font-medium shadow-xs border-forest-900'
-                            : 'bg-white border-forest-200/90 text-forest-800 hover:bg-cream-100/60'
+                            ? 'bg-forest-950 text-cream-50 font-medium shadow-elevation-1 border-forest-900'
+                            : 'bg-cream-50 border-forest-900/15 text-forest-800 hover:bg-cream-100'
                         }`}
                       >
-                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? 'bg-gold-400' : 'bg-forest-300'}`} />
+                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? 'bg-gold-400' : 'bg-forest-400'}`} />
                         <span>{addr.label || 'Saved'}</span>
                         <span className="opacity-70 font-mono text-[11px]">({addr.phone || 'No phone'})</span>
                       </button>
@@ -302,7 +302,7 @@ export function CheckoutForm({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="customer_name" className="text-xs font-semibold text-forest-950 block mb-1.5 tracking-wide">
-                  Full Name <span className="text-terracotta-500">*</span>
+                  Full Name <span className="text-terracotta-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -312,22 +312,29 @@ export function CheckoutForm({
                   placeholder="e.g. Shafi Rahman"
                   autoComplete="name"
                   autoCapitalize="words"
-                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
+                  className={`w-full min-h-[44px] rounded-md border bg-white px-3.5 text-xs sm:text-[13px] text-forest-950 placeholder:text-forest-400 focus:outline-none transition-colors duration-fast shadow-2xs font-sans ${
+                    fieldErrors.customer_name
+                      ? 'border-terracotta-500 focus:border-terracotta-600 focus:ring-1 focus:ring-terracotta-500/30'
+                      : 'border-forest-900/15 focus:border-forest-800 focus:ring-2 focus:ring-forest-800/15'
+                  }`}
                   required
                 />
-                {fieldErrors.customer_name && (
-                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
-                    <span>⚠</span> {fieldErrors.customer_name[0]}
-                  </p>
-                )}
+                {/* Reserved error slot to prevent layout shifts */}
+                <div className="min-h-[1.25rem] text-xs mt-1">
+                  {fieldErrors.customer_name && (
+                    <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
+                      <span>⚠</span> {fieldErrors.customer_name[0]}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label htmlFor="phone" className="text-xs font-semibold text-forest-950 tracking-wide">
-                    Phone Number <span className="text-terracotta-500">*</span>
+                    Phone Number <span className="text-terracotta-600">*</span>
                   </label>
-                  <span className="text-[10px] font-mono text-forest-500">11 digits (017...)</span>
+                  <span className="text-[10px] font-mono text-forest-600">11 digits (017...)</span>
                 </div>
                 <input
                   type="tel"
@@ -338,21 +345,28 @@ export function CheckoutForm({
                   inputMode="numeric"
                   pattern="[0-9+]*"
                   autoComplete="tel"
-                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-mono"
+                  className={`w-full min-h-[44px] rounded-md border bg-white px-3.5 text-xs sm:text-[13px] text-forest-950 placeholder:text-forest-400 focus:outline-none transition-colors duration-fast shadow-2xs font-mono ${
+                    fieldErrors.phone
+                      ? 'border-terracotta-500 focus:border-terracotta-600 focus:ring-1 focus:ring-terracotta-500/30'
+                      : 'border-forest-900/15 focus:border-forest-800 focus:ring-2 focus:ring-forest-800/15'
+                  }`}
                   required
                 />
-                {fieldErrors.phone && (
-                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
-                    <span>⚠</span> {fieldErrors.phone[0]}
-                  </p>
-                )}
+                {/* Reserved error slot to prevent layout shifts */}
+                <div className="min-h-[1.25rem] text-xs mt-1">
+                  {fieldErrors.phone && (
+                    <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
+                      <span>⚠</span> {fieldErrors.phone[0]}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Delivery Address */}
             <div>
               <label htmlFor="address" className="text-xs font-semibold text-forest-950 block mb-1.5 tracking-wide">
-                {fulfillmentType === 'delivery' ? 'Street Address' : 'Billing Address'} <span className="text-terracotta-500">*</span>
+                {fulfillmentType === 'delivery' ? 'Street Address' : 'Billing Address'} <span className="text-terracotta-600">*</span>
               </label>
               <input
                 type="text"
@@ -361,20 +375,27 @@ export function CheckoutForm({
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="House #, Road #, Sector/Area, City (e.g. House 14, Road 5, Banani, Dhaka)"
                 autoComplete="street-address"
-                className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
+                className={`w-full min-h-[44px] rounded-md border bg-white px-3.5 text-xs sm:text-[13px] text-forest-950 placeholder:text-forest-400 focus:outline-none transition-colors duration-fast shadow-2xs font-sans ${
+                  fieldErrors.address
+                    ? 'border-terracotta-500 focus:border-terracotta-600 focus:ring-1 focus:ring-terracotta-500/30'
+                    : 'border-forest-900/15 focus:border-forest-800 focus:ring-2 focus:ring-forest-800/15'
+                }`}
                 required
               />
-              {fieldErrors.address && (
-                <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
-                  <span>⚠</span> {fieldErrors.address[0]}
-                </p>
-              )}
+              {/* Reserved error slot to prevent layout shifts */}
+              <div className="min-h-[1.25rem] text-xs mt-1">
+                {fieldErrors.address && (
+                  <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
+                    <span>⚠</span> {fieldErrors.address[0]}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
           {/* Card 2: Fulfillment & Instructions */}
-          <div className="rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 text-forest-950">
-            <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
+          <div className="rounded-md border border-forest-900/10 bg-white p-5 sm:p-6 shadow-elevation-1 space-y-4 text-forest-950">
+            <div className="flex items-center justify-between pb-3 border-b border-forest-900/10">
               <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
                 02 · Fulfillment &amp; Dispatch
               </h2>
@@ -396,7 +417,7 @@ export function CheckoutForm({
                   <label htmlFor="guest_email" className="text-xs font-semibold text-forest-950 tracking-wide">
                     Email Address
                   </label>
-                  <span className="text-[10px] font-sans text-forest-500">Optional for receipt</span>
+                  <span className="text-[10px] font-sans text-forest-600">Optional for receipt</span>
                 </div>
                 <input
                   type="email"
@@ -406,13 +427,20 @@ export function CheckoutForm({
                   placeholder="name@example.com"
                   inputMode="email"
                   autoComplete="email"
-                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
+                  className={`w-full min-h-[44px] rounded-md border bg-white px-3.5 text-xs sm:text-[13px] text-forest-950 placeholder:text-forest-400 focus:outline-none transition-colors duration-fast shadow-2xs font-sans ${
+                    fieldErrors.guest_email
+                      ? 'border-terracotta-500 focus:border-terracotta-600 focus:ring-1 focus:ring-terracotta-500/30'
+                      : 'border-forest-900/15 focus:border-forest-800 focus:ring-2 focus:ring-forest-800/15'
+                  }`}
                 />
-                {fieldErrors.guest_email && (
-                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
-                    <span>⚠</span> {fieldErrors.guest_email[0]}
-                  </p>
-                )}
+                {/* Reserved error slot to prevent layout shifts */}
+                <div className="min-h-[1.25rem] text-xs mt-1">
+                  {fieldErrors.guest_email && (
+                    <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
+                      <span>⚠</span> {fieldErrors.guest_email[0]}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div>
@@ -420,7 +448,7 @@ export function CheckoutForm({
                   <label htmlFor="notes" className="text-xs font-semibold text-forest-950 tracking-wide">
                     Delivery Notes
                   </label>
-                  <span className="text-[10px] font-sans text-forest-500">Optional</span>
+                  <span className="text-[10px] font-sans text-forest-600">Optional</span>
                 </div>
                 <input
                   type="text"
@@ -429,30 +457,37 @@ export function CheckoutForm({
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="e.g. Call before arrival"
                   autoComplete="off"
-                  className="w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all shadow-2xs font-sans"
+                  className={`w-full min-h-[44px] rounded-md border bg-white px-3.5 text-xs sm:text-[13px] text-forest-950 placeholder:text-forest-400 focus:outline-none transition-colors duration-fast shadow-2xs font-sans ${
+                    fieldErrors.notes
+                      ? 'border-terracotta-500 focus:border-terracotta-600 focus:ring-1 focus:ring-terracotta-500/30'
+                      : 'border-forest-900/15 focus:border-forest-800 focus:ring-2 focus:ring-forest-800/15'
+                  }`}
                 />
-                {fieldErrors.notes && (
-                  <p className="text-terracotta-600 text-xs mt-1.5 font-medium flex items-center gap-1">
-                    <span>⚠</span> {fieldErrors.notes[0]}
-                  </p>
-                )}
+                {/* Reserved error slot to prevent layout shifts */}
+                <div className="min-h-[1.25rem] text-xs mt-1">
+                  {fieldErrors.notes && (
+                    <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
+                      <span>⚠</span> {fieldErrors.notes[0]}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right 1 Column: Order Summary Card */}
-        <div className="lg:col-span-1 rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-6 shadow-md space-y-4 lg:sticky lg:top-24 text-forest-950">
-          <div className="flex items-center justify-between pb-3 border-b border-forest-200/80">
+        {/* Right 1 Column: Order Summary Card (Sticky on desktop) */}
+        <div className="lg:col-span-1 rounded-md border border-forest-900/10 bg-white p-5 sm:p-6 shadow-elevation-1 space-y-4 lg:sticky lg:top-24 text-forest-950">
+          <div className="flex items-center justify-between pb-3 border-b border-forest-900/10">
             <h2 className="text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700">
               Order Summary ({totalItemCount})
             </h2>
-            <span className="text-[10px] font-mono text-forest-700 font-semibold">Dhaka Shop</span>
+            <span className="text-[10px] font-mono text-gold-700 font-semibold">Dhaka Shop</span>
           </div>
 
           {/* Inspection Reassurance Banner */}
-          <div className="flex items-start gap-2.5 rounded-xl border border-gold-400/40 bg-gold-400/15 p-3 text-xs text-forest-950">
-            <svg className="h-4 w-4 shrink-0 text-gold-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+          <div className="flex items-start gap-2.5 rounded-md border border-gold-400/30 bg-gold-400/10 p-3 text-xs text-forest-950">
+            <svg className="h-4 w-4 shrink-0 text-gold-700 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
             </svg>
             <p className="text-[11px] font-sans text-forest-800 leading-snug">
@@ -464,7 +499,7 @@ export function CheckoutForm({
           <div className="space-y-2.5 max-h-52 overflow-y-auto pr-1">
             {cart.map((item) => (
               <div key={item.variant_id} className="flex items-center gap-3 text-xs">
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-forest-200/80 bg-white">
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-forest-900/10 bg-cream-50">
                   {item.image_url ? (
                     <Image src={item.image_url} alt={item.name} fill sizes="48px" className="object-cover" />
                   ) : (
@@ -485,7 +520,7 @@ export function CheckoutForm({
             ))}
           </div>
 
-          <hr className="border-forest-200/80 my-1" />
+          <hr className="border-forest-900/10 my-1" />
 
           {/* Item totals */}
           <div className="space-y-2.5">
@@ -503,13 +538,13 @@ export function CheckoutForm({
               </span>
             </div>
 
-            <hr className="border-forest-200/80 my-1" />
+            <hr className="border-forest-900/10 my-1" />
 
             {/* Grand Total */}
             <div className="flex items-center justify-between pt-1">
               <div>
                 <span className="text-sm font-semibold text-forest-950 font-sans block">Total Payable</span>
-                <span className="text-[10px] text-forest-500 font-sans">Pay upon arrival</span>
+                <span className="text-[10px] text-forest-500 font-sans">Pay upon arrival (COD)</span>
               </div>
               <span className="text-xl sm:text-2xl font-bold text-forest-950 font-price">
                 ৳{grandTotal.toLocaleString()}
@@ -522,7 +557,7 @@ export function CheckoutForm({
             <button
               type="submit"
               disabled={isSubmitting || cart.length === 0 || hasUnavailable}
-              className={`btn-accent rounded-xl w-full flex h-12 items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer touch-manipulation active:scale-[0.98] shadow-xs ${
+              className={`btn-accent rounded-md w-full flex min-h-[48px] items-center justify-center text-xs font-sans font-bold uppercase tracking-[0.14em] cursor-pointer touch-manipulation active:scale-[0.98] shadow-elevation-1 transition-transform duration-fast ${
                 isSubmitting || cart.length === 0 || hasUnavailable
                   ? 'opacity-60 cursor-not-allowed'
                   : ''
@@ -550,12 +585,12 @@ export function CheckoutForm({
       </form>
 
       {/* Sticky Mobile Thumb-Zone Place Order Bar (<lg) */}
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-forest-950/95 backdrop-blur-xl border-t border-forest-800/80 p-4 pb-[calc(env(safe-area-inset-bottom,0px)+12px)] lg:hidden flex items-center justify-between gap-3 shadow-xl">
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-forest-900/15 p-4 pb-[calc(env(safe-area-inset-bottom,0px)+12px)] lg:hidden flex items-center justify-between gap-3 shadow-elevation-3">
         <div className="min-w-0 flex flex-col">
-          <span className="text-[10px] font-sans font-medium uppercase tracking-wider text-cream-200/70">
+          <span className="text-[10px] font-sans font-medium uppercase tracking-wider text-forest-600">
             Total Payable
           </span>
-          <span className="font-price text-lg font-bold text-cream-50 leading-tight">
+          <span className="font-price text-lg font-bold text-forest-950 leading-tight">
             ৳{grandTotal.toLocaleString()}
           </span>
         </div>
@@ -568,7 +603,7 @@ export function CheckoutForm({
             }
           }}
           disabled={isSubmitting || cart.length === 0 || hasUnavailable}
-          className={`btn-accent flex h-12 items-center justify-center gap-2 rounded-full px-5 sm:px-6 text-xs font-sans font-bold uppercase tracking-wider cursor-pointer touch-manipulation active:scale-95 shadow-xs ${
+          className={`btn-accent flex min-h-[48px] items-center justify-center gap-2 rounded-md px-6 text-xs font-sans font-bold uppercase tracking-wider cursor-pointer touch-manipulation active:scale-[0.98] shadow-elevation-1 transition-transform duration-fast ${
             isSubmitting || cart.length === 0 || hasUnavailable ? 'opacity-60 cursor-not-allowed' : ''
           }`}
         >

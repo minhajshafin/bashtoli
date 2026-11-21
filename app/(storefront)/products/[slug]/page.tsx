@@ -5,7 +5,6 @@ import { ProductDetailClient } from './product-client'
 import { createPublicClient } from '@/lib/supabase/server'
 import React from 'react'
 import { ProductJsonLd } from '@/components/storefront/json-ld'
-import { ProductBackgroundArt } from '@/components/storefront/product-background-art'
 import { Container } from '@/components/ui/container'
 
 interface ProductPageProps {
@@ -90,9 +89,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="relative w-full overflow-hidden bg-cream-50 bg-laid-paper">
-      {/* Edge-to-edge Handcrafted Botanical Background Art */}
-      <ProductBackgroundArt />
-
       <Container size="lg" className="relative z-10 pt-0 sm:pt-4 pb-24 sm:pb-8 lg:min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center">
         {/* JSON-LD Schema Structured Data */}
         <ProductJsonLd

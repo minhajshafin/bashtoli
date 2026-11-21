@@ -37,7 +37,7 @@ function getColorSwatch(val: string): string | null {
   return COLOR_SWATCHES[normalized] || null
 }
 
-export function VariantSelector({
+export const VariantSelector = React.memo(function VariantSelector({
   options,
   variants,
   selectedOptions,
@@ -98,7 +98,7 @@ export function VariantSelector({
                     type="button"
                     disabled={isUnavailable}
                     onClick={() => onChange(opt.name, val.value)}
-                    className={`rounded-pill min-h-[40px] px-3.5 text-xs sm:text-[13px] font-sans transition-transform active:scale-95 duration-fast border cursor-pointer flex items-center justify-center gap-2 select-none ${
+                    className={`rounded-pill min-h-[44px] min-w-[44px] px-4 text-xs sm:text-[13px] font-sans transition-transform active:scale-95 duration-fast border cursor-pointer flex items-center justify-center gap-2 select-none ${
                       isSelected
                         ? 'bg-forest-950 border-forest-950 text-cream-50 shadow-elevation-1 font-semibold pointer-events-none'
                         : isUnavailable
@@ -123,5 +123,5 @@ export function VariantSelector({
       })}
     </div>
   )
-}
+})
 

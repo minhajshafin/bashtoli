@@ -33,15 +33,15 @@ export function DeliveryZoneSelect({
           <button
             type="button"
             onClick={() => onChange('delivery', deliveryZone || 'inside_dhaka')}
-            className={`flex items-center justify-between rounded-2xl p-3 sm:p-3.5 border text-left transition-all cursor-pointer touch-manipulation active:scale-[0.98] min-h-[52px] ${
+            className={`flex items-center justify-between rounded-md p-3 sm:p-3.5 border text-left cursor-pointer touch-manipulation active:scale-[0.98] transition-transform duration-fast min-h-[52px] ${
               fulfillmentType === 'delivery'
-                ? 'bg-forest-950 text-cream-50 border-forest-900 shadow-xs'
-                : 'bg-white border-forest-200/90 text-forest-900 hover:bg-cream-100/60 shadow-2xs'
+                ? 'bg-forest-950 text-cream-50 border-forest-900 shadow-elevation-1'
+                : 'bg-white border-forest-900/15 text-forest-900 hover:bg-cream-100 shadow-2xs'
             }`}
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <span
-                className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${
+                className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors duration-fast ${
                   fulfillmentType === 'delivery'
                     ? 'border-gold-400 bg-gold-400'
                     : 'border-forest-300 bg-white'
@@ -56,7 +56,7 @@ export function DeliveryZoneSelect({
                   Home Courier
                 </span>
                 <span className={`text-[10px] block leading-tight mt-0.5 ${
-                  fulfillmentType === 'delivery' ? 'text-cream-200/70' : 'text-forest-500'
+                  fulfillmentType === 'delivery' ? 'text-cream-200/70' : 'text-forest-600'
                 }`}>
                   Doorstep delivery
                 </span>
@@ -68,15 +68,15 @@ export function DeliveryZoneSelect({
           <button
             type="button"
             onClick={() => onChange('pickup', null)}
-            className={`flex items-center justify-between rounded-2xl p-3 sm:p-3.5 border text-left transition-all cursor-pointer touch-manipulation active:scale-[0.98] min-h-[52px] ${
+            className={`flex items-center justify-between rounded-md p-3 sm:p-3.5 border text-left cursor-pointer touch-manipulation active:scale-[0.98] transition-transform duration-fast min-h-[52px] ${
               fulfillmentType === 'pickup'
-                ? 'bg-forest-950 text-cream-50 border-forest-900 shadow-xs'
-                : 'bg-white border-forest-200/90 text-forest-900 hover:bg-cream-100/60 shadow-2xs'
+                ? 'bg-forest-950 text-cream-50 border-forest-900 shadow-elevation-1'
+                : 'bg-white border-forest-900/15 text-forest-900 hover:bg-cream-100 shadow-2xs'
             }`}
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <span
-                className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${
+                className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors duration-fast ${
                   fulfillmentType === 'pickup'
                     ? 'border-gold-400 bg-gold-400'
                     : 'border-forest-300 bg-white'
@@ -91,14 +91,14 @@ export function DeliveryZoneSelect({
                   Studio Pickup
                 </span>
                 <span className={`text-[10px] block leading-tight mt-0.5 ${
-                  fulfillmentType === 'pickup' ? 'text-cream-200/70' : 'text-forest-500'
+                  fulfillmentType === 'pickup' ? 'text-cream-200/70' : 'text-forest-600'
                 }`}>
                   Gulshan-1, Dhaka
                 </span>
               </div>
             </div>
             <span
-              className={`text-[11px] font-mono font-bold px-1.5 py-0.5 rounded ${
+              className={`text-[11px] font-mono font-bold px-1.5 py-0.5 rounded-sm ${
                 fulfillmentType === 'pickup' ? 'text-gold-300 bg-forest-900' : 'text-forest-700 bg-cream-200/80'
               }`}
             >
@@ -119,15 +119,15 @@ export function DeliveryZoneSelect({
             <button
               type="button"
               onClick={() => onChange('delivery', 'inside_dhaka')}
-              className={`flex items-center justify-between rounded-2xl p-3.5 sm:p-4 border text-left transition-all cursor-pointer touch-manipulation active:scale-[0.98] min-h-[56px] ${
+              className={`flex items-center justify-between rounded-md p-3.5 sm:p-4 border text-left cursor-pointer touch-manipulation active:scale-[0.98] transition-transform duration-fast min-h-[56px] ${
                 deliveryZone === 'inside_dhaka'
-                  ? 'bg-cream-200/90 border-gold-500 text-forest-950 ring-1 ring-gold-400/40 shadow-xs'
-                  : 'bg-white border-forest-200/80 text-forest-800 hover:bg-cream-100/60 shadow-2xs'
+                  ? 'bg-cream-100 border-gold-600 text-forest-950 ring-1 ring-gold-600/30 shadow-elevation-1'
+                  : 'bg-white border-forest-900/15 text-forest-800 hover:bg-cream-50 shadow-2xs'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <span
-                  className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${
+                  className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors duration-fast ${
                     deliveryZone === 'inside_dhaka'
                       ? 'border-forest-950 bg-forest-950'
                       : 'border-forest-300 bg-white'
@@ -146,7 +146,7 @@ export function DeliveryZoneSelect({
                   </span>
                 </div>
               </div>
-              <span className="text-xs font-price font-bold text-forest-950 px-2 py-1 rounded-lg bg-cream-100 border border-forest-200/90 shrink-0">
+              <span className="text-xs font-price font-bold text-forest-950 px-2 py-1 rounded-sm bg-cream-50 border border-forest-900/15 shrink-0">
                 ৳{DELIVERY_FEES.inside_dhaka}
               </span>
             </button>
@@ -155,15 +155,15 @@ export function DeliveryZoneSelect({
             <button
               type="button"
               onClick={() => onChange('delivery', 'outside_dhaka')}
-              className={`flex items-center justify-between rounded-2xl p-3.5 sm:p-4 border text-left transition-all cursor-pointer touch-manipulation active:scale-[0.98] min-h-[56px] ${
+              className={`flex items-center justify-between rounded-md p-3.5 sm:p-4 border text-left cursor-pointer touch-manipulation active:scale-[0.98] transition-transform duration-fast min-h-[56px] ${
                 deliveryZone === 'outside_dhaka'
-                  ? 'bg-cream-200/90 border-gold-500 text-forest-950 ring-1 ring-gold-400/40 shadow-xs'
-                  : 'bg-white border-forest-200/80 text-forest-800 hover:bg-cream-100/60 shadow-2xs'
+                  ? 'bg-cream-100 border-gold-600 text-forest-950 ring-1 ring-gold-600/30 shadow-elevation-1'
+                  : 'bg-white border-forest-900/15 text-forest-800 hover:bg-cream-50 shadow-2xs'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <span
-                  className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${
+                  className={`h-4 w-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors duration-fast ${
                     deliveryZone === 'outside_dhaka'
                       ? 'border-forest-950 bg-forest-950'
                       : 'border-forest-300 bg-white'
@@ -182,19 +182,26 @@ export function DeliveryZoneSelect({
                   </span>
                 </div>
               </div>
-              <span className="text-xs font-price font-bold text-forest-950 px-2 py-1 rounded-lg bg-cream-100 border border-forest-200/90 shrink-0">
+              <span className="text-xs font-price font-bold text-forest-950 px-2 py-1 rounded-sm bg-cream-50 border border-forest-900/15 shrink-0">
                 ৳{DELIVERY_FEES.outside_dhaka}
               </span>
             </button>
           </div>
-          {error && <p className="text-terracotta-600 text-xs mt-1 font-medium">{error[0]}</p>}
+          {/* Reserved slot for inline validation error to prevent layout shifts */}
+          <div className="min-h-[1.25rem] text-xs">
+            {error && (
+              <p className="text-terracotta-600 font-medium flex items-center gap-1 animate-fade-in">
+                <span>⚠</span> {error[0]}
+              </p>
+            )}
+          </div>
         </div>
       )}
 
       {/* 3. Studio Pickup Address Notice */}
       {fulfillmentType === 'pickup' && (
-        <div className="rounded-2xl border border-gold-400/30 bg-gold-400/10 p-3.5 text-xs text-forest-900 flex items-start gap-2.5">
-          <svg className="h-4 w-4 shrink-0 text-gold-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="rounded-md border border-gold-400/30 bg-gold-400/10 p-3.5 text-xs text-forest-900 flex items-start gap-2.5">
+          <svg className="h-4 w-4 shrink-0 text-gold-700 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
           </svg>

@@ -11,20 +11,22 @@
    5. UNIFIED CANVAS STRATEGY: Cream paper canvas across storefront, cart, checkout, account, and order pages.
       Deep forest is reserved exclusively for the Masthead, Hero banner, Footer, and select accent badges.
 
-   WCAG AA CONTRAST AUDIT (Phase 1d Item 5):
+   WCAG AA CONTRAST AUDIT (Phase 1e Reconciled):
    - On White (#ffffff) / Cream Paper (#fbf8f2):
-     * Body Text (>=4.5:1): forest-950 (17.5:1), forest-900 (15.7:1), forest-800 (13.7:1),
-       forest-700 (11.3:1), forest-600 (8.6:1), forest-500 (5.8:1), terracotta-700 (9.9:1),
-       terracotta-600 (7.3:1), terracotta-500 (5.0:1), gold-700 (5.8:1), gold-800 (8.0:1).
-     * Large Text (>=3.0:1): forest-400 (3.3:1), gold-600 (3.9:1), terracotta-400 (3.2:1).
-     * DISALLOWED for text on cream/white: gold-500 (2.3:1 FAIL), gold-400 (1.6:1 FAIL),
-       gold-300 (1.2:1 FAIL), forest-300 (2.0:1 FAIL), forest-200 (1.4:1 FAIL).
-     * Price Accent on Light Canvas: ALWAYS use forest-950 (17.5:1) or gold-700 (5.8:1).
+     * Body Text (>=4.5:1): forest-950 (17.46:1), forest-900 (15.67:1), forest-800 (13.69:1),
+       forest-700 (11.26:1), forest-600 (8.60:1), forest-500 (5.85:1), terracotta-800 (12.02:1),
+       terracotta-700 (9.88:1), terracotta-600 (7.29:1), terracotta-500 (4.97:1),
+       gold-800 (7.88:1), gold-700 (5.80:1).
+     * Large Text (>=3.0:1): forest-400 (3.26:1), gold-600 (3.88:1), terracotta-400 (3.22:1).
+     * DISALLOWED for text on cream/white: gold-500 (2.28:1 FAIL), gold-400 (1.61:1 FAIL),
+       gold-300 (1.23:1 FAIL), forest-300 (1.95:1 FAIL), forest-200 (1.37:1 FAIL).
+     * Price & Accent on Light Canvas: ALWAYS use forest-950 (17.46:1) or gold-700 (5.80:1).
    - On Deep Forest (#0a160f):
-     * Body Text (>=4.5:1): cream-50 (17.5:1), white (18.5:1), gold-200 (16.4:1),
-       gold-300 (14.1:1), gold-400 (10.8:1), gold-500 (7.7:1), forest-300 (9.0:1),
-       forest-200 (12.8:1), forest-400 (5.4:1), terracotta-400 (5.4:1).
-     * Large Text (>=3.0:1): terracotta-500 (3.5:1).
+     * Body Text (>=4.5:1): cream-50 (17.46:1), white (18.51:1), gold-200 (16.42:1),
+       gold-300 (14.15:1), gold-400 (10.83:1), gold-500 (7.67:1), gold-600 (4.50:1),
+       forest-100 (15.48:1), forest-200 (12.75:1), forest-300 (8.96:1), forest-400 (5.35:1),
+       terracotta-400 (5.42:1).
+     * Large Text (>=3.0:1): terracotta-500 (3.51:1), gold-700 (3.01:1).
    ========================================================================== */
 
 @theme {
@@ -161,8 +163,8 @@
 
   /* Interactive Links */
   --color-link-default: #1e3d2c;
-  --color-link-hover: #c4a265;
-  --color-link-active: #9a7833;
+  --color-link-hover: #7d5c18;
+  --color-link-active: #654911;
   --color-link-dark-default: #ece3d2;
   --color-link-dark-hover: #ddc391;
   --color-link-dark-active: #c4a265;
@@ -207,12 +209,12 @@
   /* Semantic Text Hierarchy */
   --color-text-primary: #0a160f;
   --color-text-secondary: #29503b;
-  --color-text-muted: #5c9674;
+  --color-text-muted: #386b4f;
   --color-text-inverse: #fbf8f2;
   --color-text-inverse-secondary: #ece3d2;
   --color-text-inverse-muted: #90bfa3;
-  --color-text-accent: #c4a265;
-  --color-text-accent-hover: #ddc391;
+  --color-text-accent: #7d5c18;
+  --color-text-accent-hover: #654911;
 
   /* Semantic Borders */
   --color-border-primary: rgba(16, 34, 24, 0.12);

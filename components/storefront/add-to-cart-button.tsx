@@ -9,7 +9,7 @@ interface AddToCartButtonProps {
   onBuyNow?: (qty: number) => void
 }
 
-export function AddToCartButton({
+export const AddToCartButton = React.memo(function AddToCartButton({
   stockQty,
   onAddToCart,
   onBuyNow,
@@ -236,4 +236,4 @@ export function AddToCartButton({
       </div>
     </>
   )
-}
+})
