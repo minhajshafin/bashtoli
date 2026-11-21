@@ -8,52 +8,18 @@
  *   --throttling-method=simulate (Lantern)
  *   --throttling-method=devtools (Chrome DevTools live throttling)
  *   --throttling-method=both     (Runs both cross-checks)
+ *   --save-dir=<path>            (Directory to store raw Lighthouse JSON audits)
  *
  * Reports 5-run median metrics, main-thread work breakdown (script, style/layout, paint),
  * observed LCP, TBT, CLS, and score.
  *
  * Usage:
- *   node scripts/lighthouse.mjs [/route1] [/route2] [--throttling-method=devtools|simulate|both]
- * Example:
- *   node scripts/lighthouse.mjs /bag /checkout /products/classic-ruled-school-notebook --throttling-method=both
+ *   node scripts/lighthouse.mjs [/route1] [/route2] [--throttling-method=devtools|simulate|both] [--save-dir=docs/perf/head]
  */
 
 import { spawnSync } from 'child_process'
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import path from 'path'
-
-// Load .env.local if present
-const envPath = path.resolve(process.cwd(), '.env.local')
-if (existsSync(envPath)) {
-  const content = readFileSync(envPath, 'utf8')
-  for (const line of content.split('\n')) {
-    const trimmed = line.trim()
-    if (!trimmed || trimmed.startsWith('#')) continue
-    const eqIdx = trimmed.indexOf('=')
-    if (eqIdx !== -1) {
-      const key = trimmed.slice(0, eqIdx).trim()
-      const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '')
-      if (!process.env[key]) {
-        process.env[key] = val
-      }
-    }
-  }
-}
-
-async function clearRateLimits() {
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-    try {
-      const { Redis } = await import('@upstash/redis')
-      const redis = Redis.fromEnv()
-      const keys = await redis.keys('rl:*')
-      if (keys.length > 0) {
-        await Promise.all(keys.map((k) => redis.del(k)))
-      }
-    } catch {
-      // Ignore if Redis unreachable
-    }
-  }
-}
 
 const CHROME_PATH = process.env.CHROME_PATH || (existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : 'google-chrome')
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
@@ -61,11 +27,14 @@ const RUNS = parseInt(process.env.RUNS || '5', 10)
 
 const args = process.argv.slice(2)
 let throttlingMethodArg = 'simulate'
+let saveDirArg = null
 const targetRoutes = []
 
 for (const arg of args) {
   if (arg.startsWith('--throttling-method=')) {
     throttlingMethodArg = arg.split('=')[1]
+  } else if (arg.startsWith('--save-dir=')) {
+    saveDirArg = arg.split('=')[1]
   } else if (!arg.startsWith('--')) {
     targetRoutes.push(arg)
   }
@@ -74,6 +43,11 @@ for (const arg of args) {
 const TARGET_ROUTES = targetRoutes.length > 0
   ? targetRoutes
   : ['/', '/products', '/products/classic-ruled-school-notebook']
+
+function slugify(route) {
+  if (route === '/') return 'home'
+  return route.replace(/^\/+|\/+$/g, '').replace(/[^a-zA-Z0-9_-]/g, '_')
+}
 
 function runLighthouse(url, method = 'simulate') {
   const flags = [
@@ -108,7 +82,8 @@ function runLighthouse(url, method = 'simulate') {
     throw new Error(`Lighthouse run failed for ${url} (${method}): ${res.stderr || res.stdout}`)
   }
 
-  const json = JSON.parse(res.stdout)
+  const rawJson = res.stdout
+  const json = JSON.parse(rawJson)
   const perfScore = Math.round((json.categories.performance?.score || 0) * 100)
   const metrics = json.audits['metrics']?.details?.items?.[0] || {}
 
@@ -147,6 +122,7 @@ function runLighthouse(url, method = 'simulate') {
   )
 
   return {
+    rawJson,
     method,
     score: perfScore,
     simLcp,
@@ -165,16 +141,21 @@ function runLighthouse(url, method = 'simulate') {
   }
 }
 
-async function benchmarkRouteMethod(route, method) {
+async function benchmarkRouteMethod(route, method, saveDir) {
   const fullUrl = route.startsWith('http') ? route : `${BASE_URL}${route}`
+  const routeSlug = slugify(route)
   process.stdout.write(`Benchmarking ${route} [${method}] (${RUNS} runs)... `)
 
   const runs = []
   for (let i = 1; i <= RUNS; i++) {
     process.stdout.write(`[${i}/${RUNS}] `)
-    await clearRateLimits()
     const result = runLighthouse(fullUrl, method)
     runs.push(result)
+
+    if (saveDir) {
+      const runFilePath = path.join(saveDir, `${routeSlug}_${method}_run${i}.json`)
+      writeFileSync(runFilePath, result.rawJson, 'utf8')
+    }
   }
   process.stdout.write('Done.\n')
 
@@ -187,11 +168,18 @@ async function benchmarkRouteMethod(route, method) {
 
   const medianRun = runs[Math.floor(runs.length / 2)]
 
+  if (saveDir) {
+    const medianFilePath = path.join(saveDir, `${routeSlug}_${method}_median.json`)
+    writeFileSync(medianFilePath, medianRun.rawJson, 'utf8')
+  }
+
+  // Remove rawJson from returned object to avoid excessive memory retention
+  const { rawJson: _, ...cleanMedian } = medianRun
+
   return {
     route,
     method,
-    ...medianRun,
-    allRuns: runs,
+    ...cleanMedian,
   }
 }
 
@@ -203,6 +191,10 @@ async function main() {
   console.log(`Throttling Mode:   ${throttlingMethodArg}`)
   console.log(`Chrome Executable: ${CHROME_PATH}`)
   console.log(`Emulation:         Mobile Moto G4 (360x640 @2x, 4x CPU throttle)`)
+  if (saveDirArg) {
+    console.log(`Raw Audits Dir:    ${saveDirArg}`)
+    mkdirSync(saveDirArg, { recursive: true })
+  }
   console.log(`========================================================================\n`)
 
   const methods = throttlingMethodArg === 'both' ? ['simulate', 'devtools'] : [throttlingMethodArg]
@@ -212,7 +204,7 @@ async function main() {
     const results = []
     for (const route of TARGET_ROUTES) {
       try {
-        const res = await benchmarkRouteMethod(route, method)
+        const res = await benchmarkRouteMethod(route, method, saveDirArg)
         results.push(res)
       } catch (err) {
         console.error(`\nError benchmarking ${route}:`, err.message)
