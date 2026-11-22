@@ -29,11 +29,11 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
     BADGE_COLOR_PRESETS[currentSlide.badge_color_preset] || BADGE_COLOR_PRESETS.gold
 
   return (
-    <div className="relative w-full max-w-[320px] sm:max-w-[320px] lg:max-w-[350px] mx-auto">
-      {/* Tactile Frame Glint */}
-      <div className="relative p-1.5 sm:p-2 rounded-2xl sm:rounded-[28px] bg-forest-900/70 border border-gold-500/25 shadow-sm">
+    <div className="relative w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[420px] xl:max-w-[460px] mx-auto">
+      {/* Museum-Grade Archival Beveled Frame */}
+      <div className="relative p-2 sm:p-2.5 lg:p-3 rounded-2xl sm:rounded-[32px] bg-gradient-to-b from-forest-900/90 via-forest-900/60 to-forest-950 border border-gold-500/30 shadow-2xl ring-1 ring-gold-400/10">
         {/* Slides Viewport: 16:10 cinematic on mobile, 4:5 on sm+ */}
-        <div className="relative aspect-[16/10] sm:aspect-[4/5] rounded-[18px] sm:rounded-[22px] overflow-hidden bg-forest-950 shadow-inner">
+        <div className="relative aspect-[16/10] sm:aspect-[4/5] rounded-[18px] sm:rounded-[26px] overflow-hidden bg-forest-950 shadow-inner border border-forest-800/80">
           {activeSlides.map((s, i) => {
             const isCurrent = i === slide
             const isNext = (slide + 1) % activeSlides.length === i
@@ -49,7 +49,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 quality={75}
                 loading={i === 0 ? undefined : 'lazy'}
                 fetchPriority={i === 0 ? 'high' : undefined}
-                sizes="(max-width: 640px) 320px, (max-width: 1024px) 320px, 350px"
+                sizes="(max-width: 640px) 320px, (max-width: 1024px) 380px, 460px"
                 className="object-cover transition-transform duration-1000 ease-out"
               />
             ) : null
@@ -81,7 +81,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Floating Curation Pill Badge */}
           <div
-            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[10px] lg:text-[11px] font-semibold z-10 pointer-events-none rounded-full transition-colors duration-400 font-sans tracking-wider uppercase shadow-xs"
+            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 type-kicker text-[9px] sm:text-[10px] z-10 pointer-events-none rounded-full transition-colors duration-400 tracking-wider shadow-sm"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,
@@ -93,7 +93,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Minimal Linear Slide Indicators */}
           {activeSlides.length > 1 && (
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1 z-10 bg-forest-950 px-2 rounded-full border border-forest-800/80">
+            <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1 z-10 bg-forest-950/90 px-2.5 py-1 rounded-full border border-forest-800/80 shadow-md">
               {activeSlides.map((_, i) => (
                 <button
                   key={i}
@@ -104,7 +104,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 >
                   <span
                     className={`h-1.5 rounded-full transition-all duration-300 ${
-                      i === slide ? 'w-4 bg-btn-accent-bg' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/80'
+                      i === slide ? 'w-5 bg-gold-400' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/80'
                     }`}
                   />
                 </button>
@@ -114,15 +114,21 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
         </div>
       </div>
 
-      {/* Floating Stationery Spec Note (Desktop & Tablet) */}
+      {/* Floating Archival Spec Note (Desktop & Tablet) */}
       <div
-        className="absolute -left-4 sm:-left-6 bottom-6 px-3.5 py-2.5 shadow-lifted hidden sm:block z-20 pointer-events-none rounded-xl bg-cream-50 border border-gold-500/30 max-w-[190px] animate-fade-in"
+        className="absolute -left-4 sm:-left-8 bottom-6 px-4 py-3 shadow-elevation-3 hidden sm:block z-20 pointer-events-none rounded-xl bg-bg-surface-elevated border border-gold-500/35 max-w-[210px] animate-fade-in ring-1 ring-gold-500/10"
       >
-        <p className="font-display text-[13px] font-semibold text-forest-950 leading-snug tracking-[-0.01em]">
+        <div className="flex items-center justify-between gap-2 mb-1">
+          <span className="type-kicker text-[8px] text-gold-700 tracking-[0.25em]">
+            ARCHIVE № {String(slide + 1).padStart(2, '0')}
+          </span>
+          <span className="h-1.5 w-1.5 rounded-full bg-gold-600 animate-pulse" />
+        </div>
+        <p className="font-display text-[14px] font-semibold text-forest-950 leading-snug tracking-tight">
           {currentSlide.badge_text}
         </p>
-        <p className="text-[9px] uppercase tracking-widest text-forest-750 font-semibold font-sans mt-0.5">
-          {currentSlide.subtext || 'Now in store & online'}
+        <p className="type-body-sm text-[10px] text-forest-750 font-medium mt-0.5 leading-tight">
+          {currentSlide.subtext || 'Handcrafted in Dhaka'}
         </p>
       </div>
     </div>
@@ -134,23 +140,32 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
 
   return (
     <section ref={containerRef} className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark">
+      {/* Ambient Gallery Spotlight Glow */}
+      <div
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-[320px] sm:w-[500px] lg:w-[680px] h-[320px] sm:h-[500px] lg:h-[680px] rounded-full opacity-20 blur-3xl"
+        style={{
+          background: 'radial-gradient(circle, rgba(196, 162, 101, 0.25) 0%, rgba(10, 22, 15, 0) 70%)',
+        }}
+        aria-hidden="true"
+      />
+
       {/* Blind-Debossed Pulp Watermark + Minimalist Drifting Leaf */}
       <BambooPaperWatermark theme="dark" className="-right-10 top-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96" />
       <DriftingBambooLeaf theme="dark" className="left-8 sm:left-16 bottom-8 hidden sm:block" rotation={24} scale={1.2} />
 
-      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28 w-full grid lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-14 items-center py-7 sm:py-12 lg:py-16 xl:py-18">
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 2xl:px-28 w-full grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center py-8 sm:py-14 lg:py-18 xl:py-20">
         {/* Left: Story & Discovery */}
         <div className="lg:col-span-7 max-w-2xl lg:pl-2 xl:pl-6 2xl:pl-8 text-center lg:text-left">
           {/* Stationery Eyebrow */}
           <div className="hero-eyebrow inline-flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
-            <span className="h-px w-4 sm:w-8 bg-gold-400/70" />
+            <span className="h-px w-5 sm:w-8 bg-gold-400/80" />
             <span className="type-kicker text-gold-400">
               Bamboo Stationery &middot; Dhaka &middot; Est. 2026
             </span>
-            <span className="h-px w-4 sm:w-8 bg-gold-400/70 lg:hidden" />
+            <span className="h-px w-5 sm:w-8 bg-gold-400/80 lg:hidden" />
           </div>
 
-          <h1 className="mb-3 sm:mb-4 text-cream-50 type-hero font-medium">
+          <h1 className="mb-3 sm:mb-5 text-cream-50 type-hero font-medium">
             <span className="block overflow-hidden py-0.5">
               <span className="hero-title-line block">
                 Craft your{' '}
@@ -166,15 +181,15 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
 
           {/* Subtext: hidden on mobile to eliminate clutter, shown on sm+ */}
           <p
-            className="hero-subtext hidden sm:block mb-4 sm:mb-7 type-lead text-forest-200/90 font-normal max-w-xl text-pretty"
+            className="hero-subtext hidden sm:block mb-5 sm:mb-8 type-lead text-forest-200/90 font-normal max-w-xl text-pretty"
           >
             Handpicked notebooks, artisanal pens, and bamboo paper goods crafted for thoughtful daily rituals.
           </p>
 
-          <div className="hero-cta flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-2 lg:mb-0">
+          <div className="hero-cta flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-3 lg:mb-7">
             <Link
               href="/products"
-              className="btn-accent rounded-full px-6 py-2.5 sm:px-7 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group cursor-pointer active:scale-95"
+              className="btn-accent rounded-full px-7 py-3 sm:px-8 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group cursor-pointer active:scale-95 shadow-elevation-2"
             >
               <span>Shop Collection</span>
               <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,9 +203,33 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
               Our Story
             </Link>
           </div>
+
+          {/* Micro-Trust Ribbon (Desktop Only) */}
+          <div className="hidden lg:flex items-center gap-4 text-forest-300/70 pt-4 mt-2 border-t border-forest-800/60 max-w-lg">
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold-400/80" />
+              <span className="type-kicker text-[9px] tracking-[0.16em] text-forest-200/85">
+                100% Bamboo Paper
+              </span>
+            </div>
+            <span className="text-forest-700">&middot;</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold-400/80" />
+              <span className="type-kicker text-[9px] tracking-[0.16em] text-forest-200/85">
+                Cash on Delivery
+              </span>
+            </div>
+            <span className="text-forest-700">&middot;</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-gold-400/80" />
+              <span className="type-kicker text-[9px] tracking-[0.16em] text-forest-200/85">
+                Dhaka Atelier
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Right: slideshow (compact mobile frame) */}
+        {/* Right: slideshow (sculptural gallery frame) */}
         <div className="hero-frame flex lg:col-span-5 justify-center lg:justify-end w-full mt-2 sm:mt-0">
           <HeroSlideshow slides={slides} />
         </div>

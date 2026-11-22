@@ -162,3 +162,22 @@ Standardized on the **Editorial Pairing Formula**:
 - **`.type-body-sm`:** `clamp(0.78rem, 0.15vw + 0.74rem, 0.85rem)` · line-height: `1.5` · letter-spacing: `-0.005em`
 - **`.type-kicker`:** `clamp(0.65rem, 0.1vw + 0.62rem, 0.72rem)` · letter-spacing: `0.22em` · `uppercase` · `font-weight: 600`
 - **`.type-price`:** `tabular-nums` · letter-spacing: `-0.015em` · `font-weight: 700`
+
+---
+
+## 7. Hero Section Framing & Cinematic Presentation (/awwwards Standards)
+
+Elevated the storefront landing hero from a standard mobile card layout into an exhibition-grade gallery centerpiece:
+
+### 7.1 Archival Exhibition Framing
+- **Dynamic Scale Proportions:** Expanded viewport width gracefully from mobile (`max-w-[320px]`) through tablet (`380px`) to desktop gallery scale (`420px–460px`).
+- **Museum-Grade Beveled Outer Casing:** Dual-layer bevel (`bg-gradient-to-b from-forest-900/90 via-forest-900/60 to-forest-950 border border-gold-500/30 shadow-2xl ring-1 ring-gold-400/10`) with `shadow-inner` and `border-forest-800/80` slide containment.
+- **Ambient Gallery Spotlight:** Subtly illuminated radial back-glow (`radial-gradient(circle, rgba(196, 162, 101, 0.25) ... blur-3xl)`) focusing viewer optical attention on the centerpiece artwork.
+
+### 7.2 Floating Archival Spec Note
+- **Museum Label Spec Plate:** Positioned at `-left-8 bottom-6` with `bg-bg-surface-elevated`, warm brass border (`border-gold-500/35`), and subtle elevation (`shadow-elevation-3 ring-1 ring-gold-500/10`).
+- **Curatorial Micro-Data:** Displays `ARCHIVE № 01` tracking stamp, pulsing brass beacon, slide badge headline (`font-display font-semibold text-forest-950`), and Dhaka provenance note (`text-forest-750`).
+
+### 7.3 Desktop Micro-Trust Ribbon
+- Refined horizontal editorial trust indicators positioned below CTA buttons (`100% Bamboo Paper · Cash on Delivery · Dhaka Atelier`) with gold brass dots and hairline divider (`border-forest-800/60`).
+
