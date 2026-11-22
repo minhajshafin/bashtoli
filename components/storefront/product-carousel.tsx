@@ -1,149 +1,33 @@
 'use client'
 
-import React, { useRef, useEffect, useMemo } from 'react'
+import React, { useRef } from 'react'
 import Link from 'next/link'
 import { ProductCard } from '@/components/storefront/product-card'
 import type { ProductWithDetails } from '@/lib/queries/products'
-import { gsap, isReducedMotion, horizontalLoop, type HorizontalLoopTimeline } from '@/lib/motion'
 import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
 export function ProductCarousel({ products }: { products: ProductWithDetails[] }) {
-  const containerRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
-  const loopRef = useRef<HorizontalLoopTimeline | null>(null)
-  const isHoveredRef = useRef(false)
-  const isIntersectingRef = useRef(false)
 
-  // Ensure enough items to span any viewport seamlessly
-  const displayProducts = useMemo(() => {
-    if (!products || products.length === 0) return []
-    let list = [...products]
-    while (list.length < 12) {
-      list = [...list, ...products]
-    }
-    return list
-  }, [products])
+  if (!products || products.length === 0) return null
 
-  // Initialize GSAP Hardware-Accelerated Horizontal Loop
-  useEffect(() => {
-    if (!trackRef.current || displayProducts.length === 0) return
-
-    const reduced = isReducedMotion()
-    const items = gsap.utils.toArray<HTMLElement>('.carousel-card-item', trackRef.current)
-    if (items.length === 0) return
-
-    // Exact responsive gap between items (12px on mobile, 24px on sm+)
-    const gap = window.innerWidth >= 640 ? 24 : 12
-
-    const loop = horizontalLoop(items, {
-      speed: reduced ? 0 : 0.45, // Gentle, silky-smooth continuous glide
-      paused: true, // Start paused until IntersectionObserver confirms viewport visibility
-      repeat: -1,
-      paddingRight: gap,
-    })
-
-    loopRef.current = loop
-
-    const checkShouldPlay = () => {
-      if (isReducedMotion() || isHoveredRef.current || document.hidden || !isIntersectingRef.current) {
-        loopRef.current?.pause()
-      } else {
-        loopRef.current?.play()
-      }
-    }
-
-    // IntersectionObserver to pause loop when off-screen
-    let observer: IntersectionObserver | null = null
-    if (containerRef.current && typeof IntersectionObserver !== 'undefined') {
-      observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0]
-          isIntersectingRef.current = entry?.isIntersecting ?? false
-          checkShouldPlay()
-        },
-        { rootMargin: '100px 0px' }
-      )
-      observer.observe(containerRef.current)
-    }
-
-    // Page Visibility listener to pause when backgrounded
-    const handleVisibilityChange = () => {
-      checkShouldPlay()
-    }
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-
-    // Resize handler to adjust layout if window changes
-    let resizeTimer: NodeJS.Timeout
-    const handleResize = () => {
-      clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(() => {
-        loop.kill()
-        gsap.set(items, { clearProps: 'all' })
-        const newGap = window.innerWidth >= 640 ? 24 : 12
-        loopRef.current = horizontalLoop(items, {
-          speed: reduced ? 0 : 0.45,
-          paused: true,
-          repeat: -1,
-          paddingRight: newGap,
-        })
-        checkShouldPlay()
-      }, 200)
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      clearTimeout(resizeTimer)
-      window.removeEventListener('resize', handleResize)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      observer?.disconnect()
-      loop.kill()
-      gsap.set(items, { clearProps: 'all' })
-    }
-  }, [displayProducts])
-
-  // Next / Previous buttons: smoothly glide by 1 card without stopping the continuous motion
   const handleNext = () => {
-    if (!loopRef.current) return
-    loopRef.current.next({
-      duration: 0.65,
-      ease: 'power2.out',
-      onComplete: () => {
-        if (!isHoveredRef.current && !isReducedMotion() && !document.hidden && isIntersectingRef.current) {
-          loopRef.current?.play()
-        }
-      },
-    })
+    if (!trackRef.current) return
+    const card = trackRef.current.querySelector('.carousel-card-item') as HTMLElement | null
+    const cardWidth = card ? card.offsetWidth : 240
+    trackRef.current.scrollBy({ left: cardWidth + 16, behavior: 'smooth' })
   }
 
   const handlePrevious = () => {
-    if (!loopRef.current) return
-    loopRef.current.previous({
-      duration: 0.65,
-      ease: 'power2.out',
-      onComplete: () => {
-        if (!isHoveredRef.current && !isReducedMotion() && !document.hidden && isIntersectingRef.current) {
-          loopRef.current?.play()
-        }
-      },
-    })
-  }
-
-  const handleMouseEnter = () => {
-    isHoveredRef.current = true
-    loopRef.current?.pause()
-  }
-
-  const handleMouseLeave = () => {
-    isHoveredRef.current = false
-    if (!isReducedMotion() && !document.hidden && isIntersectingRef.current) {
-      loopRef.current?.play()
-    }
+    if (!trackRef.current) return
+    const card = trackRef.current.querySelector('.carousel-card-item') as HTMLElement | null
+    const cardWidth = card ? card.offsetWidth : 240
+    trackRef.current.scrollBy({ left: -(cardWidth + 16), behavior: 'smooth' })
   }
 
   return (
     <div className="w-full">
-      {/* Minimal Header: High-contrast title and restrained controls */}
+      {/* Header: High-contrast title and restrained controls */}
       <ScrollReveal>
         <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2 px-4 sm:px-0">
           <div className="min-w-0 pr-2">
@@ -155,7 +39,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
             </p>
           </div>
 
-          {/* Minimal Controls: Previous / Next (desktop only) + View All */}
+          {/* Controls: Previous / Next (desktop only) + View All */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <div className="hidden sm:flex items-center gap-1.5" role="group" aria-label="Carousel navigation">
               <button
@@ -199,21 +83,18 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
         </div>
       </ScrollReveal>
 
-      {/* Contained Track Viewport: Aligned strictly with section header & content grid */}
-      <div
-        ref={containerRef}
-        className="relative overflow-hidden w-full py-1 sm:py-2"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      {/* Native Hardware-Accelerated Smooth Scroll-Snap Container */}
+      <div className="relative w-full py-1 sm:py-2">
         <div
           ref={trackRef}
-          className="flex gap-3 sm:gap-6 will-change-transform"
+          tabIndex={0}
+          aria-label="Featured products"
+          className="flex gap-3 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none px-4 sm:px-0 focus:outline-hidden"
         >
-          {displayProducts.map((p, index) => (
+          {products.map((p) => (
             <div
-              key={`${p.id}-${index}`}
-              className="carousel-card-item shrink-0 w-[150px] sm:w-[220px] md:w-[240px]"
+              key={p.id}
+              className="carousel-card-item shrink-0 w-[150px] sm:w-[220px] md:w-[240px] snap-start"
             >
               <ProductCard product={p} />
             </div>

@@ -3,8 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { gsap, isReducedMotion } from '@/lib/motion'
-
 import {
   BADGE_COLOR_PRESETS,
   DEFAULT_FALLBACK_SLIDE,
@@ -67,7 +65,11 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
                 }}
               >
                 {s.link_url ? (
-                  <Link href={s.link_url} className="block w-full h-full relative">
+                  <Link
+                    href={s.link_url}
+                    className="block w-full h-full relative"
+                    aria-label={s.alt_text || s.badge_text || 'Featured collection'}
+                  >
                     {content}
                   </Link>
                 ) : (
@@ -91,16 +93,21 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Minimal Linear Slide Indicators */}
           {activeSlides.length > 1 && (
-            <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-forest-950 px-2.5 py-1.5 rounded-full border border-forest-800/80">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1 z-10 bg-forest-950 px-2 rounded-full border border-forest-800/80">
               {activeSlides.map((_, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => setSlide(i)}
-                  aria-label={`Slide ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-colors duration-300 cursor-pointer ${
-                    i === slide ? 'w-4 bg-btn-accent-bg' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/80'
-                  }`}
-                />
+                  aria-label={`Go to slide ${i + 1}`}
+                  className="min-h-[44px] min-w-[24px] flex items-center justify-center cursor-pointer px-1"
+                >
+                  <span
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === slide ? 'w-4 bg-btn-accent-bg' : 'w-1.5 bg-cream-100/35 hover:bg-cream-100/80'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           )}
@@ -124,48 +131,6 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
 export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
   const containerRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    if (isReducedMotion() || !containerRef.current) return
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-
-      // Subtle eyebrow entrance
-      tl.fromTo(
-        '.hero-eyebrow',
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'opacity,transform' },
-        0.05
-      )
-
-      // Masked typography lines reveal: slides upward from overflow mask
-      tl.fromTo(
-        '.hero-title-line',
-        { yPercent: 110 },
-        { yPercent: 0, duration: 0.85, stagger: 0.12, ease: 'power3.out', clearProps: 'transform' },
-        0.12
-      )
-
-      // Subtitle paragraph
-      tl.fromTo(
-        '.hero-subtext',
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', clearProps: 'opacity,transform' },
-        0.4
-      )
-
-      // CTA buttons
-      tl.fromTo(
-        '.hero-cta',
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out', clearProps: 'opacity,transform' },
-        0.55
-      )
-    }, containerRef)
-
-    return () => ctx.revert()
-  }, [])
 
   return (
     <section ref={containerRef} className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark">

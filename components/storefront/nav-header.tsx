@@ -4,9 +4,14 @@ import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { CartIcon } from '@/components/storefront/cart-icon'
-import { MobileSearchOverlay } from '@/components/storefront/mobile-search-overlay'
 import { logoutAction } from '@/lib/actions/auth'
+
+const MobileSearchOverlay = dynamic(
+  () => import('@/components/storefront/mobile-search-overlay').then((m) => m.MobileSearchOverlay),
+  { ssr: false }
+)
 import { useWishlist } from '@/lib/wishlist/wishlist-context'
 import { useHydrated } from '@/lib/hooks/use-hydrated'
 
@@ -306,11 +311,13 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
         </div>
       </div>
 
-      {/* Mobile Search & Discovery Overlay */}
-      <MobileSearchOverlay
-        isOpen={mobileSearchOpen}
-        onClose={() => setMobileSearchOpen(false)}
-      />
+      {/* Mobile Search & Discovery Overlay — Loaded only upon opening */}
+      {mobileSearchOpen && (
+        <MobileSearchOverlay
+          isOpen={mobileSearchOpen}
+          onClose={() => setMobileSearchOpen(false)}
+        />
+      )}
     </header>
   )
 }

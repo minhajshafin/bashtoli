@@ -7,9 +7,9 @@ import { ToastProvider } from '@/components/ui/toast'
 import { ConfirmDialogProvider } from '@/components/ui/confirm-dialog'
 import { WishlistProvider } from '@/lib/wishlist/wishlist-context'
 import { NavHeader } from '@/components/storefront/nav-header'
-import { CartDrawer } from '@/components/storefront/cart-drawer'
 import { MobileBottomDock } from '@/components/storefront/mobile-bottom-dock'
 import { RouteProgressBar } from '@/components/storefront/route-progress-bar'
+import { CartDrawer } from '@/components/storefront/cart-drawer-client'
 
 export const metadata: Metadata = {
   title: {
@@ -24,6 +24,14 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
     <WishlistProvider isLoggedIn={false} initialWishlistIds={[]} pending>
       <CartProvider isLoggedIn={false}>
         <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased [&:has(.checkout-page-root)_footer]:hidden">
+          {/* Skip Navigation Link */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-gold-500 focus:text-forest-950 focus:font-semibold focus:shadow-md focus:rounded-md focus:outline-none focus:ring-2 focus:ring-forest-950"
+          >
+            Skip to main content
+          </a>
+
           {/* Guest Header Fallback */}
           <Suspense fallback={<div className="h-11 sm:h-16 bg-forest-950 border-b border-forest-800/70" />}>
             <NavHeader
@@ -34,7 +42,7 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
           </Suspense>
 
           {/* Main Content Area */}
-          <main className="flex-1">
+          <main id="main-content" className="flex-1">
             {children}
           </main>
 
@@ -88,6 +96,14 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
     <WishlistProvider isLoggedIn={!!user} initialWishlistIds={initialWishlistIds}>
       <CartProvider isLoggedIn={!!user}>
         <div className="flex min-h-screen flex-col bg-cream-50 text-forest-900 font-sans antialiased [&:has(.checkout-page-root)_footer]:hidden">
+          {/* Skip Navigation Link */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-gold-500 focus:text-forest-950 focus:font-semibold focus:shadow-md focus:rounded-md focus:outline-none focus:ring-2 focus:ring-forest-950"
+          >
+            Skip to main content
+          </a>
+
           {/* Sticky Header */}
           <Suspense fallback={<div className="h-11 sm:h-16 bg-forest-950 border-b border-forest-800/70" />}>
             <NavHeader
@@ -98,7 +114,7 @@ async function AuthAwareShell({ children }: { children: React.ReactNode }) {
           </Suspense>
 
           {/* Main Content Area */}
-          <main className="flex-1">
+          <main id="main-content" className="flex-1">
             {children}
           </main>
 

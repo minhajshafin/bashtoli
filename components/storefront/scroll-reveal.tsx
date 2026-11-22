@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/motion'
+import React, { useEffect, useRef, useState } from 'react'
+import { isReducedMotion } from '@/lib/utils/reduced-motion'
 
 interface ScrollRevealProps {
   children: React.ReactNode
@@ -12,9 +12,9 @@ interface ScrollRevealProps {
 }
 
 /**
- * Minimal Editorial ScrollReveal
- * Triggers a single-fire, gentle rise-and-fade for section headings and curated story cards.
- * Zero layout shifts, zero scroll hijacking, completely disabled when prefers-reduced-motion is true.
+ * High-performance Native IntersectionObserver ScrollReveal.
+ * Replaces heavy GSAP ScrollTrigger plugin with native browser IntersectionObserver.
+ * Zero layout shifts, zero main-thread blocking, fully accessible.
  */
 export function ScrollReveal({
   children,
@@ -24,39 +24,47 @@ export function ScrollReveal({
   delay = 0,
 }: ScrollRevealProps) {
   const elRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    if (isReducedMotion() || !elRef.current) return
+    if (isReducedMotion()) {
+      requestAnimationFrame(() => setIsVisible(true))
+      return
+    }
 
     const el = elRef.current
-    gsap.registerPlugin(ScrollTrigger)
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      requestAnimationFrame(() => setIsVisible(true))
+      return
+    }
 
-    const tween = gsap.fromTo(
-      el,
-      { opacity: 0, y },
-      {
-        opacity: 1,
-        y: 0,
-        duration,
-        delay,
-        ease: 'power3.out',
-        clearProps: 'transform,opacity',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%',
-          once: true,
-        },
-      }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
     )
 
-    return () => {
-      tween.scrollTrigger?.kill()
-      tween.kill()
-    }
-  }, [y, duration, delay])
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const style: React.CSSProperties = isVisible
+    ? {
+        opacity: 1,
+        transform: 'translate3d(0, 0, 0)',
+        transition: `opacity ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+      }
+    : {
+        opacity: 0,
+        transform: `translate3d(0, ${y}px, 0)`,
+      }
 
   return (
-    <div ref={elRef} className={className}>
+    <div ref={elRef} className={className} style={style}>
       {children}
     </div>
   )
