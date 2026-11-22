@@ -166,16 +166,12 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           </div>
 
           <h1 className="mb-3 sm:mb-5 text-cream-50 type-hero font-medium">
-            <span className="block overflow-hidden py-0.5">
-              <span className="hero-title-line block">
-                Craft your{' '}
-                <em className="font-editorial text-gold-300 font-normal">story</em>,
-              </span>
+            <span className="block pb-0.5 sm:pb-1">
+              Craft your{' '}
+              <em className="font-editorial text-gold-300 font-normal">story</em>,
             </span>
-            <span className="block overflow-hidden py-0.5">
-              <span className="hero-title-line block">
-                one page at a time.
-              </span>
+            <span className="block pb-0.5 sm:pb-1">
+              one page at a time.
             </span>
           </h1>
 
@@ -186,7 +182,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
             Handpicked notebooks, artisanal pens, and bamboo paper goods crafted for thoughtful daily rituals.
           </p>
 
-          <div className="hero-cta flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-3 lg:mb-7">
+          <div className="hero-cta flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-2 lg:mb-0">
             <Link
               href="/products"
               className="btn-accent rounded-full px-7 py-3 sm:px-8 sm:py-3.5 text-xs sm:text-[13px] font-sans font-semibold tracking-wide inline-flex items-center gap-2 group cursor-pointer active:scale-95 shadow-elevation-2"
@@ -202,30 +198,6 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
             >
               Our Story
             </Link>
-          </div>
-
-          {/* Micro-Trust Ribbon (Desktop Only) */}
-          <div className="hidden lg:flex items-center gap-4 text-forest-300/70 pt-4 mt-2 border-t border-forest-800/60 max-w-lg">
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-gold-400/80" />
-              <span className="type-kicker text-[9px] tracking-[0.16em] text-forest-200/85">
-                100% Bamboo Paper
-              </span>
-            </div>
-            <span className="text-forest-700">&middot;</span>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-gold-400/80" />
-              <span className="type-kicker text-[9px] tracking-[0.16em] text-forest-200/85">
-                Cash on Delivery
-              </span>
-            </div>
-            <span className="text-forest-700">&middot;</span>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-gold-400/80" />
-              <span className="type-kicker text-[9px] tracking-[0.16em] text-forest-200/85">
-                Dhaka Atelier
-              </span>
-            </div>
           </div>
         </div>
 

@@ -358,8 +358,8 @@ html {
 .type-hero {
   font-family: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
   font-size: var(--type-hero);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 

@@ -14,14 +14,14 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
   const handleNext = () => {
     if (!trackRef.current) return
     const card = trackRef.current.querySelector('.carousel-card-item') as HTMLElement | null
-    const cardWidth = card ? card.offsetWidth : 240
+    const cardWidth = card ? card.offsetWidth : 205
     trackRef.current.scrollBy({ left: cardWidth + 16, behavior: 'smooth' })
   }
 
   const handlePrevious = () => {
     if (!trackRef.current) return
     const card = trackRef.current.querySelector('.carousel-card-item') as HTMLElement | null
-    const cardWidth = card ? card.offsetWidth : 240
+    const cardWidth = card ? card.offsetWidth : 205
     trackRef.current.scrollBy({ left: -(cardWidth + 16), behavior: 'smooth' })
   }
 
@@ -29,7 +29,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
     <div className="w-full">
       {/* Header: High-contrast title and restrained controls */}
       <ScrollReveal>
-        <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2 px-4 sm:px-0">
+        <div className="flex items-center justify-between mb-3 sm:mb-4.5 gap-2 px-4 sm:px-0">
           <div className="min-w-0 pr-2">
             <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
               <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
@@ -87,17 +87,17 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       </ScrollReveal>
 
       {/* Native Hardware-Accelerated Smooth Scroll-Snap Container */}
-      <div className="relative w-full py-1 sm:py-2">
+      <div className="relative w-full py-1">
         <div
           ref={trackRef}
           tabIndex={0}
           aria-label="Featured products"
-          className="flex gap-3 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none px-4 sm:px-0 focus:outline-hidden"
+          className="flex gap-3 sm:gap-4 lg:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none px-4 sm:px-0 focus:outline-hidden"
         >
           {products.map((p) => (
             <div
               key={p.id}
-              className="carousel-card-item shrink-0 w-[150px] sm:w-[220px] md:w-[240px] snap-start"
+              className="carousel-card-item shrink-0 w-[140px] sm:w-[180px] md:w-[195px] lg:w-[205px] snap-start"
             >
               <ProductCard product={p} />
             </div>

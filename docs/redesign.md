@@ -178,6 +178,14 @@ Elevated the storefront landing hero from a standard mobile card layout into an 
 - **Museum Label Spec Plate:** Positioned at `-left-8 bottom-6` with `bg-bg-surface-elevated`, warm brass border (`border-gold-500/35`), and subtle elevation (`shadow-elevation-3 ring-1 ring-gold-500/10`).
 - **Curatorial Micro-Data:** Displays `ARCHIVE № 01` tracking stamp, pulsing brass beacon, slide badge headline (`font-display font-semibold text-forest-950`), and Dhaka provenance note (`text-forest-750`).
 
-### 7.3 Desktop Micro-Trust Ribbon
-- Refined horizontal editorial trust indicators positioned below CTA buttons (`100% Bamboo Paper · Cash on Delivery · Dhaka Atelier`) with gold brass dots and hairline divider (`border-forest-800/60`).
+### 7.3 Editorial Typography & Decisive CTAs
+- **Unclipped Descender Clearance:** Set `.type-hero` line-height to `1.12` and eliminated the inner `overflow-hidden` wrappers, giving Renaissance italic swashes and deep descenders (`y`, `p`, `g`) ample room to render without truncation.
+- **Streamlined CTA Group:** Removed the secondary desktop micro-trust ribbon to declutter the masthead and keep viewer attention sharply focused on primary exploration CTAs (`Shop Collection` and `Our Story`).
+
+---
+
+## 8. Curated Writing Desk Carousel Scale Calibration
+- **Desktop Proportion Tuning:** Scaled card widths from wide `240px` down to an intimate, collectible `205px` (`w-[140px] sm:w-[180px] md:w-[195px] lg:w-[205px]`).
+- **Harmonious Section Padding:** Reduced desktop section vertical padding to `py-8 sm:py-10 lg:py-12` and card gaps to `gap-3 sm:gap-4 lg:gap-5`, presenting 5+ items gracefully across standard viewports without visual heaviness.
+
 
