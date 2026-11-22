@@ -140,7 +140,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
 
   return (
     <div
-      className="group relative flex flex-col justify-between overflow-hidden rounded-md sm:rounded-lg bg-white border border-forest-900/10 hover:border-gold-500/60 transition-[border-color,box-shadow,transform] duration-normal ease-smooth shadow-elevation-1 hover:shadow-elevation-2 hover:-translate-y-1 select-none"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-md sm:rounded-lg bg-bg-surface-elevated border border-forest-900/10 hover:border-gold-500/60 transition-[border-color,box-shadow,transform] duration-normal ease-smooth shadow-elevation-1 hover:shadow-elevation-2 hover:-translate-y-1 select-none"
       onMouseEnter={() => {
         setHovered(true)
         handleIntentPrefetch()
@@ -284,7 +284,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
       </div>
 
       {/* 3. Card Info & Actions Content Layer */}
-      <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5 bg-white">
+      <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5 bg-bg-surface-elevated">
         <div>
           {/* Category line */}
           <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-forest-750 font-medium font-sans truncate mb-0.5">

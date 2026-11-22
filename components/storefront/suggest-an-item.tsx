@@ -64,7 +64,7 @@ export function SuggestAnItem() {
   return (
     <section
       id="suggest"
-      className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 xl:px-10 bg-cream-100 bg-laid-paper text-forest-950"
+      className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-8 xl:px-10 bg-cream-50 bg-laid-paper text-forest-950"
     >
       <div className="relative z-10 max-w-xl mx-auto">
         {/* Minimal Header */}
@@ -89,7 +89,7 @@ export function SuggestAnItem() {
 
         {submitted ? (
           /* Confirmation State */
-          <div className="py-6 text-center animate-fade-in space-y-2.5 rounded-2xl bg-white/95 border border-border-primary p-6 shadow-atelier text-forest-950">
+          <div className="py-6 text-center animate-fade-in space-y-2.5 rounded-2xl bg-bg-surface-elevated border border-forest-900/10 p-6 shadow-elevation-1 text-forest-950">
             <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gold-500/15 text-gold-700 border border-gold-500/30">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -116,7 +116,7 @@ export function SuggestAnItem() {
           </div>
         ) : (
           /* Minimal Form Card */
-          <div className="rounded-2xl sm:rounded-3xl bg-white/95 border border-border-primary p-4 sm:p-7 shadow-atelier text-forest-950">
+          <div className="rounded-2xl sm:rounded-3xl bg-bg-surface-elevated border border-forest-900/10 p-4 sm:p-7 shadow-elevation-1 text-forest-950">
             <form onSubmit={handleSubmit} className="space-y-3">
               {/* Bot Honeypot Trap */}
               <input

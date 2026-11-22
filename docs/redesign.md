@@ -121,3 +121,25 @@ All text/background pairs have been calculated via W3C Relative Luminance:
 - `Chip` (`components/ui/chip.tsx`): Filter chips with 44px minimum touch targets.
 - `Container` & `Section` (`components/ui/container.tsx`): Standardized responsive max-width containers.
 - `Skeleton` (`components/ui/skeleton.tsx`): Pulse placeholder with warm cream wash.
+
+---
+
+## 5. Strategy A: The Architectural Dual-Tone Rhythm
+
+Adopted per user directive with `/awwwards` elite creative standards. Replaces patchwork color transitions with confident, alternating full-width dual-tone blocks:
+
+### 5.1 Palette System: Sumi Ink & Cotton Paper
+- **Tone 1: Deep Sumi Forest (The Grounding Tone):** `#0a160f` (with `#102218` elevated surfaces). Used for high-impact typography, hero visual framing, editorial story inversion, and footer colophon.
+- **Tone 2: Warm Cotton Paper (The Tactile Canvas):** `#fbf8f2` (with `#fffdfa` elevated alabaster cards). Used for catalog, reading, discovery, and cart/checkout flows.
+- **Accent: Burnished Antique Brass:** `#c4a265` for glowing metallic foil highlights; `#7d5c18` (5.8:1 AA) for readable text on light paper.
+- **Pure White Elimination:** Harsh digital `#ffffff` is purged in favor of `--color-white: #fffdfa` and `--color-bg-surface-elevated: #fffdfa` across cards and form surfaces.
+
+### 5.2 Homepage Rhythm:
+1. **Masthead / Navigation:** Tone 1 (Deep Sumi Forest)
+2. **Hero Showcase:** Tone 1 (Deep Sumi Forest)
+3. **Architectural Hairline Transition:** 1px antique brass and forest boundary (`border-forest-800/80` with `border-gold-500/20`), replacing cartoon SVG waves.
+4. **Featured Carousel ("The Writing Desk"):** Tone 2 (Warm Cotton Paper `#fbf8f2`)
+5. **Curated Collections Grid:** Tone 2 (Warm Cotton Paper `#fbf8f2`)
+6. **Brand Story / Atelier Narrative ("About Us"):** Tone 1 Inversion (Deep Sumi Forest `#0a160f` with gold/cream typography and archival photo framing)
+7. **Special Requests / Suggestions:** Tone 2 (Warm Cotton Paper `#fbf8f2`)
+8. **Site Colophon / Footer:** Tone 1 (Deep Sumi Forest `#0a160f`)

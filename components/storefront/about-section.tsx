@@ -1,24 +1,37 @@
 import React from 'react'
 import Image from 'next/image'
 import { ScrollReveal } from '@/components/storefront/scroll-reveal'
+import { BambooPaperWatermark, DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 export function AboutSection() {
   return (
     <section
       id="aboutus"
-      className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-100 bg-laid-paper scroll-mt-20"
+      className="relative overflow-hidden py-12 sm:py-16 lg:py-20 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-950 bg-laid-paper-dark text-cream-50 scroll-mt-20 border-y border-forest-800/80"
     >
-      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-14 items-center">
-        {/* Left: Minimal Archival Photo */}
+      {/* Blind-Debossed Pulp Watermark + Minimalist Drifting Leaf Motif */}
+      <BambooPaperWatermark
+        theme="dark"
+        className="-left-14 top-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 opacity-35 pointer-events-none"
+      />
+      <DriftingBambooLeaf
+        theme="dark"
+        className="right-8 sm:right-16 bottom-6 hidden sm:block opacity-40 pointer-events-none"
+        rotation={-18}
+        scale={1.1}
+      />
+
+      <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center">
+        {/* Left: Minimal Archival Photo in Antique Brass Glint Frame */}
         <ScrollReveal className="lg:col-span-5 flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-[150px] sm:max-w-[260px] lg:max-w-[280px]">
-            <div className="p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-cream-50 border border-forest-900/10 shadow-sm">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-lg sm:rounded-xl bg-cream-200 shadow-inner">
+          <div className="relative w-full max-w-[160px] sm:max-w-[260px] lg:max-w-[290px]">
+            <div className="p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-forest-900/80 border border-gold-500/30 shadow-elevation-2">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-lg sm:rounded-xl bg-forest-950 shadow-inner">
                 <Image
                   src="https://images.unsplash.com/photo-1694754920848-8855ee3ff364?w=800&h=1000&fit=crop&auto=format"
                   alt="Cozy stationery setup with handcrafted journal and fountain pen"
                   fill
-                  sizes="(max-width: 640px) 150px, (max-width: 1024px) 260px, 280px"
+                  sizes="(max-width: 640px) 160px, (max-width: 1024px) 260px, 290px"
                   className="object-cover"
                 />
               </div>
@@ -26,38 +39,38 @@ export function AboutSection() {
           </div>
         </ScrollReveal>
 
-        {/* Right: Minimal Editorial Narrative */}
+        {/* Right: Editorial Narrative in Deep Forest (Tone 1 Inversion) */}
         <ScrollReveal delay={0.12} className="lg:col-span-7 text-left max-w-xl">
-          {/* Subtle Overline Kicker (desktop only) */}
-          <div className="hidden sm:flex items-center gap-2 mb-1.5 sm:mb-2.5">
-            <span className="h-px w-3 sm:w-4 bg-gold-500/60" />
-            <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] font-sans font-medium text-gold-700/90">
+          {/* Subtle Overline Kicker */}
+          <div className="hidden sm:flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="h-px w-3 sm:w-4 bg-gold-400/70" />
+            <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.24em] font-sans font-medium text-gold-400">
               Our Story &middot; Dhaka, Est. 2026
             </span>
           </div>
 
           {/* Statement Headline */}
-          <h2 className="font-display font-medium text-forest-950 text-lg sm:text-2xl lg:text-[1.75rem] leading-snug tracking-tight mb-2 sm:mb-3">
+          <h2 className="font-display font-medium text-cream-50 text-xl sm:text-2xl lg:text-[1.85rem] leading-snug tracking-tight mb-2 sm:mb-3">
             Born from a love of{' '}
-            <em className="font-editorial italic font-normal text-forest-900">
+            <em className="font-editorial italic font-normal text-gold-300">
               beautiful things
             </em>
-            <span className="text-gold-600/80">.</span>
+            <span className="text-gold-400">.</span>
           </h2>
 
-          {/* Editorial Lead Hook: concise 1-liner on mobile */}
-          <p className="font-display text-forest-900 text-xs sm:text-[15px] lg:text-base leading-relaxed font-normal mb-2 sm:mb-2.5">
+          {/* Editorial Lead Hook */}
+          <p className="font-display text-cream-100/90 text-xs sm:text-[15px] lg:text-base leading-relaxed font-normal mb-2.5 sm:mb-3">
             A quiet corner in Dhaka for anyone who finds joy in the tactile act of putting pen to paper.
           </p>
 
-          {/* Body Narrative: desktop only */}
-          <p className="hidden sm:block text-[11px] sm:text-[13px] leading-relaxed text-forest-800/80 font-sans font-normal">
+          {/* Body Narrative */}
+          <p className="hidden sm:block text-[11px] sm:text-[13px] leading-relaxed text-forest-200/80 font-sans font-normal">
             Bashtoli began as a modest weekend stall — born from a fondness for fountain pens, honest bamboo paper, and stationery made with care. Every notebook, pencil, and paper pack is held, tested, and handwritten with before it earns a spot on our shelves.
           </p>
 
-          {/* Minimal Footnote Quote: desktop only */}
-          <div className="hidden sm:block pt-2 mt-2.5 sm:pt-3 sm:mt-3.5 border-t border-forest-200/50">
-            <blockquote className="font-display italic text-forest-900/85 text-[11px] sm:text-[13px] leading-relaxed">
+          {/* Minimal Footnote Quote */}
+          <div className="hidden sm:block pt-2.5 mt-3 sm:pt-3.5 sm:mt-4 border-t border-forest-800/80">
+            <blockquote className="font-display italic text-gold-200/90 text-[11px] sm:text-[13px] leading-relaxed">
               &ldquo;A notebook is a letter to your future self.&rdquo;
             </blockquote>
           </div>

@@ -198,9 +198,10 @@
   --color-input-dark-border-focus: #c4a265;
 
   /* Semantic Surfaces & Backgrounds */
+  --color-white: #fffdfa; /* Warm Alabaster Ivory (eliminates sterile digital #ffffff) */
   --color-bg-canvas: #fbf8f2;
   --color-bg-surface: #f6f0e4;
-  --color-bg-surface-elevated: #faf6ee;
+  --color-bg-surface-elevated: #fffdfa;
   --color-bg-surface-sunken: #ede3ce;
   --color-bg-surface-dark: #0a160f;
   --color-bg-surface-dark-elevated: #102218;

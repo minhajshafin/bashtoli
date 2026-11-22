@@ -1,5 +1,4 @@
 import React from 'react'
-import { WaveDivider } from '@/components/storefront/wave-divider'
 import { FeaturedProductsSkeleton } from './product-skeletons'
 
 /**
@@ -50,8 +49,8 @@ export function LandingPageSkeleton() {
         </div>
       </section>
 
-      {/* Wave 1: Hero (Deep Forest) → Featured Products (Alabaster Cream) */}
-      <WaveDivider variant="hero-to-products" />
+      {/* Architectural Transition: Tone 1 (Deep Forest) → Tone 2 (Cotton Paper Canvas) */}
+      <div className="w-full h-px bg-forest-800/80 border-b border-gold-500/20" aria-hidden="true" />
 
       {/* 2. Featured Products Carousel Skeleton */}
       <FeaturedProductsSkeleton />

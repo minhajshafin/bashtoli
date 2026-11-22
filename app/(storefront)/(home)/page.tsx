@@ -7,7 +7,6 @@ import { CategoryGrid } from '@/components/storefront/category-grid'
 import { AboutSection } from '@/components/storefront/about-section'
 import { SuggestAnItem } from '@/components/storefront/suggest-an-item'
 import { FeaturedProductsSkeleton } from '@/components/storefront/skeletons'
-import { WaveDivider } from '@/components/storefront/wave-divider'
 
 export const metadata = {
   title: {
@@ -29,8 +28,8 @@ export const metadata = {
 
 /**
  * Storefront Homepage Route.
- * Full-bleed layout — sections own their own backgrounds and padding,
- * connected harmoniously by Direction 1: The Elevated "Sugeta" Layered Wave Dividers.
+ * Full-bleed layout — Strategy A: The Architectural Rhythm.
+ * Alternating cinematic dual-tone blocks (Tone 1: Deep Sumi Forest, Tone 2: Warm Cotton Paper).
  */
 export default async function StorefrontHomePage() {
   const [heroSlides, featuredCategories] = await Promise.all([
@@ -40,24 +39,24 @@ export default async function StorefrontHomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* 1. Hero: Welcome to Bashtoli (Forest Showcase) */}
+      {/* 1. Hero: Welcome to Bashtoli (Tone 1: Deep Sumi Forest) */}
       <Hero slides={heroSlides} />
 
-      {/* Wave Transition: Hero (Forest) → Storefront Canvas (Cream Paper) */}
-      <WaveDivider variant="hero-to-products" />
+      {/* Architectural Hairline: Tone 1 (Forest) → Tone 2 (Cotton Paper) */}
+      <div className="w-full h-px bg-forest-800/80 border-b border-gold-500/20" aria-hidden="true" />
 
-      {/* 2. Featured Products: Curated Collection (Streams in behind Suspense) */}
+      {/* 2. Featured Products: Curated Collection (Tone 2: Warm Cotton Paper Canvas) */}
       <Suspense fallback={<FeaturedProductsSkeleton />}>
         <FeaturedProducts />
       </Suspense>
 
-      {/* 3. Categories: Curated Collections Grid */}
+      {/* 3. Categories: Curated Collections Grid (Tone 2: Warm Cotton Paper Canvas) */}
       <CategoryGrid categories={featuredCategories} />
 
-      {/* 4. About Us: Neighbourhood Heritage & Craft */}
+      {/* 4. About Us: Neighbourhood Heritage & Craft (Tone 1: Deep Sumi Forest Inversion) */}
       <AboutSection />
 
-      {/* 5. Suggest an item: Community Suggestions */}
+      {/* 5. Suggest an item: Community Suggestions (Tone 2: Warm Cotton Paper Canvas) */}
       <SuggestAnItem />
     </div>
   )
