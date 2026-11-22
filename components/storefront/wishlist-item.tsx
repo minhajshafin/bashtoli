@@ -90,7 +90,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
   return (
     <div className="w-full">
       {/* 1. MOBILE VIEW: Dedicated Touch Card (< 640px) */}
-      <div className="sm:hidden relative flex flex-col rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md p-3.5 space-y-3 hover:border-forest-300 transition-all text-forest-950">
+      <div className="sm:hidden relative flex flex-col rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md p-3.5 space-y-3 hover:border-forest-300 transition-colors text-forest-950">
         <div className="flex items-start gap-3">
           {/* Square Image Thumbnail */}
           <Link
@@ -165,7 +165,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className={`flex-1 h-11 rounded-xl text-xs font-sans font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-xs cursor-pointer ${
+              className={`flex-1 h-11 rounded-xl text-xs font-sans font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-colors shadow-xs cursor-pointer ${
                 isJustAdded
                   ? 'bg-forest-900 text-gold-300 border border-gold-400/60'
                   : 'btn-primary'
@@ -198,7 +198,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
             onClick={handleRemove}
             disabled={isPending}
             aria-label={`Remove ${product.name} from wishlist`}
-            className="h-11 w-11 shrink-0 rounded-xl border border-forest-200/80 bg-cream-50 flex items-center justify-center text-forest-500 hover:text-terracotta-700 hover:bg-terracotta-100/70 hover:border-terracotta-400/50 active:scale-90 transition-all cursor-pointer"
+            className="h-11 w-11 shrink-0 rounded-xl border border-forest-200/80 bg-cream-50 flex items-center justify-center text-forest-500 hover:text-terracotta-700 hover:bg-terracotta-100/70 hover:border-terracotta-400/50 active:scale-90 transition-colors cursor-pointer"
             title="Remove from Wishlist"
           >
             {isPending ? (
@@ -211,7 +211,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
       </div>
 
       {/* 2. DESKTOP VIEW: Vertical Card (>= 640px) */}
-      <div className="hidden sm:flex flex-col overflow-hidden rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md hover:border-gold-500/60 transition-all h-full text-forest-950">
+      <div className="hidden sm:flex flex-col overflow-hidden rounded-2xl border border-forest-200/90 bg-cream-50 shadow-md hover:border-gold-500/60 transition-colors h-full text-forest-950">
         {/* Product Image container */}
         <div className="relative aspect-square w-full overflow-hidden bg-cream-200/40">
           <Link href={`/products/${product.slug}`} className="relative block w-full h-full">
@@ -236,7 +236,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
             onClick={handleRemove}
             disabled={isPending}
             aria-label={`Remove ${product.name} from wishlist`}
-            className="absolute top-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-cream-50/95 backdrop-blur-xs text-forest-600 hover:text-terracotta-700 hover:bg-terracotta-100/80 border border-forest-200/60 active:scale-90 transition-all cursor-pointer shadow-2xs z-10"
+            className="absolute top-2.5 right-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-cream-50/95 text-forest-600 hover:text-terracotta-700 hover:bg-terracotta-100/80 border border-forest-200/60 active:scale-90 transition-colors cursor-pointer shadow-2xs z-10"
             title="Remove from Wishlist"
           >
             {isPending ? (
@@ -249,11 +249,11 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
           {/* Stock badge top left */}
           <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
             {product.isSoldOut ? (
-              <span className="inline-flex items-center rounded-full bg-terracotta-600/95 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-xs">
+              <span className="inline-flex items-center rounded-full bg-terracotta-700 px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-xs">
                 Sold Out
               </span>
             ) : product.stockQty <= 5 ? (
-              <span className="inline-flex items-center rounded-full bg-amber-600/95 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-xs">
+              <span className="inline-flex items-center rounded-full bg-amber-700 px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-cream-50 uppercase shadow-xs">
                 Only {product.stockQty} left
               </span>
             ) : null}
@@ -289,7 +289,7 @@ export function WishlistItem({ product, priority = false }: WishlistItemProps) {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className={`w-full h-10 rounded-xl text-xs font-sans font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-2xs cursor-pointer ${
+                className={`w-full h-10 rounded-xl text-xs font-sans font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-colors shadow-2xs cursor-pointer ${
                   isJustAdded
                     ? 'bg-forest-900 text-gold-300 border border-gold-400/60'
                     : 'btn-primary'

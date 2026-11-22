@@ -8,8 +8,7 @@ import { CartItemRow } from '@/components/storefront/cart-item'
 import { CartSummary } from '@/components/storefront/cart-summary'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
 import { checkCartItemsAvailability, type ValidatedCartItem } from '@/lib/queries/cart'
-import { BagPageSkeleton } from '@/components/storefront/skeletons'
-import { ArrowLeft, Trash2 } from 'lucide-react'
+import { runWhenIdle } from '@/lib/utils/run-when-idle'
 
 export function BagClient() {
   const confirm = useConfirm()
@@ -48,25 +47,13 @@ export function BagClient() {
       setIsValidating(false)
     }
 
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      const idleId = window.requestIdleCallback(validateItems, { timeout: 2500 })
-      return () => {
-        cancelled = true
-        window.cancelIdleCallback(idleId)
-      }
-    } else {
-      const timer = setTimeout(validateItems, 1200)
-      return () => {
-        cancelled = true
-        clearTimeout(timer)
-      }
+    const cancelIdle = runWhenIdle(validateItems, 2500)
+    return () => {
+      cancelled = true
+      cancelIdle()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, cartKey])
-
-  if (!isLoaded) {
-    return <BagPageSkeleton />
-  }
 
   const hasUnavailableItems =
     !isValidating &&
@@ -95,11 +82,13 @@ export function BagClient() {
             href="/products"
             className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-forest-700 hover:text-forest-950 transition-colors duration-fast cursor-pointer group"
           >
-            <ArrowLeft className="h-3.5 w-3.5 text-gold-700 transition-transform duration-fast group-hover:-translate-x-0.5" />
+            <svg className="h-3.5 w-3.5 text-gold-700 transition-transform duration-fast group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
             <span>Continue Shopping</span>
           </Link>
 
-          {cart.length > 0 && (
+          {isLoaded && cart.length > 0 && (
             <button
               type="button"
               onClick={async () => {
@@ -116,13 +105,15 @@ export function BagClient() {
               }}
               className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-forest-600 hover:text-btn-danger-bg transition-colors duration-fast cursor-pointer group"
             >
-              <Trash2 className="h-3.5 w-3.5 text-forest-500 group-hover:text-btn-danger-bg transition-colors duration-fast" />
+              <svg className="h-3.5 w-3.5 text-forest-500 group-hover:text-btn-danger-bg transition-colors duration-fast" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+              </svg>
               <span>Clear Bag</span>
             </button>
           )}
         </div>
 
-        {/* Masthead Title & Progress Section */}
+        {/* Masthead Title & Progress Section (Always rendered immediately to ensure stable shell and immediate LCP) */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-6 pb-5 border-b border-forest-900/10">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
@@ -135,7 +126,7 @@ export function BagClient() {
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-medium text-forest-950 font-display tracking-tight">
                 Shopping Bag
               </h1>
-              {cart.length > 0 && (
+              {isLoaded && cart.length > 0 && (
                 <span className="rounded-pill bg-gold-400/20 border border-gold-600/30 px-2.5 py-0.5 text-xs font-bold text-gold-800 font-price">
                   {totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}
                 </span>
@@ -152,8 +143,53 @@ export function BagClient() {
           </div>
         </div>
 
-        {cart.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+        {!isLoaded ? (
+          /* Neutral Skeleton with the same dimensions as the items layout */
+          <div
+            key="bag-skeleton"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start"
+            aria-busy="true"
+            aria-label="Loading shopping bag"
+          >
+            {/* Bag items list skeleton */}
+            <div className="lg:col-span-2 space-y-3 sm:space-y-3.5">
+              {[1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="rounded-md border border-forest-900/10 bg-white p-4 sm:p-5 flex gap-4 items-center shadow-elevation-1"
+                >
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-md bg-cream-200/80 skeleton-shimmer shrink-0" />
+                  <div className="flex-1 space-y-2.5 py-1">
+                    <div className="h-4 w-3/5 rounded-md bg-cream-200/80 skeleton-shimmer" />
+                    <div className="h-3.5 w-24 rounded-md bg-cream-200/60 skeleton-shimmer" />
+                    <div className="h-5 w-20 rounded-md bg-cream-200/80 skeleton-shimmer mt-2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Order Summary skeleton */}
+            <div className="lg:col-span-1 p-5 sm:p-6 rounded-md bg-white border border-forest-900/10 shadow-elevation-1 space-y-4">
+              <div className="h-4 w-32 rounded-md bg-cream-200/80 skeleton-shimmer" />
+              <div className="h-10 w-full rounded-md bg-cream-200/60 skeleton-shimmer" />
+              <div className="space-y-2 py-2">
+                <div className="flex justify-between">
+                  <div className="h-4 w-20 rounded-md bg-cream-200/60 skeleton-shimmer" />
+                  <div className="h-4 w-16 rounded-md bg-cream-200/60 skeleton-shimmer" />
+                </div>
+                <div className="flex justify-between">
+                  <div className="h-4 w-24 rounded-md bg-cream-200/60 skeleton-shimmer" />
+                  <div className="h-4 w-16 rounded-md bg-cream-200/60 skeleton-shimmer" />
+                </div>
+              </div>
+              <div className="h-12 w-full rounded-md bg-cream-200/80 skeleton-shimmer" />
+            </div>
+          </div>
+        ) : cart.length > 0 ? (
+          <div
+            key="bag-items"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start"
+          >
             {/* Bag items list */}
             <div className="lg:col-span-2 space-y-3 sm:space-y-3.5">
               {isValidating && Object.keys(dbStatuses).length === 0 && (
@@ -183,8 +219,11 @@ export function BagClient() {
             </div>
           </div>
         ) : (
-          /* Empty Bag View */
-          <div className="rounded-md border border-forest-900/10 bg-white p-8 sm:p-12 text-center max-w-xl mx-auto shadow-elevation-1 text-forest-950 my-6">
+          /* Empty Bag View (rendered only once cart is confirmed empty) */
+          <div
+            key="bag-empty"
+            className="rounded-md border border-forest-900/10 bg-white p-8 sm:p-12 text-center max-w-xl mx-auto shadow-elevation-1 text-forest-950 mb-6"
+          >
             <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-md bg-cream-100 border border-forest-900/10 text-forest-800 shadow-2xs mb-2">
               <svg
                 className="h-7 w-7 stroke-[1.5] text-forest-700"

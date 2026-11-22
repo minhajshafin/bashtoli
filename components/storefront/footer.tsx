@@ -53,11 +53,17 @@ function FooterColumn({
 const socials = [
   {
     label: 'WhatsApp',
-    href: 'https://wa.me/8801825414737',
+    href: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '8801825414737'}`,
     color: 'text-emerald-400 hover:text-emerald-300 hover:border-emerald-400/60',
     icon: (
       <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.45 5.566 0 10.1-4.507 10.103-10.03.001-2.675-1.03-5.188-2.906-7.07C16.59 1.63 14.09 1.05 11.989 1.05 6.42 1.05 1.884 5.558 1.88 11.082c-.001 1.558.423 3.082 1.23 4.426l-1.036 3.79 3.973-1.044h.01zm11.367-6.52c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
     ),
+  },
+  {
+    label: 'Email',
+    href: 'mailto:contact@bashtoli.com',
+    color: 'text-gold-300 hover:text-gold-200 hover:border-gold-300/60',
+    icon: <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />,
   },
   {
     label: 'Facebook',
@@ -187,7 +193,7 @@ export function Footer() {
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-forest-800/70 text-xs">
-                <span className="text-forest-400 text-[11px]">Open 7 days &middot; 7am &ndash; 11pm</span>
+                <span className="text-forest-400 text-[11px]">Store Hours: Open 7 days &middot; 7am &ndash; 11pm</span>
                 <a
                   href="tel:01320903666"
                   className="text-text-accent hover:text-text-accent-hover font-price font-medium text-xs transition-colors"
@@ -196,7 +202,7 @@ export function Footer() {
                 </a>
               </div>
 
-              <div className="pt-1">
+              <div className="pt-1 flex items-center justify-between">
                 <a
                   href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
                   target="_blank"
@@ -205,6 +211,12 @@ export function Footer() {
                 >
                   <span>Open in Google Maps</span>
                   <span aria-hidden="true">&rarr;</span>
+                </a>
+                <a
+                  href="mailto:contact@bashtoli.com"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors tracking-wide"
+                >
+                  <span>contact@bashtoli.com</span>
                 </a>
               </div>
             </div>

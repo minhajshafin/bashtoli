@@ -287,7 +287,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
       <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5 bg-white">
         <div>
           {/* Category line */}
-          <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-forest-600/70 font-sans truncate mb-0.5">
+          <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-forest-750 font-medium font-sans truncate mb-0.5">
             {product.categories?.name || 'Artisanal Goods'}
           </p>
 
@@ -312,7 +312,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
               {formatPrice(lowestPrice)}
             </span>
             {activeVariants.length > 1 && (
-              <span className="text-[9px] sm:text-[10px] text-forest-600/70 font-sans">
+              <span className="text-[9px] sm:text-[10px] text-forest-750 font-medium font-sans">
                 {activeVariants.length} options
               </span>
             )}

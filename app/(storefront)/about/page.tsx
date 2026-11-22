@@ -57,6 +57,12 @@ export default function AboutPage() {
             <p>
               Deliveries within Dhaka are charged at a flat rate of Tk 70, and deliveries outside Dhaka across all 64 districts are charged at Tk 120. Store pickup is available free of charge.
             </p>
+            <p>
+              For orders, custom paper inquiries, or customer support, reach our team at{' '}
+              <a href="mailto:contact@bashtoli.com" className="font-semibold text-text-accent hover:underline">
+                contact@bashtoli.com
+              </a>.
+            </p>
           </div>
 
           <div className="pt-4 flex flex-wrap gap-3 border-t border-forest-900/10">

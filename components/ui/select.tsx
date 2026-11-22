@@ -41,7 +41,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         </div>
       </div>
       {helperText && (
-        <p className={`text-[11px] font-sans ${error ? 'text-terracotta-600' : 'text-forest-600/70'}`}>
+        <p className={`text-[11px] font-sans ${error ? 'text-terracotta-600' : 'text-forest-750'}`}>
           {helperText}
         </p>
       )}

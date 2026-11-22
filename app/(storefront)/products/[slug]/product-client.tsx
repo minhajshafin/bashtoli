@@ -28,6 +28,7 @@ export function ProductDetailClient({
   const router = useRouter()
   const { addItem } = useCart()
   const { toast } = useToast()
+  const [addError, setAddError] = useState<string | null>(null)
 
   // State to hold user selected options
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
@@ -87,16 +88,20 @@ export function ProductDetailClient({
     const primaryImage = images?.[0]
     const imageUrl = primaryImage?.url || null
 
-    addItem({
-      variant_id: targetVariant.id,
-      product_id: product.id,
-      name: product.name,
-      variant_name: variantName,
-      price: targetVariant.price,
-      image_url: imageUrl,
-    }, qty)
-
-    toast(`Added "${product.name}" to your bag!`, 'success')
+    try {
+      addItem({
+        variant_id: targetVariant.id,
+        product_id: product.id,
+        name: product.name,
+        variant_name: variantName,
+        price: targetVariant.price,
+        image_url: imageUrl,
+      }, qty)
+      setAddError(null)
+      toast(`Added "${product.name}" to your bag!`, 'success')
+    } catch {
+      setAddError('Could not add item to bag. Please try again.')
+    }
   }, [selectedVariant, variants, images, addItem, product.id, product.name, variantName, toast])
 
   // Handle Buy Now -> adds item and directs straight to checkout
@@ -194,6 +199,23 @@ export function ProductDetailClient({
 
           {/* Qty Picker & Add to Bag & Buy Now & Wishlist */}
           <div ref={mainActionsRef} className="mt-2.5 flex flex-col gap-3">
+            {addError && (
+              <div className="rounded-md border border-terracotta-400/40 bg-terracotta-100 p-3 text-xs font-sans text-terracotta-700 flex items-center justify-between gap-2 animate-fade-in">
+                <div className="flex items-center gap-2">
+                  <svg className="h-4 w-4 shrink-0 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                  </svg>
+                  <span>{addError}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(1)}
+                  className="px-2.5 py-1 rounded bg-terracotta-600 text-white font-semibold text-[11px] hover:bg-terracotta-700 cursor-pointer transition-colors"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
             <div className="flex items-end gap-3">
               <div className="flex-1">
                 <AddToCartButton

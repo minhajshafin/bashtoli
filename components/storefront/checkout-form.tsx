@@ -10,6 +10,7 @@ import { checkCartItemsAvailability } from '@/lib/queries/cart'
 import { DELIVERY_FEES } from '@/lib/config/delivery'
 import { ProductImageSkeleton } from '@/components/storefront/product-image-skeleton'
 import { formatPrice } from '@/lib/utils/format-price'
+import { runWhenIdle } from '@/lib/utils/run-when-idle'
 
 interface SavedAddress {
   id: string
@@ -81,18 +82,10 @@ export function CheckoutForm({
       }
     }
 
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      const idleId = window.requestIdleCallback(checkCart, { timeout: 2500 })
-      return () => {
-        cancelled = true
-        window.cancelIdleCallback(idleId)
-      }
-    } else {
-      const timer = setTimeout(checkCart, 1200)
-      return () => {
-        cancelled = true
-        clearTimeout(timer)
-      }
+    const cancelIdle = runWhenIdle(checkCart, 2500)
+    return () => {
+      cancelled = true
+      cancelIdle()
     }
   }, [isLoaded, cart])
 
@@ -291,11 +284,20 @@ export function CheckoutForm({
         <div className="lg:col-span-2 space-y-5">
           {/* Top Error Alert */}
           {topError && (
-            <div className="rounded-md border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700 flex items-start gap-2.5 animate-fade-in">
-              <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-              </svg>
-              <span>{topError}</span>
+            <div className="rounded-md border border-terracotta-400/40 bg-terracotta-100 p-4 text-xs font-sans font-medium text-terracotta-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in">
+              <div className="flex items-start gap-2.5">
+                <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                </svg>
+                <span>{topError}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => formRef.current?.requestSubmit()}
+                className="shrink-0 px-3.5 py-1.5 rounded-md bg-terracotta-600 hover:bg-terracotta-700 text-white font-semibold text-xs transition-colors shadow-2xs cursor-pointer self-start sm:self-center"
+              >
+                Retry Order
+              </button>
             </div>
           )}
 

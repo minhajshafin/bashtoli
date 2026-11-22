@@ -94,7 +94,7 @@ export function DeliveryZoneSelect({
                 <span className={`text-[10px] block leading-tight mt-0.5 ${
                   fulfillmentType === 'pickup' ? 'text-cream-200/70' : 'text-forest-600'
                 }`}>
-                  Gulshan-1, Dhaka
+                  Dhaka Outlet
                 </span>
               </div>
             </div>
@@ -211,7 +211,7 @@ export function DeliveryZoneSelect({
           </svg>
           <div className="flex-1">
             <p className="font-semibold text-forest-950">Bashtoli Stationery Shop</p>
-            <p className="text-[11px] text-forest-700 mt-0.5">Gulshan-1, Dhaka · Open Saturday – Thursday, 10 AM – 8 PM</p>
+            <p className="text-[11px] text-forest-700 mt-0.5">Gulshan-1, Dhaka · Studio Pickup Hours: Saturday – Thursday, 10 AM – 8 PM</p>
           </div>
         </div>
       )}

@@ -49,7 +49,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           <div
             key={t.id}
             onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
-            className="group relative flex items-center gap-2.5 sm:gap-3 pl-3.5 pr-2.5 sm:pr-3 py-2 sm:py-2.5 rounded-full bg-forest-950/98 text-cream-50 border border-gold-500/40 shadow-2xl backdrop-blur-md pointer-events-auto overflow-hidden animate-toast-enter cursor-pointer select-none max-w-full ring-1 ring-gold-400/15"
+            className="group relative flex items-center gap-2.5 sm:gap-3 pl-3.5 pr-2.5 sm:pr-3 py-2 sm:py-2.5 rounded-full bg-forest-950/98 text-cream-50 border border-gold-500/40 shadow-2xl pointer-events-auto overflow-hidden animate-toast-enter cursor-pointer select-none max-w-full ring-1 ring-gold-400/15"
             role="alert"
           >
             {/* Wax-Seal Micro-Badge */}
@@ -91,7 +91,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 e.stopPropagation()
                 setToasts((prev) => prev.filter((item) => item.id !== t.id))
               }}
-              className="shrink-0 flex items-center justify-center h-5 w-5 rounded-full text-cream-400 hover:text-cream-100 hover:bg-forest-800/80 active:scale-90 transition-all cursor-pointer"
+              className="shrink-0 flex items-center justify-center h-5 w-5 rounded-full text-cream-400 hover:text-cream-100 hover:bg-forest-800/80 active:scale-90 transition-colors cursor-pointer"
               aria-label="Dismiss alert"
             >
               <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

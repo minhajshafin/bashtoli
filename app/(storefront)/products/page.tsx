@@ -178,11 +178,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </div>
 
             <h3 className="relative z-10 font-display font-medium text-xl sm:text-[1.35rem] text-forest-950 mb-2">
-              No items in this collection
+              {searchQuery ? `No products found for "${searchQuery}"` : 'No items in this collection'}
             </h3>
 
-            <p className="relative z-10 text-xs sm:text-[13px] text-forest-700 max-w-sm mb-6 leading-relaxed font-sans">
-              We could not find any active stationery pieces matching your current filters.
+            <p className="relative z-10 text-xs sm:text-[13px] text-forest-750 max-w-sm mb-6 leading-relaxed font-sans">
+              {searchQuery
+                ? `We could not find any stationery matching "${searchQuery}". Check your spelling or explore our complete catalogue.`
+                : 'We could not find any active stationery pieces matching your current filters.'}
             </p>
 
             <div className="relative z-10 flex flex-wrap gap-2.5 justify-center">
@@ -190,7 +192,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 href="/products"
                 className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-sans font-medium"
               >
-                View All Collections
+                {searchQuery ? 'Clear Search' : 'View All Collections'}
               </Link>
             </div>
           </div>
