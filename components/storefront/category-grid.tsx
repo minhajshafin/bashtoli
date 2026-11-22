@@ -141,21 +141,21 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
             <div className="min-w-0 pr-2">
               <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
                 <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
-                <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] text-gold-700 font-sans font-semibold">
+                <span className="type-kicker text-gold-700">
                   Collections &middot; Archive
                 </span>
               </div>
-              <h2 className="font-display font-medium text-forest-950 leading-tight text-lg sm:text-[1.85rem] lg:text-[2.25rem] tracking-tight truncate">
+              <h2 className="type-heading font-medium text-forest-950 truncate">
                 Curated Collections
               </h2>
-              <p className="hidden sm:block text-xs sm:text-[13px] lg:text-sm text-forest-700/80 font-normal mt-0.5 sm:mt-1.5 leading-relaxed font-sans max-w-xl">
+              <p className="hidden sm:block type-body-sm text-forest-700/80 mt-0.5 sm:mt-1.5 leading-relaxed max-w-xl">
                 Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
               </p>
             </div>
 
             <Link
               href="/products"
-              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 text-[11px] sm:text-xs uppercase tracking-[0.14em] sm:tracking-[0.2em] font-sans font-medium text-gold-700 hover:text-gold-900 transition-colors duration-200 group/link pb-0.5 sm:pb-1"
+              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 type-kicker text-gold-700 hover:text-gold-900 transition-colors duration-200 group/link pb-0.5 sm:pb-1"
             >
               <span className="border-b border-gold-600/40 group-hover/link:border-gold-900 pb-0.5 transition-colors">
                 Explore All

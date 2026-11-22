@@ -74,14 +74,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2.5">
             <span className="h-px w-3 sm:w-3.5 bg-gold-600/70" />
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-forest-700 font-sans font-semibold">
-              Catalogue · Curated Goods
+            <span className="type-kicker text-forest-700">
+              Catalogue &middot; Curated Goods
             </span>
           </div>
 
           {/* Main Title Row: Title on Left, Sort on Right — balanced on mobile */}
           <div className="flex items-center justify-between gap-3">
-            <h1 className="font-display font-medium text-forest-950 leading-tight text-2xl sm:text-[2rem] lg:text-[2.5rem] tracking-tight truncate">
+            <h1 className="type-display font-medium text-forest-950 truncate">
               {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
             </h1>
 
@@ -93,7 +93,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
 
           {/* Subtitle: hidden on mobile to maximize product visibility */}
-          <p className="hidden sm:block text-forest-700/80 text-xs sm:text-[13px] mt-2 font-sans font-normal leading-relaxed max-w-2xl lg:max-w-3xl text-pretty">
+          <p className="hidden sm:block type-body-sm text-forest-700/80 mt-2 max-w-2xl lg:max-w-3xl text-pretty">
             {activeCategory
               ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and\u00A0reflection.`
               : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily\u00A0use.`}

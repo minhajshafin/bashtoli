@@ -144,20 +144,13 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
           {/* Stationery Eyebrow */}
           <div className="hero-eyebrow inline-flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
             <span className="h-px w-4 sm:w-8 bg-gold-400/70" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.24em] text-gold-400 font-sans font-medium">
+            <span className="type-kicker text-gold-400">
               Bamboo Stationery &middot; Dhaka &middot; Est. 2026
             </span>
             <span className="h-px w-4 sm:w-8 bg-gold-400/70 lg:hidden" />
           </div>
 
-          <h1
-            className="mb-3 sm:mb-4 text-cream-50 font-display font-medium"
-            style={{
-              fontSize: 'clamp(1.75rem, 4.4vw, 4.15rem)',
-              letterSpacing: '-0.025em',
-              lineHeight: 1.1,
-            }}
-          >
+          <h1 className="mb-3 sm:mb-4 text-cream-50 type-hero font-medium">
             <span className="block overflow-hidden py-0.5">
               <span className="hero-title-line block">
                 Craft your{' '}
@@ -173,7 +166,7 @@ export function Hero({ slides }: { slides?: HeroSlideItem[] } = {}) {
 
           {/* Subtext: hidden on mobile to eliminate clutter, shown on sm+ */}
           <p
-            className="hero-subtext hidden sm:block mb-4 sm:mb-7 text-xs sm:text-[15px] lg:text-base leading-relaxed text-forest-200/90 font-normal max-w-xl text-pretty"
+            className="hero-subtext hidden sm:block mb-4 sm:mb-7 type-lead text-forest-200/90 font-normal max-w-xl text-pretty"
           >
             Handpicked notebooks, artisanal pens, and bamboo paper goods crafted for thoughtful daily rituals.
           </p>

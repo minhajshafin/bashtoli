@@ -44,13 +44,13 @@ export function AboutSection() {
           {/* Subtle Overline Kicker */}
           <div className="hidden sm:flex items-center gap-2 mb-2 sm:mb-3">
             <span className="h-px w-3 sm:w-4 bg-gold-400/70" />
-            <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.24em] font-sans font-medium text-gold-400">
+            <span className="type-kicker text-gold-400">
               Our Story &middot; Dhaka, Est. 2026
             </span>
           </div>
 
           {/* Statement Headline */}
-          <h2 className="font-display font-medium text-cream-50 text-xl sm:text-2xl lg:text-[1.85rem] leading-snug tracking-tight mb-2 sm:mb-3">
+          <h2 className="type-heading font-medium text-cream-50 mb-2 sm:mb-3">
             Born from a love of{' '}
             <em className="font-editorial italic font-normal text-gold-300">
               beautiful things
@@ -59,18 +59,18 @@ export function AboutSection() {
           </h2>
 
           {/* Editorial Lead Hook */}
-          <p className="font-display text-cream-100/90 text-xs sm:text-[15px] lg:text-base leading-relaxed font-normal mb-2.5 sm:mb-3">
+          <p className="type-lead text-cream-100/90 font-normal mb-2.5 sm:mb-3">
             A quiet corner in Dhaka for anyone who finds joy in the tactile act of putting pen to paper.
           </p>
 
           {/* Body Narrative */}
-          <p className="hidden sm:block text-[11px] sm:text-[13px] leading-relaxed text-forest-200/80 font-sans font-normal">
+          <p className="hidden sm:block type-body-sm leading-relaxed text-forest-200/80 font-normal">
             Bashtoli began as a modest weekend stall — born from a fondness for fountain pens, honest bamboo paper, and stationery made with care. Every notebook, pencil, and paper pack is held, tested, and handwritten with before it earns a spot on our shelves.
           </p>
 
           {/* Minimal Footnote Quote */}
           <div className="hidden sm:block pt-2.5 mt-3 sm:pt-3.5 sm:mt-4 border-t border-forest-800/80">
-            <blockquote className="font-display italic text-gold-200/90 text-[11px] sm:text-[13px] leading-relaxed">
+            <blockquote className="font-editorial italic text-gold-200/90 type-body-sm leading-relaxed">
               &ldquo;A notebook is a letter to your future self.&rdquo;
             </blockquote>
           </div>

@@ -241,14 +241,24 @@
 }
 
 :root {
-  /* Fluid Typography Scale — Restrained Editorial /awwwards Scale */
-  --text-hero: clamp(1.75rem, 3.2vw, 2.75rem);
-  --text-display: clamp(1.5rem, 2.5vw, 2.25rem);
-  --text-heading: clamp(1.2rem, 1.6vw, 1.65rem);
-  --text-subheading: clamp(0.95rem, 0.8vw, 1.15rem);
-  --text-body: clamp(0.85rem, 0.2vw + 0.8rem, 0.95rem);
-  --text-body-sm: clamp(0.75rem, 0.15vw + 0.72rem, 0.82rem);
-  --text-label: clamp(0.65rem, 0.12vw + 0.6rem, 0.72rem);
+  /* Systematic Fluid Typography Scale (Awwwards Fluid Clamp System) */
+  --type-hero: clamp(2.35rem, 5.8vw, 4.5rem);
+  --type-display: clamp(1.85rem, 3.8vw, 2.85rem);
+  --type-heading: clamp(1.4rem, 2.4vw, 2.1rem);
+  --type-subheading: clamp(1.1rem, 1.4vw, 1.35rem);
+  --type-lead: clamp(0.95rem, 0.35vw + 0.88rem, 1.15rem);
+  --type-body: clamp(0.875rem, 0.2vw + 0.825rem, 0.975rem);
+  --type-body-sm: clamp(0.78rem, 0.15vw + 0.74rem, 0.85rem);
+  --type-kicker: clamp(0.65rem, 0.1vw + 0.62rem, 0.72rem);
+
+  /* Legacy Scale Fallbacks */
+  --text-hero: var(--type-hero);
+  --text-display: var(--type-display);
+  --text-heading: var(--type-heading);
+  --text-subheading: var(--type-subheading);
+  --text-body: var(--type-body);
+  --text-body-sm: var(--type-body-sm);
+  --text-label: var(--type-kicker);
 
   /* Hairline Borders */
   --border-hairline-dark: rgba(246, 240, 228, 0.10);
@@ -342,6 +352,79 @@ html {
   font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
+}
+
+/* Systematic Fluid Typography Classes (Awwwards Fluid Clamp System) */
+.type-hero {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
+  font-size: var(--type-hero);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.type-display {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
+  font-size: var(--type-display);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.type-heading {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
+  font-size: var(--type-heading);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.type-subheading {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
+  font-size: var(--type-subheading);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.type-lead {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: var(--type-lead);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.type-body {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: var(--type-body);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.type-body-sm {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+}
+
+.type-kicker {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: var(--type-kicker);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.type-price {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+  font-weight: 700;
 }
 
 .text-balance {

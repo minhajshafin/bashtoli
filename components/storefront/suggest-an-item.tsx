@@ -72,16 +72,16 @@ export function SuggestAnItem() {
           <div className="text-center mb-4 sm:mb-6">
             <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
               <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
-              <span className="text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.22em] font-sans font-semibold text-gold-700">
+              <span className="type-kicker text-gold-700">
                 Special Requests
               </span>
             </div>
 
-            <h2 className="font-display font-medium text-forest-950 text-lg sm:text-2xl lg:text-[1.75rem] leading-snug tracking-tight mb-1 sm:mb-2">
+            <h2 className="type-heading font-medium text-forest-950 mb-1 sm:mb-2">
               Looking for something in particular?
             </h2>
 
-            <p className="hidden sm:block font-sans text-xs sm:text-[13px] leading-relaxed text-forest-700/80 max-w-md mx-auto text-pretty">
+            <p className="hidden sm:block type-body-sm text-forest-700/80 max-w-md mx-auto text-pretty">
               Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
             </p>
           </div>

@@ -287,12 +287,12 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
       <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5 bg-bg-surface-elevated">
         <div>
           {/* Category line */}
-          <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-forest-750 font-medium font-sans truncate mb-0.5">
+          <p className="type-kicker text-[9px] text-forest-750 truncate mb-0.5">
             {product.categories?.name || 'Artisanal Goods'}
           </p>
 
           {/* Product Title */}
-          <h3 className="font-display font-medium text-xs sm:text-[15px] text-forest-950 tracking-tight leading-snug line-clamp-2">
+          <h3 className="type-subheading font-medium text-xs sm:text-[15px] text-forest-950 tracking-tight leading-snug line-clamp-2">
             <Link
               href={`/products/${product.slug}`}
               prefetch={false}
@@ -308,7 +308,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
         {/* Price & Action Row */}
         <div className="pt-1.5 sm:pt-2 border-t border-forest-900/6 flex flex-col gap-1.5 sm:gap-2">
           <div className="flex items-baseline justify-between gap-1">
-            <span className="font-price text-xs sm:text-[15px] font-bold text-forest-950 tabular-nums">
+            <span className="type-price text-xs sm:text-[15px] font-bold text-forest-950">
               {formatPrice(lowestPrice)}
             </span>
             {activeVariants.length > 1 && (
@@ -325,7 +325,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
               onClick={handleBuyNow}
               disabled={isNavigating}
               aria-label={`Buy ${product.name} now`}
-              className="w-full h-7 sm:h-8 rounded-sm sm:rounded-md bg-forest-950 hover:bg-forest-900 text-cream-50 font-sans text-[10px] sm:text-[11px] font-bold tracking-wider uppercase transition-transform active:scale-95 flex items-center justify-center gap-1 cursor-pointer shadow-elevation-1"
+              className="w-full h-7 sm:h-8 rounded-sm sm:rounded-md bg-forest-950 hover:bg-forest-900 text-cream-50 type-kicker text-[10px] sm:text-[11px] font-bold tracking-wider transition-transform active:scale-95 flex items-center justify-center gap-1 cursor-pointer shadow-elevation-1"
             >
               <span>{isNavigating ? 'Wait…' : 'Buy Now'}</span>
               <svg

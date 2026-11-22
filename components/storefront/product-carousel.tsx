@@ -31,10 +31,10 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       <ScrollReveal>
         <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2 px-4 sm:px-0">
           <div className="min-w-0 pr-2">
-            <h2 className="font-display font-medium text-forest-950 text-lg sm:text-[1.75rem] lg:text-[2.1rem] tracking-tight leading-tight truncate">
+            <h2 className="type-heading font-medium text-forest-950 truncate">
               The Writing Desk
             </h2>
-            <p className="hidden sm:block text-xs sm:text-[13px] lg:text-sm text-forest-700/80 mt-0.5 font-sans">
+            <p className="hidden sm:block type-body-sm text-forest-700/80 mt-0.5">
               Everyday notebooks, pens, and paper goods crafted for daily rituals.
             </p>
           </div>
@@ -67,7 +67,7 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
             <Link
               id="featured-view-all-link"
               href="/products"
-              className="inline-flex items-center gap-1 text-[11px] sm:text-xs uppercase tracking-[0.14em] sm:tracking-[0.16em] font-medium text-text-primary hover:text-text-accent transition-colors font-sans sm:pl-2.5 sm:border-l sm:border-forest-900/15"
+              className="inline-flex items-center gap-1 type-kicker text-text-primary hover:text-text-accent transition-colors sm:pl-2.5 sm:border-l sm:border-forest-900/15"
             >
               <span>View All</span>
               <svg

@@ -143,3 +143,22 @@ Adopted per user directive with `/awwwards` elite creative standards. Replaces p
 6. **Brand Story / Atelier Narrative ("About Us"):** Tone 1 Inversion (Deep Sumi Forest `#0a160f` with gold/cream typography and archival photo framing)
 7. **Special Requests / Suggestions:** Tone 2 (Warm Cotton Paper `#fbf8f2`)
 8. **Site Colophon / Footer:** Tone 1 (Deep Sumi Forest `#0a160f`)
+
+---
+
+## 6. Systematic Fluid Typography Scale (/awwwards Standards)
+
+Standardized on the **Editorial Pairing Formula**:
+- **Display & Headings:** Cormorant Garamond (`var(--font-cormorant)`) — Literary, high-contrast, classic stationery craftsmanship with italic ligatures.
+- **Body & UI Controls:** Plus Jakarta Sans (`var(--font-jakarta)`) — Clean, geometric, contemporary neo-grotesque with tabular numerals (`tabular-nums`).
+
+### 6.1 The Fluid Scale (`clamp()` system)
+- **`.type-hero`:** `clamp(2.35rem, 5.8vw, 4.5rem)` · line-height: `1.05` · letter-spacing: `-0.03em` · `text-wrap: balance`
+- **`.type-display`:** `clamp(1.85rem, 3.8vw, 2.85rem)` · line-height: `1.1` · letter-spacing: `-0.025em` · `text-wrap: balance`
+- **`.type-heading`:** `clamp(1.4rem, 2.4vw, 2.1rem)` · line-height: `1.18` · letter-spacing: `-0.02em` · `text-wrap: balance`
+- **`.type-subheading`:** `clamp(1.1rem, 1.4vw, 1.35rem)` · line-height: `1.25` · letter-spacing: `-0.015em` · `text-wrap: balance`
+- **`.type-lead`:** `clamp(0.95rem, 0.35vw + 0.88rem, 1.15rem)` · line-height: `1.6` · letter-spacing: `-0.01em` · `text-wrap: pretty`
+- **`.type-body`:** `clamp(0.875rem, 0.2vw + 0.825rem, 0.975rem)` · line-height: `1.6` · letter-spacing: `-0.01em` · `text-wrap: pretty`
+- **`.type-body-sm`:** `clamp(0.78rem, 0.15vw + 0.74rem, 0.85rem)` · line-height: `1.5` · letter-spacing: `-0.005em`
+- **`.type-kicker`:** `clamp(0.65rem, 0.1vw + 0.62rem, 0.72rem)` · letter-spacing: `0.22em` · `uppercase` · `font-weight: 600`
+- **`.type-price`:** `tabular-nums` · letter-spacing: `-0.015em` · `font-weight: 700`
