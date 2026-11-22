@@ -1,13 +1,32 @@
 import { test, expect } from '@playwright/test'
-import { ensureTestCatalog, createTestGuestOrder, resetRateLimits } from './test-helpers'
+import {
+  ensureTestCatalog,
+  createTestGuestOrder,
+  resetRateLimits,
+  deleteTestOrder,
+  getAdminClient,
+} from './test-helpers'
 
 test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
+  const createdOrderIds: string[] = []
+  let placedOrderNumber: string | undefined
+
   test.beforeAll(async () => {
     await ensureTestCatalog()
   })
 
   test.beforeEach(async () => {
     await resetRateLimits()
+  })
+
+  test.afterAll(async () => {
+    for (const orderId of createdOrderIds) {
+      await deleteTestOrder(orderId)
+    }
+    if (placedOrderNumber) {
+      const supabase = getAdminClient()
+      await supabase.from('orders').delete().eq('order_number', placedOrderNumber)
+    }
   })
 
   test('should complete browse, add to bag, and checkout happy path with ?token= redirect and full view', async ({
@@ -68,6 +87,8 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     // 6. Verify order confirmation screen and tracking details with ?token= query param
     // Sequence matches ORD-YYYYMMDD-NNNN?token=[a-f0-9]{64}
     await page.waitForURL(/\/order\/ORD-\d{8}-\d{4}\?token=[a-f0-9]{64}/, { timeout: 25000 })
+    const match = page.url().match(/\/order\/(ORD-\d{8}-\d{4})/)
+    if (match) placedOrderNumber = match[1]
     await expect(page.getByRole('heading', { name: /Thank you/i })).toBeVisible()
 
     const pageBody = page.locator('body')
@@ -86,6 +107,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     const testPhone = '01799887766'
     const customerName = 'Secret Customer Name'
     const guestOrder = await createTestGuestOrder(testEmail, testPhone, customerName)
+    createdOrderIds.push(guestOrder.id)
 
     // 2. Open order URL directly in a clean browser context without token
     const context = await browser.newContext()
@@ -131,6 +153,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     const testPhone = '01711223344'
     const customerName = 'Authorized Full Viewer'
     const guestOrder = await createTestGuestOrder(testEmail, testPhone, customerName)
+    createdOrderIds.push(guestOrder.id)
 
     const context = await browser.newContext()
     const page = await context.newPage()
@@ -153,6 +176,7 @@ test.describe('E2E Guest Checkout & Order Tracking Flow', () => {
     const testPhone = '01755667788'
     const customerName = 'Lookup Test Customer'
     const guestOrder = await createTestGuestOrder(testEmail, testPhone, customerName)
+    createdOrderIds.push(guestOrder.id)
 
     const context = await browser.newContext()
     const page = await context.newPage()

@@ -5,16 +5,21 @@ import {
   createOrGetTestCustomer,
   loginViaUI,
   deleteTestUser,
+  deleteTestOrder,
 } from './test-helpers'
 
 test.describe('Guest Order Claiming Flow', () => {
   let createdCustomerId: string | undefined
+  let createdOrderId: string | undefined
 
   test.beforeAll(async () => {
     await ensureTestCatalog()
   })
 
   test.afterAll(async () => {
+    if (createdOrderId) {
+      await deleteTestOrder(createdOrderId)
+    }
     if (createdCustomerId) {
       await deleteTestUser(createdCustomerId)
     }
@@ -28,6 +33,7 @@ test.describe('Guest Order Claiming Flow', () => {
 
     // 1. Create an unclaimed guest order with this phone and email
     const guestOrder = await createTestGuestOrder(testEmail, testPhone, customerName)
+    createdOrderId = guestOrder.id
 
     // 2. Create the customer account matching this email and phone
     const customer = await createOrGetTestCustomer(testEmail, 'testpassword123', customerName, testPhone)

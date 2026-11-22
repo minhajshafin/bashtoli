@@ -45,7 +45,7 @@ describe('ConfirmDialog System', () => {
     const trigger = screen.getByTestId('trigger-btn')
     fireEvent.click(trigger)
 
-    expect(screen.getByText('Clear Shopping Bag?')).toBeInTheDocument()
+    expect(await screen.findByText('Clear Shopping Bag?')).toBeInTheDocument()
     expect(
       screen.getByText('Are you sure you want to remove all items from your bag?')
     ).toBeInTheDocument()
@@ -63,7 +63,7 @@ describe('ConfirmDialog System', () => {
     )
 
     fireEvent.click(screen.getByTestId('trigger-btn'))
-    const confirmBtn = screen.getByRole('button', { name: 'Clear Bag' })
+    const confirmBtn = await screen.findByRole('button', { name: 'Clear Bag' })
     fireEvent.click(confirmBtn)
 
     await waitFor(() => {
@@ -82,7 +82,7 @@ describe('ConfirmDialog System', () => {
     )
 
     fireEvent.click(screen.getByTestId('trigger-btn'))
-    const cancelBtn = screen.getByRole('button', { name: 'Keep Items' })
+    const cancelBtn = await screen.findByRole('button', { name: 'Keep Items' })
     fireEvent.click(cancelBtn)
 
     await waitFor(() => {
@@ -101,7 +101,7 @@ describe('ConfirmDialog System', () => {
     )
 
     fireEvent.click(screen.getByTestId('trigger-btn'))
-    expect(screen.getByText('Clear Shopping Bag?')).toBeInTheDocument()
+    expect(await screen.findByText('Clear Shopping Bag?')).toBeInTheDocument()
 
     fireEvent.keyDown(window, { key: 'Escape' })
 
@@ -121,7 +121,7 @@ describe('ConfirmDialog System', () => {
     )
 
     fireEvent.click(screen.getByTestId('trigger-btn'))
-    const closeBtn = screen.getByRole('button', { name: 'Close dialog' })
+    const closeBtn = await screen.findByRole('button', { name: 'Close dialog' })
     fireEvent.click(closeBtn)
 
     await waitFor(() => {
@@ -156,7 +156,7 @@ describe('ConfirmDialog System', () => {
     )
 
     fireEvent.click(screen.getByTestId('warning-btn'))
-    expect(screen.getByText('Discard Changes?')).toBeInTheDocument()
+    expect(await screen.findByText('Discard Changes?')).toBeInTheDocument()
     expect(screen.getByText('Attention')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
@@ -186,7 +186,7 @@ describe('ConfirmDialog System', () => {
     )
 
     fireEvent.click(screen.getByTestId('default-btn'))
-    expect(screen.getByText('Save Address to Book?')).toBeInTheDocument()
+    expect(await screen.findByText('Save Address to Book?')).toBeInTheDocument()
     expect(screen.getByText('Notice')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()

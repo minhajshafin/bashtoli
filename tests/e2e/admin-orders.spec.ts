@@ -5,17 +5,23 @@ import {
   createTestGuestOrder,
   loginViaUI,
   deleteTestUser,
+  deleteTestOrder,
 } from './test-helpers'
 
 test.describe('Admin Order Lifecycle & Fulfillment', () => {
   let createdAdminId: string | undefined
+  let seedOrderId: string | undefined
 
   test.beforeAll(async () => {
     await ensureTestCatalog()
-    await createTestGuestOrder('admin-order-seed@example.com')
+    const seed = await createTestGuestOrder('admin-order-seed@example.com')
+    seedOrderId = seed.id
   })
 
   test.afterAll(async () => {
+    if (seedOrderId) {
+      await deleteTestOrder(seedOrderId)
+    }
     if (createdAdminId) {
       await deleteTestUser(createdAdminId)
     }

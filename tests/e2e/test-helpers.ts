@@ -245,6 +245,37 @@ export async function pruneStaleTestUsers(client?: SupabaseClient): Promise<numb
 }
 
 /**
+ * Deletes a single synthetic test order by ID.
+ */
+export async function deleteTestOrder(orderId: string): Promise<void> {
+  const supabase = getAdminClient()
+  const { error } = await supabase.from('orders').delete().eq('id', orderId)
+  if (error) {
+    console.warn(`Failed to delete test order ${orderId}:`, error.message)
+  }
+}
+
+/**
+ * Prunes stale synthetic ORD-19990101-* test orders created more than 1 hour ago.
+ */
+export async function pruneStaleTestOrders(): Promise<number> {
+  const supabase = getAdminClient()
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+  const { data, error } = await supabase
+    .from('orders')
+    .delete()
+    .like('order_number', 'ORD-19990101-%')
+    .lt('created_at', oneHourAgo)
+    .select('id')
+
+  if (error) {
+    console.warn('Failed to prune stale test orders:', error.message)
+    return 0
+  }
+  return data?.length ?? 0
+}
+
+/**
  * Creates or retrieves a confirmed admin user for testing with profiles.role = 'admin'.
  */
 export async function createOrGetTestAdmin(

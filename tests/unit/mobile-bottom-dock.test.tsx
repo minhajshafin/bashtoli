@@ -12,14 +12,6 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }),
 }))
 
-vi.mock('@/lib/motion', () => ({
-  gsap: {
-    to: vi.fn(),
-    set: vi.fn(),
-  },
-  isReducedMotion: () => false,
-}))
-
 vi.mock('@/lib/queries/cart', () => ({
   fetchDbCart: vi.fn().mockResolvedValue([]),
   checkCartItemsAvailability: vi.fn().mockResolvedValue([]),
