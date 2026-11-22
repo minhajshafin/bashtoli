@@ -93,7 +93,7 @@ export const ImageGallery = React.memo(function ImageGallery({
       <div className="-mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full relative aspect-[4/3] sm:aspect-square max-w-none sm:max-w-[460px] lg:max-w-[480px] max-h-[calc(100dvh-12rem)] overflow-hidden rounded-b-2xl sm:rounded-2xl border-b sm:border border-forest-200/80 bg-cream-100/70">
         <Link
           href="/products"
-          className="sm:hidden absolute top-3 left-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-forest-950/70 backdrop-blur-md text-cream-100 border border-white/10 active:scale-90 transition-transform shadow-sm"
+          className="sm:hidden absolute top-3 left-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-forest-950/90 text-cream-100 border border-white/10 active:scale-90 transition-transform shadow-sm"
           aria-label="Back to all products"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
@@ -198,7 +198,7 @@ export const ImageGallery = React.memo(function ImageGallery({
 
           {/* Desktop Floating Slides / Counter Indicator */}
           {images.length > 1 && (
-            <div className="hidden sm:block absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-10 rounded-full bg-forest-950/75 backdrop-blur-xs px-2.5 py-1 text-[10px] font-mono font-medium text-cream-100 tracking-wider shadow-sm border border-forest-800/80 select-none">
+            <div className="hidden sm:block absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-10 rounded-full bg-forest-950/90 px-2.5 py-1 text-[10px] font-mono font-medium text-cream-100 tracking-wider shadow-sm border border-forest-800/80 select-none">
               {String(activeIdx + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
             </div>
           )}
@@ -206,7 +206,7 @@ export const ImageGallery = React.memo(function ImageGallery({
           {/* Hover Zoom Prompt Badge (Desktop) */}
           <div
             aria-hidden="true"
-            className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-10 hidden sm:flex items-center gap-1.5 rounded-full bg-forest-950/90 backdrop-blur-md px-2.5 py-1 text-[11px] font-sans font-medium text-cream-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-forest-800/80 select-none pointer-events-none"
+            className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-10 hidden sm:flex items-center gap-1.5 rounded-full bg-forest-950/95 px-2.5 py-1 text-[11px] font-sans font-medium text-cream-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-forest-800/80 select-none pointer-events-none"
           >
             <svg className="h-3.5 w-3.5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6" />
@@ -255,7 +255,7 @@ export const ImageGallery = React.memo(function ImageGallery({
           role="dialog"
           aria-modal="true"
           aria-label="High-resolution image inspection"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-forest-950/95 backdrop-blur-md p-4 sm:p-8 animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-forest-950/98 p-4 sm:p-8 animate-fade-in"
           onClick={() => setIsLightboxOpen(false)}
         >
           {/* Close button */}

@@ -88,15 +88,58 @@ export function CartDrawer() {
     })
   }, [isDrawerOpen, isClosing, cart.length])
 
-  // Close on Escape key
+  // Close on Escape key, manage focus trap, and restore focus on dismiss
   useEffect(() => {
-    if (!isDrawerOpen) return
+    if (!isDrawerOpen || isClosing) return
+
+    const previousActiveElement = (document.activeElement as HTMLElement) || null
+
+    // Focus the first interactive element (close button) when drawer opens
+    const focusTimer = setTimeout(() => {
+      if (drawerRef.current) {
+        const focusables = drawerRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusables.length > 0) {
+          focusables[0].focus()
+        }
+      }
+    }, 50)
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose()
+      if (e.key === 'Escape') {
+        handleClose()
+        return
+      }
+
+      if (e.key === 'Tab' && drawerRef.current) {
+        const focusables = drawerRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusables.length === 0) return
+
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
     }
+
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isDrawerOpen, handleClose])
+    return () => {
+      clearTimeout(focusTimer)
+      window.removeEventListener('keydown', handleKeyDown)
+      if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
+        previousActiveElement.focus()
+      }
+    }
+  }, [isDrawerOpen, isClosing, handleClose])
 
   // Prevent background body scroll when drawer is open
   useEffect(() => {
@@ -124,12 +167,12 @@ export function CartDrawer() {
       aria-label="Shopping Bag Drawer"
       className="fixed inset-0 z-50 flex justify-end"
     >
-      {/* Dimmed Backdrop with Gaussian Blur */}
+      {/* Dimmed Backdrop */}
       <div
         ref={backdropRef}
         onClick={handleClose}
         aria-hidden="true"
-        className={`fixed inset-0 bg-forest-950/70 backdrop-blur-xs transition-opacity duration-200 ${
+        className={`fixed inset-0 bg-forest-950/80 transition-opacity duration-200 ${
           isClosing ? 'animate-fade-out pointer-events-none' : 'animate-fade-in'
         }`}
       />

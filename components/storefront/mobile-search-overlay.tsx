@@ -141,7 +141,7 @@ export function MobileSearchOverlay({ isOpen, onClose }: MobileSearchOverlayProp
       role="dialog"
       aria-modal="true"
       aria-label="Product Search"
-      className="md:hidden fixed inset-0 z-50 flex flex-col bg-forest-950/98 backdrop-blur-2xl text-cream-100 animate-in fade-in duration-200"
+      className="md:hidden fixed inset-0 z-50 flex flex-col bg-forest-950/98 text-cream-100 animate-in fade-in duration-200"
     >
       {/* Top Search Bar */}
       <div className="shrink-0 px-4 pt-3 pb-3 border-b border-forest-800/80 bg-forest-950/80">

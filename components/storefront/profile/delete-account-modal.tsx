@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useState, useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { deleteAccountAction } from '@/lib/actions/profile'
 import { useToast } from '@/components/ui/toast'
@@ -14,6 +14,42 @@ export function DeleteAccountModal() {
   const [deleteConfirmation, setDeleteConfirmation] = useState('')
   const [deleteError, setDeleteError] = useState<string | null>(null)
   const [isDeletePending, startDeleteTransition] = useTransition()
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  // Handle Escape key and focus trapping inside modal
+  useEffect(() => {
+    if (!isDeleteModalOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isDeletePending) {
+        setIsDeleteModalOpen(false)
+        setDeleteConfirmation('')
+        setDeleteError(null)
+        return
+      }
+
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusables = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusables.length === 0) return
+
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isDeleteModalOpen, isDeletePending])
 
   const handleDeleteSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -57,7 +93,7 @@ export function DeleteAccountModal() {
               setDeleteError(null)
               setIsDeleteModalOpen(true)
             }}
-            className="btn-danger shrink-0 w-full sm:w-auto inline-flex h-12 sm:h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold active:scale-95 transition-all cursor-pointer shadow-md"
+            className="btn-danger shrink-0 w-full sm:w-auto inline-flex h-12 sm:h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-xs sm:text-sm font-sans font-semibold active:scale-95 transition-colors cursor-pointer shadow-md"
           >
             <Trash2 className="h-4 w-4" />
             <span>Delete Account</span>
@@ -67,19 +103,27 @@ export function DeleteAccountModal() {
 
       {/* Delete Account Confirmation Modal */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-account-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        >
           <div
-            className="fixed inset-0 bg-forest-950/80 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-forest-950/80 transition-opacity"
             onClick={() => !isDeletePending && setIsDeleteModalOpen(false)}
           />
 
-          <div className="relative w-full max-w-lg rounded-2xl border border-forest-200/90 bg-cream-50 p-6 sm:p-8 shadow-2xl animate-fade-in z-10 space-y-6 text-forest-950">
+          <div
+            ref={modalRef}
+            className="relative w-full max-w-lg rounded-2xl border border-forest-200/90 bg-cream-50 p-6 sm:p-8 shadow-2xl animate-fade-in z-10 space-y-6 text-forest-950"
+          >
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-terracotta-100 text-terracotta-700 border border-terracotta-300/80 shadow-2xs">
                 <Trash2 className="h-6 w-6 stroke-[1.8]" />
               </div>
               <div className="space-y-1 min-w-0">
-                <h3 className="text-base sm:text-lg font-medium text-forest-950 font-display">
+                <h3 id="delete-account-title" className="text-base sm:text-lg font-medium text-forest-950 font-display">
                   Delete Account Permanently?
                 </h3>
                 <p className="text-xs text-forest-600 font-sans">
@@ -124,7 +168,7 @@ export function DeleteAccountModal() {
                   onChange={(e) => setDeleteConfirmation(e.target.value)}
                   disabled={isDeletePending}
                   placeholder="DELETE"
-                  className="block w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm font-mono font-bold text-forest-950 placeholder:text-forest-400 focus:border-terracotta-500 focus:outline-hidden focus:ring-2 focus:ring-terracotta-500/20 transition-all tracking-wider shadow-2xs"
+                  className="block w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm font-mono font-bold text-forest-950 placeholder:text-forest-400 focus:border-terracotta-500 focus:outline-hidden focus:ring-2 focus:ring-terracotta-500/20 transition-colors tracking-wider shadow-2xs"
                   autoComplete="off"
                 />
               </div>
@@ -138,14 +182,14 @@ export function DeleteAccountModal() {
                     setDeleteError(null)
                   }}
                   disabled={isDeletePending}
-                  className="inline-flex h-12 sm:h-11 items-center justify-center rounded-xl border border-forest-200/90 bg-white px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:text-forest-950 hover:bg-cream-100 disabled:opacity-50 active:scale-95 transition-all cursor-pointer shadow-2xs"
+                  className="inline-flex h-12 sm:h-11 items-center justify-center rounded-xl border border-forest-200/90 bg-white px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:text-forest-950 hover:bg-cream-100 disabled:opacity-50 active:scale-95 transition-colors cursor-pointer shadow-2xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={deleteConfirmation !== 'DELETE' || isDeletePending}
-                  className="btn-danger inline-flex h-12 sm:h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-all cursor-pointer shadow-md"
+                  className="btn-danger inline-flex h-12 sm:h-11 items-center justify-center rounded-xl px-6 text-xs sm:text-sm font-sans font-semibold disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 transition-colors cursor-pointer shadow-md"
                 >
                   {isDeletePending ? (
                     <div className="flex items-center gap-2">
