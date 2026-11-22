@@ -96,7 +96,7 @@ describe('Order Token & Authorization Utilities', () => {
     it('fails verification if the signature is tampered', () => {
       const signed = signOrderVerification(ORDER_NUMBER, TEST_SECRET)
       const [issuedAt, hmac] = signed.split('.')
-      const tamperedHmac = hmac.slice(0, -2) + 'ff'
+      const tamperedHmac = hmac.endsWith('ff') ? hmac.slice(0, -2) + '00' : hmac.slice(0, -2) + 'ff'
       const isValid = verifyOrderVerification(ORDER_NUMBER, `${issuedAt}.${tamperedHmac}`, TEST_SECRET)
       expect(isValid).toBe(false)
     })

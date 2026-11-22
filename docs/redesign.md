@@ -170,12 +170,12 @@ Standardized on the **Editorial Pairing Formula**:
 Elevated the storefront landing hero from a standard mobile card layout into an exhibition-grade gallery centerpiece:
 
 ### 7.1 Archival Exhibition Framing
-- **Dynamic Scale Proportions:** Expanded viewport width gracefully from mobile (`max-w-[320px]`) through tablet (`380px`) to desktop gallery scale (`420px–460px`).
+- **Calibrated Proportions & Compact Vertical Footprint:** Constrained viewport scale from mobile (`max-w-[300px]`) through tablet (`320px`) to desktop gallery scale (`350px–370px`), with section vertical padding tightened from `py-20` to `py-11`. This shaves ~210px of vertical dead space on desktop, ensuring the below-the-fold catalog peeks naturally into view.
 - **Museum-Grade Beveled Outer Casing:** Dual-layer bevel (`bg-gradient-to-b from-forest-900/90 via-forest-900/60 to-forest-950 border border-gold-500/30 shadow-2xl ring-1 ring-gold-400/10`) with `shadow-inner` and `border-forest-800/80` slide containment.
-- **Ambient Gallery Spotlight:** Subtly illuminated radial back-glow (`radial-gradient(circle, rgba(196, 162, 101, 0.25) ... blur-3xl)`) focusing viewer optical attention on the centerpiece artwork.
+- **Ambient Gallery Spotlight:** Subtly illuminated radial back-glow (`radial-gradient(circle, rgba(196, 162, 101, 0.25) ... blur-3xl)`) scaled proportionally to 580px, focusing optical attention cleanly on the centerpiece artwork.
 
 ### 7.2 Floating Archival Spec Note
-- **Museum Label Spec Plate:** Positioned at `-left-8 bottom-6` with `bg-bg-surface-elevated`, warm brass border (`border-gold-500/35`), and subtle elevation (`shadow-elevation-3 ring-1 ring-gold-500/10`).
+- **Museum Label Spec Plate:** Positioned compactly at `-left-3 sm:-left-6 bottom-4` with `bg-bg-surface-elevated`, warm brass border (`border-gold-500/35`), and subtle elevation (`shadow-elevation-3 ring-1 ring-gold-500/10`).
 - **Curatorial Micro-Data:** Displays `ARCHIVE № 01` tracking stamp, pulsing brass beacon, slide badge headline (`font-display font-semibold text-forest-950`), and Dhaka provenance note (`text-forest-750`).
 
 ### 7.3 Editorial Typography & Decisive CTAs
