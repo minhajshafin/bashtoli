@@ -74,7 +74,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2.5">
             <span className="h-px w-3 sm:w-3.5 bg-gold-600/70" />
-            <span className="type-kicker text-forest-700">
+            <span className="type-kicker text-gold-700">
               Catalogue &middot; Curated Goods
             </span>
           </div>

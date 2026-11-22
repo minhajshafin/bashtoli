@@ -31,6 +31,12 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       <ScrollReveal>
         <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2 px-4 sm:px-0">
           <div className="min-w-0 pr-2">
+            <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+              <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
+              <span className="type-kicker text-gold-700">
+                Curated Essentials &middot; Daily Rituals
+              </span>
+            </div>
             <h2 className="type-heading font-medium text-forest-950 truncate">
               The Writing Desk
             </h2>
@@ -67,17 +73,14 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
             <Link
               id="featured-view-all-link"
               href="/products"
-              className="inline-flex items-center gap-1 type-kicker text-text-primary hover:text-text-accent transition-colors sm:pl-2.5 sm:border-l sm:border-forest-900/15"
+              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 type-kicker text-gold-700 hover:text-gold-900 transition-colors duration-200 group/link pb-0.5 sm:pb-1 sm:pl-3 sm:border-l sm:border-forest-900/15"
             >
-              <span>View All</span>
-              <svg
-                className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+              <span className="border-b border-gold-600/40 group-hover/link:border-gold-900 pb-0.5 transition-colors">
+                View All
+              </span>
+              <span className="text-xs sm:text-sm transition-transform duration-300 group-hover/link:translate-x-1">
+                &rarr;
+              </span>
             </Link>
           </div>
         </div>
