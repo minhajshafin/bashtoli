@@ -31,49 +31,6 @@ export function ProductCardSkeleton() {
 }
 
 /**
- * Grid of product card skeletons.
- */
-export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
-  return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: count }).map((_, i) => (
-        <ProductCardSkeleton key={i} />
-      ))}
-    </div>
-  )
-}
-
-/**
- * Category Sidebar Filter Skeleton.
- */
-export function CategorySidebarSkeleton() {
-  return (
-    <div
-      className="w-full rounded-3xl border border-forest-700 bg-forest-800 p-5 space-y-3"
-      aria-hidden="true"
-    >
-      {/* Eyebrow header */}
-      <div className="flex items-center justify-between pb-3.5 border-b border-forest-700/80">
-        <div className="h-3 w-20 rounded-md skeleton-shimmer-dark" />
-      </div>
-
-      {/* Category items list */}
-      <div className="space-y-1.5 pt-1">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-forest-700/40"
-          >
-            <div className="h-3.5 w-28 rounded-md skeleton-shimmer-dark" />
-            <div className="h-4 w-6 rounded-full skeleton-shimmer-dark" />
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/**
  * Full Products / Shop Catalog Skeleton with Horizontal Ribbon & Delayed Reveal.
  */
 export function ProductsPageSkeleton() {

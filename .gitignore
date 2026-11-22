@@ -51,3 +51,8 @@ docs/audit/
 docs/handover.md
 docs/admin-guide.md
 docs/prd.md
+
+# performance audit raw output, logs & screenshots
+docs/perf/
+*.log
+screenshots/

@@ -56,52 +56,46 @@ export function LandingPageSkeleton() {
       {/* 2. Featured Products Carousel Skeleton */}
       <FeaturedProductsSkeleton />
 
-      {/* Wave 2: Featured Products (Alabaster Cream) → Categories (Forest Moss) */}
-      <WaveDivider variant="products-to-categories" />
-
-      {/* 3. Categories Collage Skeleton (Forest Moss) */}
-      <section className="relative overflow-hidden py-8 sm:py-12 lg:py-14 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-forest-800 bg-laid-paper-dark">
+      {/* 3. Categories Collage Skeleton */}
+      <section className="relative overflow-hidden py-8 sm:py-12 lg:py-14 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50">
         <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto space-y-6 sm:space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="space-y-2">
-              <div className="h-3 w-32 rounded-md skeleton-shimmer-dark opacity-60" />
-              <div className="h-7 sm:h-8 w-56 rounded-xl skeleton-shimmer-dark" />
+              <div className="h-3 w-32 rounded-md bg-cream-200/60" />
+              <div className="h-7 sm:h-8 w-56 rounded-xl bg-cream-200/80" />
             </div>
-            <div className="h-4 w-36 rounded-md skeleton-shimmer-dark opacity-50" />
+            <div className="h-4 w-36 rounded-md bg-cream-200/50" />
           </div>
 
           {/* Desktop 3-Column Collage Layout */}
           <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
             <div className="flex flex-col gap-4 lg:gap-5 w-full">
-              <div className="h-[320px] lg:h-[350px] xl:h-[370px] rounded-2xl skeleton-shimmer-dark" />
-              <div className="h-[190px] lg:h-[210px] xl:h-[225px] rounded-2xl skeleton-shimmer-dark" />
+              <div className="h-[320px] lg:h-[350px] xl:h-[370px] rounded-2xl bg-cream-200/70" />
+              <div className="h-[190px] lg:h-[210px] xl:h-[225px] rounded-2xl bg-cream-200/60" />
             </div>
             <div className="flex flex-col gap-4 lg:gap-5 w-full">
-              <div className="h-[190px] lg:h-[210px] xl:h-[225px] rounded-2xl skeleton-shimmer-dark" />
-              <div className="h-[320px] lg:h-[350px] xl:h-[370px] rounded-2xl skeleton-shimmer-dark" />
+              <div className="h-[190px] lg:h-[210px] xl:h-[225px] rounded-2xl bg-cream-200/60" />
+              <div className="h-[320px] lg:h-[350px] xl:h-[370px] rounded-2xl bg-cream-200/70" />
             </div>
             <div className="flex flex-col gap-3.5 lg:gap-4 w-full">
-              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl skeleton-shimmer-dark" />
-              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl skeleton-shimmer-dark" />
-              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl skeleton-shimmer-dark" />
+              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl bg-cream-200/60" />
+              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl bg-cream-200/60" />
+              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl bg-cream-200/60" />
             </div>
           </div>
 
           {/* Mobile Collage Layout */}
           <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-4">
-            <div className="h-[220px] rounded-2xl skeleton-shimmer-dark" />
-            <div className="h-[175px] rounded-2xl skeleton-shimmer-dark" />
-            <div className="h-[175px] rounded-2xl skeleton-shimmer-dark" />
-            <div className="h-[220px] rounded-2xl skeleton-shimmer-dark" />
-            <div className="h-[175px] rounded-2xl skeleton-shimmer-dark" />
-            <div className="h-[175px] rounded-2xl skeleton-shimmer-dark" />
-            <div className="h-[190px] col-span-2 rounded-2xl skeleton-shimmer-dark" />
+            <div className="h-[220px] rounded-2xl bg-cream-200/70" />
+            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
+            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
+            <div className="h-[220px] rounded-2xl bg-cream-200/70" />
+            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
+            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
+            <div className="h-[190px] col-span-2 rounded-2xl bg-cream-200/60" />
           </div>
         </div>
       </section>
-
-      {/* Wave 3: Categories (Forest Moss) → About Us (Alabaster Cream) */}
-      <WaveDivider variant="categories-to-about" />
     </div>
   )
 }

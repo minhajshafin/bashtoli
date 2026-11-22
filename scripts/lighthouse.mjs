@@ -50,6 +50,10 @@ if (existsSync(envPath)) {
  * 4. Logs any connection warnings explicitly (no empty catch blocks).
  */
 async function resetRunnerRateLimits() {
+  if (process.env.ALLOW_RATE_LIMIT_RESET !== '1') {
+    return
+  }
+
   if (process.env.VERCEL_ENV === 'production') {
     throw new Error('SAFETY VIOLATION: Cannot reset rate limits in production (VERCEL_ENV=production).')
   }
@@ -65,10 +69,15 @@ async function resetRunnerRateLimits() {
   if (!redisUrl || !redisToken) return
 
   try {
+    const redisHost = new URL(redisUrl).host
+    console.log(`[lighthouse] Resetting rate limits on Redis host: ${redisHost}`)
     const { Redis } = await import('@upstash/redis')
     const redis = new Redis({ url: redisUrl, token: redisToken })
     const now = Date.now()
-    const currentWindow = Math.floor(now / 60000)
+    const windowSize = 60000 // 60s sliding window from lib/supabase/rate-limit.ts
+    const currentWindow = Math.floor(now / windowSize)
+    // Verified prefixes from lib/supabase/rate-limit.ts:
+    // rl:auth, rl:order, rl:checkout, rl:search
     const prefixes = ['rl:auth', 'rl:order', 'rl:checkout', 'rl:search']
     const keysToDelete = []
     for (const prefix of prefixes) {
@@ -92,6 +101,7 @@ const RUNS = parseInt(process.env.RUNS || '5', 10)
 const args = process.argv.slice(2)
 let throttlingMethodArg = 'simulate'
 let saveDirArg = null
+let headersFileArg = null
 const targetRoutes = []
 
 for (const arg of args) {
@@ -99,6 +109,8 @@ for (const arg of args) {
     throttlingMethodArg = arg.split('=')[1]
   } else if (arg.startsWith('--save-dir=')) {
     saveDirArg = arg.split('=')[1]
+  } else if (arg.startsWith('--headers-file=')) {
+    headersFileArg = arg.split('=')[1]
   } else if (!arg.startsWith('--')) {
     targetRoutes.push(arg)
   }
@@ -114,6 +126,15 @@ function slugify(route) {
 }
 
 function runLighthouse(url, method = 'simulate') {
+  const chromeFlags = [
+    '--headless',
+    '--no-sandbox',
+    '--disable-dev-shm-usage',
+  ]
+  if (process.env.CHROME_USER_DATA_DIR) {
+    chromeFlags.push(`--user-data-dir=${process.env.CHROME_USER_DATA_DIR}`)
+  }
+
   const flags = [
     '--yes',
     'lighthouse',
@@ -127,9 +148,13 @@ function runLighthouse(url, method = 'simulate') {
     '--screenEmulation.width=360',
     '--screenEmulation.height=640',
     '--screenEmulation.deviceScaleFactor=2',
-    '--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage',
+    `--chrome-flags=${chromeFlags.join(' ')}`,
     '--quiet',
   ]
+
+  if (headersFileArg) {
+    flags.push(`--extra-headers=${path.resolve(process.cwd(), headersFileArg)}`)
+  }
 
   const env = {
     ...process.env,
@@ -239,7 +264,8 @@ async function benchmarkRouteMethod(route, method, saveDir) {
   }
 
   // Remove rawJson from returned object to avoid excessive memory retention
-  const { rawJson: _, ...cleanMedian } = medianRun
+  const cleanMedian = { ...medianRun }
+  delete cleanMedian.rawJson
 
   return {
     route,
