@@ -6,9 +6,8 @@ import { BackToTopButton } from '@/components/storefront/back-to-top-button'
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-gold-400 font-semibold mb-3 sm:mb-3.5 font-sans flex items-center gap-1.5">
-      <span className="h-1 w-1 rounded-full bg-gold-500/70" aria-hidden="true" />
-      <span>{children}</span>
+    <h3 className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-gold-400 font-semibold mb-3 sm:mb-3.5 font-sans">
+      {children}
     </h3>
   )
 }
@@ -105,19 +104,17 @@ export function Footer() {
           <div className="col-span-1 md:col-span-4 flex flex-col items-center md:items-start text-center md:text-left">
             <Link
               href="/"
-              className="inline-flex flex-col items-center md:items-start gap-2.5 mb-3 group focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xl"
+              className="inline-flex flex-col items-center md:items-start gap-2 sm:gap-2.5 mb-3 group focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xl"
               aria-label="Bashtoli Home"
             >
-              <div className="relative p-1 rounded-2xl bg-forest-900/60 border border-gold-500/25 group-hover:border-gold-500/50 transition-colors shadow-elevation-1">
-                <Image
-                  src="/logo-round.svg"
-                  alt="Bashtoli Stationery"
-                  width={80}
-                  height={80}
-                  loading="lazy"
-                  className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 object-contain transition-transform duration-300 group-hover:scale-105 shrink-0"
-                />
-              </div>
+              <Image
+                src="/logo-round.svg"
+                alt="Bashtoli Stationery"
+                width={80}
+                height={80}
+                loading="lazy"
+                className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 object-contain transition-transform duration-300 group-hover:scale-105 shrink-0"
+              />
               <div className="flex flex-col items-center md:items-start">
                 <span className="font-display text-base sm:text-lg font-medium text-cream-50 leading-tight">
                   Bashtoli Stationery
@@ -200,10 +197,9 @@ export function Footer() {
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-forest-800/70 text-xs">
-                <div className="flex items-center gap-1.5 text-forest-300 text-[11px]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
-                  <span>Open 7 days &middot; 7am &ndash; 11pm</span>
-                </div>
+                <span className="text-forest-300 text-[11px]">
+                  Open 7 days &middot; 7am &ndash; 11pm
+                </span>
                 <a
                   href="tel:01320903666"
                   className="inline-flex items-center gap-1 text-gold-300 hover:text-gold-200 font-price font-medium text-xs transition-colors py-0.5"
@@ -241,20 +237,6 @@ export function Footer() {
           <p>
             &copy; {currentYear} Bashtoli Stationery. Handcrafted with care in Dhaka.
           </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-forest-300">
-            <Link href="/privacy" className="hover:text-gold-200 transition-colors duration-200 py-1">
-              Privacy Policy
-            </Link>
-            <span className="text-forest-700 hidden sm:inline" aria-hidden="true">&middot;</span>
-            <Link href="/terms" className="hover:text-gold-200 transition-colors duration-200 py-1">
-              Terms of Service
-            </Link>
-            <span className="text-forest-700 hidden sm:inline" aria-hidden="true">&middot;</span>
-            <Link href="/order/lookup" prefetch={false} className="hover:text-gold-200 transition-colors duration-200 py-1">
-              Track Order
-            </Link>
-          </div>
 
           <BackToTopButton />
         </div>

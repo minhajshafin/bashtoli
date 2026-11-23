@@ -469,7 +469,14 @@ Eliminated scroll reveal intersection delays from all landing page sections and 
 - **Accessible Touch Targets & Focus States:**
   - Social media channel links (`WhatsApp`, `Email`, `Facebook`) upgraded to comfortable 36px/34px pills with visible focus rings (`focus-visible:ring-1 focus-visible:ring-gold-400/60`).
   - [components/storefront/back-to-top-button.tsx](file:///home/billy/Projects/bashtoli/components/storefront/back-to-top-button.tsx): Enabled across all viewports so mobile users also have an effortless back-to-top control on long scrolls.
-- **Semantic HTML & WCAG Conformance:** Replaced generic non-semantic headers with semantic `<h3>` (`ColumnHeading`) featuring delicate gold dot accents, strictly maintaining natural linear DOM order matching visual reading order (Brand $\rightarrow$ Collection $\rightarrow$ Care $\rightarrow$ Visit $\rightarrow$ Colophon).
+- **Semantic HTML & WCAG Conformance:** Replaced generic non-semantic headers with semantic `<h3>` (`ColumnHeading`), strictly maintaining natural linear DOM order matching visual reading order (Brand $\rightarrow$ Collection $\rightarrow$ Care $\rightarrow$ Visit $\rightarrow$ Colophon).
+
+### 20.3 Footer Minimalist Calibration
+- **Dots Removed from Column Titles:** Simplified `ColumnHeading` typography to clean gold uppercase text without leading dot indicators.
+- **Pulsing Dot Removed:** Removed the emerald pulsing dot next to store opening hours in the shop visit card for calm, distraction-free reading.
+- **Bottom Bar Middle Links Removed:** Cleaned up the bottom colophon by removing duplicate middle navigation links (`Privacy Policy`, `Terms of Service`, `Track Order`), leaving a minimal row with copyright on the left and `BackToTopButton` on the right (legal and tracking links remain accessible in the Customer Care column above).
+- **Bashtoli Logo Border Removed:** Removed the wrapper frame and border around the round logo, rendering the emblem cleanly and borderlessly.
+
 
 
 
