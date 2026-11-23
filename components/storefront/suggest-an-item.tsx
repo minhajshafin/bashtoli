@@ -2,7 +2,6 @@
 
 import React, { useState, useRef } from 'react'
 import { submitSuggestionAction } from '@/lib/actions/suggestions'
-import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
 export function SuggestAnItem() {
   const [name, setName] = useState('')
@@ -68,24 +67,22 @@ export function SuggestAnItem() {
     >
       <div className="relative z-10 max-w-xl mx-auto">
         {/* Minimal Header */}
-        <ScrollReveal>
-          <div className="text-center mb-4 sm:mb-6">
-            <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-              <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
-              <span className="type-kicker text-gold-700">
-                Special Requests
-              </span>
-            </div>
-
-            <h2 className="type-heading font-medium text-forest-950 mb-1 sm:mb-2">
-              Looking for something in particular?
-            </h2>
-
-            <p className="hidden sm:block type-body-sm text-forest-700/80 max-w-md mx-auto text-pretty">
-              Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
-            </p>
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+            <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
+            <span className="type-kicker text-gold-700">
+              Special Requests
+            </span>
           </div>
-        </ScrollReveal>
+
+          <h2 className="type-heading font-medium text-forest-950 mb-1 sm:mb-2">
+            Looking for something in particular?
+          </h2>
+
+          <p className="hidden sm:block type-body-sm text-forest-700/80 max-w-md mx-auto text-pretty">
+            Tell us what you&apos;re searching for — we hunt for customer requests on our weekly sourcing runs in Dhaka.
+          </p>
+        </div>
 
         {submitted ? (
           /* Confirmation State */

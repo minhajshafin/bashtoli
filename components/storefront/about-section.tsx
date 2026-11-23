@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 import { BambooPaperWatermark, DriftingBambooLeaf } from '@/components/storefront/bamboo-motifs'
 
 export function AboutSection() {
@@ -23,7 +22,7 @@ export function AboutSection() {
 
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center">
         {/* Left: Minimal Archival Photo in Antique Brass Glint Frame */}
-        <ScrollReveal className="lg:col-span-5 flex justify-center lg:justify-end">
+        <div className="lg:col-span-5 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-[160px] sm:max-w-[260px] lg:max-w-[290px]">
             <div className="p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-forest-900/80 border border-gold-500/30 shadow-elevation-2">
               <div className="relative aspect-[4/5] overflow-hidden rounded-lg sm:rounded-xl bg-forest-950 shadow-inner">
@@ -37,10 +36,10 @@ export function AboutSection() {
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
 
         {/* Right: Editorial Narrative in Deep Forest (Tone 1 Inversion) */}
-        <ScrollReveal delay={0.12} className="lg:col-span-7 text-left max-w-xl">
+        <div className="lg:col-span-7 text-left max-w-xl">
           {/* Subtle Overline Kicker */}
           <div className="hidden sm:flex items-center gap-2 mb-2 sm:mb-3">
             <span className="h-px w-3 sm:w-4 bg-gold-400/70" />
@@ -74,7 +73,7 @@ export function AboutSection() {
               &ldquo;A notebook is a letter to your future self.&rdquo;
             </blockquote>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   )

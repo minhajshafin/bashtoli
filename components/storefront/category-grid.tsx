@@ -2,7 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { FeaturedCategoryItem } from '@/lib/validations/category-collage'
-import { ScrollReveal } from '@/components/storefront/scroll-reveal'
 
 interface CategoryGridProps {
   categories?: FeaturedCategoryItem[]
@@ -110,60 +109,56 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
     <section className="relative overflow-hidden pt-3 pb-10 sm:pt-4 sm:pb-12 lg:pt-5 lg:pb-14 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50 bg-laid-paper text-forest-950">
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
         {/* Section Heading — Minimal Editorial Header with Inline Text Link */}
-        <ScrollReveal>
-          <div className="flex items-center justify-between mb-4 sm:mb-7 lg:mb-8 gap-2">
-            <div className="min-w-0 pr-2">
-              <h2 className="type-heading font-medium text-forest-950 truncate">
-                Curated Collections
-              </h2>
-            </div>
-
-            <Link
-              href="/products"
-              className="group/link inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-semibold text-forest-900 hover:text-gold-700 tracking-wide transition-colors py-1 shrink-0"
-            >
-              <span className="relative pb-0.5 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 group-hover/link:after:w-full after:bg-gold-600 after:transition-all after:duration-300">
-                Explore All
-              </span>
-              <span className="text-xs sm:text-sm transition-transform duration-200 group-hover/link:translate-x-1" aria-hidden="true">
-                &rarr;
-              </span>
-            </Link>
+        <div className="flex items-center justify-between mb-4 sm:mb-7 lg:mb-8 gap-2">
+          <div className="min-w-0 pr-2">
+            <h2 className="type-heading font-medium text-forest-950 truncate">
+              Curated Collections
+            </h2>
           </div>
-        </ScrollReveal>
+
+          <Link
+            href="/products"
+            className="group/link inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-semibold text-forest-900 hover:text-gold-700 tracking-wide transition-colors py-1 shrink-0"
+          >
+            <span className="relative pb-0.5 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 group-hover/link:after:w-full after:bg-gold-600 after:transition-all after:duration-300">
+              Explore All
+            </span>
+            <span className="text-xs sm:text-sm transition-transform duration-200 group-hover/link:translate-x-1" aria-hidden="true">
+              &rarr;
+            </span>
+          </Link>
+        </div>
 
         {/* Architectural Atelier Bento Grid */}
-        <ScrollReveal delay={0.06} y={16}>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-            {categories.map((cat, index) => {
-              const isHero = index === 0
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+          {categories.map((cat, index) => {
+            const isHero = index === 0
 
-              // Bento Proportions:
-              // Index 0 (Flagship): Spans 2 columns on mobile, tablet, and desktop
-              // Index 1, 2: 1 column each -> completes Row 1 (2 + 1 + 1 = 4 cols) on desktop
-              // Index 3, 4, 5, 6: 1 column each -> completes Row 2 (1 + 1 + 1 + 1 = 4 cols) on desktop
-              const spanClass = isHero
-                ? 'col-span-2 md:col-span-2 lg:col-span-2'
-                : 'col-span-1 md:col-span-1 lg:col-span-1'
+            // Bento Proportions:
+            // Index 0 (Flagship): Spans 2 columns on mobile, tablet, and desktop
+            // Index 1, 2: 1 column each -> completes Row 1 (2 + 1 + 1 = 4 cols) on desktop
+            // Index 3, 4, 5, 6: 1 column each -> completes Row 2 (1 + 1 + 1 + 1 = 4 cols) on desktop
+            const spanClass = isHero
+              ? 'col-span-2 md:col-span-2 lg:col-span-2'
+              : 'col-span-1 md:col-span-1 lg:col-span-1'
 
-              const heightClass = isHero
-                ? 'h-[200px] sm:h-[270px] lg:h-[310px]'
-                : index < 3
-                ? 'h-[160px] sm:h-[270px] lg:h-[310px]'
-                : 'h-[160px] sm:h-[220px] lg:h-[250px]'
+            const heightClass = isHero
+              ? 'h-[200px] sm:h-[270px] lg:h-[310px]'
+              : index < 3
+              ? 'h-[160px] sm:h-[270px] lg:h-[310px]'
+              : 'h-[160px] sm:h-[220px] lg:h-[250px]'
 
-              return (
-                <CategoryCard
-                  key={cat.id}
-                  category={cat}
-                  index={index}
-                  isHero={isHero}
-                  className={`${spanClass} ${heightClass}`}
-                />
-              )
-            })}
-          </div>
-        </ScrollReveal>
+            return (
+              <CategoryCard
+                key={cat.id}
+                category={cat}
+                index={index}
+                isHero={isHero}
+                className={`${spanClass} ${heightClass}`}
+              />
+            )
+          })}
+        </div>
       </div>
     </section>
   )

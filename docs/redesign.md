@@ -445,6 +445,33 @@ Addressed mobile crampedness and vertical claustrophobia in [components/storefro
 - **CTA Group:** Displayed both primary ("Shop Collection") and secondary ("Our Story") buttons on mobile with 44px minimum touch targets and generous `mb-7 sm:mb-9 lg:mb-0` separation before the slideshow.
 - **Unified 4:5 Slide Viewport:** Unified the carousel viewport to `aspect-[4/5]` on mobile (max-w 270px) and desktop (max-w 320px–370px), eliminating the distorted 16:10 letterbox slit and displaying portrait photography in its true aspect ratio.
 
+---
+
+## 20. Landing Page Reveal Animation Removal & Storefront Footer Refinement
+
+Eliminated scroll reveal intersection delays from all landing page sections and elevated the storefront footer ([components/storefront/footer.tsx](file:///home/billy/Projects/bashtoli/components/storefront/footer.tsx)) to award-winning Awwwards craft standards and accessibility best practices:
+
+### 20.1 Immediate Content Rendering on Landing Page
+- **Problem:** Sections on the landing page previously wrapped major blocks in `<ScrollReveal>`, which forced content to start with `opacity-0` and translate downwards until an IntersectionObserver fired. This introduced perceived latency and visual stutter during quick scrolling.
+- **Solution:** Removed the `<ScrollReveal>` wrappers and unused imports across all four landing page sections:
+  - [components/storefront/product-carousel.tsx](file:///home/billy/Projects/bashtoli/components/storefront/product-carousel.tsx): Featured products carousel header renders immediately.
+  - [components/storefront/category-grid.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-grid.tsx): Editorial heading and Bento grid render immediately.
+  - [components/storefront/about-section.tsx](file:///home/billy/Projects/bashtoli/components/storefront/about-section.tsx): Archival photography and brand narrative render immediately.
+  - [components/storefront/suggest-an-item.tsx](file:///home/billy/Projects/bashtoli/components/storefront/suggest-an-item.tsx): Special requests heading and description render immediately.
+- **Result:** Crisp, instant page performance where all typography, imagery, and interactive controls are visible without delay.
+
+### 20.2 Elevated Storefront Footer Architecture & Responsiveness
+- **Holistic Mobile Navigation:** Previously, mobile users were only shown 3 inline links (`Track Order · Privacy · Terms`), completely hiding navigation to the collection, customer care, physical store location, and opening hours. Refined the mobile experience to expose:
+  - Brand identity with warm brass hairline emblem border and atelier studio narrative.
+  - A responsive 2-column navigation grid (`Collection` and `Customer Care`) with generous touch targets.
+  - The complete "Visit Our Shop" atelier card on both mobile and desktop.
+- **Atelier Shop Visit Card:** Styled with a gold top highlight line, physical address in Shajadpur, Gulshan-1212, live status pill (`Open 7 days · 7am – 11pm`), direct tap-to-call link (`01320-903666`), Google Maps external link with animated arrow, and email contact link.
+- **Accessible Touch Targets & Focus States:**
+  - Social media channel links (`WhatsApp`, `Email`, `Facebook`) upgraded to comfortable 36px/34px pills with visible focus rings (`focus-visible:ring-1 focus-visible:ring-gold-400/60`).
+  - [components/storefront/back-to-top-button.tsx](file:///home/billy/Projects/bashtoli/components/storefront/back-to-top-button.tsx): Enabled across all viewports so mobile users also have an effortless back-to-top control on long scrolls.
+- **Semantic HTML & WCAG Conformance:** Replaced generic non-semantic headers with semantic `<h3>` (`ColumnHeading`) featuring delicate gold dot accents, strictly maintaining natural linear DOM order matching visual reading order (Brand $\rightarrow$ Collection $\rightarrow$ Care $\rightarrow$ Visit $\rightarrow$ Colophon).
+
+
 
 
 

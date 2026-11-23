@@ -13,7 +13,7 @@ export function BackToTopButton() {
     <button
       type="button"
       onClick={scrollToTop}
-      className="hidden sm:inline-flex group items-center gap-2 text-forest-400 hover:text-gold-400 transition-colors duration-200 cursor-pointer active:scale-95"
+      className="inline-flex group items-center gap-1.5 sm:gap-2 text-forest-400 hover:text-gold-300 transition-colors duration-200 cursor-pointer active:scale-95 py-1 px-1.5 -mr-1.5 rounded-lg focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60"
       aria-label="Scroll back to top of page"
     >
       <span className="text-[11px] font-sans font-medium tracking-wide">Back to top</span>
