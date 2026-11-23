@@ -378,4 +378,32 @@ Carried out a site-wide audit and redesign of all storefront loading skeleton fa
 - **Order Lookup Skeleton:** Aligned parcel tracker card to `bg-white/95 border border-forest-900/10 shadow-atelier` matching [app/(storefront)/order/lookup/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/order/lookup/page.tsx).
 - **Storefront Fallback Skeleton:** Upgraded [app/(storefront)/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/loading.tsx) to `bg-cream-50 bg-laid-paper` with `.skeleton-shimmer`.
 
+---
+
+## 17. Account Portal Modular Skeletons & Elimination of Duplicate Shells
+
+Resolved the architectural mismatch in customer account loading states (`/account/*`) where the global `AccountPageSkeleton` inadvertently rendered a duplicate outer container, duplicate sidebar, and duplicate navigation tabs inside `<main>` of `AccountLayoutWrapper`:
+
+### 17.1 Segment-Scoped Modular Skeletons
+Refactored [components/storefront/skeletons/account-skeletons.tsx](file:///home/billy/Projects/bashtoli/components/storefront/skeletons/account-skeletons.tsx) into isolated content-area skeletons that render cleanly inside `AccountLayoutWrapper`'s main column (`lg:col-span-8`):
+- **`AccountOverviewSkeleton` (`/account`):** Displays title shimmer, 2-column quick links grid (`h-28 sm:h-32 rounded-2xl bg-forest-900/90 border-forest-800/80`), and recent orders section.
+- **`AccountOrdersSkeleton` (`/account/orders`):** Displays top utility back navigation, "Order History" masthead, and list of receipt card skeletons with order #, date, status pill, and view button shimmers.
+- **`AccountProfileSkeleton` (`/account/profile`):** Displays top utility back navigation, "Profile Settings" masthead, and two stacked form cards (Personal Information inputs and Password Security inputs).
+- **`AccountAddressesSkeleton` (`/account/addresses`):** Displays top utility back navigation, "Saved Addresses" header with "Add New Address" button placeholder, and a 2-column grid of address cards with edit/delete controls.
+- **`AccountWishlistSkeleton` (`/account/wishlist`):** Displays top utility back navigation, "My Wishlist" masthead with counter and "Move All to Bag" button placeholder, and horizontal touch card shimmers matching `WishlistItem`.
+- **`AccountPageSkeleton` (Backward Compatibility):** Aliased to `AccountOverviewSkeleton` to preserve existing imports.
+
+### 17.2 Dedicated Route-Level `loading.tsx` Fallbacks
+Created dedicated loading boundaries for every customer account subroute:
+- [app/(storefront)/account/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/loading.tsx): Renders `<AccountOverviewSkeleton />`.
+- [app/(storefront)/account/orders/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/orders/loading.tsx): Renders `<AccountOrdersSkeleton />`.
+- [app/(storefront)/account/profile/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/profile/loading.tsx): Renders `<AccountProfileSkeleton />`.
+- [app/(storefront)/account/addresses/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/addresses/loading.tsx): Renders `<AccountAddressesSkeleton />`.
+- [app/(storefront)/account/wishlist/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/wishlist/loading.tsx): Renders `<AccountWishlistSkeleton />`.
+
+### 17.3 Zero Layout Shift & Zero Flash
+- During internal navigation across `/account/*` tabs, the outer sidebar, customer identity card, and navigation rail remain completely persistent and stable; only the main content area streams smoothly with `animate-delayed-fade-in`.
+- Fixed mobile wishlist layout shift where the aside was previously rendered during loading and then collapsed when `WishlistPage` loaded.
+
+
 
