@@ -151,9 +151,8 @@ export function FeaturedProductsSkeleton() {
     >
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 lg:mb-6 gap-4">
-          <div className="space-y-1.5">
+          <div>
             <div className="h-7 sm:h-8 w-52 sm:w-64 rounded-xl skeleton-shimmer" />
-            <div className="h-3.5 w-72 sm:w-96 rounded-md skeleton-shimmer opacity-70" />
           </div>
           <div className="flex items-center gap-3.5 self-start sm:self-auto">
             <div className="flex items-center gap-1.5">

@@ -72,11 +72,11 @@
   --color-gold-300: #eee0bf; /* Contrast on forest-950: 14.15:1 (PASS AA Body on dark forest) */
   --color-gold-200: #f7f1e1; /* Contrast on forest-950: 16.42:1 (PASS AA Body on dark forest) */
 
-  /* Cream backgrounds — Warm Alabaster Cotton Paper */
-  --color-cream-50:  #fbf8f2;
-  --color-cream-100: #f6f0e4;
-  --color-cream-200: #ece3d2;
-  --color-cream-300: #ded0b9;
+  /* Cream backgrounds — Warm Unbleached Artisanal Cotton Paper */
+  --color-cream-50:  #f4ede0;
+  --color-cream-100: #ebe2cf;
+  --color-cream-200: #dfd4be;
+  --color-cream-300: #cfbf9f;
 
   /* Terracotta — Muted Artisanal Rust */
   --color-terracotta-800: #5e1c0d;
@@ -185,9 +185,9 @@
   --color-chip-inactive-hover-border: #c4a265;
 
   /* Semantic Form Inputs */
-  --color-input-bg: #fbf8f2;
+  --color-input-bg: #f4ede0;
   --color-input-text: #0a160f;
-  --color-input-border: #ded0b9;
+  --color-input-border: #dfd4be;
   --color-input-border-hover: #5c9674;
   --color-input-border-focus: #c4a265;
   --color-input-focus-ring: rgba(196, 162, 101, 0.25);
@@ -198,11 +198,11 @@
   --color-input-dark-border-focus: #c4a265;
 
   /* Semantic Surfaces & Backgrounds */
-  --color-white: #fffdfa; /* Warm Alabaster Ivory (eliminates sterile digital #ffffff) */
-  --color-bg-canvas: #fbf8f2;
-  --color-bg-surface: #f6f0e4;
-  --color-bg-surface-elevated: #fffdfa;
-  --color-bg-surface-sunken: #ede3ce;
+  --color-white: #faf6ee; /* Warm Alabaster Ivory (eliminates sterile digital #ffffff) */
+  --color-bg-canvas: #f4ede0;
+  --color-bg-surface: #ede4d3;
+  --color-bg-surface-elevated: #faf6ee;
+  --color-bg-surface-sunken: #e4dac5;
   --color-bg-surface-dark: #0a160f;
   --color-bg-surface-dark-elevated: #102218;
   --color-bg-surface-dark-card: #162e21;

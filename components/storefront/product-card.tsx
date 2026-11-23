@@ -220,53 +220,42 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                 Sold Out
               </span>
             ) : (
-              <div className="relative flex items-center">
-                {/* Resting Curation Badge */}
-                <span
-                  className={`inline-flex items-center rounded-full bg-cream-50/95 text-forest-800/90 border border-forest-900/10 px-2 py-0.5 text-[9px] font-sans font-medium tracking-wider uppercase shadow-2xs transition-opacity duration-200 truncate max-w-[110px] ${
-                    hovered || isJustAdded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+              /* Quick Add to Bag Action on Hover */
+              <div
+                className="transition-[opacity,transform] duration-200 pointer-events-none"
+                style={{
+                  opacity: hovered || isJustAdded ? 1 : 0,
+                  transform: hovered || isJustAdded ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(-2px)',
+                  pointerEvents: hovered || isJustAdded ? 'auto' : 'none',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  aria-label={`Add ${product.name} to bag`}
+                  title={isJustAdded ? 'Added to Bag' : 'Add to Bag'}
+                  className={`h-6.5 px-2.5 rounded-full text-[10px] font-sans font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap shadow-xs ${
+                    isJustAdded
+                      ? 'bg-forest-900 text-gold-300 border border-gold-400/70'
+                      : 'bg-forest-950 text-cream-50 hover:bg-gold-500 hover:text-forest-950 hover:border-gold-400 border border-forest-800'
                   }`}
                 >
-                  {product.featured ? 'Featured' : (product.categories?.name || 'Artisanal')}
-                </span>
-
-                {/* Hover Quick Add to Bag Action */}
-                <div
-                  className="absolute top-0 left-0 transition-[opacity,transform] duration-200 pointer-events-none"
-                  style={{
-                    opacity: hovered || isJustAdded ? 1 : 0,
-                    transform: hovered || isJustAdded ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(-2px)',
-                    pointerEvents: hovered || isJustAdded ? 'auto' : 'none',
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    aria-label={`Add ${product.name} to bag`}
-                    title={isJustAdded ? 'Added to Bag' : 'Add to Bag'}
-                    className={`h-6.5 px-2.5 rounded-full text-[10px] font-sans font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap shadow-xs ${
-                      isJustAdded
-                        ? 'bg-forest-900 text-gold-300 border border-gold-400/70'
-                        : 'bg-forest-950 text-cream-50 hover:bg-gold-500 hover:text-forest-950 hover:border-gold-400 border border-forest-800'
-                    }`}
-                  >
-                    {isJustAdded ? (
-                      <>
-                        <svg className="h-3 w-3 text-gold-300" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        <span>Added ✓</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                        <span>Add</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                  {isJustAdded ? (
+                    <>
+                      <svg className="h-3 w-3 text-gold-300" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span>Added ✓</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                      <span>Add</span>
+                    </>
+                  )}
+                </button>
               </div>
             )}
           </div>

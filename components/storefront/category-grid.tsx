@@ -139,18 +139,9 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
         <ScrollReveal>
           <div className="flex items-center justify-between mb-4 sm:mb-8 lg:mb-9 gap-2">
             <div className="min-w-0 pr-2">
-              <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-                <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
-                <span className="type-kicker text-gold-700">
-                  Collections &middot; Archive
-                </span>
-              </div>
               <h2 className="type-heading font-medium text-forest-950 truncate">
                 Curated Collections
               </h2>
-              <p className="hidden sm:block type-body-sm text-forest-700/80 mt-0.5 sm:mt-1.5 leading-relaxed max-w-xl">
-                Handpicked papers, journals, fine writing instruments, and desk accessories grouped for thoughtful exploration.
-              </p>
             </div>
 
             <Link

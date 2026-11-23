@@ -31,18 +31,9 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
       <ScrollReveal>
         <div className="flex items-center justify-between mb-3 sm:mb-4.5 gap-2 px-4 sm:px-0">
           <div className="min-w-0 pr-2">
-            <div className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
-              <span className="h-px w-3 sm:w-4 bg-gold-600/60" />
-              <span className="type-kicker text-gold-700">
-                Curated Essentials &middot; Daily Rituals
-              </span>
-            </div>
             <h2 className="type-heading font-medium text-forest-950 truncate">
               The Writing Desk
             </h2>
-            <p className="hidden sm:block type-body-sm text-forest-700/80 mt-0.5">
-              Everyday notebooks, pens, and paper goods crafted for daily rituals.
-            </p>
           </div>
 
           {/* Controls: Previous / Next (desktop only) + View All */}

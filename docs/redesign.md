@@ -231,6 +231,29 @@ Addressed micro-interaction feedback across product cards, navigation header, an
   - Footer Shop Card Links (Phone, Google Maps, Email): Elevated from dark brass `text-text-accent` to crisp `text-gold-300 hover:text-gold-200`.
   - Footer Colophon Links (Privacy, Terms): Changed hover to `hover:text-gold-200`.
 
+---
+
+## 11. Minimalist Section Headers, Product Card Tag Removal & Tactile Washi Canvas Tone
+
+Refined storefront minimalism and material warmth:
+
+### 11.1 Product Card Photography Purity (Top-Left Tag Removal)
+- **Problem:** Resting curation pills (`Featured` or category tags) sat on the top-left of every product card image, repeating the category name already present in the card metadata below and cluttering the photography.
+- **Solution:** Removed the resting curation pill from [components/storefront/product-card.tsx](file:///home/billy/Projects/bashtoli/components/storefront/product-card.tsx). Product images now breathe with complete visual purity. The `[+ Add]` action reveals smoothly on hover, and the "Sold Out" badge remains dedicated strictly for sold-out items.
+
+### 11.2 Streamlined Editorial Homepage Section Headers
+- **Problem:** The Featured Products carousel ("The Writing Desk") and Category Grid ("Curated Collections") headers felt over-designed and cluttered with decorative kicker eyebrows, horizontal accent rules, and lengthy descriptive subtitles.
+- **Solution:** Stripped away all decorative eyebrows and secondary subtitles in [components/storefront/product-carousel.tsx](file:///home/billy/Projects/bashtoli/components/storefront/product-carousel.tsx) and [components/storefront/category-grid.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-grid.tsx). Both sections now showcase confident, single-line editorial headings paired gracefully with their respective navigation actions ("View All →" / "Explore All →").
+
+### 11.3 Warm Artisanal Cotton Washi Canvas Calibration
+- **Problem:** Previous canvas token (`#fbf8f2`) and surface elevated token (`#fffdfa`) were too close to digital `#ffffff` ($>98\%$ lightness), resulting in a clinical, stark white appearance that lacked the organic warmth of high-end stationery.
+- **Solution:** Calibrated the light palette in [app/globals.css](file:///home/billy/Projects/bashtoli/app/globals.css) to rich, unbleached cotton paper:
+  - `--color-cream-50` / `--color-bg-canvas`: `#f4ede0` (Tactile unbleached washi paper canvas).
+  - `--color-white` / `--color-bg-surface-elevated`: `#faf6ee` (Soft warm alabaster ivory cards).
+  - `--color-cream-100` / `--color-bg-surface`: `#ebe2cf` / `#ede4d3`.
+  - Contrast ratios for body text (`#0a160f` at 15.90:1 AAA) and brass gold (`#7d5c18` at 5.28:1 AA) are rigorously preserved while creating natural dimensional depth between cards and page background.
+
+
 
 
 
