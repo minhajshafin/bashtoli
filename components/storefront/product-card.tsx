@@ -243,11 +243,11 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                     type="button"
                     onClick={handleAddToCart}
                     aria-label={`Add ${product.name} to bag`}
-                    title={isJustAdded ? 'Added to Bag' : '+ Add to Bag'}
+                    title={isJustAdded ? 'Added to Bag' : 'Add to Bag'}
                     className={`h-6.5 px-2.5 rounded-full text-[10px] font-sans font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap shadow-xs ${
                       isJustAdded
                         ? 'bg-forest-900 text-gold-300 border border-gold-400/70'
-                        : 'bg-forest-950 text-cream-50 hover:bg-gold-700 border border-forest-800'
+                        : 'bg-forest-950 text-cream-50 hover:bg-gold-500 hover:text-forest-950 hover:border-gold-400 border border-forest-800'
                     }`}
                   >
                     {isJustAdded ? (
@@ -262,7 +262,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                         <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-                        <span>+ Add</span>
+                        <span>Add</span>
                       </>
                     )}
                   </button>
@@ -325,11 +325,11 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
               onClick={handleBuyNow}
               disabled={isNavigating}
               aria-label={`Buy ${product.name} now`}
-              className="w-full h-7 sm:h-7.5 rounded-lg bg-forest-950 hover:bg-forest-900 text-cream-50 font-sans text-[11px] font-medium tracking-wider transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs"
+              className="group/btn w-full h-7 sm:h-7.5 rounded-lg bg-forest-950 text-cream-50 border border-forest-900/60 hover:bg-gold-500 hover:text-forest-950 hover:border-gold-400 font-sans text-[11px] font-semibold tracking-wider transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs"
             >
               <span>{isNavigating ? 'Wait…' : 'Buy Now'}</span>
               <svg
-                className="h-2.5 w-2.5 sm:h-3 sm:w-3"
+                className="h-2.5 w-2.5 sm:h-3 sm:w-3 transition-transform duration-200 group-hover/btn:translate-x-0.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

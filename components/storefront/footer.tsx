@@ -30,7 +30,7 @@ function FooterColumn({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-light text-text-inverse-secondary hover:text-text-accent transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
+                className="text-xs font-light text-text-inverse-secondary hover:text-gold-200 transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
               >
                 {label}
               </a>
@@ -38,7 +38,7 @@ function FooterColumn({
               <Link
                 href={href}
                 prefetch={false}
-                className="text-xs font-light text-text-inverse-secondary hover:text-text-accent transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
+                className="text-xs font-light text-text-inverse-secondary hover:text-gold-200 transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gold-400/60 rounded-xs"
               >
                 {label}
               </Link>
@@ -138,15 +138,15 @@ export function Footer() {
 
             {/* Mobile Only: Minimal Inline Navigation Links */}
             <div className="md:hidden flex items-center justify-center gap-3 text-[11px] text-forest-300 font-light mt-4 pt-3.5 border-t border-forest-800/60 w-full max-w-xs">
-              <Link href="/order/lookup" prefetch={false} className="hover:text-text-accent transition-colors">
+              <Link href="/order/lookup" prefetch={false} className="hover:text-gold-200 transition-colors">
                 Track Order
               </Link>
               <span className="text-forest-700">&middot;</span>
-              <Link href="/privacy" className="hover:text-text-accent transition-colors">
+              <Link href="/privacy" className="hover:text-gold-200 transition-colors">
                 Privacy
               </Link>
               <span className="text-forest-700">&middot;</span>
-              <Link href="/terms" className="hover:text-text-accent transition-colors">
+              <Link href="/terms" className="hover:text-gold-200 transition-colors">
                 Terms
               </Link>
             </div>
@@ -196,7 +196,7 @@ export function Footer() {
                 <span className="text-forest-400 text-[11px]">Store Hours: Open 7 days &middot; 7am &ndash; 11pm</span>
                 <a
                   href="tel:01320903666"
-                  className="text-text-accent hover:text-text-accent-hover font-price font-medium text-xs transition-colors"
+                  className="text-gold-300 hover:text-gold-200 font-price font-medium text-xs transition-colors"
                 >
                   01320-903666
                 </a>
@@ -207,14 +207,14 @@ export function Footer() {
                   href="https://maps.google.com/?q=Bashtoli+Computer+Shajadpur+Dhaka"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors uppercase tracking-wider"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-gold-300 hover:text-gold-200 transition-colors uppercase tracking-wider"
                 >
                   <span>Open in Google Maps</span>
                   <span aria-hidden="true">&rarr;</span>
                 </a>
                 <a
                   href="mailto:contact@bashtoli.com"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors tracking-wide"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-sans font-semibold text-gold-300 hover:text-gold-200 transition-colors tracking-wide"
                 >
                   <span>contact@bashtoli.com</span>
                 </a>
@@ -230,10 +230,10 @@ export function Footer() {
           </p>
 
           <div className="hidden sm:flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-text-accent transition-colors duration-200">
+            <Link href="/privacy" className="hover:text-gold-200 transition-colors duration-200">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-text-accent transition-colors duration-200">
+            <Link href="/terms" className="hover:text-gold-200 transition-colors duration-200">
               Terms
             </Link>
           </div>

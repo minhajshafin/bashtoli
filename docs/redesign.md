@@ -209,5 +209,28 @@ Redesigned product cards to eliminate heavy box artifacts on light canvases and 
 - Upgraded the catalog grid on [app/(storefront)/products/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/products/page.tsx) from `xl:grid-cols-4` to `xl:grid-cols-5 2xl:grid-cols-5`.
 - Reduced card width from ~325px down to an intimate ~250px, aligning directly with the catalog skeleton and presenting an abundant, collectible stationery showcase.
 
+---
+
+## 10. Hover & Micro-Interaction Polish (/awwwards Standards)
+
+Addressed micro-interaction feedback across product cards, navigation header, and footer:
+
+### 10.1 Noticeable & Tactile Product Card Buy Button Hover
+- **Root Cause:** Buy Now button previously used `bg-forest-950 hover:bg-forest-900`. Both colors (`#0a160f` and `#102218`) are deep forest greens with less than 3% luminosity variance, making the hover state virtually imperceptible.
+- **Solution:** Elevated to a celebratory tactile transition: resting `bg-forest-950 text-cream-50 border border-forest-900/60` shifting to warm antique gold on hover: `hover:bg-gold-500 hover:text-forest-950 hover:border-gold-400 font-semibold shadow-2xs hover:shadow-xs`. Added `group-hover/btn:translate-x-0.5` micro-shift to the CTA arrow.
+
+### 10.2 Clean Quick Add Pill (Removed Duplicate Plus Sign)
+- **Root Cause:** The quick add button overlay contained an SVG `+` icon (`h-2.5 w-2.5`) followed immediately by `<span>+ Add</span>`, rendering `+ + Add` side-by-side on hover.
+- **Solution:** Changed text to `<span>Add</span>`, resulting in a crisp `[+ Add]` pill. Harmonized hover color to `hover:bg-gold-500 hover:text-forest-950 hover:border-gold-400`. Preserved `aria-label="Add ${product.name} to bag"` test contract.
+
+### 10.3 Header & Footer Navigation Hover Contrast (Eliminated Muddy Brown)
+- **Root Cause:** Nav links on the dark forest header and footer used `text-text-accent` (`#7d5c18`) and `hover:text-text-accent-hover` (`#654911`). Because these tokens are dark brass intended for light cream paper, hovering on a dark `#0a160f` background darkened the text into an illegible muddy smudge.
+- **Solution:**
+  - Header Primary Nav (`Shop` and `Track Order`): Active state set to `text-gold-300 font-semibold` with `after:bg-gold-400` indicator; hover state set to luminous antique gold `text-cream-200/80 hover:text-gold-200` (>14:1 AAA contrast).
+  - Footer Columns & Mobile Links: Changed hover state from `hover:text-text-accent` to `hover:text-gold-200`.
+  - Footer Shop Card Links (Phone, Google Maps, Email): Elevated from dark brass `text-text-accent` to crisp `text-gold-300 hover:text-gold-200`.
+  - Footer Colophon Links (Privacy, Terms): Changed hover to `hover:text-gold-200`.
+
+
 
 

@@ -137,10 +137,10 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
           <nav className="flex items-center gap-5 lg:gap-6" aria-label="Primary Navigation">
             <Link
               href="/products"
-              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-[width] after:duration-300 ${
+              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-gold-400 after:transition-[width] after:duration-300 ${
                 isShop
-                  ? 'text-text-accent font-semibold after:w-full'
-                  : 'text-cream-200/80 hover:text-text-accent-hover after:w-0 hover:after:w-full'
+                  ? 'text-gold-300 font-semibold after:w-full'
+                  : 'text-cream-200/80 hover:text-gold-200 after:w-0 hover:after:w-full'
               }`}
             >
               Shop
@@ -149,10 +149,10 @@ export function NavHeader({ isLoggedIn, fullName, isStaffOrAdmin }: NavHeaderPro
             <Link
               href="/order/lookup"
               prefetch={false}
-              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-btn-accent-bg after:transition-[width] after:duration-300 ${
+              className={`relative py-1 text-[11px] sm:text-xs uppercase tracking-[0.18em] font-medium transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:bg-gold-400 after:transition-[width] after:duration-300 ${
                 pathname === '/order/lookup'
-                  ? 'text-text-accent font-semibold after:w-full'
-                  : 'text-cream-200/80 hover:text-text-accent-hover after:w-0 hover:after:w-full'
+                  ? 'text-gold-300 font-semibold after:w-full'
+                  : 'text-cream-200/80 hover:text-gold-200 after:w-0 hover:after:w-full'
               }`}
             >
               Track Order
