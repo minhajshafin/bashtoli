@@ -111,7 +111,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       </div>
 
       {/* 3. Main Full-Width Product Gallery Canvas */}
-      <div className="flex-1 max-w-[1440px] xl:max-w-[1520px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-4 sm:py-9 lg:py-12 pb-28 sm:pb-16">
+      <div className="flex-1 max-w-[1440px] xl:max-w-[1520px] w-full mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 py-4 sm:py-7 lg:py-9 pb-24 sm:pb-16">
         {/* Results status bar */}
         <div className="flex items-center justify-between mb-3.5 sm:mb-6 pb-2 sm:pb-3 border-b border-forest-900/10">
           <p className="text-[11px] sm:text-xs font-sans text-forest-700">
@@ -135,10 +135,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           )}
         </div>
 
-        {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col laptop) */}
+        {/* Gallery Grid (2-col mobile, 3-col tablet, 4-col laptop, 5-col desktop) */}
         {products.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5">
               {products.map((product, idx) => (
                 <ProductCard
                   key={product.id}

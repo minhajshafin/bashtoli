@@ -140,7 +140,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
 
   return (
     <div
-      className="group relative flex flex-col justify-between overflow-hidden rounded-md sm:rounded-lg bg-bg-surface-elevated border border-forest-900/10 hover:border-gold-500/60 transition-[border-color,box-shadow,transform] duration-normal ease-smooth shadow-elevation-1 hover:shadow-elevation-2 hover:-translate-y-1 select-none"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-xl bg-bg-surface-elevated/90 hover:bg-bg-surface-elevated border border-forest-900/[0.08] hover:border-gold-500/40 transition-[border-color,box-shadow,transform] duration-300 ease-out shadow-xs hover:shadow-elevation-2 hover:-translate-y-0.5 select-none"
       onMouseEnter={() => {
         setHovered(true)
         handleIntentPrefetch()
@@ -148,8 +148,8 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
       onMouseLeave={() => setHovered(false)}
       onTouchStart={handleIntentPrefetch}
     >
-      {/* 1. Full-Bleed Product Image Canvas with Light Linen Background */}
-      <div className="relative aspect-[4/5] sm:aspect-square w-full overflow-hidden bg-cream-50/70 border-b border-forest-900/6">
+      {/* 1. Product Image Canvas (Aspect 4:5 for stationery goods) */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-cream-100/30">
         <Link
           href={`/products/${product.slug}`}
           prefetch={false}
@@ -169,8 +169,8 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                 quality={75}
                 loading={priority ? undefined : loading}
                 fetchPriority={priority ? 'high' : undefined}
-                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 280px"
-                className="object-cover transition-transform duration-500 ease-smooth group-hover:scale-[1.03]"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 style={{
                   filter: isSoldOut ? 'grayscale(0.4) opacity(0.8)' : 'none',
                 }}
@@ -182,8 +182,8 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                   fill
                   quality={70}
                   loading="lazy"
-                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 280px"
-                  className="object-cover transition-opacity duration-500 ease-smooth"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
+                  className="object-cover transition-opacity duration-500 ease-out"
                   style={{
                     opacity: hovered ? 1 : 0,
                     filter: isSoldOut ? 'grayscale(0.4) opacity(0.8)' : 'none',
@@ -192,9 +192,9 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
               )}
             </>
           ) : (
-            <div className="relative flex h-full w-full flex-col items-center justify-center bg-cream-100/60 text-forest-700/40">
+            <div className="relative flex h-full w-full flex-col items-center justify-center bg-cream-100/50 text-forest-700/40">
               <svg
-                className="h-10 w-10 stroke-[1.2] opacity-50"
+                className="h-9 w-9 stroke-[1.2] opacity-50"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -205,7 +205,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                   d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
                 />
               </svg>
-              <span className="text-[10px] tracking-widest uppercase mt-2 opacity-60 font-sans">
+              <span className="text-[9px] tracking-widest uppercase mt-2 opacity-60 font-sans">
                 Handcrafted
               </span>
             </div>
@@ -213,17 +213,17 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
         </Link>
 
         {/* 2. Top Badges & Floating Actions */}
-        <div className="absolute top-2 sm:top-2.5 inset-x-2 sm:inset-x-2.5 z-20 flex items-center justify-between pointer-events-none">
+        <div className="absolute top-2 inset-x-2 z-20 flex items-center justify-between pointer-events-none">
           <div>
             {isSoldOut ? (
-              <span className="inline-flex items-center rounded-pill bg-terracotta-100 text-terracotta-800 border border-terracotta-300 px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase shadow-xs font-sans pointer-events-auto truncate max-w-[100px] sm:max-w-none">
+              <span className="inline-flex items-center rounded-full bg-terracotta-100/95 text-terracotta-800 border border-terracotta-300/60 px-2 py-0.5 text-[9px] font-sans font-medium tracking-wider uppercase shadow-2xs pointer-events-auto">
                 Sold Out
               </span>
             ) : (
               <div className="relative flex items-center">
-                {/* Resting Curation Badge (Featured or Category) */}
+                {/* Resting Curation Badge */}
                 <span
-                  className={`inline-flex items-center rounded-pill bg-cream-100/90 text-forest-800 border border-forest-900/10 px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide uppercase shadow-2xs font-sans transition-opacity duration-normal truncate max-w-[95px] sm:max-w-[130px] ${
+                  className={`inline-flex items-center rounded-full bg-cream-50/95 text-forest-800/90 border border-forest-900/10 px-2 py-0.5 text-[9px] font-sans font-medium tracking-wider uppercase shadow-2xs transition-opacity duration-200 truncate max-w-[110px] ${
                     hovered || isJustAdded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
                   }`}
                 >
@@ -232,10 +232,10 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
 
                 {/* Hover Quick Add to Bag Action */}
                 <div
-                  className="absolute top-0 left-0 transition-[opacity,transform] duration-normal pointer-events-none"
+                  className="absolute top-0 left-0 transition-[opacity,transform] duration-200 pointer-events-none"
                   style={{
                     opacity: hovered || isJustAdded ? 1 : 0,
-                    transform: hovered || isJustAdded ? 'scale(1) translateY(0)' : 'scale(0.92) translateY(-2px)',
+                    transform: hovered || isJustAdded ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(-2px)',
                     pointerEvents: hovered || isJustAdded ? 'auto' : 'none',
                   }}
                 >
@@ -244,10 +244,10 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                     onClick={handleAddToCart}
                     aria-label={`Add ${product.name} to bag`}
                     title={isJustAdded ? 'Added to Bag' : '+ Add to Bag'}
-                    className={`h-7 sm:h-7.5 px-2.5 sm:px-3 rounded-pill text-[10px] sm:text-[11px] font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-transform cursor-pointer pointer-events-auto whitespace-nowrap shadow-elevation-1 ${
+                    className={`h-6.5 px-2.5 rounded-full text-[10px] font-sans font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer pointer-events-auto whitespace-nowrap shadow-xs ${
                       isJustAdded
                         ? 'bg-forest-900 text-gold-300 border border-gold-400/70'
-                        : 'bg-forest-950 text-cream-50 hover:bg-forest-900 border border-forest-800'
+                        : 'bg-forest-950 text-cream-50 hover:bg-gold-700 border border-forest-800'
                     }`}
                   >
                     {isJustAdded ? (
@@ -259,7 +259,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
                       </>
                     ) : (
                       <>
-                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                         <span>+ Add</span>
@@ -284,15 +284,15 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
       </div>
 
       {/* 3. Card Info & Actions Content Layer */}
-      <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5 bg-bg-surface-elevated">
+      <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between gap-2.5 bg-bg-surface-elevated/90">
         <div>
           {/* Category line */}
-          <p className="type-kicker text-[9px] text-forest-750 truncate mb-0.5">
+          <p className="text-[10px] font-sans font-medium tracking-[0.08em] uppercase text-forest-500/80 truncate mb-1">
             {product.categories?.name || 'Artisanal Goods'}
           </p>
 
-          {/* Product Title */}
-          <h3 className="type-subheading font-medium text-xs sm:text-[15px] text-forest-950 tracking-tight leading-snug line-clamp-2">
+          {/* Product Title (Plus Jakarta Sans, crisp and legible) */}
+          <h3 className="font-sans font-medium text-xs sm:text-[13px] text-forest-950 leading-snug tracking-[-0.01em] line-clamp-2">
             <Link
               href={`/products/${product.slug}`}
               prefetch={false}
@@ -306,13 +306,13 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
         </div>
 
         {/* Price & Action Row */}
-        <div className="pt-1.5 sm:pt-2 border-t border-forest-900/6 flex flex-col gap-1.5 sm:gap-2">
+        <div className="flex flex-col gap-2">
           <div className="flex items-baseline justify-between gap-1">
-            <span className="type-price text-xs sm:text-[15px] font-bold text-forest-950">
+            <span className="font-sans font-semibold text-xs sm:text-[14px] text-forest-950 tracking-tight tabular-nums">
               {formatPrice(lowestPrice)}
             </span>
             {activeVariants.length > 1 && (
-              <span className="text-[9px] sm:text-[10px] text-forest-750 font-medium font-sans">
+              <span className="text-[10px] sm:text-[11px] text-forest-500 font-sans font-normal">
                 {activeVariants.length} options
               </span>
             )}
@@ -325,7 +325,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
               onClick={handleBuyNow}
               disabled={isNavigating}
               aria-label={`Buy ${product.name} now`}
-              className="w-full h-7 sm:h-8 rounded-sm sm:rounded-md bg-forest-950 hover:bg-forest-900 text-cream-50 type-kicker text-[10px] sm:text-[11px] font-bold tracking-wider transition-transform active:scale-95 flex items-center justify-center gap-1 cursor-pointer shadow-elevation-1"
+              className="w-full h-7 sm:h-7.5 rounded-lg bg-forest-950 hover:bg-forest-900 text-cream-50 font-sans text-[11px] font-medium tracking-wider transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs"
             >
               <span>{isNavigating ? 'Wait…' : 'Buy Now'}</span>
               <svg
@@ -342,7 +342,7 @@ export const ProductCard = React.memo(function ProductCard({ product, loading = 
             <button
               type="button"
               disabled
-              className="w-full h-7 sm:h-8 rounded-sm sm:rounded-md bg-forest-100 text-forest-700/50 text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase cursor-not-allowed text-center border border-forest-900/10"
+              className="w-full h-7 sm:h-7.5 rounded-lg bg-cream-200/60 text-forest-400 font-sans text-[10px] sm:text-[11px] font-medium tracking-wider uppercase cursor-not-allowed text-center border border-forest-900/5"
             >
               Sold Out
             </button>

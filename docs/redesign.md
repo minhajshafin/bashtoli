@@ -188,4 +188,26 @@ Elevated the storefront landing hero from a standard mobile card layout into an 
 - **Desktop Proportion Tuning:** Scaled card widths from wide `240px` down to an intimate, collectible `205px` (`w-[140px] sm:w-[180px] md:w-[195px] lg:w-[205px]`).
 - **Harmonious Section Padding:** Reduced desktop section vertical padding to `py-8 sm:py-10 lg:py-12` and card gaps to `gap-3 sm:gap-4 lg:gap-5`, presenting 5+ items gracefully across standard viewports without visual heaviness.
 
+---
+
+## 9. Product Card Elevation & Catalog Grid Scale (/awwwards Standards)
+
+Redesigned product cards to eliminate heavy box artifacts on light canvases and calibrated catalog grid proportions:
+
+### 9.1 Seamless Card Architecture on Light Canvas
+- **Removal of Clutter & Muddy Dividing Lines:** Removed the artificial horizontal dividers (`border-b` between image and text, `border-t` above price), unifying image and metadata into a clean editorial object.
+- **Tailored Hairline Outline:** Replaced dirty gray borders with an ultra-light `border-forest-900/[0.08]` that shifts to antique brass `border-gold-500/40` on hover with soft `shadow-elevation-2`.
+- **Natural Aspect Ratio:** Standardized image viewport to `aspect-[4/5]`, honoring natural portrait proportions for stationery, journals, notebooks, and writing accessories.
+
+### 9.2 Crisp Contemporary Typography
+- **Plus Jakarta Sans for Product Titles:** Replaced low-x-height 13px Cormorant Garamond display serif with crisp Plus Jakarta Sans (`font-sans font-medium text-xs sm:text-[13px] text-forest-950 leading-snug tracking-[-0.01em]`), eliminating blurriness and spindly strokes on screen.
+- **Quiet Editorial Eyebrows:** Set category tags to `text-[10px] font-sans font-medium tracking-[0.08em] uppercase text-forest-500/80`.
+- **Refined Tabular Pricing:** Replaced blunt bold prices with balanced semibold tabular numerals (`font-sans font-semibold text-xs sm:text-[14px] text-forest-950 tabular-nums`).
+- **Tactile Boutique CTA:** Elevated the "Buy Now" button into a refined boutique pill with clean sans type (`font-sans text-[11px] font-medium tracking-wider`) and gentle shadow.
+
+### 9.3 5-Column Catalog Scale
+- Upgraded the catalog grid on [app/(storefront)/products/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/products/page.tsx) from `xl:grid-cols-4` to `xl:grid-cols-5 2xl:grid-cols-5`.
+- Reduced card width from ~325px down to an intimate ~250px, aligning directly with the catalog skeleton and presenting an abundant, collectible stationery showcase.
+
+
 
