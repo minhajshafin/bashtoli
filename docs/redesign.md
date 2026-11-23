@@ -420,6 +420,12 @@ Calibrated the floating curation pill badge (`currentSlide.badge_text`) on the h
 - **Comfortable Padding & Elevation:** Adjusted padding to `px-3 sm:px-3.5 py-1 sm:py-1.5` with `shadow-md backdrop-blur-xs`, improving legibility and touch presentation without crowding the hero composition.
 - **Skeleton Alignment:** Streamlined [components/storefront/skeletons/landing-skeletons.tsx](file:///home/billy/Projects/bashtoli/components/storefront/skeletons/landing-skeletons.tsx) hero card skeleton to align with `HeroSlideshow`'s single top-left badge layout and `p-4 sm:p-5` container padding.
 
+### 18.3 Floating Archival Spec Note Elevation & Indicator Unblocking
+- **Indicator Overlap Root Cause:** When the hero carousel frame width was reduced from `max-w-[420px]` to `max-w-[320px]`, the center indicators shifted from 210px to 160px. Consequently, the floating archival spec note (`ARCHIVE № ...` card) anchored at `-left-6 bottom-4` with `max-w-[195px]` horizontally extended to 171px and vertically occupied the exact same 16px–62px zone as the indicator capsule, obscuring the left indicator dot.
+- **Elevated Anchor:** Lifted the spec note from `bottom-4` to `bottom-14 sm:bottom-16` (56px–64px from the frame base). The spec note now hovers gracefully in the lower-middle-left quadrant, completely clear of the indicator capsule.
+- **Sleek Touch Target:** Streamlined the indicator buttons with `relative before:absolute before:inset-x-0 before:-inset-y-1.5`, preserving the accessible $\ge 44\text{px}$ touch target while keeping the visual pill slim and preventing vertical collision. All slide indicator dots remain 100% visible and interactive.
+
+
 
 
 
