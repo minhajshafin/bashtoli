@@ -101,11 +101,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </div>
 
-      {/* 2. Collection Filter Ribbon (Sticky Alabaster Paper Ribbon) */}
-      <div className="w-full bg-cream-50/95 border-b border-forest-900/10 sticky top-11 sm:top-16 z-30">
+      {/* 2. Collection Filter Ribbon (Sticky Deep Forest Ribbon) */}
+      <div className="w-full bg-forest-950/95 border-b border-forest-800/80 sticky top-11 sm:top-16 z-30 backdrop-blur-md">
         <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-2 sm:py-2.5">
           <Suspense>
-            <CategoryFilter categories={categories} activeCategorySlug={activeCategorySlug} />
+            <CategoryFilter categories={categories} activeCategorySlug={activeCategorySlug} theme="dark" />
           </Suspense>
         </div>
       </div>

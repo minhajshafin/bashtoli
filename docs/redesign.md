@@ -289,11 +289,26 @@ Refined homepage transition cadence and elevated the shop catalog header:
 ### 13.3 Deep Sumi Forest Shop Catalogue Header
 - **Background & Architecture:** Transformed the shop gallery header in [app/(storefront)/products/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/products/page.tsx) into Deep Sumi Forest (`bg-forest-950 text-cream-50 border-b border-forest-800/80 bg-laid-paper-dark`), continuing the architectural dual-tone rhythm.
 - **Crisp Typography:** Swapped low-contrast serif with crisp Plus Jakarta Sans (`font-sans font-semibold text-2xl sm:text-3xl lg:text-[34px] text-cream-50 tracking-tight`) and muted moss subtext (`text-forest-300 font-light`).
-- **Harmonized Sort Control:** Added `theme="dark"` support to [components/storefront/sort-dropdown.tsx](file:///home/billy/Projects/bashtoli/components/storefront/sort-dropdown.tsx) with a tactile dark forest trigger and gilded dropdown menu.
+- **Harmonized Sort Control:** Added `theme="dark"` support to [components/storefront/sort-dropdown.tsx](file:///home/billy/Projects/bashtoli/components/storefront/sort-dropdown.tsx) with a tactile dark forest trigger and gilded dropdown menu.---
 
+## 14. Deep Forest Category Ribbon & High-Contrast Sort Dropdown
 
+Unified the shop catalogue crown into an uninterrupted Deep Forest architectural block and resolved sort control legibility:
 
+### 14.1 Deep Forest Collection Filter Ribbon (`theme="dark"`)
+- **Seamless Architectural Crown:** The sticky collection filter ribbon container in [app/(storefront)/products/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/products/page.tsx) was elevated from `bg-cream-50` to `bg-forest-950/95 border-b border-forest-800/80 sticky top-11 sm:top-16 z-30 backdrop-blur-md`. This eliminates the jarring color break between the forest shop header and the filter ribbon, presenting a single cohesive crown above the warm washi product canvas.
+- **Themed Filter Pills:** Added `theme?: 'light' | 'dark'` support to [components/storefront/category-filter.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-filter.tsx):
+  - **Active Pill:** Celebrated in luminous antique gold (`bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs`).
+  - **Inactive Pills:** Deep forest paper chips (`bg-forest-900/90 text-cream-100 border border-forest-800 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-500/50 active:scale-95`).
+  - **Dynamic Expander (+X more):** Harmonized in forest and gold (`bg-forest-900/90 text-gold-300 border border-gold-500/40 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-400`), flipping to active gold when unfurled.
 
+### 14.2 High-Contrast Sort Dropdown Controls
+- **Prominent "Sort by:" Label:** In [components/storefront/sort-dropdown.tsx](file:///home/billy/Projects/bashtoli/components/storefront/sort-dropdown.tsx), elevated the label from `hidden sm:inline text-forest-300` to visible on all viewports with high-contrast antique gold (`inline text-[11px] sm:text-xs font-sans font-semibold tracking-wide text-gold-300`, exceeding 14:1 AAA contrast on forest-950).
+- **Crisp Trigger Button:**
+  - Upgraded trigger typography to crisp `text-cream-50 font-semibold` on `bg-forest-900 border-forest-700 hover:border-gold-400 hover:text-gold-200`.
+  - Expanded label truncation threshold from `max-w-[120px]` to `max-w-[145px] sm:max-w-none`, ensuring options like "New Arrivals First" render without aggressive clipping.
+  - Strengthened chevron stroke to `strokeWidth={2.5}` in `text-gold-400`.
+- **High-Contrast Dropdown Menu:** Upgraded dark menu container to `bg-forest-900 border border-forest-700 text-cream-50 shadow-2xl`, with the active selection highlighted in `bg-forest-800 text-gold-300 font-bold border border-gold-500/30`.
 
 
 

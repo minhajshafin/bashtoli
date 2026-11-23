@@ -13,6 +13,7 @@ interface Category {
 interface CategoryFilterProps {
   categories: Category[]
   activeCategorySlug?: string
+  theme?: 'light' | 'dark'
 }
 
 /**
@@ -21,7 +22,7 @@ interface CategoryFilterProps {
  * pills as fit. If more categories remain, the final pill rendered is `[+{remaining} more ▾]`.
  * Clicking it unfurls all categories in-place into a multi-row grid without side-scrolling.
  */
-export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilterProps) {
+export function CategoryFilter({ categories, activeCategorySlug, theme = 'dark' }: CategoryFilterProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -202,7 +203,11 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
           onClick={() => handleCategorySelect(null)}
           className={`shrink-0 inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
             !activeCategorySlug
-              ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border shadow-2xs'
+              ? theme === 'dark'
+                ? 'bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs'
+                : 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border shadow-2xs'
+              : theme === 'dark'
+              ? 'bg-forest-900/90 text-cream-100 border border-forest-800 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-500/50 active:scale-95'
               : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg active:scale-95'
           }`}
         >
@@ -218,7 +223,11 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
               onClick={() => handleCategorySelect(category.slug)}
               className={`shrink-0 inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
                 isActive
-                  ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border shadow-2xs'
+                  ? theme === 'dark'
+                    ? 'bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs'
+                    : 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border shadow-2xs'
+                  : theme === 'dark'
+                  ? 'bg-forest-900/90 text-cream-100 border border-forest-800 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-500/50 active:scale-95'
                   : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg active:scale-95'
               }`}
             >
@@ -242,7 +251,11 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
           onClick={() => handleCategorySelect(null)}
           className={`shrink-0 inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
             !activeCategorySlug
-              ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+              ? theme === 'dark'
+                ? 'bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs'
+                : 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+              : theme === 'dark'
+              ? 'bg-forest-900/90 text-cream-100 border border-forest-800 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-500/50 active:scale-95'
               : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg hover:text-chip-inactive-hover-text hover:border-chip-inactive-hover-border active:scale-95'
           }`}
         >
@@ -259,7 +272,11 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
               onClick={() => handleCategorySelect(category.slug)}
               className={`shrink-0 inline-flex items-center px-3.5 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-sans transition-colors cursor-pointer ${
                 isActive
-                  ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+                  ? theme === 'dark'
+                    ? 'bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs'
+                    : 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+                  : theme === 'dark'
+                  ? 'bg-forest-900/90 text-cream-100 border border-forest-800 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-500/50 active:scale-95'
                   : 'bg-chip-inactive-bg text-chip-inactive-text border border-chip-inactive-border hover:bg-chip-inactive-hover-bg hover:text-chip-inactive-hover-text hover:border-chip-inactive-hover-border active:scale-95'
               }`}
             >
@@ -281,14 +298,22 @@ export function CategoryFilter({ categories, activeCategorySlug }: CategoryFilte
             }
             className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-sans font-medium transition-colors duration-200 cursor-pointer active:scale-95 ${
               isExpanded
-                ? 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
-                : 'bg-chip-inactive-bg text-gold-300 border border-border-gold hover:bg-chip-inactive-hover-bg hover:text-gold-200 hover:border-gold-400'
+                ? theme === 'dark'
+                  ? 'bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs'
+                  : 'bg-chip-active-bg text-chip-active-text font-semibold border border-chip-active-border'
+                : theme === 'dark'
+                ? 'bg-forest-900/90 text-gold-300 border border-gold-500/40 hover:bg-forest-800 hover:text-gold-200 hover:border-gold-400 shadow-2xs'
+                : 'bg-chip-inactive-bg text-gold-700 border border-border-gold hover:bg-chip-inactive-hover-bg hover:text-gold-800 hover:border-gold-400'
             }`}
           >
             <span>{isExpanded ? 'Collapse' : `+${remainingCount} more`}</span>
             <svg
               className={`w-3.5 h-3.5 transition-transform duration-200 shrink-0 ${
-                isExpanded ? 'rotate-180 text-forest-950' : 'text-gold-400'
+                isExpanded
+                  ? 'rotate-180 text-forest-950'
+                  : theme === 'dark'
+                  ? 'text-gold-400'
+                  : 'text-gold-600'
               }`}
               fill="none"
               viewBox="0 0 24 24"
