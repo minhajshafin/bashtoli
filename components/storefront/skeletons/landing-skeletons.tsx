@@ -36,9 +36,8 @@ export function LandingPageSkeleton() {
           {/* Right: Hero Card Placeholder */}
           <div className="flex lg:col-span-5 justify-center lg:justify-end w-full">
             <div className="w-full max-w-[380px] aspect-[4/5] rounded-3xl skeleton-shimmer-dark border border-forest-800/60 p-4 sm:p-5 flex flex-col justify-between">
-              <div className="flex justify-between items-start">
+              <div className="flex items-start">
                 <div className="h-6 w-24 rounded-full skeleton-shimmer-dark opacity-60" />
-                <div className="h-7 w-7 rounded-full skeleton-shimmer-dark opacity-40" />
               </div>
               <div className="space-y-2 pt-12">
                 <div className="h-5 w-3/4 rounded-md skeleton-shimmer-dark" />

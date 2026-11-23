@@ -81,11 +81,11 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
           {/* Floating Curation Pill Badge */}
           <div
-            className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-3.5 px-2.5 sm:px-3 py-0.5 sm:py-1 type-kicker text-[9px] sm:text-[10px] z-10 pointer-events-none rounded-full transition-colors duration-400 tracking-wider shadow-sm"
+            className="absolute top-4 sm:top-5 left-4 sm:left-5 px-3 sm:px-3.5 py-1 sm:py-1.5 type-kicker text-[9px] sm:text-[10px] z-10 pointer-events-none rounded-full transition-colors duration-400 tracking-wider shadow-md backdrop-blur-xs"
             style={{
               backgroundColor: preset.bg,
               color: preset.text,
-              border: '1px solid var(--color-border-dark)',
+              border: `1px solid ${preset.border}`,
             }}
           >
             {currentSlide.badge_text}

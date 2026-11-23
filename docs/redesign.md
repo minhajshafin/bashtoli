@@ -405,5 +405,21 @@ Created dedicated loading boundaries for every customer account subroute:
 - During internal navigation across `/account/*` tabs, the outer sidebar, customer identity card, and navigation rail remain completely persistent and stable; only the main content area streams smoothly with `animate-delayed-fade-in`.
 - Fixed mobile wishlist layout shift where the aside was previously rendered during loading and then collapsed when `WishlistPage` loaded.
 
+---
+
+## 18. Hero Carousel Curation Badge Positioning & Corner Arc Alignment
+
+Calibrated the floating curation pill badge (`currentSlide.badge_text`) on the homepage hero slideshow in [components/storefront/hero.tsx](file:///home/billy/Projects/bashtoli/components/storefront/hero.tsx) and aligned the placeholder skeleton in [components/storefront/skeletons/landing-skeletons.tsx](file:///home/billy/Projects/bashtoli/components/storefront/skeletons/landing-skeletons.tsx):
+
+### 18.1 Corner Radius Clearance & Artwork Border Frame Inset
+- **Problem:** The curation pill was previously pinned at `top-2.5 sm:top-3.5 left-2.5 sm:left-3.5` (10px on mobile, 14px on desktop). Because the slide viewport has `rounded-[18px] sm:rounded-[22px]` and demo slide photography/artwork features an archival hairline border line at 16px–17.5px inset, the badge was bisected by the border line and collided with the curved corner arc.
+- **Solution:** Re-anchored the curation badge to `top-4 sm:top-5 left-4 sm:left-5` (16px on mobile, 20px on tablet/desktop). This guarantees that the pill sits comfortably clear of the corner radius curve and rests entirely inside the inner border framing.
+
+### 18.2 Curatorial Styling & Preset Border Calibration
+- **Preset Border Color:** Replaced the generic `1px solid var(--color-border-dark)` with `1px solid ${preset.border}`, ensuring the badge border accurately matches each curated color theme (`gold`, `forest`, `crimson`, `ocean`, `slate`).
+- **Comfortable Padding & Elevation:** Adjusted padding to `px-3 sm:px-3.5 py-1 sm:py-1.5` with `shadow-md backdrop-blur-xs`, improving legibility and touch presentation without crowding the hero composition.
+- **Skeleton Alignment:** Streamlined [components/storefront/skeletons/landing-skeletons.tsx](file:///home/billy/Projects/bashtoli/components/storefront/skeletons/landing-skeletons.tsx) hero card skeleton to align with `HeroSlideshow`'s single top-left badge layout and `p-4 sm:p-5` container padding.
+
+
 
 
