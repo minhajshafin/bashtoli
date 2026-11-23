@@ -425,6 +425,27 @@ Calibrated the floating curation pill badge (`currentSlide.badge_text`) on the h
 - **Elevated Anchor:** Lifted the spec note from `bottom-4` to `bottom-14 sm:bottom-16` (56px–64px from the frame base). The spec note now hovers gracefully in the lower-middle-left quadrant, completely clear of the indicator capsule.
 - **Sleek Touch Target:** Streamlined the indicator buttons with `relative before:absolute before:inset-x-0 before:-inset-y-1.5`, preserving the accessible $\ge 44\text{px}$ touch target while keeping the visual pill slim and preventing vertical collision. All slide indicator dots remain 100% visible and interactive.
 
+---
+
+## 19. Mobile Hero UI & Typography Calibration (/awwwards)
+
+Addressed mobile crampedness and vertical claustrophobia in [components/storefront/hero.tsx](file:///home/billy/Projects/bashtoli/components/storefront/hero.tsx) by establishing award-winning Awwwards negative space rhythm, fluid headline typography, and uncompromised atelier storytelling:
+
+### 19.1 Fluid Headline Scaling & Uncramped Couplet Rhythms
+- **Problem:** The previous `--type-hero` variable enforced a rigid 2.35rem (37.6px) minimum floor on mobile, cramming the title into 3 awkward, jagged line breaks with tight `mb-2` (8px) margin and descender congestion.
+- **Solution:** Re-engineered the headline with tailored fluid scaling: `text-[clamp(1.95rem,5.2vw,4.25rem)]` with `leading-[1.15] sm:leading-[1.1]` and `tracking-[-0.02em] sm:tracking-[-0.025em]`. On mobile (360px–390px), the headline formats into two deliberate, balanced, poetic lines ("Craft your story," / "one page at a time.") with spacious `mb-3.5 sm:mb-5` breathing room.
+
+### 19.2 Restored Brand Narrative on Mobile
+- **Problem:** The atelier subtext paragraph was previously set to `hidden sm:block`, causing an abrupt jump from headline to buttons and stripping mobile users of the craft story.
+- **Solution:** Restored the subtext across all viewports with responsive measure and font size: `text-[13px] sm:text-[15px] lg:text-base leading-relaxed text-forest-200/85 font-light sm:font-normal max-w-sm sm:max-w-xl mx-auto lg:mx-0 mb-5 sm:mb-6 text-pretty`.
+
+### 19.3 Negative Space & Hero Viewport Cadence
+- **Section Padding:** Expanded mobile vertical padding from `py-5` (20px) to `pt-8 pb-10 sm:pt-12 sm:pb-14 lg:py-16 xl:py-20`, freeing the hero from feeling squashed against the navigation bar.
+- **Eyebrow Breathing Room:** Increased spacing from `mb-1.5` to `mb-3 sm:mb-4`, calibrated rule lengths to `w-4 sm:w-8`, and tuned tracking to `0.22em`.
+- **CTA Group:** Displayed both primary ("Shop Collection") and secondary ("Our Story") buttons on mobile with 44px minimum touch targets and generous `mb-7 sm:mb-9 lg:mb-0` separation before the slideshow.
+- **Unified 4:5 Slide Viewport:** Unified the carousel viewport to `aspect-[4/5]` on mobile (max-w 270px) and desktop (max-w 320px–370px), eliminating the distorted 16:10 letterbox slit and displaying portrait photography in its true aspect ratio.
+
+
 
 
 
