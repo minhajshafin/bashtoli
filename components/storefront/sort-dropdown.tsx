@@ -12,7 +12,11 @@ const SORT_OPTIONS = [
 
 type SortValue = (typeof SORT_OPTIONS)[number]['value']
 
-export function SortDropdown() {
+interface SortDropdownProps {
+  theme?: 'light' | 'dark'
+}
+
+export function SortDropdown({ theme = 'light' }: SortDropdownProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -60,34 +64,42 @@ export function SortDropdown() {
     }
   }, [isOpen])
 
+  const isDark = theme === 'dark'
+
   return (
     <div className="flex items-center gap-1.5 sm:gap-2.5">
       <span
         id="sort-label"
-        className="hidden sm:inline text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-forest-700/80 whitespace-nowrap"
+        className={`hidden sm:inline text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium whitespace-nowrap ${
+          isDark ? 'text-forest-300' : 'text-forest-700/80'
+        }`}
       >
         Sort by
       </span>
 
       <div ref={dropdownRef} className="relative">
-        {/* Trigger Button — Crisp Alabaster Paper Pill */}
+        {/* Trigger Button */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-labelledby="sort-label"
-          className={`flex items-center gap-1.5 sm:gap-2.5 rounded-pill px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-sans font-medium transition-[border-color,background-color,color] duration-normal cursor-pointer text-forest-950 border focus:outline-none focus:ring-2 focus:ring-focus-ring ${
-            isOpen
+          className={`flex items-center gap-1.5 sm:gap-2.5 rounded-pill px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-xs font-sans font-medium transition-[border-color,background-color,color] duration-normal cursor-pointer border focus:outline-none focus:ring-2 focus:ring-focus-ring ${
+            isDark
+              ? isOpen
+                ? 'border-gold-500/80 bg-forest-900 text-gold-300 shadow-elevation-1'
+                : 'border-forest-800 bg-forest-900/90 text-cream-100 hover:border-gold-500/60 hover:text-gold-200 shadow-xs'
+              : isOpen
               ? 'border-gold-500 bg-cream-50 text-forest-950 shadow-elevation-1'
               : 'border-forest-900/15 bg-white hover:border-gold-500/70 hover:bg-cream-50 shadow-elevation-1'
           }`}
         >
           <span className="truncate max-w-[120px] sm:max-w-none">{activeOption.label}</span>
           <svg
-            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-forest-700 transition-transform duration-normal shrink-0 ${
-              isOpen ? 'rotate-180' : ''
-            }`}
+            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-normal shrink-0 ${
+              isDark ? 'text-gold-400' : 'text-forest-700'
+            } ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -97,12 +109,16 @@ export function SortDropdown() {
           </svg>
         </button>
 
-        {/* Dropdown Menu — Solid Crisp Surface (No backdrop-filter) */}
+        {/* Dropdown Menu */}
         {isOpen && (
           <div
             role="listbox"
             aria-labelledby="sort-label"
-            className="absolute right-0 mt-2 w-52 rounded-md bg-white border border-forest-900/15 p-1.5 shadow-elevation-2 z-50 animate-fade-in"
+            className={`absolute right-0 mt-2 w-52 rounded-xl p-1.5 shadow-elevation-2 z-50 animate-fade-in ${
+              isDark
+                ? 'bg-forest-900 border border-forest-800 text-cream-100'
+                : 'bg-white border border-forest-900/15 text-forest-950'
+            }`}
           >
             {SORT_OPTIONS.map((opt) => {
               const isSelected = opt.value === currentSort
@@ -113,8 +129,12 @@ export function SortDropdown() {
                   role="option"
                   aria-selected={isSelected}
                   onClick={() => handleSelect(opt.value)}
-                  className={`flex items-center justify-between w-full px-3 py-2 text-xs rounded-sm font-sans text-left transition-colors duration-fast cursor-pointer ${
-                    isSelected
+                  className={`flex items-center justify-between w-full px-3 py-2 text-xs rounded-lg font-sans text-left transition-colors duration-fast cursor-pointer ${
+                    isDark
+                      ? isSelected
+                        ? 'bg-forest-800 text-gold-300 font-semibold'
+                        : 'text-cream-200/90 hover:bg-forest-800/70 hover:text-gold-200'
+                      : isSelected
                       ? 'bg-forest-950 text-cream-50 font-semibold'
                       : 'text-forest-800 hover:bg-cream-100 hover:text-forest-950 active:bg-cream-200'
                   }`}

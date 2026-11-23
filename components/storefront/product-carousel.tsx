@@ -64,12 +64,12 @@ export function ProductCarousel({ products }: { products: ProductWithDetails[] }
             <Link
               id="featured-view-all-link"
               href="/products"
-              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 type-kicker text-gold-700 hover:text-gold-900 transition-colors duration-200 group/link pb-0.5 sm:pb-1 sm:pl-3 sm:border-l sm:border-forest-900/15"
+              className="group/link inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-semibold text-forest-900 hover:text-gold-700 tracking-wide transition-colors py-1 shrink-0 sm:pl-3.5 sm:border-l sm:border-forest-900/15"
             >
-              <span className="border-b border-gold-600/40 group-hover/link:border-gold-900 pb-0.5 transition-colors">
+              <span className="relative pb-0.5 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 group-hover/link:after:w-full after:bg-gold-600 after:transition-all after:duration-300">
                 View All
               </span>
-              <span className="text-xs sm:text-sm transition-transform duration-300 group-hover/link:translate-x-1">
+              <span className="text-xs sm:text-sm transition-transform duration-200 group-hover/link:translate-x-1" aria-hidden="true">
                 &rarr;
               </span>
             </Link>

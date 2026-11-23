@@ -19,7 +19,7 @@ function CategoryCard({
   isHero?: boolean
   className?: string
 }) {
-  const indexLabel = String(index + 1).padStart(2, '0')
+  void index
 
   return (
     <Link
@@ -66,18 +66,16 @@ function CategoryCard({
 
       {/* 5. Content Overlay Layer */}
       <div className="relative z-10 h-full w-full flex flex-col justify-between p-3.5 sm:p-5 lg:p-5.5 pointer-events-none">
-        {/* Top Tray: Archival Index Pill & Product Count */}
-        <div className="flex items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1 font-mono text-[9px] sm:text-[10px] tracking-[0.16em] uppercase text-gold-300/90 font-medium px-2.5 py-0.5 rounded-full bg-forest-950/60 backdrop-blur-xs border border-gold-500/20 shadow-2xs">
-            {indexLabel} &middot; {isHero ? 'Flagship' : 'Archive'}
-          </span>
-
-          {typeof category.product_count === 'number' && category.product_count > 0 && (
-            <span className="text-[10px] font-sans font-medium text-cream-200/90 px-2 py-0.5 rounded-full bg-forest-950/50 backdrop-blur-xs border border-white/10 shadow-2xs">
+        {/* Top Tray: Product Count Pill (if available) */}
+        {typeof category.product_count === 'number' && category.product_count > 0 ? (
+          <div className="flex justify-end">
+            <span className="text-[10px] font-sans font-medium text-cream-200/90 px-2 py-0.5 rounded-full bg-forest-950/60 backdrop-blur-xs border border-white/10 shadow-2xs">
               {category.product_count} {category.product_count === 1 ? 'item' : 'items'}
             </span>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div />
+        )}
 
         {/* Bottom Tray: Title & Interaction Prompt */}
         <div>
@@ -109,7 +107,7 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   }
 
   return (
-    <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50 bg-laid-paper text-forest-950">
+    <section className="relative overflow-hidden pt-3 pb-10 sm:pt-4 sm:pb-12 lg:pt-5 lg:pb-14 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50 bg-laid-paper text-forest-950">
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
         {/* Section Heading — Minimal Editorial Header with Inline Text Link */}
         <ScrollReveal>
@@ -122,12 +120,12 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
 
             <Link
               href="/products"
-              className="inline-flex items-center gap-1 sm:gap-2 shrink-0 type-kicker text-gold-700 hover:text-gold-900 transition-colors duration-200 group/link pb-0.5 sm:pb-1"
+              className="group/link inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-semibold text-forest-900 hover:text-gold-700 tracking-wide transition-colors py-1 shrink-0"
             >
-              <span className="border-b border-gold-600/40 group-hover/link:border-gold-900 pb-0.5 transition-colors">
+              <span className="relative pb-0.5 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 group-hover/link:after:w-full after:bg-gold-600 after:transition-all after:duration-300">
                 Explore All
               </span>
-              <span className="text-xs sm:text-sm transition-transform duration-300 group-hover/link:translate-x-1">
+              <span className="text-xs sm:text-sm transition-transform duration-200 group-hover/link:translate-x-1" aria-hidden="true">
                 &rarr;
               </span>
             </Link>

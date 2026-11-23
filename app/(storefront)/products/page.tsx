@@ -68,32 +68,32 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div className="relative min-h-screen bg-cream-50 bg-laid-paper flex flex-col">
-      {/* 1. Gallery Header (Unified Cream Laid Paper Canvas) */}
-      <div className="w-full bg-cream-50/80 border-b border-forest-900/10">
-        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-5 pb-4 sm:pt-8 sm:pb-7 lg:pt-10 lg:pb-8">
+      {/* 1. Gallery Header (Deep Sumi Forest Architectural Header) */}
+      <div className="w-full bg-forest-950 text-cream-50 border-b border-forest-800/80 bg-laid-paper-dark">
+        <div className="max-w-[1440px] xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-6 pb-5 sm:pt-8 sm:pb-7 lg:pt-10 lg:pb-8">
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-2.5">
-            <span className="h-px w-3 sm:w-3.5 bg-gold-600/70" />
-            <span className="type-kicker text-gold-700">
+          <div className="inline-flex items-center gap-2 mb-2 sm:mb-2.5">
+            <span className="h-px w-3 sm:w-3.5 bg-gold-400/80" />
+            <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-300">
               Catalogue &middot; Curated Goods
             </span>
           </div>
 
           {/* Main Title Row: Title on Left, Sort on Right — balanced on mobile */}
           <div className="flex items-center justify-between gap-3">
-            <h1 className="type-display font-medium text-forest-950 truncate">
+            <h1 className="font-sans font-semibold text-2xl sm:text-3xl lg:text-[34px] text-cream-50 tracking-tight leading-tight truncate">
               {activeCategory ? activeCategory.name : 'Writing & Paper Goods'}
             </h1>
 
             <div className="shrink-0">
               <Suspense>
-                <SortDropdown />
+                <SortDropdown theme="dark" />
               </Suspense>
             </div>
           </div>
 
           {/* Subtitle: hidden on mobile to maximize product visibility */}
-          <p className="hidden sm:block type-body-sm text-forest-700/80 mt-2 max-w-2xl lg:max-w-3xl text-pretty">
+          <p className="hidden sm:block text-xs sm:text-sm text-forest-300 font-light mt-2 max-w-2xl lg:max-w-3xl leading-relaxed">
             {activeCategory
               ? `Selected pieces in our ${activeCategory.name.toLowerCase()} collection, crafted for daily writing and\u00A0reflection.`
               : `Handpicked notebooks, artisanal pens, and paper goods crafted with care for thoughtful daily\u00A0use.`}

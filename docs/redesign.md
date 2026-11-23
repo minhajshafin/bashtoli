@@ -273,6 +273,25 @@ Elevated the homepage category showcase in [components/storefront/category-grid.
 - **Artisanal Woven Fallback:** Replaced dark black boxes with an authentic stationery atelier emblem and subtle laid-paper texture.
 - **Atmospheric Depth:** Calibrated photographic scrim (`from-forest-950/90 via-forest-950/35 to-forest-950/10`) to allow photography to shine while maintaining $>14:1$ AAA typography contrast.
 
+---
+
+## 13. Minimalist Category Refinements, Section Rhythms & Forest Shop Header
+
+Refined homepage transition cadence and elevated the shop catalog header:
+
+### 13.1 Category Card Polish
+- **Removed Monospace Index Pill:** Removed `{indexLabel} · Archive` from [components/storefront/category-grid.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-grid.tsx), leaving category photography unencumbered while preserving dynamic product counts.
+- **Tighter Section Rhythm:** Reduced vertical padding between Featured Products and Category sections from 112px down to a crisp ~32px-40px cadence (`pb-3 sm:pb-4 lg:pb-5` on carousel, `pt-3 sm:pt-4 lg:pt-5` on category grid).
+
+### 13.2 Refined Editorial Links ("View All" / "Explore All")
+- Upgraded "View All" and "Explore All" links in [components/storefront/product-carousel.tsx](file:///home/billy/Projects/bashtoli/components/storefront/product-carousel.tsx) and [components/storefront/category-grid.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-grid.tsx) to high-contrast semibold Plus Jakarta Sans (`text-forest-900 hover:text-gold-700`) with a smooth expanding gold underline micro-interaction (`after:bg-gold-600`) and forward-nudging arrow.
+
+### 13.3 Deep Sumi Forest Shop Catalogue Header
+- **Background & Architecture:** Transformed the shop gallery header in [app/(storefront)/products/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/products/page.tsx) into Deep Sumi Forest (`bg-forest-950 text-cream-50 border-b border-forest-800/80 bg-laid-paper-dark`), continuing the architectural dual-tone rhythm.
+- **Crisp Typography:** Swapped low-contrast serif with crisp Plus Jakarta Sans (`font-sans font-semibold text-2xl sm:text-3xl lg:text-[34px] text-cream-50 tracking-tight`) and muted moss subtext (`text-forest-300 font-light`).
+- **Harmonized Sort Control:** Added `theme="dark"` support to [components/storefront/sort-dropdown.tsx](file:///home/billy/Projects/bashtoli/components/storefront/sort-dropdown.tsx) with a tactile dark forest trigger and gilded dropdown menu.
+
+
 
 
 
