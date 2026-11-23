@@ -338,3 +338,44 @@ Elevated the entire customer account portal (`/account/*`) to a unified Deep Sum
 - **Eliminated White Flashes:** Rebuilt [components/storefront/skeletons/account-skeletons.tsx](file:///home/billy/Projects/bashtoli/components/storefront/skeletons/account-skeletons.tsx) entirely using `skeleton-shimmer-dark` and `bg-forest-900/90 border-forest-800/80`, eliminating the previous white card flash.
 - **Accurate Responsive Geometry:** Updated the skeleton to match real responsive structure: on mobile, horizontal pill placeholders and 2-column quick link cards; on desktop, vertical rail and full content grid. Zero layout shift upon hydration.
 
+---
+
+## 16. Comprehensive Storefront Loading Skeleton System Alignment
+
+Carried out a site-wide audit and redesign of all storefront loading skeleton fallbacks (`loading.tsx` and `components/storefront/skeletons/*`) to eliminate Cumulative Layout Shift (CLS), color flash discrepancies, and structural mismatches across routes:
+
+### 16.1 Product Card Skeleton (`ProductCardSkeleton`)
+- **Root Surface Calibration:** Replaced the legacy dark 3:4 scrim-overlay box (`bg-forest-950/90 aspect-[3/4]`) with the authentic cotton paper card structure (`bg-bg-surface-elevated/90 border border-forest-900/[0.08] shadow-xs`).
+- **Aspect 4:5 Image Canvas:** Implemented an aspect 4:5 upper image canvas with `.skeleton-shimmer` and a top-right circular wishlist button shimmer (`h-7 w-7 rounded-full`).
+- **External Metadata & Action Stack:** Aligned the lower section to match the real `ProductCard`:
+  - Category pill placeholder (`h-2.5 w-16`).
+  - Two-line product title placeholders (`h-3.5 w-4/5` and `h-3.5 w-3/5`).
+  - Price placeholder row (`h-4 w-16` + `h-3 w-12`).
+  - Full-width tactile "Buy Now" button placeholder (`h-7 sm:h-7.5 rounded-lg bg-forest-950/15`).
+
+### 16.2 Shop Catalog & Filter Ribbon (`ProductsPageSkeleton`)
+- **Deep Sumi Forest Header:** Matched [app/(storefront)/products/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/products/page.tsx) with `bg-forest-950 text-cream-50 border-b border-forest-800/80 bg-laid-paper-dark`, eyebrow hairline, title placeholder, and dark sort dropdown pill (`h-8 sm:h-8.5 w-36 sm:w-40 rounded-full`).
+- **Sticky Deep Forest Ribbon:** Replaced generic square placeholders with sticky `bg-forest-950/95` container and 7 rounded-full category pill shimmers (`rounded-full h-7 sm:h-7.5 w-20 sm:w-24 skeleton-shimmer-dark`).
+- **Responsive 5-Column Gallery Canvas:** Matched the real gallery padding (`px-3 sm:px-6 lg:px-8 xl:px-10 py-4 sm:py-7 lg:py-9`) and 5-column responsive grid (`grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5`) rendering `ProductCardSkeleton`.
+
+### 16.3 Product Detail Page Skeleton (`ProductDetailSkeleton`)
+- **Single Viewport Canvas:** Harmonized container with `Container size="lg"` on `bg-cream-50 bg-laid-paper`.
+- **Image Gallery Split:** Replaced generic 1:1 box with responsive primary frame (`aspect-[4/3] sm:aspect-square rounded-b-2xl sm:rounded-2xl border-forest-200/80 bg-cream-100/70`) plus 4 horizontal thumbnail placeholders (`h-14 w-14 sm:h-16 sm:w-16 rounded-xl`).
+- **Buy Box Proportions:** Aligned category, display title, price with VAT badge, variant selector pills, add to cart button, desktop wishlist button, and collapsible shipping/exchange accordions.
+
+### 16.4 Homepage Atelier Bento Grid & Featured Carousel (`LandingPageSkeleton` & `FeaturedProductsSkeleton`)
+- **Atelier Bento Grid Alignment:** Replaced the legacy 3-column collage with the modern 4-column Bento layout from [components/storefront/category-grid.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-grid.tsx):
+  - Slot 0 (Flagship): 2 columns wide (`col-span-2 md:col-span-2 lg:col-span-2 h-[200px] sm:h-[270px] lg:h-[310px]`).
+  - Slots 1 & 2: 1 column wide completing Row 1 (`col-span-1 h-[160px] sm:h-[270px] lg:h-[310px]`).
+  - Slots 3..6: 1 column wide completing Row 2 (`col-span-1 h-[160px] sm:h-[220px] lg:h-[250px]`).
+  - Deep forest styling (`bg-forest-950 border-forest-900/[0.08]`) with count pills and title shimmers.
+- **Featured Carousel Sizing:** Corrected carousel card widths from bloated 270px boxes to exact production snap widths (`w-[140px] sm:w-[180px] md:w-[195px] lg:w-[205px]`).
+
+### 16.5 Bag, Checkout, Order Confirmation & Lookup Skeletons
+- **Bag Page Skeleton:** Calibrated items list and summary card to `rounded-md border border-forest-900/10 bg-white shadow-elevation-1` on `bg-cream-50 bg-laid-paper`.
+- **Checkout Page Skeleton:** Replaced mismatched `rounded-2xl cream-50` cards with `rounded-md border border-forest-900/10 bg-white shadow-elevation-1` matching [components/storefront/checkout-form.tsx](file:///home/billy/Projects/bashtoli/components/storefront/checkout-form.tsx).
+- **Order Confirmation Skeleton:** Aligned with [components/storefront/order/full-order-view.tsx](file:///home/billy/Projects/bashtoli/components/storefront/order/full-order-view.tsx): 3-step progress track, celebratory green checkmark badge, and white elevated receipt breakdown cards.
+- **Order Lookup Skeleton:** Aligned parcel tracker card to `bg-white/95 border border-forest-900/10 shadow-atelier` matching [app/(storefront)/order/lookup/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/order/lookup/page.tsx).
+- **Storefront Fallback Skeleton:** Upgraded [app/(storefront)/loading.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/loading.tsx) to `bg-cream-50 bg-laid-paper` with `.skeleton-shimmer`.
+
+

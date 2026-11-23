@@ -2,12 +2,12 @@ import React from 'react'
 import { FeaturedProductsSkeleton } from './product-skeletons'
 
 /**
- * Bespoke Landing Page Skeleton matching Hero, Waves, Carousel, and Category collage.
+ * Bespoke Landing Page Skeleton matching Hero, Product Carousel, and Atelier Bento Grid.
  */
 export function LandingPageSkeleton() {
   return (
     <div className="flex flex-col min-h-screen bg-cream-50" aria-busy="true" aria-label="Loading homepage">
-      {/* 1. Hero Skeleton (Deep Forest) */}
+      {/* 1. Hero Skeleton (Deep Sumi Forest) */}
       <section className="relative flex items-center overflow-hidden bg-forest-950 bg-laid-paper-dark py-10 sm:py-14 lg:py-16 xl:py-18">
         <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left: Eyebrow, Title & CTAs */}
@@ -55,43 +55,67 @@ export function LandingPageSkeleton() {
       {/* 2. Featured Products Carousel Skeleton */}
       <FeaturedProductsSkeleton />
 
-      {/* 3. Categories Collage Skeleton */}
-      <section className="relative overflow-hidden py-8 sm:py-12 lg:py-14 px-6 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50">
-        <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto space-y-6 sm:space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-2">
-              <div className="h-3 w-32 rounded-md bg-cream-200/60" />
-              <div className="h-7 sm:h-8 w-56 rounded-xl bg-cream-200/80" />
+      {/* 3. Categories Architectural Atelier Bento Grid Skeleton */}
+      <section className="relative overflow-hidden pt-3 pb-10 sm:pt-4 sm:pb-12 lg:pt-5 lg:pb-14 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50 bg-laid-paper text-forest-950">
+        <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4 sm:mb-7 lg:mb-8 gap-2">
+            <div className="min-w-0 pr-2">
+              <div className="h-6 sm:h-7 w-48 sm:w-60 rounded-xl skeleton-shimmer" />
             </div>
-            <div className="h-4 w-36 rounded-md bg-cream-200/50" />
+            <div className="h-4 w-20 rounded-md skeleton-shimmer shrink-0" />
           </div>
 
-          {/* Desktop 3-Column Collage Layout */}
-          <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
-            <div className="flex flex-col gap-4 lg:gap-5 w-full">
-              <div className="h-[320px] lg:h-[350px] xl:h-[370px] rounded-2xl bg-cream-200/70" />
-              <div className="h-[190px] lg:h-[210px] xl:h-[225px] rounded-2xl bg-cream-200/60" />
+          {/* Bento Grid (2 cols mobile, 3 cols tablet, 4 cols desktop) */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+            {/* Slot 0: Hero / Flagship Card (spans 2 cols on mobile/tablet/desktop) */}
+            <div className="col-span-2 md:col-span-2 lg:col-span-2 h-[200px] sm:h-[270px] lg:h-[310px] rounded-2xl bg-forest-950 border border-forest-900/[0.08] p-3.5 sm:p-5 flex flex-col justify-between overflow-hidden relative shadow-xs">
+              <div className="flex justify-end">
+                <div className="h-4 w-14 rounded-full skeleton-shimmer-dark opacity-70" />
+              </div>
+              <div className="space-y-2">
+                <div className="h-5 sm:h-6 w-48 rounded-md skeleton-shimmer-dark" />
+                <div className="h-3.5 w-28 rounded-md skeleton-shimmer-dark opacity-60" />
+              </div>
             </div>
-            <div className="flex flex-col gap-4 lg:gap-5 w-full">
-              <div className="h-[190px] lg:h-[210px] xl:h-[225px] rounded-2xl bg-cream-200/60" />
-              <div className="h-[320px] lg:h-[350px] xl:h-[370px] rounded-2xl bg-cream-200/70" />
-            </div>
-            <div className="flex flex-col gap-3.5 lg:gap-4 w-full">
-              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl bg-cream-200/60" />
-              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl bg-cream-200/60" />
-              <div className="h-[175px] lg:h-[188px] xl:h-[195px] rounded-2xl bg-cream-200/60" />
-            </div>
-          </div>
 
-          {/* Mobile Collage Layout */}
-          <div className="md:hidden grid grid-cols-2 gap-3 sm:gap-4">
-            <div className="h-[220px] rounded-2xl bg-cream-200/70" />
-            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
-            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
-            <div className="h-[220px] rounded-2xl bg-cream-200/70" />
-            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
-            <div className="h-[175px] rounded-2xl bg-cream-200/60" />
-            <div className="h-[190px] col-span-2 rounded-2xl bg-cream-200/60" />
+            {/* Slot 1: Row 1 Single Card */}
+            <div className="col-span-1 md:col-span-1 lg:col-span-1 h-[160px] sm:h-[270px] lg:h-[310px] rounded-2xl bg-forest-950 border border-forest-900/[0.08] p-3.5 sm:p-5 flex flex-col justify-between overflow-hidden relative shadow-xs">
+              <div className="flex justify-end">
+                <div className="h-4 w-12 rounded-full skeleton-shimmer-dark opacity-70" />
+              </div>
+              <div className="space-y-1.5">
+                <div className="h-4 sm:h-5 w-32 rounded-md skeleton-shimmer-dark" />
+                <div className="h-3 w-24 rounded-md skeleton-shimmer-dark opacity-60" />
+              </div>
+            </div>
+
+            {/* Slot 2: Row 1 Single Card (completes Row 1 on desktop: 2 + 1 + 1 = 4 cols) */}
+            <div className="col-span-1 md:col-span-1 lg:col-span-1 h-[160px] sm:h-[270px] lg:h-[310px] rounded-2xl bg-forest-950 border border-forest-900/[0.08] p-3.5 sm:p-5 flex flex-col justify-between overflow-hidden relative shadow-xs">
+              <div className="flex justify-end">
+                <div className="h-4 w-12 rounded-full skeleton-shimmer-dark opacity-70" />
+              </div>
+              <div className="space-y-1.5">
+                <div className="h-4 sm:h-5 w-32 rounded-md skeleton-shimmer-dark" />
+                <div className="h-3 w-24 rounded-md skeleton-shimmer-dark opacity-60" />
+              </div>
+            </div>
+
+            {/* Slots 3, 4, 5, 6: Row 2 Single Cards (1 + 1 + 1 + 1 = 4 cols on desktop) */}
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="col-span-1 md:col-span-1 lg:col-span-1 h-[160px] sm:h-[220px] lg:h-[250px] rounded-2xl bg-forest-950 border border-forest-900/[0.08] p-3.5 sm:p-5 flex flex-col justify-between overflow-hidden relative shadow-xs"
+              >
+                <div className="flex justify-end">
+                  <div className="h-4 w-12 rounded-full skeleton-shimmer-dark opacity-70" />
+                </div>
+                <div className="space-y-1.5">
+                  <div className="h-4 sm:h-5 w-28 rounded-md skeleton-shimmer-dark" />
+                  <div className="h-3 w-20 rounded-md skeleton-shimmer-dark opacity-60" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
