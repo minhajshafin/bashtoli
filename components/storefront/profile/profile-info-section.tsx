@@ -48,16 +48,16 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
   }
 
   return (
-    <div className="rounded-2xl border border-forest-200/90 bg-cream-50 p-5 sm:p-7 shadow-md space-y-5 text-forest-950">
-      <div className="flex items-center gap-3 border-b border-forest-200/80 pb-4 mb-5">
-        <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-cream-100 text-forest-800 border border-forest-200/90 shadow-2xs">
+    <div className="rounded-2xl border border-forest-800/80 bg-forest-900/90 p-5 sm:p-7 shadow-xl space-y-5 text-cream-50 backdrop-blur-sm">
+      <div className="flex items-center gap-3 border-b border-forest-800 pb-4 mb-5">
+        <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-forest-950 text-gold-400 border border-forest-800 shadow-2xs">
           <User className="h-5 w-5 stroke-[1.8]" />
         </div>
         <div>
-          <h2 className="text-base sm:text-lg font-medium text-forest-950 font-display">
+          <h2 className="text-base sm:text-lg font-medium text-cream-50 font-display">
             Personal Information
           </h2>
-          <p className="text-xs sm:text-[13px] text-forest-600 font-sans leading-relaxed">
+          <p className="text-xs sm:text-[13px] text-forest-300 font-sans leading-relaxed">
             Your name, contact details, and default shipping address.
           </p>
         </div>
@@ -67,9 +67,9 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
         {profileState.error && (
           <div
             role="alert"
-            className="flex items-start gap-2.5 rounded-xl bg-terracotta-100 border border-terracotta-400/40 p-3.5 text-xs font-semibold text-terracotta-800 font-sans"
+            className="flex items-start gap-2.5 rounded-xl bg-terracotta-950/60 border border-terracotta-500/40 p-3.5 text-xs font-semibold text-terracotta-200 font-sans"
           >
-            <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" />
+            <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-400" />
             <span>{profileState.error}</span>
           </div>
         )}
@@ -79,9 +79,9 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
           <div className="space-y-1.5">
             <label
               htmlFor="fullName"
-              className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700"
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300"
             >
-              Full Name <span className="text-terracotta-500">*</span>
+              Full Name <span className="text-terracotta-400">*</span>
             </label>
             <input
               id="fullName"
@@ -91,10 +91,10 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
               defaultValue={profile?.full_name || ''}
               disabled={isProfilePending}
               placeholder="e.g. Shafi Rahman"
-              className="block w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all font-sans shadow-2xs"
+              className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 px-4 text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400 transition-all font-sans shadow-2xs"
             />
             {profileState.fieldErrors?.fullName && (
-              <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+              <p className="text-xs font-semibold text-terracotta-400 mt-1 font-sans">
                 {profileState.fieldErrors.fullName[0]}
               </p>
             )}
@@ -105,11 +105,11 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
             <div className="flex items-center justify-between">
               <label
                 htmlFor="email"
-                className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700"
+                className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300"
               >
                 Email Address
               </label>
-              <span className="text-[10px] font-medium text-forest-500 font-mono">
+              <span className="text-[10px] font-medium text-forest-400 font-mono">
                 Read-only
               </span>
             </div>
@@ -120,9 +120,9 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
                 value={email || ''}
                 readOnly
                 disabled
-                className="block w-full h-12 rounded-xl border border-forest-200/80 bg-cream-100/60 px-4 pl-10 text-sm text-forest-600 cursor-not-allowed select-none font-sans"
+                className="block w-full h-12 rounded-xl border border-forest-800 bg-forest-950/40 px-4 pl-10 text-sm text-forest-300 cursor-not-allowed select-none font-sans"
               />
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-forest-500 pointer-events-none" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gold-400/70 pointer-events-none" />
             </div>
           </div>
         </div>
@@ -132,11 +132,11 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
           <div className="flex items-center justify-between">
             <label
               htmlFor="phone"
-              className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700"
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300"
             >
               Phone Number
             </label>
-            <span className="text-[10px] font-semibold text-forest-500 font-sans">
+            <span className="text-[10px] font-semibold text-forest-400 font-sans">
               Optional
             </span>
           </div>
@@ -150,12 +150,12 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
               defaultValue={profile?.phone || ''}
               disabled={isProfilePending}
               placeholder="e.g. 01712345678"
-              className="block w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 pl-10 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all font-mono tracking-wide shadow-2xs"
+              className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 px-4 pl-10 text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400 transition-all font-mono tracking-wide shadow-2xs"
             />
-            <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-forest-500 pointer-events-none" />
+            <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gold-400/70 pointer-events-none" />
           </div>
           {profileState.fieldErrors?.phone && (
-            <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+            <p className="text-xs font-semibold text-terracotta-400 mt-1 font-sans">
               {profileState.fieldErrors.phone[0]}
             </p>
           )}
@@ -166,11 +166,11 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
           <div className="flex items-center justify-between">
             <label
               htmlFor="address"
-              className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700"
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300"
             >
               Default Shipping Address
             </label>
-            <span className="text-[10px] font-semibold text-forest-500 font-sans">
+            <span className="text-[10px] font-semibold text-forest-400 font-sans">
               Optional
             </span>
           </div>
@@ -182,19 +182,19 @@ export function ProfileInfoSection({ profile, email }: ProfileInfoSectionProps) 
               defaultValue={profile?.address || ''}
               disabled={isProfilePending}
               placeholder="e.g. House #12, Road #4, Uttara, Dhaka"
-              className="block w-full rounded-xl border border-forest-200/90 bg-white p-4 pl-10 text-sm text-forest-950 placeholder:text-forest-400 focus:border-forest-950 focus:outline-none focus:ring-1 focus:ring-forest-950 transition-all font-sans leading-relaxed shadow-2xs"
+              className="block w-full rounded-xl border border-forest-700 bg-forest-950/80 p-4 pl-10 text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400 transition-all font-sans leading-relaxed shadow-2xs"
             />
-            <MapPin className="absolute left-3.5 top-4 h-4 w-4 text-forest-500 pointer-events-none" />
+            <MapPin className="absolute left-3.5 top-4 h-4 w-4 text-gold-400/70 pointer-events-none" />
           </div>
           {profileState.fieldErrors?.address && (
-            <p className="text-xs font-semibold text-terracotta-600 mt-1 font-sans">
+            <p className="text-xs font-semibold text-terracotta-400 mt-1 font-sans">
               {profileState.fieldErrors.address[0]}
             </p>
           )}
         </div>
 
         {/* Save Changes CTA */}
-        <div className="pt-3 border-t border-forest-200/80">
+        <div className="pt-3 border-t border-forest-800">
           <button
             type="submit"
             disabled={isProfilePending}

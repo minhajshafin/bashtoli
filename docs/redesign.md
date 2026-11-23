@@ -308,7 +308,33 @@ Unified the shop catalogue crown into an uninterrupted Deep Forest architectural
   - Upgraded trigger typography to crisp `text-cream-50 font-semibold` on `bg-forest-900 border-forest-700 hover:border-gold-400 hover:text-gold-200`.
   - Expanded label truncation threshold from `max-w-[120px]` to `max-w-[145px] sm:max-w-none`, ensuring options like "New Arrivals First" render without aggressive clipping.
   - Strengthened chevron stroke to `strokeWidth={2.5}` in `text-gold-400`.
-- **High-Contrast Dropdown Menu:** Upgraded dark menu container to `bg-forest-900 border border-forest-700 text-cream-50 shadow-2xl`, with the active selection highlighted in `bg-forest-800 text-gold-300 font-bold border border-gold-500/30`.
+- **High-Contrast Dropdown Menu:** Upgraded dark menu container to `bg-forest-900 border border-forest-700 text-cream-50 shadow-2xl`, with the active selection highlighted in `bg-forest-800 text-gold-300 font-bold border border-gold-500/30`.---
 
+## 15. Deep Forest Customer Portal & Refined Account Typography (/awwwards Standards)
 
+Elevated the entire customer account portal (`/account/*`) to a unified Deep Sumi Forest aesthetic, eliminated redundant text noise, refined typographic hierarchy, and eliminated loading skeleton layout shifts:
+
+### 15.1 Sumi Forest Background & Ambient Identity
+- **Atmospheric Palette:** Upgraded the account portal container in [components/storefront/account-layout-wrapper.tsx](file:///home/billy/Projects/bashtoli/components/storefront/account-layout-wrapper.tsx) to `bg-forest-950 bg-laid-paper-dark text-cream-50` paired with dark checkout background watermark art (`variant="dark"`).
+- **Identity Card:** Monogram avatar elevated to `bg-forest-950 text-gold-400 border border-gold-500/30`, with customer name in `text-cream-50` and email in `text-forest-300 font-mono`.
+- **Themed Navigation Rail:** In [components/storefront/account-nav.tsx](file:///home/billy/Projects/bashtoli/components/storefront/account-nav.tsx), implemented full `isDark` support:
+  - Active pill: Luminous antique gold (`bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs`).
+  - Inactive pills: Deep forest chips (`bg-forest-900/80 text-cream-100 hover:bg-forest-850 hover:text-gold-200 border border-forest-800`).
+  - Sign out: Terracotta warning pill (`text-terracotta-300 hover:bg-terracotta-950/50 border border-terracotta-500/30`).
+
+### 15.2 Typographic Hierarchy & Elimination of Redundant Text Noise
+- **Removed Noisy Kicker Eyebrows:** Stripped all verbose eyebrows such as `— ACCOUNT OVERVIEW · BASHTOLI STATIONERY`, `— ACCOUNT PREFERENCES · BASHTOLI STATIONERY`, `— PURCHASE RECORDS · BASHTOLI STATIONERY`, and `— ADDRESS DIRECTORY · BASHTOLI STATIONERY`.
+- **Removed Repetitive Corner Stamps:** Removed uppercase stamps like `CUSTOMER PORTAL`, `PURCHASE ARCHIVE`, `SHIPPING BOOK`, and `CURATED ARCHIVE`.
+- **Clean Editorial Headings:** Replaced repetitive boilerplate paragraphs with confident, high-contrast display headings (`text-2xl sm:text-3xl text-cream-50 font-medium font-display tracking-tight`).
+
+### 15.3 Architectural Dark Forest Cards & Forms
+- **Overview & Quick Links:** Rebuilt the 2-column quick links grid in [app/(storefront)/account/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/page.tsx) with `bg-forest-900/90 border-forest-800/80 text-cream-50 hover:border-gold-500/50` and gilded icon badges.
+- **Profile Settings & Security:** Elevated [components/storefront/profile/profile-info-section.tsx](file:///home/billy/Projects/bashtoli/components/storefront/profile/profile-info-section.tsx), [components/storefront/profile/profile-password-section.tsx](file:///home/billy/Projects/bashtoli/components/storefront/profile/profile-password-section.tsx), and [components/storefront/profile/delete-account-modal.tsx](file:///home/billy/Projects/bashtoli/components/storefront/profile/delete-account-modal.tsx) with dark forest inputs (`bg-forest-950/80 border-forest-700 text-cream-50 focus:border-gold-400`), gold uppercase labels, and terracotta danger zone containers.
+- **Order History & Claim Prompt:** Elevated [components/storefront/order-history-list.tsx](file:///home/billy/Projects/bashtoli/components/storefront/order-history-list.tsx) and [components/storefront/claim-orders-prompt.tsx](file:///home/billy/Projects/bashtoli/components/storefront/claim-orders-prompt.tsx) with high-contrast status pills (gold pending, emerald delivered, terracotta cancelled) and dark forest receipt cards.
+- **Saved Addresses & Forms:** Refined [components/storefront/addresses-dashboard.tsx](file:///home/billy/Projects/bashtoli/components/storefront/addresses-dashboard.tsx), [components/storefront/address-list.tsx](file:///home/billy/Projects/bashtoli/components/storefront/address-list.tsx), and [components/storefront/address-form.tsx](file:///home/billy/Projects/bashtoli/components/storefront/address-form.tsx) with dark forest address cards, default gold badges, and tactile modal forms.
+- **Wishlist Cards & Empty States:** Transformed [app/(storefront)/account/wishlist/page.tsx](file:///home/billy/Projects/bashtoli/app/(storefront)/account/wishlist/page.tsx) and [components/storefront/wishlist-item.tsx](file:///home/billy/Projects/bashtoli/components/storefront/wishlist-item.tsx) with dark forest touch cards, gilded exploration pills, and gold action CTAs.
+
+### 15.4 True Perceived-Performance Loading Skeleton
+- **Eliminated White Flashes:** Rebuilt [components/storefront/skeletons/account-skeletons.tsx](file:///home/billy/Projects/bashtoli/components/storefront/skeletons/account-skeletons.tsx) entirely using `skeleton-shimmer-dark` and `bg-forest-900/90 border-forest-800/80`, eliminating the previous white card flash.
+- **Accurate Responsive Geometry:** Updated the skeleton to match real responsive structure: on mobile, horizontal pill placeholders and 2-column quick link cards; on desktop, vertical rail and full content grid. Zero layout shift upon hydration.
 

@@ -46,8 +46,7 @@ const NAV_ITEMS = [
   },
 ]
 
-export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
-  void isDark
+export function AccountNav({ isDark = true }: { isDark?: boolean } = {}) {
   const pathname = usePathname()
   const activeTabRef = useRef<HTMLAnchorElement>(null)
   const navContainerRef = useRef<HTMLDivElement>(null)
@@ -82,7 +81,11 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
                 aria-current={isActive ? 'page' : undefined}
                 className={`shrink-0 flex items-center justify-between rounded-xl px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-sans transition-colors cursor-pointer whitespace-nowrap ${
                   isActive
-                    ? 'bg-btn-primary-bg text-btn-primary-text font-semibold shadow-xs'
+                    ? isDark
+                      ? 'bg-gold-500 text-forest-950 font-semibold border border-gold-400 shadow-2xs'
+                      : 'bg-btn-primary-bg text-btn-primary-text font-semibold shadow-xs'
+                    : isDark
+                    ? 'bg-forest-900/80 lg:bg-transparent border border-forest-800 lg:border-transparent text-cream-100 hover:bg-forest-850 hover:text-gold-200 hover:border-gold-500/40'
                     : 'bg-white/90 lg:bg-transparent border border-border-primary lg:border-transparent text-text-secondary hover:bg-cream-100 hover:text-text-primary'
                 }`}
               >
@@ -90,7 +93,11 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
                   <Icon
                     className={`h-4 w-4 shrink-0 transition-colors ${
                       isActive
-                        ? 'text-gold-400 stroke-[2.2]'
+                        ? isDark
+                          ? 'text-forest-950 stroke-[2.2]'
+                          : 'text-gold-400 stroke-[2.2]'
+                        : isDark
+                        ? 'text-gold-400 stroke-[1.8]'
                         : 'text-text-secondary stroke-[1.8]'
                     }`}
                   />
@@ -99,7 +106,11 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
                   <span className="sm:hidden">{shortLabel}</span>
                 </div>
                 {isActive && (
-                  <span className="hidden lg:inline-block w-1.5 h-1.5 rounded-full bg-gold-400 ml-2 shrink-0 shadow-2xs" />
+                  <span
+                    className={`hidden lg:inline-block w-1.5 h-1.5 rounded-full ml-2 shrink-0 shadow-2xs ${
+                      isDark ? 'bg-forest-950' : 'bg-gold-400'
+                    }`}
+                  />
                 )}
               </Link>
             )
@@ -111,9 +122,13 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
               <button
                 type="submit"
                 aria-label="Sign Out"
-                className="flex items-center gap-1.5 rounded-xl border border-terracotta-500/30 bg-terracotta-100/70 text-terracotta-800 hover:bg-terracotta-100 px-3.5 py-2.5 text-xs font-sans font-semibold transition-colors cursor-pointer whitespace-nowrap"
+                className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2.5 text-xs font-sans font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                  isDark
+                    ? 'border-terracotta-500/30 bg-terracotta-950/60 text-terracotta-300 hover:bg-terracotta-900/50 hover:text-terracotta-200'
+                    : 'border-terracotta-500/30 bg-terracotta-100/70 text-terracotta-800 hover:bg-terracotta-100'
+                }`}
               >
-                <LogOut className="h-3.5 w-3.5 text-terracotta-700" />
+                <LogOut className="h-3.5 w-3.5 text-terracotta-400" />
                 <span>Sign Out</span>
               </button>
             </form>
@@ -122,13 +137,21 @@ export function AccountNav({ isDark = false }: { isDark?: boolean } = {}) {
       </div>
 
       {/* Desktop Sign Out Option */}
-      <div className="pt-3 border-t hidden lg:block border-border-primary">
+      <div
+        className={`pt-3 border-t hidden lg:block ${
+          isDark ? 'border-forest-800' : 'border-border-primary'
+        }`}
+      >
         <form action={logoutAction}>
           <button
             type="submit"
-            className="flex items-center gap-2.5 text-xs sm:text-sm font-medium px-3.5 py-2.5 rounded-xl transition-colors w-full text-left cursor-pointer text-terracotta-800 hover:text-terracotta-900 hover:bg-terracotta-100/70"
+            className={`flex items-center gap-2.5 text-xs sm:text-sm font-medium px-3.5 py-2.5 rounded-xl transition-colors w-full text-left cursor-pointer ${
+              isDark
+                ? 'text-terracotta-300 hover:text-terracotta-200 hover:bg-terracotta-950/50'
+                : 'text-terracotta-800 hover:text-terracotta-900 hover:bg-terracotta-100/70'
+            }`}
           >
-            <LogOut className="h-4 w-4 shrink-0 text-terracotta-700" />
+            <LogOut className="h-4 w-4 shrink-0 text-terracotta-400" />
             <span>Sign Out</span>
           </button>
         </form>

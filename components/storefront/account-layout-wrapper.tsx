@@ -32,10 +32,10 @@ export function AccountLayoutWrapper({
   const isOverview = pathname === '/account'
 
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] overflow-hidden bg-bg-canvas text-text-primary selection:bg-gold-500/20 py-4 sm:py-8 lg:py-16 pb-36 sm:pb-24">
+    <div className="relative min-h-[calc(100dvh-5rem)] overflow-hidden bg-forest-950 bg-laid-paper-dark text-cream-50 selection:bg-gold-500/20 py-4 sm:py-8 lg:py-16 pb-36 sm:pb-24">
       <CheckoutBackgroundArt
-        variant="light"
-        className="opacity-20"
+        variant="dark"
+        className="opacity-25"
       />
 
       <div
@@ -46,42 +46,42 @@ export function AccountLayoutWrapper({
           <aside
             className={`lg:col-span-4 pb-4 lg:pb-0 border-b lg:border-b-0 lg:border-r lg:pr-8 xl:pr-10 ${
               isWishlist ? 'hidden lg:block' : 'block'
-            } border-border-primary`}
+            } border-forest-800/80`}
           >
             <div className="space-y-3 sm:space-y-6">
               {/* Customer Identity Card: Shown on mobile ONLY on /account (the hub). On subpages, hidden on mobile so content starts immediately! */}
               <div
                 className={`${
                   isOverview ? 'flex' : 'hidden lg:flex'
-                } items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border border-border-primary bg-white/95 text-text-primary shadow-subtle`}
+                } items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border border-forest-800/90 bg-forest-900/90 text-cream-50 shadow-xl backdrop-blur-sm`}
               >
                 <div
-                  className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-display text-lg sm:text-xl font-medium shadow-xs border bg-forest-900 text-gold-400 border-forest-800"
+                  className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl font-display text-lg sm:text-xl font-medium shadow-xs border bg-forest-950 text-gold-400 border-gold-500/30"
                 >
                   {userInitial}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-text-accent">
+                    <p className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-gold-400">
                       Customer
                     </p>
                     {role && role !== 'customer' && (
-                      <span className="inline-flex items-center rounded-full bg-gold-100 px-2 py-0.2 text-[9px] font-mono font-bold uppercase tracking-wider text-gold-800 border border-gold-300/80">
+                      <span className="inline-flex items-center rounded-full bg-gold-500/20 px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-gold-300 border border-gold-500/40">
                         {role}
                       </span>
                     )}
                   </div>
-                  <h2 className="text-sm sm:text-lg font-medium font-display truncate mt-0.5 text-text-primary">
+                  <h2 className="text-sm sm:text-lg font-medium font-display truncate mt-0.5 text-cream-50">
                     {displayName}
                   </h2>
-                  <p className="text-xs truncate font-mono text-text-secondary">
+                  <p className="text-xs truncate font-mono text-forest-300">
                     {email}
                   </p>
                 </div>
               </div>
 
               {/* Navigation Tabs (Horizontal on mobile, vertical list on desktop) */}
-              <AccountNav isDark={false} />
+              <AccountNav isDark={true} />
             </div>
           </aside>
 

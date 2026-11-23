@@ -61,18 +61,18 @@ export function AddressList({ addresses, onAddNew }: AddressListProps) {
 
   if (addresses.length === 0) {
     return (
-      <div className="text-center py-12 sm:py-16 border border-forest-200/90 bg-cream-50 rounded-2xl sm:rounded-3xl space-y-2 shadow-md text-forest-950">
+      <div className="text-center py-12 sm:py-16 border border-forest-800/80 bg-forest-900/90 rounded-2xl sm:rounded-3xl space-y-2 shadow-xl text-cream-50">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-forest-950 text-gold-400 mb-2 border border-forest-800 shadow-2xs">
           <MapPin className="h-5 w-5 stroke-[1.75]" />
         </div>
-        <p className="text-sm font-semibold text-forest-950 font-display">No saved addresses yet.</p>
-        <p className="text-xs text-forest-600 font-sans max-w-sm mx-auto">Add an address to speed up checkout on your future stationery orders.</p>
+        <p className="text-sm font-semibold text-cream-50 font-display">No saved addresses yet.</p>
+        <p className="text-xs text-forest-300 font-sans max-w-sm mx-auto">Add an address to speed up checkout on your future stationery orders.</p>
         {onAddNew && (
           <div className="pt-3">
             <button
               type="button"
               onClick={onAddNew}
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-bold uppercase tracking-wider text-forest-900 hover:text-forest-950 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-bold uppercase tracking-wider text-gold-400 hover:text-gold-300 transition-colors cursor-pointer"
             >
               <span>Add your first address</span>
               <span>→</span>
@@ -102,55 +102,55 @@ export function AddressList({ addresses, onAddNew }: AddressListProps) {
         return (
           <div
             key={address.id}
-            className={`relative flex flex-col justify-between rounded-2xl border p-4 sm:p-5 transition-all shadow-md bg-cream-50 text-forest-950 ${
+            className={`relative flex flex-col justify-between rounded-2xl border p-4 sm:p-5 transition-all shadow-md bg-forest-900/90 text-cream-50 ${
               address.is_default
                 ? 'border-gold-500/80 ring-1 ring-gold-400/40'
-                : 'border-forest-200/90 hover:border-forest-300'
+                : 'border-forest-800/80 hover:border-gold-500/40'
             }`}
           >
             {/* Address Details */}
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-forest-700 shrink-0" />
-                  <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-950 font-sans">
+                  <MapPin className="h-4 w-4 text-gold-400 shrink-0" />
+                  <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-cream-50 font-sans">
                     {address.label || 'Saved Address'}
                   </span>
                 </div>
                 {address.is_default && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-gold-100 text-gold-800 border border-gold-300/80 px-2.5 py-0.5 text-[10px] font-bold font-mono uppercase tracking-wider">
-                    <CheckCircle2 className="h-3 w-3 text-gold-600" />
+                  <span className="inline-flex items-center gap-1 rounded-full bg-gold-500/20 text-gold-300 border border-gold-500/40 px-2.5 py-0.5 text-[10px] font-bold font-mono uppercase tracking-wider">
+                    <CheckCircle2 className="h-3 w-3 text-gold-400" />
                     <span>Default</span>
                   </span>
                 )}
               </div>
 
               {address.phone && (
-                <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-forest-800">
-                  <Phone className="h-3 w-3 text-forest-500" />
+                <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-forest-300">
+                  <Phone className="h-3 w-3 text-gold-400/70" />
                   <span>{address.phone}</span>
                 </div>
               )}
 
-              <p className="text-xs sm:text-[13px] text-forest-700 leading-relaxed whitespace-pre-line font-sans pt-0.5">
+              <p className="text-xs sm:text-[13px] text-cream-100/90 leading-relaxed whitespace-pre-line font-sans pt-0.5">
                 {address.full_address}
               </p>
             </div>
 
             {/* Actions list buttons footer */}
-            <div className="mt-4 flex items-center justify-between pt-3 border-t border-forest-200/60">
+            <div className="mt-4 flex items-center justify-between pt-3 border-t border-forest-800">
               <div>
                 {!address.is_default ? (
                   <button
                     type="button"
                     onClick={() => handleSetDefault(address.id)}
                     disabled={isPending}
-                    className="inline-flex items-center text-xs font-sans font-semibold uppercase tracking-wider text-gold-600 hover:text-gold-700 disabled:opacity-50 transition-colors cursor-pointer py-1"
+                    className="inline-flex items-center text-xs font-sans font-semibold uppercase tracking-wider text-gold-400 hover:text-gold-300 disabled:opacity-50 transition-colors cursor-pointer py-1"
                   >
                     Set as Default
                   </button>
                 ) : (
-                  <span className="text-[11px] text-forest-500 font-sans font-medium italic">
+                  <span className="text-[11px] text-forest-400 font-sans font-medium italic">
                     Primary shipping address
                   </span>
                 )}
@@ -160,7 +160,7 @@ export function AddressList({ addresses, onAddNew }: AddressListProps) {
                   type="button"
                   onClick={() => setEditingAddressId(address.id)}
                   disabled={isPending}
-                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-forest-700 hover:text-forest-950 disabled:opacity-50 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-forest-100/60"
+                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-cream-200 hover:text-cream-50 disabled:opacity-50 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-forest-800"
                 >
                   <Edit2 className="h-3 w-3" />
                   <span>Edit</span>
@@ -169,7 +169,7 @@ export function AddressList({ addresses, onAddNew }: AddressListProps) {
                   type="button"
                   onClick={() => handleDelete(address.id)}
                   disabled={isPending}
-                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-terracotta-600 hover:text-terracotta-700 disabled:opacity-50 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-terracotta-100/60"
+                  className="inline-flex items-center gap-1 text-xs font-sans font-semibold text-terracotta-300 hover:text-terracotta-200 disabled:opacity-50 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-terracotta-950/50"
                 >
                   <Trash2 className="h-3 w-3" />
                   <span>Delete</span>

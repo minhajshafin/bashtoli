@@ -71,17 +71,17 @@ export function DeleteAccountModal() {
   return (
     <>
       {/* Danger Zone Trigger Card */}
-      <div className="rounded-2xl border border-terracotta-300/80 bg-cream-50 p-5 sm:p-7 shadow-md text-forest-950">
+      <div className="rounded-2xl border border-terracotta-500/30 bg-terracotta-950/40 p-5 sm:p-7 shadow-xl text-cream-50">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-terracotta-100 text-terracotta-700 border border-terracotta-300/80 shadow-2xs">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-terracotta-900/80 text-terracotta-300 border border-terracotta-500/40 shadow-2xs">
               <AlertTriangle className="h-5 w-5 stroke-[1.8]" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-terracotta-800 tracking-tight font-sans">
+              <h2 className="text-base font-semibold text-terracotta-300 tracking-tight font-sans">
                 Danger Zone
               </h2>
-              <p className="text-xs sm:text-[13px] text-forest-700 mt-1 max-w-xl font-sans leading-relaxed">
+              <p className="text-xs sm:text-[13px] text-forest-200/90 mt-1 max-w-xl font-sans leading-relaxed">
                 Permanently delete your account and all associated profile details. Past order invoices are preserved securely in store records.
               </p>
             </div>
@@ -110,33 +110,33 @@ export function DeleteAccountModal() {
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
           <div
-            className="fixed inset-0 bg-forest-950/80 transition-opacity"
+            className="fixed inset-0 bg-forest-950/85 backdrop-blur-xs transition-opacity"
             onClick={() => !isDeletePending && setIsDeleteModalOpen(false)}
           />
 
           <div
             ref={modalRef}
-            className="relative w-full max-w-lg rounded-2xl border border-forest-200/90 bg-cream-50 p-6 sm:p-8 shadow-2xl animate-fade-in z-10 space-y-6 text-forest-950"
+            className="relative w-full max-w-lg rounded-2xl border border-forest-800 bg-forest-900 p-6 sm:p-8 shadow-2xl animate-fade-in z-10 space-y-6 text-cream-50"
           >
             <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-terracotta-100 text-terracotta-700 border border-terracotta-300/80 shadow-2xs">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-terracotta-900/80 text-terracotta-300 border border-terracotta-500/40 shadow-2xs">
                 <Trash2 className="h-6 w-6 stroke-[1.8]" />
               </div>
               <div className="space-y-1 min-w-0">
-                <h3 id="delete-account-title" className="text-base sm:text-lg font-medium text-forest-950 font-display">
+                <h3 id="delete-account-title" className="text-base sm:text-lg font-medium text-cream-50 font-display">
                   Delete Account Permanently?
                 </h3>
-                <p className="text-xs text-forest-600 font-sans">
+                <p className="text-xs text-forest-300 font-sans">
                   This action is permanent and cannot be reversed.
                 </p>
               </div>
             </div>
 
-            <div className="space-y-2 rounded-xl bg-cream-100/80 p-4 text-xs text-forest-800 border border-forest-200/80 font-sans">
-              <p className="font-semibold text-forest-950">
+            <div className="space-y-2 rounded-xl bg-forest-950/80 p-4 text-xs text-forest-200 border border-forest-800 font-sans">
+              <p className="font-semibold text-cream-50">
                 What will happen:
               </p>
-              <ul className="list-disc pl-4 space-y-1 text-xs text-forest-700 leading-relaxed">
+              <ul className="list-disc pl-4 space-y-1 text-xs text-forest-300 leading-relaxed">
                 <li>Your login credentials, profile data, and saved addresses will be deleted.</li>
                 <li>Your bag and wishlist items will be cleared.</li>
                 <li>Store bookkeeping preserves past invoices without personal identification.</li>
@@ -146,9 +146,9 @@ export function DeleteAccountModal() {
             {deleteError && (
               <div
                 role="alert"
-                className="flex items-start gap-2.5 rounded-xl bg-terracotta-100 border border-terracotta-400/40 p-3.5 text-xs font-semibold text-terracotta-800 font-sans"
+                className="flex items-start gap-2.5 rounded-xl bg-terracotta-950/60 border border-terracotta-500/40 p-3.5 text-xs font-semibold text-terracotta-200 font-sans"
               >
-                <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" />
+                <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-400" />
                 <span>{deleteError}</span>
               </div>
             )}
@@ -157,9 +157,9 @@ export function DeleteAccountModal() {
               <div className="space-y-2">
                 <label
                   htmlFor="deleteConfirmation"
-                  className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-forest-700"
+                  className="block text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300"
                 >
-                  Type <span className="font-mono font-black text-terracotta-600 select-all">DELETE</span> to confirm:
+                  Type <span className="font-mono font-black text-terracotta-400 select-all">DELETE</span> to confirm:
                 </label>
                 <input
                   id="deleteConfirmation"
@@ -168,7 +168,7 @@ export function DeleteAccountModal() {
                   onChange={(e) => setDeleteConfirmation(e.target.value)}
                   disabled={isDeletePending}
                   placeholder="DELETE"
-                  className="block w-full h-12 rounded-xl border border-forest-200/90 bg-white px-4 text-sm font-mono font-bold text-forest-950 placeholder:text-forest-400 focus:border-terracotta-500 focus:outline-hidden focus:ring-2 focus:ring-terracotta-500/20 transition-colors tracking-wider shadow-2xs"
+                  className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950 px-4 text-sm font-mono font-bold text-cream-50 placeholder:text-forest-500 focus:border-terracotta-500 focus:outline-hidden focus:ring-1 focus:ring-terracotta-500 transition-colors tracking-wider shadow-2xs"
                   autoComplete="off"
                 />
               </div>
@@ -182,7 +182,7 @@ export function DeleteAccountModal() {
                     setDeleteError(null)
                   }}
                   disabled={isDeletePending}
-                  className="inline-flex h-12 sm:h-11 items-center justify-center rounded-xl border border-forest-200/90 bg-white px-5 text-xs sm:text-sm font-sans font-semibold text-forest-700 hover:text-forest-950 hover:bg-cream-100 disabled:opacity-50 active:scale-95 transition-colors cursor-pointer shadow-2xs"
+                  className="inline-flex h-12 sm:h-11 items-center justify-center rounded-xl border border-forest-700 bg-forest-800 px-5 text-xs sm:text-sm font-sans font-semibold text-cream-200 hover:text-cream-50 hover:bg-forest-750 disabled:opacity-50 active:scale-95 transition-colors cursor-pointer shadow-2xs"
                 >
                   Cancel
                 </button>

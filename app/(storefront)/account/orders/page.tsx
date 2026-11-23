@@ -34,30 +34,21 @@ export default async function OrderHistoryPage() {
   return (
     <div className="space-y-6">
       {/* Top Utility Navigation */}
-      <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-border-primary">
+      <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-forest-800">
         <Link
           href="/account"
-          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-text-accent hover:text-text-accent-hover transition-colors uppercase tracking-wider"
+          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-gold-400 hover:text-gold-300 transition-colors tracking-wide"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Account Overview</span>
         </Link>
-        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-secondary">
-          PURCHASE ARCHIVE
-        </span>
       </div>
 
       {/* Masthead */}
-      <div className="border-b border-border-primary pb-5">
-        <p className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-text-accent mb-1">
-          — PURCHASE RECORDS · BASHTOLI STATIONERY
-        </p>
-        <h1 className="text-2xl sm:text-3xl text-text-primary font-medium tracking-tight font-display">
+      <div className="border-b border-forest-800 pb-5">
+        <h1 className="text-2xl sm:text-3xl text-cream-50 font-medium tracking-tight font-display">
           Order History
         </h1>
-        <p className="text-xs sm:text-[13px] text-text-secondary mt-1 font-sans leading-relaxed">
-          Manage and track your ongoing and past stationery orders.
-        </p>
       </div>
 
       {/* Claim matching guest orders prompt banner */}
@@ -66,16 +57,16 @@ export default async function OrderHistoryPage() {
       )}
 
       {orders.length === 0 ? (
-        <div className="rounded-2xl border border-border-primary bg-white/95 shadow-subtle text-text-primary p-8 sm:p-12 text-center space-y-2">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-cream-100 text-text-secondary mb-2 border border-border-primary shadow-2xs">
+        <div className="rounded-2xl border border-forest-800/80 bg-forest-900/90 shadow-xs text-cream-50 p-8 sm:p-12 text-center space-y-2">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-forest-950 text-gold-400 mb-2 border border-forest-800 shadow-2xs">
             <Package className="h-5 w-5 stroke-[1.75]" />
           </div>
-          <p className="text-sm font-semibold text-text-primary font-display">You haven&apos;t placed any orders yet.</p>
-          <p className="text-xs text-text-secondary max-w-sm mx-auto font-sans">Browse our handcrafted notebooks and studio supplies to get started.</p>
+          <p className="text-sm font-semibold text-cream-50 font-display">You haven&apos;t placed any orders yet.</p>
+          <p className="text-xs text-forest-300 max-w-sm mx-auto font-sans">Browse our handcrafted notebooks and studio supplies to get started.</p>
           <div className="pt-3">
             <Link
               href="/products"
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold uppercase tracking-wider text-text-accent hover:text-text-accent-hover transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold tracking-wide text-gold-400 hover:text-gold-300 transition-colors"
             >
               <span>Browse stationery collection</span>
               <ArrowRight className="h-3.5 w-3.5" />
