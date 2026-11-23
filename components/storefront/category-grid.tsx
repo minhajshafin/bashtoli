@@ -8,96 +8,93 @@ interface CategoryGridProps {
   categories?: FeaturedCategoryItem[]
 }
 
-type CardSize = 'hero' | 'medium' | 'compact'
-
-const SIZE_CONFIGS: Record<CardSize, { padding: string; title: string }> = {
-  hero: {
-    padding: 'p-3 sm:p-5 lg:p-6',
-    title: 'text-sm sm:text-lg lg:text-[21px] font-display font-medium tracking-[-0.015em]',
-  },
-  medium: {
-    padding: 'p-2.5 sm:p-4 lg:p-4.5',
-    title: 'text-xs sm:text-[15px] lg:text-[17px] font-display font-medium tracking-[-0.01em]',
-  },
-  compact: {
-    padding: 'p-2 sm:p-3.5 lg:p-4',
-    title: 'text-[11px] sm:text-[13px] lg:text-[15px] font-display font-medium tracking-[-0.01em]',
-  },
-}
-
 function CategoryCard({
   category,
+  index,
+  isHero = false,
   className = '',
-  size = 'medium',
-  style,
 }: {
   category: FeaturedCategoryItem
+  index: number
+  isHero?: boolean
   className?: string
-  size?: CardSize
-  style?: React.CSSProperties
 }) {
-  const sizeConfig = SIZE_CONFIGS[size] || SIZE_CONFIGS.medium
+  const indexLabel = String(index + 1).padStart(2, '0')
 
   return (
     <Link
       href={`/products?category=${category.slug}`}
-      className={`group relative overflow-hidden cursor-pointer block w-full rounded-xl sm:rounded-2xl border border-border-primary hover:border-gold-500/80 focus-visible:border-gold-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gold-500/50 shadow-subtle hover:shadow-atelier transition-transform duration-300 hover:-translate-y-1 ${className}`}
-      style={style}
+      className={`group relative overflow-hidden rounded-2xl border border-forest-900/[0.08] hover:border-gold-500/60 bg-forest-950 shadow-xs hover:shadow-elevation-2 transition-all duration-300 hover:-translate-y-1 block select-none cursor-pointer ${className}`}
     >
-      {/* Background Image / Fallback Gradient */}
+      {/* 1. Subtle Gilded Top Hairline (Reveals on hover) */}
+      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none" />
+
+      {/* 2. Visual Layer: Photographic or Artisanal Emblem */}
       {category.image_url ? (
         <Image
           src={category.image_url}
           alt={category.name}
           fill
           loading="lazy"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 450px"
+          sizes={isHero ? '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 650px' : '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 360px'}
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-forest-800 via-forest-900 to-forest-950 flex flex-col items-center justify-center p-6 text-center pointer-events-none">
-          <svg
-            className="w-8 h-8 text-gold-500/20 mb-2 stroke-[1.2]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-            />
-          </svg>
-          <span className="text-[11px] text-forest-400 font-sans tracking-widest uppercase font-medium">
-            {category.name}
-          </span>
+        <div className="absolute inset-0 bg-gradient-to-br from-forest-900 via-forest-950 to-forest-950 flex flex-col items-center justify-center p-6 text-center pointer-events-none">
+          {/* Subtle Laid-Paper Texture Lines */}
+          <div className="absolute inset-0 bg-laid-paper-dark opacity-40 pointer-events-none" />
+
+          {/* Minimalist Stationery Emblem */}
+          <div className="relative z-10 flex flex-col items-center">
+            <div className="w-10 h-10 rounded-full border border-gold-500/30 flex items-center justify-center text-gold-400/70 mb-2 group-hover:scale-110 group-hover:text-gold-300 group-hover:border-gold-400/50 transition-all duration-300">
+              <svg className="w-5 h-5 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+              </svg>
+            </div>
+            <span className="text-[10px] text-forest-400 font-sans tracking-widest uppercase font-medium">
+              Bashtoli Atelier
+            </span>
+          </div>
         </div>
       )}
 
-      {/* Atmospheric Vignette Scrim */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-forest-950/95 via-forest-950/40 to-transparent" />
+      {/* 3. Refined Atmospheric Scrim (Ensures text legibility without blackening the entire photo) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-forest-950/90 via-forest-950/35 to-forest-950/10 group-hover:from-forest-950/95 transition-colors duration-300 pointer-events-none" />
 
-      {/* Subtle Golden Sheen on Hover */}
+      {/* 4. Subtle Golden Sheen on Hover */}
       <div className="absolute inset-0 bg-gold-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-      {/* Dynamic Title Hierarchy & Sliding Micro-Cue */}
-      <div
-        className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-transform duration-300 ${sizeConfig.padding}`}
-      >
-        <h3
-          className={`text-cream-50 group-hover:text-gold-200 transition-colors duration-300 leading-tight ${sizeConfig.title}`}
-        >
-          {category.name}
-        </h3>
+      {/* 5. Content Overlay Layer */}
+      <div className="relative z-10 h-full w-full flex flex-col justify-between p-3.5 sm:p-5 lg:p-5.5 pointer-events-none">
+        {/* Top Tray: Archival Index Pill & Product Count */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="inline-flex items-center gap-1 font-mono text-[9px] sm:text-[10px] tracking-[0.16em] uppercase text-gold-300/90 font-medium px-2.5 py-0.5 rounded-full bg-forest-950/60 backdrop-blur-xs border border-gold-500/20 shadow-2xs">
+            {indexLabel} &middot; {isHero ? 'Flagship' : 'Archive'}
+          </span>
 
-        {/* Micro-cue: smoothly slides up into view on hover */}
-        <div className="max-h-0 opacity-0 translate-y-2 group-hover:max-h-10 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:max-h-10 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 overflow-hidden transition-[opacity,transform] duration-300 ease-out">
-          <div className="pt-2 flex items-center gap-1.5">
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-sans font-medium text-gold-300/90">
-              Explore collection
+          {typeof category.product_count === 'number' && category.product_count > 0 && (
+            <span className="text-[10px] font-sans font-medium text-cream-200/90 px-2 py-0.5 rounded-full bg-forest-950/50 backdrop-blur-xs border border-white/10 shadow-2xs">
+              {category.product_count} {category.product_count === 1 ? 'item' : 'items'}
             </span>
-            <span className="text-gold-400 text-xs sm:text-sm font-sans transition-transform duration-300 group-hover:translate-x-1.5">
-              →
+          )}
+        </div>
+
+        {/* Bottom Tray: Title & Interaction Prompt */}
+        <div>
+          <h3
+            className={`text-cream-50 group-hover:text-gold-200 transition-colors duration-300 leading-snug font-sans font-semibold tracking-tight ${
+              isHero
+                ? 'text-lg sm:text-2xl lg:text-[24px]'
+                : 'text-sm sm:text-base lg:text-[17px]'
+            }`}
+          >
+            {category.name}
+          </h3>
+
+          <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-gold-400 group-hover:text-gold-300 font-sans font-medium transition-colors mt-1 sm:mt-1.5">
+            <span>Explore Collection</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+              &rarr;
             </span>
           </div>
         </div>
@@ -106,38 +103,17 @@ function CategoryCard({
   )
 }
 
-function EmptySlotCard({
-  className = '',
-  label = 'In Curation',
-}: {
-  className?: string
-  label?: string
-}) {
-  return (
-    <div
-      className={`w-full rounded-2xl border border-dashed border-border-primary bg-cream-100/60 flex items-center justify-center p-4 text-center ${className}`}
-    >
-      <span className="text-[10px] uppercase tracking-[0.2em] text-text-tertiary font-sans font-medium">
-        {label}
-      </span>
-    </div>
-  )
-}
-
 export function CategoryGrid({ categories = [] }: CategoryGridProps) {
   if (!categories || categories.length === 0) {
     return null
   }
-
-  // Map into 3 asymmetrical columns for Concept 2 (Wabi-Sabi Staggered Masonry)
-  const [cat1, cat2, cat3, cat4, cat5, cat6, cat7] = categories
 
   return (
     <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16 px-4 sm:px-10 md:px-14 lg:px-20 xl:px-24 2xl:px-28 bg-cream-50 bg-laid-paper text-forest-950">
       <div className="relative z-10 max-w-[1440px] xl:max-w-[1520px] mx-auto">
         {/* Section Heading — Minimal Editorial Header with Inline Text Link */}
         <ScrollReveal>
-          <div className="flex items-center justify-between mb-4 sm:mb-8 lg:mb-9 gap-2">
+          <div className="flex items-center justify-between mb-4 sm:mb-7 lg:mb-8 gap-2">
             <div className="min-w-0 pr-2">
               <h2 className="type-heading font-medium text-forest-950 truncate">
                 Curated Collections
@@ -158,77 +134,33 @@ export function CategoryGrid({ categories = [] }: CategoryGridProps) {
           </div>
         </ScrollReveal>
 
-        {/* Desktop Wabi-Sabi Staggered 3-Column Masonry (Increased height & harmonious proportions) */}
+        {/* Architectural Atelier Bento Grid */}
         <ScrollReveal delay={0.06} y={16}>
-          <div className="hidden md:grid md:grid-cols-3 gap-4 lg:gap-5 items-start">
-            {/* Column 1 (Left): Tall Portrait (Hero) + Balanced Landscape (Medium) */}
-            <div className="flex flex-col gap-4 lg:gap-5 w-full">
-              {cat1 ? (
-                <CategoryCard category={cat1} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-              ) : (
-                <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-              )}
-              {cat2 ? (
-                <CategoryCard category={cat2} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-              ) : (
-                <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-              )}
-            </div>
-
-            {/* Column 2 (Center): Balanced Landscape (Medium) + Tall Portrait (Hero) */}
-            <div className="flex flex-col gap-4 lg:gap-5 w-full">
-              {cat3 ? (
-                <CategoryCard category={cat3} size="medium" className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-              ) : (
-                <EmptySlotCard className="h-[190px] lg:h-[210px] xl:h-[225px]" />
-              )}
-              {cat4 ? (
-                <CategoryCard category={cat4} size="hero" className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-              ) : (
-                <EmptySlotCard className="h-[320px] lg:h-[350px] xl:h-[370px]" />
-              )}
-            </div>
-
-            {/* Column 3 (Right): Three Artfully Stacked Blocks */}
-            <div className="flex flex-col gap-3.5 lg:gap-4 w-full">
-              {cat5 ? (
-                <CategoryCard category={cat5} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-              ) : (
-                <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-              )}
-              {cat6 ? (
-                <CategoryCard category={cat6} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-              ) : (
-                <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-              )}
-              {cat7 ? (
-                <CategoryCard category={cat7} size="compact" className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-              ) : (
-                <EmptySlotCard className="h-[175px] lg:h-[188px] xl:h-[195px]" />
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Compact 2-Column Stationery Swatches Grid */}
-          <div className="md:hidden grid grid-cols-2 gap-2 sm:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
             {categories.map((cat, index) => {
-              const mobileConfigs: { height: string; size: CardSize; span?: string }[] = [
-                { height: 'h-[120px] sm:h-[240px]', size: 'medium' },
-                { height: 'h-[120px] sm:h-[190px]', size: 'compact' },
-                { height: 'h-[120px] sm:h-[190px]', size: 'compact' },
-                { height: 'h-[120px] sm:h-[240px]', size: 'medium' },
-                { height: 'h-[120px] sm:h-[190px]', size: 'compact' },
-                { height: 'h-[120px] sm:h-[190px]', size: 'compact' },
-                { height: 'h-[105px] sm:h-[210px]', size: 'medium', span: 'col-span-2' },
-              ]
-              const config = mobileConfigs[index] || { height: 'h-[120px]', size: 'compact' }
+              const isHero = index === 0
+
+              // Bento Proportions:
+              // Index 0 (Flagship): Spans 2 columns on mobile, tablet, and desktop
+              // Index 1, 2: 1 column each -> completes Row 1 (2 + 1 + 1 = 4 cols) on desktop
+              // Index 3, 4, 5, 6: 1 column each -> completes Row 2 (1 + 1 + 1 + 1 = 4 cols) on desktop
+              const spanClass = isHero
+                ? 'col-span-2 md:col-span-2 lg:col-span-2'
+                : 'col-span-1 md:col-span-1 lg:col-span-1'
+
+              const heightClass = isHero
+                ? 'h-[200px] sm:h-[270px] lg:h-[310px]'
+                : index < 3
+                ? 'h-[160px] sm:h-[270px] lg:h-[310px]'
+                : 'h-[160px] sm:h-[220px] lg:h-[250px]'
 
               return (
                 <CategoryCard
                   key={cat.id}
                   category={cat}
-                  size={config.size}
-                  className={`${config.height} ${config.span || ''}`}
+                  index={index}
+                  isHero={isHero}
+                  className={`${spanClass} ${heightClass}`}
                 />
               )
             })}

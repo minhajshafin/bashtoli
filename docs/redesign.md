@@ -253,6 +253,27 @@ Refined storefront minimalism and material warmth:
   - `--color-cream-100` / `--color-bg-surface`: `#ebe2cf` / `#ede4d3`.
   - Contrast ratios for body text (`#0a160f` at 15.90:1 AAA) and brass gold (`#7d5c18` at 5.28:1 AA) are rigorously preserved while creating natural dimensional depth between cards and page background.
 
+---
+
+## 12. Architectural Atelier Bento Category Section (/awwwards Standards)
+
+Elevated the homepage category showcase in [components/storefront/category-grid.tsx](file:///home/billy/Projects/bashtoli/components/storefront/category-grid.tsx) from an unbalanced 3-column masonry with grey dashed empty slots into an authentic luxury stationery Atelier Bento:
+
+### 12.1 Balanced Architectural Bento Grid (No Jagged Heights or Empty Wireframes)
+- **Eliminated Brittle Hardcoded Slots:** Replaced the rigid `cat1..cat7` mapping and dashed "In Curation" placeholder boxes with a dynamic, flush CSS Grid Bento layout.
+- **Harmonious Desktop 4-Column Rhythms:**
+  - **Slot 0 (Flagship Archive):** Spans 2 columns (`lg:col-span-2`) with widescreen framing, rich title hierarchy, and a dedicated `01 · Flagship` badge.
+  - **Slots 1 & 2:** Span 1 column each at matching height (`310px`), forming a flush 4-column upper tier ($2 + 1 + 1 = 4$).
+  - **Slots 3..6:** Span 1 column each at `250px`, forming a flush 4-column lower tier ($1 + 1 + 1 + 1 = 4$).
+  - Completely responsive on tablet (3 columns) and mobile (featured 2-column hero + uniform 2-column swatch grid).
+
+### 12.2 Archival Stationery Materiality & Micro-Interactions
+- **Top Hairline Gilded Border:** A luminous antique gold gradient hairline (`from-transparent via-gold-400 to-transparent`) reveals on card hover.
+- **Archival Indexing:** Each card displays a monospace index pill (`01 · Archive`, `02 · Archive`) and real dynamic product count badge (`12 items`).
+- **Artisanal Woven Fallback:** Replaced dark black boxes with an authentic stationery atelier emblem and subtle laid-paper texture.
+- **Atmospheric Depth:** Calibrated photographic scrim (`from-forest-950/90 via-forest-950/35 to-forest-950/10`) to allow photography to shine while maintaining $>14:1$ AAA typography contrast.
+
+
 
 
 
