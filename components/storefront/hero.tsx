@@ -116,7 +116,7 @@ function HeroSlideshow({ slides }: { slides?: HeroSlideItem[] }) {
 
       {/* Floating Archival Spec Note (Desktop & Tablet) */}
       <div
-        className="absolute -left-3 sm:-left-6 bottom-14 sm:bottom-16 px-3.5 py-2.5 shadow-elevation-3 hidden sm:block z-20 pointer-events-none rounded-xl bg-bg-surface-elevated border border-gold-500/35 max-w-[195px] animate-fade-in ring-1 ring-gold-500/10"
+        className="absolute -left-6 sm:-left-14 md:-left-16 lg:-left-20 bottom-14 sm:bottom-16 px-3 sm:px-3.5 py-2 sm:py-2.5 shadow-elevation-3 hidden sm:block z-20 pointer-events-none rounded-xl bg-bg-surface-elevated border border-gold-500/35 max-w-[170px] sm:max-w-[185px] animate-fade-in ring-1 ring-gold-500/10"
       >
         <div className="flex items-center justify-between gap-2 mb-0.5">
           <span className="type-kicker text-[8px] text-gold-700 tracking-[0.25em]">

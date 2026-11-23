@@ -422,7 +422,7 @@ Calibrated the floating curation pill badge (`currentSlide.badge_text`) on the h
 
 ### 18.3 Floating Archival Spec Note Elevation & Indicator Unblocking
 - **Indicator Overlap Root Cause:** When the hero carousel frame width was reduced from `max-w-[420px]` to `max-w-[320px]`, the center indicators shifted from 210px to 160px. Consequently, the floating archival spec note (`ARCHIVE № ...` card) anchored at `-left-6 bottom-4` with `max-w-[195px]` horizontally extended to 171px and vertically occupied the exact same 16px–62px zone as the indicator capsule, obscuring the left indicator dot.
-- **Elevated Anchor:** Lifted the spec note from `bottom-4` to `bottom-14 sm:bottom-16` (56px–64px from the frame base). The spec note now hovers gracefully in the lower-middle-left quadrant, completely clear of the indicator capsule.
+- **Elevated Anchor & Leftward Shift:** Lifted the spec note from `bottom-4` to `bottom-14 sm:bottom-16` (56px–64px from the frame base) and shifted its horizontal anchor from `-left-6` to `-left-6 sm:-left-14 md:-left-16 lg:-left-20` with a calibrated `max-w-[170px] sm:max-w-[185px]`. This moves the right edge of the card over 45px–60px further away to the left, guaranteeing generous clearance from the indicator capsule even when 4–6 slide dots are displayed.
 - **Sleek Touch Target:** Streamlined the indicator buttons with `relative before:absolute before:inset-x-0 before:-inset-y-1.5`, preserving the accessible $\ge 44\text{px}$ touch target while keeping the visual pill slim and preventing vertical collision. All slide indicator dots remain 100% visible and interactive.
 
 ---
