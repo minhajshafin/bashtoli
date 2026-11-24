@@ -72,10 +72,10 @@ export type RateLimitTarget =
 
 function resolveIp(target?: RateLimitTarget): string {
   if (!target) return '127.0.0.1'
-  if (typeof (target as any).get === 'function') {
-    return getClientIpFromHeaders(target as { get(name: string): string | null })
+  if ('get' in target && typeof target.get === 'function') {
+    return getClientIpFromHeaders(target)
   }
-  if (typeof (target as any).headers?.get === 'function') {
+  if ('headers' in target && target.headers && typeof target.headers.get === 'function') {
     return getClientIp(target as Request)
   }
   return '127.0.0.1'

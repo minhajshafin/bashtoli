@@ -246,10 +246,11 @@ export async function forgotPasswordAction(
     })
 
     if (error) {
+      const authError = error as { message?: string; code?: string; status?: number }
       if (
-        error.message?.toLowerCase().includes('rate limit') ||
-        (error as any).code === 'over_email_send_rate_limit' ||
-        error.status === 429
+        authError.message?.toLowerCase().includes('rate limit') ||
+        authError.code === 'over_email_send_rate_limit' ||
+        authError.status === 429
       ) {
         return {
           error: 'Email rate limit exceeded. Please wait a few minutes before trying again.',
@@ -257,11 +258,12 @@ export async function forgotPasswordAction(
       }
       sanitizeActionError('auth:forgotPassword', error)
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const errorObj = err as { message?: string; code?: string; status?: number } | null
     if (
-      err?.message?.toLowerCase().includes('rate limit') ||
-      err?.code === 'over_email_send_rate_limit' ||
-      err?.status === 429
+      errorObj?.message?.toLowerCase().includes('rate limit') ||
+      errorObj?.code === 'over_email_send_rate_limit' ||
+      errorObj?.status === 429
     ) {
       return {
         error: 'Email rate limit exceeded. Please wait a few minutes before trying again.',
