@@ -246,9 +246,27 @@ export async function forgotPasswordAction(
     })
 
     if (error) {
+      if (
+        error.message?.toLowerCase().includes('rate limit') ||
+        (error as any).code === 'over_email_send_rate_limit' ||
+        error.status === 429
+      ) {
+        return {
+          error: 'Email rate limit exceeded. Please wait a few minutes before trying again.',
+        }
+      }
       sanitizeActionError('auth:forgotPassword', error)
     }
-  } catch (err) {
+  } catch (err: any) {
+    if (
+      err?.message?.toLowerCase().includes('rate limit') ||
+      err?.code === 'over_email_send_rate_limit' ||
+      err?.status === 429
+    ) {
+      return {
+        error: 'Email rate limit exceeded. Please wait a few minutes before trying again.',
+      }
+    }
     sanitizeActionError('auth:forgotPassword', err)
   }
 
