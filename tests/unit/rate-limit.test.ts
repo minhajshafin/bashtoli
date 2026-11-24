@@ -149,6 +149,20 @@ describe('Rate Limiting & Security Hardening (lib/supabase/rate-limit.ts)', () =
       expect(mockLimit).toHaveBeenCalledWith('198.51.100.1')
     })
 
+    it('accepts a Headers object for server action rate limiting', async () => {
+      mockLimit.mockResolvedValueOnce({
+        success: true,
+        limit: 10,
+        remaining: 9,
+        reset: Date.now() + 60000,
+      })
+
+      const headers = new Headers({ 'x-real-ip': '198.51.100.99' })
+      const res = await checkAuthRateLimit(headers)
+      expect(res).toEqual({ limited: false })
+      expect(mockLimit).toHaveBeenCalledWith('198.51.100.99')
+    })
+
     it('returns limited: true with retryAfter seconds when quota is exceeded', async () => {
       const resetTime = Date.now() + 30000 // 30 seconds from now
       mockLimit.mockResolvedValueOnce({

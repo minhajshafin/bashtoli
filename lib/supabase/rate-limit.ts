@@ -25,6 +25,9 @@ import type { NextRequest } from 'next/server'
 // ── Helpers ───────────────────────────────────────────────────
 
 export function getClientIp(request: Request | NextRequest): string {
+  if (!request?.headers || typeof request.headers.get !== 'function') {
+    return '127.0.0.1'
+  }
   // On Vercel (and most CDN/proxy setups), x-real-ip is set by the edge
   // and cannot be spoofed by the client. Prefer it over x-forwarded-for.
   const realIp = request.headers.get('x-real-ip')
@@ -44,6 +47,9 @@ export function getClientIp(request: Request | NextRequest): string {
 }
 
 export function getClientIpFromHeaders(headersList: { get(name: string): string | null }): string {
+  if (!headersList || typeof headersList.get !== 'function') {
+    return '127.0.0.1'
+  }
   const realIp = headersList.get('x-real-ip')
   if (realIp) return realIp
 
@@ -54,6 +60,24 @@ export function getClientIpFromHeaders(headersList: { get(name: string): string 
     return ip === '::1' ? '127.0.0.1' : ip
   }
 
+  return '127.0.0.1'
+}
+
+export type RateLimitTarget =
+  | NextRequest
+  | Request
+  | Headers
+  | { headers: Headers }
+  | { get(name: string): string | null }
+
+function resolveIp(target?: RateLimitTarget): string {
+  if (!target) return '127.0.0.1'
+  if (typeof (target as any).get === 'function') {
+    return getClientIpFromHeaders(target as { get(name: string): string | null })
+  }
+  if (typeof (target as any).headers?.get === 'function') {
+    return getClientIp(target as Request)
+  }
   return '127.0.0.1'
 }
 
@@ -134,15 +158,15 @@ export type RateLimitResult =
   | { limited: true; retryAfter: number }
 
 /**
- * Check the auth rate limit for the given request's IP.
+ * Check the auth rate limit for the given request or headers.
  * Returns `{ limited: false }` when Upstash is not configured (fail-open).
  */
 export async function checkAuthRateLimit(
-  request: NextRequest
+  requestOrHeaders?: RateLimitTarget
 ): Promise<RateLimitResult> {
   if (!assertConfigured()) return { limited: false }
 
-  const ip = getClientIp(request)
+  const ip = resolveIp(requestOrHeaders)
 
   try {
     const { success, reset } = await getAuthLimiter().limit(ip)
@@ -161,16 +185,11 @@ export async function checkAuthRateLimit(
  * Returns `{ limited: false }` when Upstash is not configured (fail-open).
  */
 export async function checkOrderLookupRateLimit(
-  requestOrHeaders?: NextRequest | { get(name: string): string | null }
+  requestOrHeaders?: RateLimitTarget
 ): Promise<RateLimitResult> {
   if (!assertConfigured()) return { limited: false }
 
-  let ip = '127.0.0.1'
-  if (requestOrHeaders && 'nextUrl' in requestOrHeaders) {
-    ip = getClientIp(requestOrHeaders as NextRequest)
-  } else if (requestOrHeaders && 'get' in requestOrHeaders) {
-    ip = getClientIpFromHeaders(requestOrHeaders)
-  }
+  const ip = resolveIp(requestOrHeaders)
 
   try {
     const { success, reset } = await getOrderLimiter().limit(ip)
@@ -189,16 +208,11 @@ export async function checkOrderLookupRateLimit(
  * Returns `{ limited: false }` when Upstash is not configured (fail-open).
  */
 export async function checkCheckoutRateLimit(
-  requestOrHeaders?: NextRequest | { get(name: string): string | null }
+  requestOrHeaders?: RateLimitTarget
 ): Promise<RateLimitResult> {
   if (!assertConfigured()) return { limited: false }
 
-  let ip = '127.0.0.1'
-  if (requestOrHeaders && 'nextUrl' in requestOrHeaders) {
-    ip = getClientIp(requestOrHeaders as NextRequest)
-  } else if (requestOrHeaders && 'get' in requestOrHeaders) {
-    ip = getClientIpFromHeaders(requestOrHeaders)
-  }
+  const ip = resolveIp(requestOrHeaders)
 
   try {
     const { success, reset } = await getCheckoutLimiter().limit(ip)

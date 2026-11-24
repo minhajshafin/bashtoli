@@ -12,6 +12,7 @@ import {
 import { safeRedirectPath } from '@/lib/utils/safe-redirect'
 import { sanitizeActionError, mapAuthError } from '@/lib/utils/action-error'
 import { getBaseUrl } from '@/lib/utils/url'
+import { checkAuthRateLimit } from '@/lib/supabase/rate-limit'
 
 export type LoginState = {
   error: string | null
@@ -44,6 +45,14 @@ export async function loginAction(
   _prevState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
+  const reqHeaders = await headers()
+  const rl = await checkAuthRateLimit(reqHeaders)
+  if (rl.limited) {
+    return {
+      error: 'Too many login attempts. Please wait a moment before trying again.',
+    }
+  }
+
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const redirectTo = formData.get('redirectTo') as string || ''
@@ -122,6 +131,14 @@ export async function signupAction(
   _prevState: SignupState,
   formData: FormData
 ): Promise<SignupState> {
+  const reqHeaders = await headers()
+  const rl = await checkAuthRateLimit(reqHeaders)
+  if (rl.limited) {
+    return {
+      error: 'Too many signup attempts. Please wait a moment before trying again.',
+    }
+  }
+
   const fullName = formData.get('fullName') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
@@ -195,6 +212,14 @@ export async function forgotPasswordAction(
   _prevState: ForgotPasswordState,
   formData: FormData
 ): Promise<ForgotPasswordState> {
+  const reqHeaders = await headers()
+  const rl = await checkAuthRateLimit(reqHeaders)
+  if (rl.limited) {
+    return {
+      error: 'Too many password reset requests. Please wait a moment before trying again.',
+    }
+  }
+
   const email = formData.get('email') as string
 
   const parsed = forgotPasswordSchema.safeParse({ email })
@@ -241,6 +266,14 @@ export async function resetPasswordAction(
   _prevState: ResetPasswordState,
   formData: FormData
 ): Promise<ResetPasswordState> {
+  const reqHeaders = await headers()
+  const rl = await checkAuthRateLimit(reqHeaders)
+  if (rl.limited) {
+    return {
+      error: 'Too many password reset attempts. Please wait a moment before trying again.',
+    }
+  }
+
   const password = formData.get('password') as string
   const confirmPassword = formData.get('confirmPassword') as string
 

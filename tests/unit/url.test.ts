@@ -31,6 +31,13 @@ describe('lib/utils/url.ts: getBaseUrl', () => {
     expect(getBaseUrl(headers)).toBe('http://localhost:3000')
   })
 
+  it('prefers request host over NEXT_PUBLIC_APP_URL in development', () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('NEXT_PUBLIC_APP_URL', 'https://bashtoli.vercel.app')
+    const headers = new Headers({ host: 'localhost:3000' })
+    expect(getBaseUrl(headers)).toBe('http://localhost:3000')
+  })
+
   it('falls back to default in development and throws in production when no env or headers provided', () => {
     vi.stubEnv('NODE_ENV', 'development')
     expect(getBaseUrl()).toBe('http://localhost:3000')

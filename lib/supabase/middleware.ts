@@ -138,13 +138,19 @@ export async function adminGuard(request: NextRequest) {
   // touch the Supabase Auth server.
 
   // Auth pages: login, signup, forgot-password, reset-password
+  // Only rate-limit state-changing mutations (POST) and never prefetch requests.
+  // GET requests for viewing public auth forms must not be rate-limited by the sensitive auth limiter.
   const isAuthPage =
     pathname === '/login' ||
     pathname === '/signup' ||
     pathname === '/forgot-password' ||
     pathname === '/reset-password'
 
-  if (isAuthPage) {
+  const isPrefetch =
+    request.headers.get('next-router-prefetch') === '1' ||
+    request.headers.get('purpose') === 'prefetch'
+
+  if (isAuthPage && request.method !== 'GET' && request.method !== 'HEAD' && !isPrefetch) {
     const result = await checkAuthRateLimit(request)
     if (result.limited) {
       return setSecurityHeaders(

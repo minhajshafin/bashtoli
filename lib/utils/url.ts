@@ -11,6 +11,16 @@
  * 3. Falls back to http://localhost:3000 in development, or https://bashtoli.com.
  */
 export function getBaseUrl(reqHeaders?: Headers | null): string {
+  // In development, prefer the actual request host if supplied so local testing
+  // (e.g. localhost:3000) is never routed to a remote production/preview domain.
+  if (process.env.NODE_ENV === 'development' && reqHeaders) {
+    const host = reqHeaders.get('x-forwarded-host') || reqHeaders.get('host')
+    if (host) {
+      const proto = reqHeaders.get('x-forwarded-proto') || 'http'
+      return `${proto}://${host}`
+    }
+  }
+
   const envUrl = process.env.NEXT_PUBLIC_APP_URL
   if (envUrl && envUrl.trim().length > 0) {
     return envUrl.replace(/\/+$/, '')
