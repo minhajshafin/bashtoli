@@ -18,6 +18,12 @@ This checklist tracks the operational, infrastructure, security, and verificatio
 ## 2. Supabase Auth & Email Settings
 
 - [ ] **Email Confirmations Enabled**: In Supabase Dashboard -> **Authentication** -> **Providers** -> **Email**, verify **"Confirm email"** is turned ON.
+- [ ] **Email Templates Configuration (Cross-Device & Password Reset)**:
+  - In Supabase Dashboard -> **Authentication** -> **Email Templates**, the callback route (`/api/auth/callback`) supports both standard hash fragments (`{{ .ConfirmationURL }}`) and query-based token hashes (`{{ .TokenHash }}`).
+  - **Confirm signup** recommended template:
+    `<a href="{{ .SiteURL }}/api/auth/callback?token_hash={{ .TokenHash }}&type=email&redirectTo=/account">Confirm Email</a>`
+  - **Reset Password** recommended template:
+    `<a href="{{ .SiteURL }}/api/auth/callback?token_hash={{ .TokenHash }}&type=recovery&redirectTo=/reset-password">Reset Password</a>`
 - [ ] **Site URL & Redirect URLs**:
   - Set **Site URL** to the production domain (e.g. `https://bashtoli.com`).
   - Add production and preview redirect URLs under **Redirect URLs** (e.g. `https://bashtoli.com/api/auth/callback` and `https://*.vercel.app/api/auth/callback`).

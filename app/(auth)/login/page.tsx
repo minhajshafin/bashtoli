@@ -7,6 +7,7 @@ import { AuthForm } from '@/components/storefront/auth-form'
 interface LoginPageProps {
   searchParams: Promise<{
     redirectTo?: string
+    error?: string
   }>
 }
 
@@ -29,6 +30,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const resolvedSearchParams = await searchParams
   const rawRedirectTo = resolvedSearchParams?.redirectTo
   const redirectTo = safeRedirectPath(rawRedirectTo, '/products')
+  const initialError = resolvedSearchParams?.error
 
   const supabase = await createClient()
   const {
@@ -40,5 +42,5 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     redirect(redirectTo)
   }
 
-  return <AuthForm type="login" redirectTo={rawRedirectTo || ''} />
+  return <AuthForm type="login" redirectTo={rawRedirectTo || ''} initialError={initialError} />
 }

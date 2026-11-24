@@ -169,6 +169,19 @@ describe('lib/utils/action-error.ts', () => {
       consoleSpy.mockRestore()
     })
 
+    it('maps session_not_found, AuthSessionMissingError, and Auth session missing messages to friendly reset link expired message', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const res1 = mapAuthError({ code: 'session_not_found' })
+      expect(res1).toBe('Your password reset link is invalid or has expired. Please request a new one.')
+
+      const res2 = mapAuthError({ name: 'AuthSessionMissingError', message: 'Auth session missing!' })
+      expect(res2).toBe('Your password reset link is invalid or has expired. Please request a new one.')
+
+      const res3 = mapAuthError(new Error('Auth session missing!'))
+      expect(res3).toBe('Your password reset link is invalid or has expired. Please request a new one.')
+      consoleSpy.mockRestore()
+    })
+
     it('returns generic fallback for unknown code or unmapped error', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       const res1 = mapAuthError({ code: 'unexpected_failure', message: 'Internal crash' })

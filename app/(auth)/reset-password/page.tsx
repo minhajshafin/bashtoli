@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useActionState, useState } from 'react'
+import React, { useActionState, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { resetPasswordAction, type ResetPasswordState } from '@/lib/actions/auth'
+import { createClient } from '@/lib/supabase/client'
 
 const initialState: ResetPasswordState = {
   error: null,
@@ -10,6 +11,8 @@ const initialState: ResetPasswordState = {
 
 export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const [authStatus, setAuthStatus] = useState<'checking' | 'valid' | 'invalid'>('checking')
+
   const [state, formAction, isPending] = useActionState(
     async (prevState: ResetPasswordState, formData: FormData) => {
       const res = await resetPasswordAction(prevState, formData)
@@ -17,6 +20,62 @@ export default function ResetPasswordPage() {
     },
     initialState
   )
+
+  useEffect(() => {
+    let mounted = true
+
+    async function checkAuth() {
+      // 1. Check if URL hash fragment contains tokens from an implicit redirect
+      if (typeof window !== 'undefined' && window.location.hash.includes('access_token=')) {
+        try {
+          const hash = window.location.hash.substring(1)
+          const params = new URLSearchParams(hash)
+          const accessToken = params.get('access_token')
+          const refreshToken = params.get('refresh_token')
+
+          if (accessToken && refreshToken) {
+            const res = await fetch('/api/auth/callback', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                access_token: accessToken,
+                refresh_token: refreshToken,
+              }),
+            })
+
+            if (res.ok && mounted) {
+              window.history.replaceState(null, '', window.location.pathname)
+              setAuthStatus('valid')
+              return
+            }
+          }
+        } catch {
+          // Fall through to getUser check
+        }
+      }
+
+      // 2. Check if a cookie-backed session is already active
+      try {
+        const supabase = createClient()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+
+        if (mounted) {
+          setAuthStatus(user ? 'valid' : 'invalid')
+        }
+      } catch {
+        if (mounted) {
+          setAuthStatus('invalid')
+        }
+      }
+    }
+
+    checkAuth()
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   return (
     <div className="w-full max-w-md bg-forest-900/95 text-cream-50 border border-forest-800/90 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md selection:bg-gold-500/25 selection:text-gold-200">
@@ -43,7 +102,40 @@ export default function ResetPasswordPage() {
         </p>
       </div>
 
-      {state.success ? (
+      {authStatus === 'checking' ? (
+        <div className="py-12 text-center space-y-3 animate-in fade-in duration-200">
+          <div className="h-8 w-8 mx-auto animate-spin rounded-full border-2 border-gold-400/20 border-t-gold-400" />
+          <p className="text-xs text-forest-300 font-medium">Verifying reset session...</p>
+        </div>
+      ) : authStatus === 'invalid' ? (
+        <div className="space-y-5 text-center py-2 animate-in fade-in duration-200">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-950 text-terracotta-400 border border-forest-800 shadow-inner">
+            <svg className="h-7 w-7 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-medium text-cream-50 tracking-tight font-display">
+            Reset Link Expired or Invalid
+          </h2>
+          <p className="text-xs text-forest-200/90 max-w-xs mx-auto leading-relaxed font-light">
+            This password reset link is invalid, has already been used, or has expired. Please request a new link to reset your password.
+          </p>
+          <div className="pt-2 space-y-2">
+            <Link
+              href="/forgot-password"
+              className="btn-accent inline-flex h-12 w-full items-center justify-center rounded-xl px-6 text-xs font-bold uppercase tracking-wider"
+            >
+              Request New Reset Link
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex h-10 w-full items-center justify-center rounded-xl text-xs text-forest-300 hover:text-gold-300 font-medium transition-colors"
+            >
+              Return to Sign In
+            </Link>
+          </div>
+        </div>
+      ) : state.success ? (
         <div className="space-y-5 text-center py-2 animate-in fade-in duration-200">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-950 text-gold-400 border border-forest-800 shadow-inner">
             <svg className="h-7 w-7 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

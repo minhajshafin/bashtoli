@@ -149,6 +149,7 @@ export function mapCancelOrderError(error: unknown): string {
  * - over_request_rate_limit
  * - over_email_send_rate_limit
  * - otp_expired (or flow_state_expired)
+ * - session_not_found / AuthSessionMissingError
  * Anything else returns generic fallback.
  */
 export function mapAuthError(
@@ -158,6 +159,17 @@ export function mapAuthError(
   logSafeError('auth', error)
 
   const code = (error as { code?: unknown })?.code
+  const message = (error as { message?: unknown })?.message
+  const name = (error as { name?: unknown })?.name
+
+  if (
+    code === 'session_not_found' ||
+    name === 'AuthSessionMissingError' ||
+    (typeof message === 'string' && message.includes('Auth session missing'))
+  ) {
+    return 'Your password reset link is invalid or has expired. Please request a new one.'
+  }
+
   if (typeof code === 'string') {
     if (code === 'weak_password') {
       return 'The password provided is too weak. Please choose a stronger password.'

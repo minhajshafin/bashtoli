@@ -7,6 +7,7 @@ import { loginAction, signupAction } from '@/lib/actions/auth'
 interface AuthFormProps {
   type: 'login' | 'signup'
   redirectTo?: string
+  initialError?: string
 }
 
 interface AuthState {
@@ -20,12 +21,14 @@ interface AuthState {
   }
 }
 
-export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
+export function AuthForm({ type, redirectTo = '', initialError }: AuthFormProps) {
 
   // Set up password visibility toggling
   const [showPassword, setShowPassword] = useState(false)
 
-  const [loginState, loginFormAction, isLoginPending] = useActionState(loginAction, { error: null })
+  const [loginState, loginFormAction, isLoginPending] = useActionState(loginAction, {
+    error: initialError || null,
+  })
   const [signupState, signupFormAction, isSignupPending] = useActionState(signupAction, { error: null })
 
   const state = (type === 'login' ? loginState : signupState) as AuthState
