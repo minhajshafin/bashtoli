@@ -35,22 +35,22 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
   // If user signed up successfully and needs email confirmation
   if (type === 'signup' && 'success' in state && state.success) {
     return (
-      <div className="w-full max-w-md bg-white/95 text-text-primary border border-border-primary rounded-3xl p-6 sm:p-8 shadow-atelier text-center space-y-5 selection:bg-gold-500/20 selection:text-text-primary">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-cream-100 text-text-secondary border border-border-primary">
+      <div className="w-full max-w-md bg-forest-900/95 text-cream-50 border border-forest-800/90 rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-5 selection:bg-gold-500/25 selection:text-gold-200">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-950 text-gold-400 border border-forest-800 shadow-inner">
           <svg className="h-7 w-7 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
-        <h2 className="text-xl sm:text-2xl font-medium text-text-primary tracking-tight font-display">
+        <h2 className="text-xl sm:text-2xl font-medium text-cream-50 tracking-tight font-display">
           Check Your Inbox
         </h2>
-        <p className="text-xs text-text-secondary max-w-xs mx-auto leading-relaxed font-light">
+        <p className="text-xs text-forest-200/90 max-w-xs mx-auto leading-relaxed font-light">
           We have sent a verification link to your email. Please confirm your account to start managing your orders and wishlist.
         </p>
         <div className="pt-2">
           <Link
             href="/login"
-            className="btn-primary inline-flex h-12 w-full items-center justify-center rounded-xl px-7 text-xs font-bold uppercase tracking-wider"
+            className="btn-accent inline-flex h-12 w-full items-center justify-center rounded-xl px-7 text-xs font-bold uppercase tracking-wider"
           >
             Go to Sign In
           </Link>
@@ -63,15 +63,15 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
   const signupUrl = redirectTo ? `/signup?redirectTo=${encodeURIComponent(redirectTo)}` : '/signup'
 
   return (
-    <div className="w-full max-w-md bg-white/95 text-text-primary border border-border-primary rounded-3xl p-5 sm:p-8 shadow-atelier selection:bg-gold-500/20 selection:text-text-primary">
+    <div className="w-full max-w-md bg-forest-900/95 text-cream-50 border border-forest-800/90 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md selection:bg-gold-500/25 selection:text-gold-200">
       {/* Segmented Auth Mode Switcher */}
-      <div className="grid grid-cols-2 p-1 bg-cream-100/90 rounded-2xl border border-border-primary mb-5 gap-1">
+      <div className="grid grid-cols-2 p-1 bg-forest-950/80 rounded-2xl border border-forest-800/90 mb-5 gap-1">
         <Link
           href={loginUrl}
           className={`h-10 flex items-center justify-center rounded-xl text-xs font-semibold tracking-wide transition-colors ${
             type === 'login'
-              ? 'bg-btn-primary-bg text-btn-primary-text shadow-xs'
-              : 'text-text-secondary hover:text-text-primary hover:bg-cream-200/60'
+              ? 'bg-forest-800 text-cream-50 border border-forest-700/80 shadow-xs'
+              : 'text-forest-300 hover:text-cream-50 hover:bg-forest-900/60'
           }`}
         >
           Sign In
@@ -80,8 +80,8 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
           href={signupUrl}
           className={`h-10 flex items-center justify-center rounded-xl text-xs font-semibold tracking-wide transition-colors ${
             type === 'signup'
-              ? 'bg-btn-primary-bg text-btn-primary-text shadow-xs'
-              : 'text-text-secondary hover:text-text-primary hover:bg-cream-200/60'
+              ? 'bg-forest-800 text-cream-50 border border-forest-700/80 shadow-xs'
+              : 'text-forest-300 hover:text-cream-50 hover:bg-forest-900/60'
           }`}
         >
           Create Account
@@ -90,10 +90,10 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
 
       {/* Form Header */}
       <div className="mb-5">
-        <h1 className="text-xl sm:text-2xl text-text-primary font-medium tracking-tight font-display">
+        <h1 className="text-xl sm:text-2xl text-cream-50 font-medium tracking-tight font-display">
           {type === 'login' ? 'Welcome Back' : 'Create Account'}
         </h1>
-        <p className="mt-1 text-xs text-text-secondary font-light leading-relaxed">
+        <p className="mt-1 text-xs text-forest-200/90 font-light leading-relaxed">
           {type === 'login'
             ? 'Sign in to access your saved addresses, past orders, and wishlist.'
             : 'Join Bashtoli to save your delivery addresses and track orders.'}
@@ -110,9 +110,9 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
         {state.error && (
           <div
             role="alert"
-            className="flex items-start gap-2.5 rounded-xl bg-terracotta-100 border border-terracotta-500/30 px-3.5 py-2.5 text-xs font-medium text-terracotta-800 animate-in fade-in duration-200"
+            className="flex items-start gap-2.5 rounded-xl bg-terracotta-950/70 border border-terracotta-500/40 px-3.5 py-2.5 text-xs font-medium text-terracotta-200 animate-in fade-in duration-200"
           >
-            <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>{state.error}</span>
@@ -122,7 +122,7 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
         {/* Full Name field (Signup Only) */}
         {type === 'signup' && (
           <div className="space-y-1.5">
-            <label htmlFor="fullName" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            <label htmlFor="fullName" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300">
               Full Name
             </label>
             <input
@@ -131,18 +131,18 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
               type="text"
               required
               disabled={isPending}
-              className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-base sm:text-sm text-input-text placeholder:text-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
+              className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 px-4 text-base sm:text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:bg-forest-950 focus:outline-hidden focus:ring-2 focus:ring-gold-500/25 transition-colors font-sans"
               placeholder="e.g. Minhaj Shafin"
             />
             {state.fieldErrors?.fullName && (
-              <p className="text-[11px] font-medium text-terracotta-600 mt-0.5">{state.fieldErrors.fullName[0]}</p>
+              <p className="text-[11px] font-medium text-terracotta-300 mt-0.5">{state.fieldErrors.fullName[0]}</p>
             )}
           </div>
         )}
 
         {/* Email Address field */}
         <div className="space-y-1.5">
-          <label htmlFor="email" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-text-secondary">
+          <label htmlFor="email" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300">
             Email Address
           </label>
           <input
@@ -152,24 +152,24 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
             autoComplete="email"
             required
             disabled={isPending}
-            className="block w-full h-12 rounded-xl border border-input-border bg-input-bg px-4 text-base sm:text-sm text-input-text placeholder:text-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
+            className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 px-4 text-base sm:text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:bg-forest-950 focus:outline-hidden focus:ring-2 focus:ring-gold-500/25 transition-colors font-sans"
             placeholder="e.g. shafin@example.com"
           />
           {state.fieldErrors?.email && (
-            <p className="text-[11px] font-medium text-terracotta-600 mt-0.5">{state.fieldErrors.email[0]}</p>
+            <p className="text-[11px] font-medium text-terracotta-300 mt-0.5">{state.fieldErrors.email[0]}</p>
           )}
         </div>
 
         {/* Password field */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-baseline">
-            <label htmlFor="password" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            <label htmlFor="password" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300">
               Password
             </label>
             {type === 'login' && (
               <Link
                 href="/forgot-password"
-                className="text-[11px] font-medium link-muted py-1"
+                className="text-[11px] font-medium text-forest-300 hover:text-gold-300 transition-colors py-1"
               >
                 Forgot password?
               </Link>
@@ -183,14 +183,14 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
               autoComplete={type === 'login' ? 'current-password' : 'new-password'}
               required
               disabled={isPending}
-              className="block w-full h-12 rounded-xl border border-input-border bg-input-bg pl-4 pr-12 text-base sm:text-sm text-input-text placeholder:text-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
+              className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 pl-4 pr-12 text-base sm:text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:bg-forest-950 focus:outline-hidden focus:ring-2 focus:ring-gold-500/25 transition-colors font-sans"
               placeholder={type === 'signup' ? 'Minimum 8 characters' : 'Enter your password'}
             />
             <button
               type="button"
               tabIndex={-1}
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-forest-700 transition-colors cursor-pointer"
+              className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-gold-300 transition-colors cursor-pointer"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -206,14 +206,14 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
             </button>
           </div>
           {state.fieldErrors?.password && (
-            <p className="text-[11px] font-medium text-terracotta-600 mt-0.5">{state.fieldErrors.password[0]}</p>
+            <p className="text-[11px] font-medium text-terracotta-300 mt-0.5">{state.fieldErrors.password[0]}</p>
           )}
         </div>
 
         {/* Confirm Password field (Signup Only) */}
         {type === 'signup' && (
           <div className="space-y-1.5">
-            <label htmlFor="confirmPassword" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-text-secondary">
+            <label htmlFor="confirmPassword" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300">
               Confirm Password
             </label>
             <div className="relative">
@@ -224,14 +224,14 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
                 autoComplete="new-password"
                 required
                 disabled={isPending}
-                className="block w-full h-12 rounded-xl border border-input-border bg-input-bg pl-4 pr-12 text-base sm:text-sm text-input-text placeholder:text-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
+                className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 pl-4 pr-12 text-base sm:text-sm text-cream-50 placeholder:text-forest-400 focus:border-gold-400 focus:bg-forest-950 focus:outline-hidden focus:ring-2 focus:ring-gold-500/25 transition-colors font-sans"
                 placeholder="Re-enter password"
               />
               <button
                 type="button"
                 tabIndex={-1}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-forest-700 transition-colors cursor-pointer"
+                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-gold-300 transition-colors cursor-pointer"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -247,7 +247,7 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
               </button>
             </div>
             {state.fieldErrors?.confirmPassword && (
-              <p className="text-[11px] font-medium text-terracotta-600 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
+              <p className="text-[11px] font-medium text-terracotta-300 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
             )}
           </div>
         )}
@@ -257,7 +257,7 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
           <button
             type="submit"
             disabled={isPending}
-            className="btn-primary flex w-full h-12 items-center justify-center gap-2 rounded-xl px-4 text-xs font-bold uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-60"
+            className="btn-accent flex w-full h-12 items-center justify-center gap-2 rounded-xl px-4 text-xs font-bold uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-60 shadow-xs active:scale-[0.99]"
           >
             {isPending ? (
               <>
@@ -275,17 +275,17 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
 
         {/* Divider */}
         <div className="relative my-3 flex items-center justify-center">
-          <div className="w-full border-t border-border-primary" />
-          <span className="bg-white/95 px-3 text-[10px] font-sans font-semibold text-text-secondary uppercase tracking-wider">
+          <div className="w-full border-t border-forest-800/90" />
+          <span className="bg-forest-900/95 px-3 text-[10px] font-sans font-semibold text-forest-400 uppercase tracking-wider">
             or
           </span>
-          <div className="w-full border-t border-border-primary" />
+          <div className="w-full border-t border-forest-800/90" />
         </div>
 
         {/* Continue as Guest Button */}
         <Link
           href="/products"
-          className="btn-secondary flex w-full h-12 items-center justify-center gap-2 rounded-xl px-4 text-xs font-semibold"
+          className="border border-forest-700/80 bg-forest-950/60 text-cream-100 hover:bg-forest-800 hover:text-gold-300 hover:border-gold-500/40 active:scale-[0.99] flex w-full h-12 items-center justify-center gap-2 rounded-xl px-4 text-xs font-semibold transition-colors"
         >
           Browse Shop as Guest &rarr;
         </Link>
@@ -293,21 +293,21 @@ export function AuthForm({ type, redirectTo = '' }: AuthFormProps) {
         {/* Bottom Toggle links */}
         <div className="pt-2 text-center text-xs">
           {type === 'login' ? (
-            <p className="text-text-secondary">
+            <p className="text-forest-300">
               Don&apos;t have an account?{' '}
               <Link
                 href={signupUrl}
-                className="font-bold link-editorial inline-block py-1"
+                className="font-bold text-gold-400 hover:text-gold-300 underline underline-offset-4 decoration-gold-400/40 hover:decoration-gold-300 inline-block py-1 transition-colors"
               >
                 Sign up
               </Link>
             </p>
           ) : (
-            <p className="text-text-secondary">
+            <p className="text-forest-300">
               Already have an account?{' '}
               <Link
                 href={loginUrl}
-                className="font-bold link-editorial inline-block py-1"
+                className="font-bold text-gold-400 hover:text-gold-300 underline underline-offset-4 decoration-gold-400/40 hover:decoration-gold-300 inline-block py-1 transition-colors"
               >
                 Sign in
               </Link>

@@ -19,12 +19,12 @@ export default function ResetPasswordPage() {
   )
 
   return (
-    <div className="w-full max-w-md bg-white/95 text-text-primary border border-border-primary rounded-3xl p-5 sm:p-8 shadow-atelier selection:bg-gold-500/20 selection:text-forest-900">
+    <div className="w-full max-w-md bg-forest-900/95 text-cream-50 border border-forest-800/90 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md selection:bg-gold-500/25 selection:text-gold-200">
       {/* Back Link */}
       <div className="mb-4">
         <Link
           href="/login"
-          className="inline-flex items-center gap-1.5 text-xs text-forest-600 hover:text-forest-900 font-medium py-1 group"
+          className="inline-flex items-center gap-1.5 text-xs text-forest-300 hover:text-gold-300 font-medium py-1 group transition-colors"
         >
           <span className="transition-transform group-hover:-translate-x-0.5">&larr;</span>
           <span>Back to Sign In</span>
@@ -32,34 +32,34 @@ export default function ResetPasswordPage() {
       </div>
 
       <div className="mb-5">
-        <p className="text-[10px] uppercase tracking-[0.25em] text-forest-500 font-bold mb-1">
+        <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-bold mb-1">
           Password Reset
         </p>
-        <h1 className="text-xl sm:text-2xl text-forest-950 font-medium tracking-tight font-display">
+        <h1 className="text-xl sm:text-2xl text-cream-50 font-medium tracking-tight font-display">
           New Password
         </h1>
-        <p className="mt-1 text-xs text-forest-600 font-light leading-relaxed">
+        <p className="mt-1 text-xs text-forest-200/90 font-light leading-relaxed">
           Please choose a strong new password for your account.
         </p>
       </div>
 
       {state.success ? (
         <div className="space-y-5 text-center py-2 animate-in fade-in duration-200">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-900/5 text-forest-800 border border-forest-200/80">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-forest-950 text-gold-400 border border-forest-800 shadow-inner">
             <svg className="h-7 w-7 stroke-[1.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-xl font-medium text-forest-950 tracking-tight font-display">
+          <h2 className="text-xl font-medium text-cream-50 tracking-tight font-display">
             Password Reset Complete
           </h2>
-          <p className="text-xs text-forest-600 max-w-xs mx-auto leading-relaxed font-light">
+          <p className="text-xs text-forest-200/90 max-w-xs mx-auto leading-relaxed font-light">
             Your password has been successfully reset! You can now sign in with your new credentials.
           </p>
           <div className="pt-2">
             <Link
               href="/login"
-              className="btn-primary inline-flex h-12 w-full items-center justify-center rounded-xl px-6 text-xs font-bold uppercase tracking-wider"
+              className="btn-accent inline-flex h-12 w-full items-center justify-center rounded-xl px-6 text-xs font-bold uppercase tracking-wider"
             >
               Go to Sign In
             </Link>
@@ -70,9 +70,9 @@ export default function ResetPasswordPage() {
           {state.error && (
             <div
               role="alert"
-              className="flex items-start gap-2.5 rounded-xl bg-terracotta-100 border border-terracotta-500/30 px-3.5 py-2.5 text-xs font-medium text-terracotta-800 animate-in fade-in duration-200"
+              className="flex items-start gap-2.5 rounded-xl bg-terracotta-950/70 border border-terracotta-500/40 px-3.5 py-2.5 text-xs font-medium text-terracotta-200 animate-in fade-in duration-200"
             >
-              <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <svg className="h-4 w-4 shrink-0 mt-0.5 text-terracotta-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <span>{state.error}</span>
@@ -80,7 +80,7 @@ export default function ResetPasswordPage() {
           )}
 
           <div className="space-y-1.5">
-            <label htmlFor="password" className="block text-[11px] font-bold uppercase tracking-wider text-forest-700">
+            <label htmlFor="password" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300">
               New Password
             </label>
             <div className="relative">
@@ -91,14 +91,14 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 required
                 disabled={isPending}
-                className="block w-full h-12 rounded-xl border border-input-border bg-input-bg pl-4 pr-12 text-base sm:text-sm text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
+                className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 pl-4 pr-12 text-base sm:text-sm text-cream-50 placeholder-forest-400 focus:border-gold-400 focus:bg-forest-950 focus:outline-hidden focus:ring-2 focus:ring-gold-500/25 transition-colors font-sans"
                 placeholder="Minimum 8 characters"
               />
               <button
                 type="button"
                 tabIndex={-1}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-forest-700 transition-colors cursor-pointer"
+                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-gold-300 transition-colors cursor-pointer"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -114,12 +114,12 @@ export default function ResetPasswordPage() {
               </button>
             </div>
             {state.fieldErrors?.password && (
-              <p className="text-[11px] font-bold text-terracotta-600 mt-0.5">{state.fieldErrors.password[0]}</p>
+              <p className="text-[11px] font-medium text-terracotta-300 mt-0.5">{state.fieldErrors.password[0]}</p>
             )}
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="confirmPassword" className="block text-[11px] font-bold uppercase tracking-wider text-forest-700">
+            <label htmlFor="confirmPassword" className="block text-[11px] font-sans font-semibold uppercase tracking-[0.16em] text-gold-300">
               Confirm New Password
             </label>
             <div className="relative">
@@ -130,14 +130,14 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 required
                 disabled={isPending}
-                className="block w-full h-12 rounded-xl border border-input-border bg-input-bg pl-4 pr-12 text-base sm:text-sm text-input-text placeholder-forest-400 focus:border-input-border-focus focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-input-focus-ring transition-colors"
+                className="block w-full h-12 rounded-xl border border-forest-700 bg-forest-950/80 pl-4 pr-12 text-base sm:text-sm text-cream-50 placeholder-forest-400 focus:border-gold-400 focus:bg-forest-950 focus:outline-hidden focus:ring-2 focus:ring-gold-500/25 transition-colors font-sans"
                 placeholder="Re-enter new password"
               />
               <button
                 type="button"
                 tabIndex={-1}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-forest-700 transition-colors cursor-pointer"
+                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-forest-400 hover:text-gold-300 transition-colors cursor-pointer"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -153,7 +153,7 @@ export default function ResetPasswordPage() {
               </button>
             </div>
             {state.fieldErrors?.confirmPassword && (
-              <p className="text-[11px] font-bold text-terracotta-600 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
+              <p className="text-[11px] font-medium text-terracotta-300 mt-0.5">{state.fieldErrors.confirmPassword[0]}</p>
             )}
           </div>
 
@@ -161,7 +161,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="btn-primary flex w-full h-12 items-center justify-center gap-2 rounded-xl px-4 text-xs font-bold uppercase tracking-wider disabled:opacity-60"
+              className="btn-accent flex w-full h-12 items-center justify-center gap-2 rounded-xl px-4 text-xs font-bold uppercase tracking-wider disabled:opacity-60 shadow-xs active:scale-[0.99]"
             >
               {isPending ? 'Updating Password...' : 'Reset Password'}
             </button>
