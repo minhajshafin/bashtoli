@@ -20,12 +20,12 @@ For setup instructions, technical architecture, database schemas, and operationa
 
 | Document | Purpose |
 |---|---|
-| **[Documentation Index](./docs/README.md)** | Overview of all documentation and current project status |
-| **[Store Owner Guide & Runbook](./docs/admin-guide.md)** | Step-by-step operations manual for staff, visual CMS controls, and incident runbooks |
-| **[Setup & Deployment Guide](./docs/deployment.md)** | Local environment setup, Supabase configuration, Upstash Redis, and Vercel production deployment |
-| **[Product Requirements (PRD)](./docs/prd.md)** | Product vision, functional requirements, and fulfillment specifications |
 | **[System Architecture](./docs/architecture.md)** | System design, route structure, authentication flows, rate limiting, and component layers |
 | **[Database Schema & Migrations](./docs/database.md)** | Consolidated 6-file migration structure, master script, table relationships, and RLS policies |
-| **[Tech Stack & Environment](./docs/tech-stack.md)** | Pinned dependency matrix, security guardrails, and environment variable references |
+| **[Setup & Deployment Guide](./docs/deployment.md)** | Local environment setup, Supabase configuration, Upstash Redis, and Vercel production deployment |
+| **[Launch Readiness Checklist](./docs/LAUNCH_CHECKLIST.md)** | Production launch readiness, Supabase Auth email templates, and security verification |
+| **[Store Owner Guide & Runbook](./docs/admin-guide.md)** | Step-by-step operations manual for staff, visual CMS controls, and incident runbooks |
 | **[Testing & QA](./docs/testing.md)** | Vitest unit test suite and Playwright end-to-end regression testing runbook |
-| **[Decision Log](./docs/open-items.md)** | Record of resolved architectural decisions and post-launch roadmap |
+| **[Demo Catalog Guide](./docs/demo-catalog.md)** | Demo catalog structure, placeholder generator, and staging seed procedures |
+| **[UI/UX Redesign](./docs/redesign.md)** | Active design tokens, responsive layout specifications, and component modernization log |
+| **[Decision Log & Open Items](./docs/open-items.md)** | Record of resolved architectural decisions and deferred component refactors |
