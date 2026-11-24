@@ -1,5 +1,6 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { AuthForm } from '@/components/storefront/auth-form'
 
@@ -23,6 +24,7 @@ interface SignupPageProps {
 export const instant = false
 
 export default async function SignupPage({ searchParams }: SignupPageProps) {
+  await connection()
   const resolvedSearchParams = searchParams ? await searchParams : undefined
   const rawRedirectTo = resolvedSearchParams?.redirectTo
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { AuthForm } from '@/components/storefront/auth-form'
 
@@ -24,6 +25,7 @@ import { safeRedirectPath } from '@/lib/utils/safe-redirect'
 export const instant = false
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
+  await connection()
   const resolvedSearchParams = await searchParams
   const rawRedirectTo = resolvedSearchParams?.redirectTo
   const redirectTo = safeRedirectPath(rawRedirectTo, '/products')

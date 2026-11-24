@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { CategoryList, type CategoryWithCount } from '@/components/admin/category-list'
 import { CategoryForm } from '@/components/admin/category-form'
@@ -26,6 +27,7 @@ export default async function CategoriesPage({
 }: {
   searchParams: Promise<{ action?: string; id?: string }>
 }) {
+  await connection()
   const { action, id } = await searchParams
 
   const supabase = await createClient()

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { getAdminHeroSlides } from '@/lib/queries/hero-slides'
 import { getAdminCategoryCollageData } from '@/lib/queries/category-collage'
 import { HeroSlidesManager } from '@/components/admin/hero-slides-manager'
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export const instant = false
 
 export default async function AdminStorefrontPage() {
+  await connection()
   const [{ slides, error: heroError }, { featured, available }] =
     await Promise.all([getAdminHeroSlides(), getAdminCategoryCollageData()])
 

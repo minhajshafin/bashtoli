@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { CheckoutForm } from '@/components/storefront/checkout-form'
 import { CheckoutSteps } from '@/components/storefront/checkout-steps'
@@ -18,6 +19,7 @@ export const instant = false
  * Harmonized with the rest of the storefront (laid-paper canvas, displays, and cards).
  */
 export default async function CheckoutPage() {
+  await connection()
   const supabase = await createClient()
 
   // Concurrently get session details

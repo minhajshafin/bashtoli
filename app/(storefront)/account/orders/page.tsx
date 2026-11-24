@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { requireUser } from '@/lib/supabase/require-user'
 import React from 'react'
 import { fetchCustomerOrders } from '@/lib/queries/customer-orders'
@@ -22,6 +23,7 @@ export const instant = false
  * Server component that retrieves and shows customer checkouts and matching claimable guest orders.
  */
 export default async function OrderHistoryPage() {
+  await connection()
   await requireUser('/account/orders')
 
   // 1. Fetch user order history

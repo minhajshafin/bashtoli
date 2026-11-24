@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { Sidebar } from '@/components/admin/sidebar'
 import { Header } from '@/components/admin/header'
 import { AdminConfirmDialogProvider } from '@/components/admin/admin-confirm-dialog'
@@ -24,11 +25,12 @@ export const instant = false
  *
  * Layout: fixed sidebar on the left, scrollable main content on the right.
  */
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  await connection()
   return (
     <ToastProvider>
       <AdminConfirmDialogProvider>

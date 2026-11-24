@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { connection } from 'next/server'
 import { Plus, ShoppingBag } from 'lucide-react'
 import { getServerProfile } from '@/lib/supabase/get-server-profile'
 import { fetchDashboardMetrics, fetchLowStockList } from '@/lib/queries/dashboard'
@@ -26,6 +27,7 @@ interface PageProps {
  * so Header + this page share one DB round-trip (ARCH-3).
  */
 export default async function AdminPage({ searchParams }: PageProps) {
+  await connection()
   const resolvedSearchParams = await searchParams
   const thresholdParam = resolvedSearchParams?.threshold
   const parsedThreshold = parseInt(thresholdParam ?? '', 10)

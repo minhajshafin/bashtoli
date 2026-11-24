@@ -1,6 +1,7 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { fetchStaffList } from '@/lib/actions/staff'
 import { PromoteUserForm } from '@/components/admin/promote-user-form'
@@ -17,6 +18,7 @@ export const instant = false
  * Staff management route page (restricted to administrators only).
  */
 export default async function StaffManagementPage() {
+  await connection()
   const supabase = await createClient()
 
   // 1. Authenticate user

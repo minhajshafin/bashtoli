@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { connection } from 'next/server'
 import { ExternalLink, Shield, ShieldCheck } from 'lucide-react'
 import { getServerProfile } from '@/lib/supabase/get-server-profile'
 import { LogoutButton } from './logout-button'
@@ -42,6 +43,7 @@ function ShieldAlertIcon({ className }: { className?: string }) {
  * - Sign out button
  */
 export async function Header() {
+  await connection()
   const profile = await getServerProfile()
 
   const displayName = profile?.full_name ?? profile?.email?.split('@')[0] ?? 'Admin User'

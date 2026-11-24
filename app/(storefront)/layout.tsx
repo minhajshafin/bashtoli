@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import React, { Suspense } from 'react'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { CartProvider } from '@/lib/cart/cart-context'
 import { Footer } from '@/components/storefront/footer'
@@ -65,6 +66,7 @@ function StorefrontLayoutFallback({ children }: { children: React.ReactNode }) {
 }
 
 async function AuthAwareShell({ children }: { children: React.ReactNode }) {
+  await connection()
   const supabase = await createClient()
 
   // Fetch auth user and profile details

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { connection } from 'next/server'
 import {
   Plus,
   Search,
@@ -30,6 +31,7 @@ interface PageProps {
 }
 
 export default async function ProductsPage({ searchParams }: PageProps) {
+  await connection()
   const { status = 'all', search = '', page: pageParam = '1' } = await searchParams
 
   const parsedPage = Math.max(1, parseInt(pageParam, 10) || 1)

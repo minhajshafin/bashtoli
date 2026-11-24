@@ -1,5 +1,6 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
+import { connection } from 'next/server'
 import { fetchAdminOrderDetail } from '@/lib/queries/orders'
 import { OrderDetail } from '@/components/admin/order-detail'
 
@@ -21,6 +22,7 @@ interface PageProps {
  * Server component loading full snapshot information for a specific order.
  */
 export default async function AdminOrderDetailPage({ params }: PageProps) {
+  await connection()
   const resolvedParams = await params
   const orderId = resolvedParams.id
 

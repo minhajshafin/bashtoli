@@ -1,4 +1,5 @@
 import React from 'react'
+import { connection } from 'next/server'
 import { fetchAdminOrders, ORDERS_PAGE_SIZE } from '@/lib/queries/orders'
 import { OrderList } from '@/components/admin/order-list'
 
@@ -22,6 +23,7 @@ interface PageProps {
  * Server component loading a paginated page of orders with optional search and status filters.
  */
 export default async function AdminOrdersPage({ searchParams }: PageProps) {
+  await connection()
   const resolvedSearchParams = await searchParams
   const status = resolvedSearchParams?.status || undefined
   const search = resolvedSearchParams?.search || undefined

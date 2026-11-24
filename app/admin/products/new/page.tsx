@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { fetchAdminCategories } from '@/lib/queries/admin-products'
 import { ProductForm } from '@/components/admin/product-form'
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export const instant = false
 
 export default async function NewProductPage() {
+  await connection()
   let categories: Awaited<ReturnType<typeof fetchAdminCategories>> = []
 
   try {

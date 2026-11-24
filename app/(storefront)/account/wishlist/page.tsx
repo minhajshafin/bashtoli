@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/supabase/require-user'
 import React from 'react'
@@ -28,6 +29,7 @@ const QUICK_CATEGORIES = [
  * with live stock levels, and renders mobile-first cards with 1-tap Add to Bag capability.
  */
 export default async function WishlistPage() {
+  await connection()
   const user = await requireUser('/account/wishlist')
   const supabase = await createClient()
 

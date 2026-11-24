@@ -1,4 +1,5 @@
 import React from 'react'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/supabase/require-user'
 import { AccountLayoutWrapper } from '@/components/storefront/account-layout-wrapper'
@@ -20,6 +21,7 @@ export default async function AccountLayout({
 }: {
   children: React.ReactNode
 }) {
+  await connection()
   const user = await requireUser('/account')
   const supabase = await createClient()
 

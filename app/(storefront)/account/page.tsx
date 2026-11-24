@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/supabase/require-user'
 import { fetchCustomerOrders } from '@/lib/queries/customer-orders'
@@ -24,6 +25,7 @@ export async function generateMetadata() {
 export const instant = false
 
 export default async function AccountPage() {
+  await connection()
   const user = await requireUser('/account')
   const supabase = await createClient()
 

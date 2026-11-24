@@ -1,3 +1,4 @@
+import { connection } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/supabase/require-user'
 import { ProfileForm } from '@/components/storefront/profile-form'
@@ -18,6 +19,7 @@ export const instant = false
  * Server component that authenticates the user and provides profile details to the interactive client form.
  */
 export default async function ProfilePage() {
+  await connection()
   const user = await requireUser('/account/profile')
   const supabase = await createClient()
 

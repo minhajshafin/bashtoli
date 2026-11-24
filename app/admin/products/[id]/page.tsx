@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { connection } from 'next/server'
 import {
   fetchAdminProductDetail,
   type AdminProductDetail,
@@ -21,6 +22,7 @@ interface PageProps {
 }
 
 export default async function EditProductPage({ params }: PageProps) {
+  await connection()
   const { id } = await params
 
   let detail: AdminProductDetail | null = null
