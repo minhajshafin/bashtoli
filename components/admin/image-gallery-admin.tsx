@@ -26,7 +26,6 @@ export function ImageGalleryAdmin({
   const [error, setError] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
 
-  // Sort local images array to ensure order matches sort_order
   const sortedImages = [...images].sort((a, b) => a.sort_order - b.sort_order)
 
   async function handleDelete(imageId: string) {
@@ -68,14 +67,13 @@ export function ImageGalleryAdmin({
     if (res.error) {
       setError(res.error)
     } else {
-      // Replace blocking alert() with inline feedback (BUG-4)
       setSuccessMsg('Alt text saved.')
       setTimeout(() => setSuccessMsg(null), 3000)
       router.refresh()
     }
   }
 
-  async function moveImage(currentIndex: number, direction: 'left' | 'right') {
+  function moveImage(currentIndex: number, direction: 'left' | 'right') {
     const targetIndex = direction === 'left' ? currentIndex - 1 : currentIndex + 1
     if (targetIndex < 0 || targetIndex >= sortedImages.length) {
       return
@@ -83,12 +81,10 @@ export function ImageGalleryAdmin({
 
     setError(null)
 
-    // Swap sort_order between the two items
     const updatedImages = [...sortedImages]
     const currentSort = updatedImages[currentIndex].sort_order
     const targetSort = updatedImages[targetIndex].sort_order
 
-    // Optimistically update positions locally or submit
     startTransition(async () => {
       const res = await saveProductImageOrder([
         { id: updatedImages[currentIndex].id, sort_order: targetSort },
@@ -105,25 +101,18 @@ export function ImageGalleryAdmin({
 
   if (images.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-300 py-12 text-center text-sm text-slate-400 bg-white p-6 shadow-sm">
+      <div className="rounded-xl border border-dashed border-ink-400/70 py-10 text-center text-sm text-ink-600 bg-paper-100/70 p-6">
         No images uploaded yet. Use the uploader below to add product photos.
       </div>
     )
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="mb-4">
-        <h2 className="text-base font-bold text-slate-900">Product Gallery</h2>
-        <p className="text-xs text-slate-500">
-          Manage product images, update alt texts, and adjust display ordering.
-        </p>
-      </div>
-
+    <div className="space-y-4">
       {error && (
         <div
           role="alert"
-          className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
+          className="rounded-xl border border-signal-danger-border bg-signal-danger-bg px-4 py-3 text-sm font-medium text-signal-danger"
         >
           {error}
         </div>
@@ -132,99 +121,91 @@ export function ImageGalleryAdmin({
       {successMsg && (
         <div
           role="status"
-          className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+          className="rounded-xl border border-ink-800 bg-ink-950 px-4 py-3 text-sm font-medium text-paper-50"
         >
           {successMsg}
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {sortedImages.map((img, index) => {
-          return (
-            <div
-              key={img.id}
-              className="flex flex-col rounded-lg border border-slate-200 bg-white overflow-hidden shadow-xs group"
-            >
-              {/* Image Preview Container */}
-              <div className="relative aspect-square w-full bg-slate-50 border-b border-slate-100 flex items-center justify-center overflow-hidden">
-                <Image
-                  src={img.url}
-                  alt={img.alt_text ?? 'Product Image'}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-contain p-2"
-                  unoptimized // avoid next image optimization limits on external storage domains
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {sortedImages.map((img, index) => (
+          <div
+            key={img.id}
+            className="flex flex-col rounded-2xl border border-paper-300 bg-paper-50 overflow-hidden shadow-subtle group"
+          >
+            {/* Image Preview Container */}
+            <div className="relative aspect-square w-full bg-paper-200/70 border-b border-paper-300 flex items-center justify-center overflow-hidden">
+              <Image
+                src={img.url}
+                alt={img.alt_text ?? 'Product Image'}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-contain p-2"
+                unoptimized
+              />
+
+              <span className="absolute top-2.5 left-2.5 rounded-lg bg-ink-950 px-2.5 py-1 font-mono text-[11px] font-bold text-paper-50">
+                POS {index + 1}
+              </span>
+
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => handleDelete(img.id)}
+                aria-label={`Delete image ${index + 1}`}
+                title="Delete image"
+                className="absolute top-2.5 right-2.5 flex min-h-[38px] min-w-[38px] items-center justify-center rounded-xl bg-signal-danger text-paper-50 hover:bg-signal-danger-hover active:scale-95 transition-[transform,opacity,background-color] shadow-elevation-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {deletingId === img.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-paper-50" aria-hidden="true" />
+                ) : (
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                )}
+              </button>
+            </div>
+
+            {/* Image Actions & Alt Text Edit */}
+            <div className="flex-1 p-3.5 space-y-3 flex flex-col justify-between">
+              <div className="space-y-1.5">
+                <label
+                  htmlFor={`alt-${img.id}`}
+                  className="block font-mono text-[10px] font-semibold uppercase tracking-wider text-ink-600"
+                >
+                  Alt Text
+                </label>
+                <input
+                  id={`alt-${img.id}`}
+                  type="text"
+                  maxLength={150}
+                  defaultValue={img.alt_text ?? ''}
+                  placeholder="e.g. Fine Bamboo Chair angle view"
+                  onBlur={(e) => handleAltSave(img.id, e.target.value)}
+                  className="w-full min-h-[38px] rounded-lg border border-ink-400/80 bg-paper-50 px-2.5 py-1.5 text-xs text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
                 />
+              </div>
 
-                {/* Badge showing index / order */}
-                <span className="absolute top-2 left-2 rounded-md bg-slate-950/75 px-2 py-0.5 text-xs font-semibold text-white">
-                  Pos {index + 1}
-                </span>
-
-                {/* Delete overlay button */}
+              <div className="flex items-center justify-between gap-2 border-t border-paper-200 pt-2.5">
                 <button
                   type="button"
-                  disabled={isPending}
-                  onClick={() => handleDelete(img.id)}
-                  aria-label="Delete image"
-                  title="Delete image"
-                  className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-rose-600 text-white hover:bg-rose-700 hover:scale-105 active:scale-95 transition-all shadow-md opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={index === 0 || isPending}
+                  onClick={() => moveImage(index, 'left')}
+                  className="min-h-[36px] rounded-lg border border-paper-300 bg-paper-50 px-2.5 py-1 text-xs font-semibold text-ink-900 hover:bg-paper-200 disabled:opacity-35 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
-                  {deletingId === img.id ? (
-                    <Loader2 className="h-4 w-4 animate-spin text-white" />
-                  ) : (
-                    <Trash2 className="h-4 w-4" />
-                  )}
+                  ← Move Left
+                </button>
+
+                <button
+                  type="button"
+                  disabled={index === sortedImages.length - 1 || isPending}
+                  onClick={() => moveImage(index, 'right')}
+                  className="min-h-[36px] rounded-lg border border-paper-300 bg-paper-50 px-2.5 py-1 text-xs font-semibold text-ink-900 hover:bg-paper-200 disabled:opacity-35 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                >
+                  Move Right →
                 </button>
               </div>
-
-              {/* Image Actions & Alt Text Edit */}
-              <div className="flex-1 p-3 space-y-3 flex flex-col justify-between">
-                {/* Alt Text input */}
-                <div className="space-y-1">
-                  <label
-                    htmlFor={`alt-${img.id}`}
-                    className="text-[10px] font-bold uppercase tracking-wider text-slate-400"
-                  >
-                    Alt Text
-                  </label>
-                  <div className="flex gap-1.5">
-                    <input
-                      id={`alt-${img.id}`}
-                      type="text"
-                      maxLength={150}
-                      defaultValue={img.alt_text ?? ''}
-                      placeholder="e.g. Fine Bamboo Chair angle view"
-                      onBlur={(e) => handleAltSave(img.id, e.target.value)}
-                      className="flex-1 rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Move Actions */}
-                <div className="flex items-center justify-between border-t border-slate-100 pt-2.5">
-                  <button
-                    type="button"
-                    disabled={index === 0 || isPending}
-                    onClick={() => moveImage(index, 'left')}
-                    className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-white"
-                  >
-                    ← Move Left
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={index === sortedImages.length - 1 || isPending}
-                    onClick={() => moveImage(index, 'right')}
-                    className="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-white"
-                  >
-                    Move Right →
-                  </button>
-                </div>
-              </div>
             </div>
-          )
-        })}
+          </div>
+        ))}
       </div>
     </div>
   )

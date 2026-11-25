@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Plus, X } from 'lucide-react'
 import { saveProductOptionsAndValues } from '@/lib/actions/variants'
 import { useToast } from '@/components/ui/toast'
 
 type OptionInput = {
   name: string
-  valuesString: string // comma-separated values input
+  valuesString: string
 }
 
 export function OptionManager({
@@ -61,7 +62,6 @@ export function OptionManager({
     setError(null)
     setSuccess(false)
 
-    // Format options to match action requirements
     const formattedOptions = options
       .map((opt) => ({
         name: opt.name.trim(),
@@ -84,10 +84,11 @@ export function OptionManager({
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-paper-300 bg-paper-50 p-6 shadow-subtle">
       <div className="mb-4">
-        <h2 className="text-base font-bold text-slate-900">Product Options</h2>
-        <p className="text-xs text-slate-500">
+        <p className="admin-kicker text-ink-500 mb-1">Variant Matrix</p>
+        <h2 className="admin-section-title text-ink-950">Product Options</h2>
+        <p className="text-xs text-ink-600 mt-1">
           Define option dimensions like Size or Color, and specify their values.
         </p>
       </div>
@@ -95,7 +96,7 @@ export function OptionManager({
       {error && (
         <div
           role="alert"
-          className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
+          className="mb-4 rounded-xl border border-signal-danger-border bg-signal-danger-bg px-4 py-3 text-sm font-medium text-signal-danger"
         >
           {error}
         </div>
@@ -103,8 +104,8 @@ export function OptionManager({
 
       {success && (
         <div
-          role="alert"
-          className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700"
+          role="status"
+          className="mb-4 rounded-xl border border-ink-800 bg-ink-950 px-4 py-3 text-sm font-medium text-paper-50"
         >
           Options saved and variants synchronized successfully!
         </div>
@@ -114,23 +115,12 @@ export function OptionManager({
         {options.map((opt, index) => (
           <div
             key={index}
-            className="relative flex flex-col gap-3 rounded-lg border border-slate-100 bg-slate-50/50 p-4 sm:flex-row sm:items-start"
+            className="relative flex flex-col gap-3 rounded-xl border border-paper-300 bg-paper-100/80 p-4 sm:flex-row sm:items-end"
           >
-            {/* Remove Option Button */}
-            <button
-              type="button"
-              onClick={() => removeOptionDimension(index)}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full text-slate-400 hover:bg-slate-200 hover:text-slate-600 sm:relative sm:top-auto sm:right-auto sm:mt-8"
-              aria-label="Remove option"
-            >
-              ✕
-            </button>
-
-            {/* Option Name */}
-            <div className="flex-1 space-y-1">
+            <div className="flex-1 space-y-1.5">
               <label
                 htmlFor={`opt-name-${index}`}
-                className="text-xs font-semibold text-slate-600"
+                className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-ink-700"
               >
                 Option Name
               </label>
@@ -149,15 +139,14 @@ export function OptionManager({
                   handleOptionChange(index, 'name', e.target.value)
                 }
                 placeholder="e.g. Size or Color"
-                className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className="block w-full min-h-[44px] rounded-xl border border-ink-400/80 bg-paper-50 px-3.5 py-2 text-sm text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
               />
             </div>
 
-            {/* Option Values (Comma Separated) */}
-            <div className="flex-[2] space-y-1">
+            <div className="flex-[2] space-y-1.5">
               <label
                 htmlFor={`opt-values-${index}`}
-                className="text-xs font-semibold text-slate-600"
+                className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-ink-700"
               >
                 Values (comma separated)
               </label>
@@ -176,15 +165,25 @@ export function OptionManager({
                   handleOptionChange(index, 'valuesString', e.target.value)
                 }
                 placeholder="e.g. S, M, L or Red, Blue"
-                className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className="block w-full min-h-[44px] rounded-xl border border-ink-400/80 bg-paper-50 px-3.5 py-2 text-sm text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
               />
             </div>
+
+            <button
+              type="button"
+              onClick={() => removeOptionDimension(index)}
+              className="absolute top-2.5 right-2.5 sm:relative sm:top-auto sm:right-auto inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-paper-300 bg-paper-50 text-ink-600 hover:bg-signal-danger-bg hover:text-signal-danger hover:border-signal-danger-border transition-colors cursor-pointer shrink-0"
+              aria-label={`Remove option ${opt.name || index + 1}`}
+              title="Remove option"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
           </div>
         ))}
 
         {options.length === 0 && (
-          <div className="rounded-lg border border-dashed border-slate-300 py-6 text-center text-sm text-slate-400">
-            No options defined. This product will have a single default variant.
+          <div className="rounded-xl border border-dashed border-ink-400/70 py-7 text-center text-sm text-ink-600">
+            No options defined. This product will use a single default variant.
           </div>
         )}
 
@@ -193,16 +192,17 @@ export function OptionManager({
             type="button"
             onClick={addOptionDimension}
             disabled={options.length >= 3}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-ink-400/70 bg-paper-50 px-4 py-2 text-xs font-bold text-ink-950 hover:bg-paper-200 disabled:cursor-not-allowed disabled:opacity-50 transition-colors cursor-pointer"
           >
-            + Add Option Dimension
+            <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Add Option Dimension</span>
           </button>
 
           <button
             type="button"
             onClick={handleSave}
             disabled={isPending}
-            className="rounded-lg bg-indigo-600 px-5 py-2 text-xs font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
+            className="min-h-[44px] rounded-xl bg-ink-950 px-5 py-2 text-xs font-bold text-paper-50 hover:bg-ink-800 disabled:opacity-50 transition-colors cursor-pointer"
           >
             {isPending ? 'Syncing...' : 'Save & Generate Variants'}
           </button>

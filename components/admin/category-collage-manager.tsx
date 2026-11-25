@@ -170,31 +170,39 @@ export function CategoryCollageManager({
   }
 
   return (
-    <div className="space-y-8 pt-6 border-t border-slate-200">
+    <section
+      className="space-y-6 pt-8 border-t border-paper-300"
+      aria-labelledby="category-collage-heading"
+    >
       <input
         ref={fileInputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
         className="hidden"
+        aria-hidden="true"
+        tabIndex={-1}
         onChange={handleImageFileChange}
       />
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-300 pb-5">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Category Grid Collage</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="admin-kicker text-ink-500 mb-1">Bento Showcase</p>
+          <h2 id="category-collage-heading" className="admin-section-title text-ink-950">
+            Category Grid Collage
+          </h2>
+          <p className="text-xs text-ink-600 mt-1">
             Select up to 7 categories to showcase in the asymmetric homepage collage. Slots #1 &amp; #3 are prominent tall vertical cards.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <span
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-[11px] font-bold border ${
               featured.length >= MAX_FEATURED_CATEGORIES
-                ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                ? 'bg-signal-warning-bg text-signal-warning border-signal-warning-border'
+                : 'bg-ink-950 text-paper-50 border-ink-950'
             }`}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+            <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
             {featured.length} / {MAX_FEATURED_CATEGORIES} Slots Filled
           </span>
         </div>
@@ -202,10 +210,11 @@ export function CategoryCollageManager({
 
       {feedback && (
         <div
-          className={`rounded-xl border p-4 text-sm font-medium transition-all ${
+          role={feedback.type === 'error' ? 'alert' : 'status'}
+          className={`rounded-2xl border p-4 text-sm font-medium transition-colors ${
             feedback.type === 'success'
-              ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-              : 'border-rose-200 bg-rose-50 text-rose-900'
+              ? 'border-ink-800 bg-ink-950 text-paper-50'
+              : 'border-signal-danger-border bg-signal-danger-bg text-signal-danger'
           }`}
         >
           {feedback.message}
@@ -213,12 +222,10 @@ export function CategoryCollageManager({
       )}
 
       <div className="space-y-4">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700">
-          Current Collage Slots
-        </h3>
+        <h3 className="admin-kicker text-ink-700">Current Collage Slots</h3>
 
         {featured.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-xs text-slate-500">
+          <div className="rounded-2xl border border-dashed border-ink-400/70 bg-paper-50 p-8 text-center text-xs text-ink-600">
             No categories are currently featured on the homepage collage. Select categories from the list below to populate the 7 slots.
           </div>
         ) : (
@@ -246,6 +253,6 @@ export function CategoryCollageManager({
         isPending={isPending}
         onAdd={(c) => handleToggle(c, true)}
       />
-    </div>
+    </section>
   )
 }

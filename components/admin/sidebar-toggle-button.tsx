@@ -10,11 +10,12 @@ export function SidebarToggleButton() {
   return (
     <button
       id="admin-sidebar-mobile-toggle"
+      type="button"
       onClick={handleToggle}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-800 md:hidden transition-colors"
-      aria-label="Open sidebar menu"
+      className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-ink-400/60 bg-paper-50 text-ink-950 hover:bg-paper-200 md:hidden transition-colors cursor-pointer"
+      aria-label="Open navigation menu"
     >
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>

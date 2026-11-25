@@ -50,6 +50,35 @@
   /* Typography */
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Garamond, Georgia, serif;
   --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Monochrome Dual-Tone Admin Studio Tokens (Obsidian Ink & Alabaster Paper) */
+  --color-paper-50: #fcfbf9;
+  --color-paper-100: #f4f3ef;
+  --color-paper-200: #eae8e1;
+  --color-paper-300: #d8d5cc;
+  --color-paper-400: #b8b4a8;
+  --color-paper-500: #a3a098;
+
+  --color-ink-950: #0c0c0e;
+  --color-ink-900: #151518;
+  --color-ink-800: #202024;
+  --color-ink-700: #2e2e34;
+  --color-ink-600: #45454d;
+  --color-ink-500: #5c5c66;
+  --color-ink-400: #767680;
+
+  /* Restrained Architectural Signal Tokens (Errors, Destructive Actions, Critical Alerts) */
+  --color-signal-danger: #a62b21;
+  --color-signal-danger-hover: #881f17;
+  --color-signal-danger-bg: #faecea;
+  --color-signal-danger-border: #e5b4af;
+  --color-signal-warning: #8a5300;
+  --color-signal-warning-bg: #fbf3e4;
+  --color-signal-warning-border: #e3c896;
+  --color-signal-success: #175e3c;
+  --color-signal-success-bg: #ebf5ef;
+  --color-signal-success-border: #b5d9c4;
 
   /* Forest greens — Harmonized Stationery Moss */
   --color-forest-950: #0a160f;
@@ -825,6 +854,268 @@ input[type="search"]::-webkit-search-results-decoration {
   );
   background-size: 200% 100%;
   animation: skeletonShimmer 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Admin Studio: Modern Black & White Dual-Tone System
+   ========================================================================== */
+.admin-theme {
+  --color-focus-ring: var(--color-ink-950);
+  --color-focus-ring-offset: var(--color-paper-50);
+  color-scheme: light;
+}
+
+.admin-theme ::selection {
+  background: var(--color-ink-950);
+  color: var(--color-paper-50);
+}
+
+.admin-theme ::-webkit-scrollbar-thumb {
+  background: var(--color-ink-400);
+}
+.admin-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-600);
+}
+
+/* Fluid Typography Hierarchy for Admin Control Studio */
+.admin-page-title {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 1.8vw + 1rem, 2.25rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.admin-section-title {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1.05rem, 0.7vw + 0.85rem, 1.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.admin-metric-value {
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.65rem, 1.8vw + 1rem, 2.3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.admin-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.skeleton-shimmer-mono {
+  background: linear-gradient(
+    90deg,
+    rgba(234, 232, 225, 0.7) 0%,
+    rgba(252, 251, 249, 0.98) 50%,
+    rgba(234, 232, 225, 0.7) 100%
+  );
+  background-size: 200% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-shimmer-mono {
+    animation: skeletonShimmer 1.8s infinite cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* Native <dialog> Top-Layer Confirm Modal & Scroll Containment */
+dialog.admin-dialog {
+  opacity: 0;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: calc(100vw - 2rem);
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.admin-dialog {
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+dialog.admin-dialog[open]:where(:not([data-closing])) {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.admin-dialog[open]:where(:not([data-closing])) {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@starting-style {
+  dialog.admin-dialog[open]:where(:not([data-closing])) {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    dialog.admin-dialog[open]:where(:not([data-closing])) {
+      transform: translateY(8px) scale(0.97);
+    }
+  }
+}
+
+dialog.admin-dialog:modal,
+dialog.admin-drawer-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.admin-dialog::backdrop,
+dialog.admin-drawer-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(12, 12, 14, 0);
+  transition-property: background-color, display, overlay;
+  transition-duration: 0.24s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+}
+
+dialog.admin-dialog[open]:where(:not([data-closing]))::backdrop,
+dialog.admin-drawer-dialog[open]:where(:not([data-closing]))::backdrop {
+  background-color: rgba(12, 12, 14, 0.72);
+}
+
+@starting-style {
+  dialog.admin-dialog[open]:where(:not([data-closing]))::backdrop,
+  dialog.admin-drawer-dialog[open]:where(:not([data-closing]))::backdrop {
+    background-color: rgba(12, 12, 14, 0);
+  }
+}
+
+/* Native <dialog> Mobile Navigation Drawer */
+dialog.admin-drawer-dialog {
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-width: none;
+  max-height: none;
+  width: min(19rem, 84dvw);
+  height: 100svh;
+  background: transparent;
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.26s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.admin-drawer-dialog {
+    transform: translateX(-100%);
+  }
+}
+
+dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
+    transform: translateX(0);
+  }
+}
+
+@starting-style {
+  dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.admin-dialog,
+  dialog.admin-drawer-dialog,
+  dialog.admin-dialog::backdrop,
+  dialog.admin-drawer-dialog::backdrop {
+    transition-duration: 0.08s;
+  }
+}
+
+/* Container-Aware Responsive Admin Ledger Tables */
+.admin-table-region {
+  container-type: inline-size;
+  container-name: admin-table;
+  overflow-x: auto;
+}
+
+@container admin-table (width < 640px) {
+  .admin-responsive-table,
+  .admin-responsive-table tbody,
+  .admin-responsive-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-responsive-table thead {
+    display: none;
+  }
+
+  .admin-responsive-table tbody > tr {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--color-paper-300);
+  }
+
+  .admin-responsive-table tbody > tr:last-child {
+    border-bottom: 0;
+  }
+
+  .admin-responsive-table tbody th[scope="row"] {
+    display: block;
+    width: 100%;
+    padding: 0 0 0.65rem 0;
+    margin-bottom: 0.35rem;
+    border-bottom: 1px solid var(--color-paper-200);
+    text-align: left;
+  }
+
+  .admin-responsive-table tbody td[data-label] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.42rem 0;
+    border: 0;
+    text-align: right;
+  }
+
+  .admin-responsive-table tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-500);
+    text-align: left;
+    flex-shrink: 0;
+  }
 }
 
 

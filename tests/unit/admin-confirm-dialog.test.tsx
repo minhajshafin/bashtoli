@@ -113,4 +113,62 @@ describe('AdminConfirmDialog System', () => {
     })
     expect(screen.queryByText('Delete Product?')).not.toBeInTheDocument()
   })
+
+  it('resolves false when corner close button is clicked', async () => {
+    const handleResult = vi.fn()
+
+    render(
+      <AdminConfirmDialogProvider>
+        <TestAdminConsumer onResult={handleResult} />
+      </AdminConfirmDialogProvider>
+    )
+
+    fireEvent.click(screen.getByTestId('trigger-admin-confirm'))
+    const closeBtn = screen.getByRole('button', { name: 'Close dialog' })
+    fireEvent.click(closeBtn)
+
+    await waitFor(() => {
+      expect(handleResult).toHaveBeenCalledWith(false)
+    })
+    expect(screen.queryByText('Delete Product?')).not.toBeInTheDocument()
+  })
+
+  it('uses native <dialog>.showModal() and close() when supported by browser', async () => {
+    const handleResult = vi.fn()
+    const origShowModal = HTMLDialogElement.prototype.showModal
+    const origClose = HTMLDialogElement.prototype.close
+
+    const showModalMock = vi.fn(function (this: HTMLDialogElement) {
+      this.setAttribute('open', '')
+    })
+    const closeMock = vi.fn(function (this: HTMLDialogElement) {
+      this.removeAttribute('open')
+    })
+
+    HTMLDialogElement.prototype.showModal = showModalMock
+    HTMLDialogElement.prototype.close = closeMock
+
+    try {
+      const { container } = render(
+        <AdminConfirmDialogProvider>
+          <TestAdminConsumer onResult={handleResult} />
+        </AdminConfirmDialogProvider>
+      )
+
+      fireEvent.click(screen.getByTestId('trigger-admin-confirm'))
+      expect(showModalMock).toHaveBeenCalledTimes(1)
+
+      const dialogEl = container.querySelector('dialog')
+      expect(dialogEl).not.toBeNull()
+      fireEvent(dialogEl!, new Event('cancel', { cancelable: true }))
+
+      await waitFor(() => {
+        expect(handleResult).toHaveBeenCalledWith(false)
+      })
+      expect(closeMock).toHaveBeenCalledTimes(1)
+    } finally {
+      HTMLDialogElement.prototype.showModal = origShowModal
+      HTMLDialogElement.prototype.close = origClose
+    }
+  })
 })

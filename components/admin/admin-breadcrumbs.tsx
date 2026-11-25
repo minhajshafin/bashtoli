@@ -19,24 +19,21 @@ export function AdminBreadcrumbs() {
   const pathname = usePathname()
   const segments = pathname.split('/').filter(Boolean)
 
-  // If we are on /admin itself, show Dashboard
   if (segments.length <= 1) {
     return (
-      <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
-        <Home className="h-3.5 w-3.5 text-slate-400" />
-        <span className="text-slate-800">Dashboard</span>
+      <div className="hidden sm:flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-ink-600 truncate">
+        <Home className="h-3.5 w-3.5 shrink-0 text-ink-500" aria-hidden="true" />
+        <span className="font-bold text-ink-950 truncate">Dashboard</span>
       </div>
     )
   }
 
-  // Build breadcrumb segments
   const crumbs = segments.map((segment, index) => {
     const href = '/' + segments.slice(0, index + 1).join('/')
     const isLast = index === segments.length - 1
 
     let label = ROUTE_LABELS[segment]
     if (!label) {
-      // If it looks like a UUID or ID, format neatly
       if (segment.length > 20) {
         label = 'Details'
       } else {
@@ -48,26 +45,29 @@ export function AdminBreadcrumbs() {
   })
 
   return (
-    <nav aria-label="Breadcrumb" className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-slate-500">
+    <nav
+      aria-label="Breadcrumb"
+      className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink-500"
+    >
       <Link
         href="/admin"
-        className="flex items-center gap-1 text-slate-500 hover:text-slate-900 transition-colors"
+        className="flex items-center gap-1.5 text-ink-500 hover:text-ink-950 transition-colors rounded px-1 py-0.5"
       >
-        <Home className="h-3.5 w-3.5" />
+        <Home className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Admin</span>
       </Link>
 
       {crumbs.slice(1).map((crumb, idx) => (
         <React.Fragment key={crumb.href + idx}>
-          <ChevronRight className="h-3 w-3 text-slate-400 shrink-0" />
+          <ChevronRight className="h-3 w-3 text-ink-400 shrink-0" aria-hidden="true" />
           {crumb.isLast ? (
-            <span className="font-semibold text-slate-900 truncate max-w-[150px]">
+            <span className="font-bold text-ink-950 truncate max-w-[160px]">
               {crumb.label}
             </span>
           ) : (
             <Link
               href={crumb.href}
-              className="text-slate-500 hover:text-slate-900 transition-colors truncate max-w-[120px]"
+              className="text-ink-500 hover:text-ink-950 transition-colors truncate max-w-[140px] rounded px-1 py-0.5"
             >
               {crumb.label}
             </Link>

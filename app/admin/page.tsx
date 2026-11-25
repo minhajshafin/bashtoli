@@ -31,16 +31,13 @@ export default async function AdminPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams
   const thresholdParam = resolvedSearchParams?.threshold
   const parsedThreshold = parseInt(thresholdParam ?? '', 10)
-  // Guard against NaN (e.g. ?threshold=abc) and negative values
   const threshold = !isNaN(parsedThreshold) && parsedThreshold >= 0 ? parsedThreshold : 5
 
-  // Profile fetch — deduplicated with Header via React cache()
   const profile = await getServerProfile()
   const greeting = profile?.full_name
-    ? `Welcome back, ${profile.full_name.split(' ')[0]}!`
-    : 'Welcome back!'
+    ? `Welcome back, ${profile.full_name.split(' ')[0]}`
+    : 'Welcome back'
 
-  // Fetch live metrics and stock levels
   const metrics = await fetchDashboardMetrics(threshold)
   const lowStockItems = await fetchLowStockList(threshold)
 
@@ -53,42 +50,47 @@ export default async function AdminPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Welcome Heading Banner */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-200/80">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              {greeting}
-            </h1>
+      {/* Editorial Dual-Tone Masthead */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5 pb-6 border-b border-paper-300">
+        <div className="space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="admin-kicker text-ink-500">01 / Operations Snapshot</span>
+            <span className="text-ink-400" aria-hidden="true">·</span>
+            <time className="font-mono text-[11px] uppercase tracking-wider text-ink-500">
+              {todayFormatted}
+            </time>
           </div>
-          <p className="mt-1 text-xs sm:text-sm text-slate-500">
-            {todayFormatted} · Here&apos;s a live snapshot of your store catalog and checkout activity.
+          <h1 className="admin-page-title text-ink-950">
+            {greeting}
+          </h1>
+          <p className="text-sm text-ink-600 max-w-xl text-pretty">
+            Live fulfillment pulse, daily cash-on-delivery revenue, and catalog stock thresholds.
           </p>
         </div>
 
         {/* Quick Action Shortcuts */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0 w-full sm:w-auto">
           <Link
             href="/admin/orders"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-2xs"
+            className="inline-flex min-h-[44px] flex-1 sm:flex-initial items-center justify-center gap-2 rounded-xl border border-ink-400/70 bg-paper-50 px-4 py-2 text-xs font-bold text-ink-950 hover:bg-paper-200 transition-colors shadow-subtle"
           >
-            <ShoppingBag className="h-3.5 w-3.5 text-slate-500" />
+            <ShoppingBag className="h-3.5 w-3.5 text-ink-700" aria-hidden="true" />
             <span>Orders</span>
           </Link>
           <Link
             href="/admin/products/new"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-colors shadow-xs"
+            className="inline-flex min-h-[44px] flex-1 sm:flex-initial items-center justify-center gap-2 rounded-xl bg-ink-950 px-4 py-2 text-xs font-bold text-paper-50 hover:bg-ink-800 transition-colors shadow-elevation-1"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Add Product</span>
           </Link>
         </div>
       </div>
 
-      {/* Metrics Card Grid */}
+      {/* Dual-Tone Bento Metric Strip */}
       <DashboardStats metrics={metrics} />
 
-      {/* Low-Stock alerts list with integrated threshold setting */}
+      {/* Low-Stock Alerts Ledger */}
       <LowStockList items={lowStockItems} threshold={threshold} />
     </div>
   )

@@ -277,13 +277,13 @@ export function ProductForm({
             {activeError && (
               <div
                 role="alert"
-                className="flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700 shadow-xs"
+                className="flex items-start gap-3 rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-4 text-sm text-signal-danger shadow-subtle"
               >
-                <AlertCircle className="h-5 w-5 text-rose-500 shrink-0 mt-0.5" />
+                <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="space-y-1">
                   <p className="font-bold">{activeError}</p>
                   {activeFieldErrors && (
-                    <ul className="list-disc list-inside text-xs space-y-0.5 text-rose-600">
+                    <ul className="list-disc list-inside text-xs space-y-0.5">
                       {Object.entries(activeFieldErrors).map(([field, msgs]) => (
                         <li key={field}>
                           <span className="capitalize">{field.replace('_', ' ')}</span>:{' '}

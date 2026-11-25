@@ -31,11 +31,11 @@ The initial refactoring phases (Steps 1–6 and Step 9 of `docs/REFACTOR_PLAN.md
 
 | Refactor Task | Component / File | Current Scope | Resolution Plan |
 |---|---|---|---|
-| **Step 7: Admin Product Studio** | `components/admin/product-form.tsx` | ~718 lines | Split into 4 subcomponents (basic info, options & matrix, media gallery, inventory pricing) during the Admin UI polish. |
-| **Step 8: Admin Storefront** | `hero-slides-manager.tsx`, `category-collage-manager.tsx` | ~590 lines, ~414 lines | Extract slide card items and collage slot tiles into dedicated subcomponents when upgrading storefront visual management. |
+| **Step 7: Admin Product Studio** | `components/admin/product-form.tsx` | ✅ Completed | Split into `product-studio-header.tsx`, `product-general-card.tsx`, `product-sidebar-cards.tsx`, and `variant-row.tsx` during the Admin Panel monochrome redesign. |
+| **Step 8: Admin Storefront** | `hero-slides-manager.tsx`, `category-collage-manager.tsx` | ✅ Completed | Extracted `hero-slide-card.tsx`, `hero-slide-create-form.tsx`, `collage-slot-card.tsx`, and `collage-available-grid.tsx` during the Admin Panel redesign. |
 | **Step 10: Product Detail UI** | `app/(storefront)/products/[slug]/product-client.tsx` | ~433 lines | Move to `components/storefront/product-detail-client.tsx` and modularize image gallery vs variant picker during storefront UI styling. |
 | **Step 11: Checkout Pipeline** | `components/storefront/checkout-form.tsx` | ~580 lines | Modularize into order summary, saved address selector, sticky mobile action dock, and form state manager alongside checkout UX enhancements. |
-| **Other UI files >300 lines** | Various storefront / admin UI modules | >300 lines | Splitting presentation-only markup ahead of the redesign would cause double churn. Line count is treated as a guideline; refactor with new design components. |
+| **Other UI files >300 lines** | Storefront / remaining UI modules | >300 lines | Admin `order-list.tsx`, `variant-table.tsx`, and `product-list.tsx` split during Admin Panel redesign; remaining storefront files tracked for storefront polish. |
 
 - **Double Server-Rendering & Suspense Fallback Investigation**: Investigate whether dynamic page content is server-rendered twice (Suspense fallback + streamed boundary). Measure document size and hydration cost on a dynamic page before and after; revisit when doing the UI/UX redesign.
 

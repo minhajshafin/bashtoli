@@ -17,7 +17,10 @@ export default async function NewProductPage() {
     categories = await fetchAdminCategories()
   } catch (err) {
     return (
-      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700 max-w-7xl mx-auto">
+      <div
+        role="alert"
+        className="rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-6 text-sm font-medium text-signal-danger max-w-7xl mx-auto"
+      >
         Failed to load categories:{' '}
         {err instanceof Error ? err.message : 'Unknown error'}
       </div>

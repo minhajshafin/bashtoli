@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useTransition } from 'react'
+import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import { updateOrderStatusAction } from '@/lib/actions/order-status'
 import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
 import { ORDER_STATUS_LABELS, type OrderStatusType } from '@/components/admin/order-status-badge'
@@ -19,17 +20,15 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
   const [isPending, startTransition] = useTransition()
   const confirm = useAdminConfirm()
 
-  // Determines option list based on allowed workflow transitions
   const getAllowedOptions = (curr: StatusType): { value: StatusType; label: string }[] => {
     const list: { value: StatusType; label: string }[] = [
       { value: curr, label: `${ORDER_STATUS_LABELS[curr] || curr} (Current)` },
     ]
 
     if (curr === 'delivered' || curr === 'cancelled') {
-      return list // Final states cannot transition
+      return list
     }
 
-    // Cancellation is always allowed from active states
     const addCancel = () => {
       list.push({ value: 'cancelled', label: ORDER_STATUS_LABELS.cancelled })
     }
@@ -60,7 +59,6 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
     setError(null)
     setSuccess(false)
 
-    // Confirm cancellations explicitly to prevent accidents
     if (nextStatus === 'cancelled') {
       const confirmed = await confirm({
         title: 'Cancel this Order?',
@@ -73,8 +71,6 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
       if (!confirmed) return
     }
 
-    // Optimistically update local state so the select reflects the new value
-    // immediately while the server action is in-flight. (BUG-1)
     const previousStatus = status
     setStatus(nextStatus)
 
@@ -82,10 +78,9 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
       const result = await updateOrderStatusAction(orderId, nextStatus)
       if (result.error) {
         setError(result.error)
-        setStatus(previousStatus) // revert to captured pre-change status
+        setStatus(previousStatus)
       } else {
         setSuccess(true)
-        // Automatically clear success banner after 3 seconds
         setTimeout(() => setSuccess(false), 3000)
       }
     })
@@ -94,22 +89,23 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
   const isFinalState = status === 'delivered' || status === 'cancelled'
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
+    <div className="bg-paper-50 border border-paper-300 rounded-2xl p-5 shadow-subtle space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-          Order Status Control
-        </h2>
+        <h2 className="admin-kicker text-ink-500">Order Status Control</h2>
         {isPending && (
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+          <span className="flex h-2.5 w-2.5 relative" aria-label="Updating status">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ink-600 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-ink-950"></span>
           </span>
         )}
       </div>
 
       <div className="space-y-3">
         <div>
-          <label htmlFor="order-status-select-input" className="block text-xs font-semibold text-slate-500 mb-1.5">
+          <label
+            htmlFor="order-status-select-input"
+            className="block text-xs font-semibold text-ink-700 mb-1.5"
+          >
             Update Status Flow
           </label>
           <select
@@ -117,7 +113,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
             value={status}
             onChange={handleStatusChange}
             disabled={isPending || isFinalState}
-            className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full min-h-[44px] px-3.5 rounded-xl border border-ink-400/80 bg-paper-50 text-sm font-semibold text-ink-950 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1 disabled:opacity-60 disabled:bg-paper-200 disabled:cursor-not-allowed cursor-pointer"
           >
             {allowedOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -128,19 +124,27 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
         </div>
 
         {error && (
-          <div className="rounded-lg bg-rose-50 border border-rose-200 p-3 text-xs font-semibold text-rose-700 animate-shake">
-            {error}
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-xl bg-signal-danger-bg border border-signal-danger-border p-3 text-xs font-semibold text-signal-danger animate-shake"
+          >
+            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
+            <span>{error}</span>
           </div>
         )}
 
         {success && (
-          <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-xs font-semibold text-emerald-800">
-            Order status updated successfully!
+          <div
+            role="status"
+            className="flex items-start gap-2 rounded-xl bg-ink-950 border border-ink-800 p-3 text-xs font-semibold text-paper-50"
+          >
+            <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
+            <span>Order status updated successfully!</span>
           </div>
         )}
 
         {isFinalState && (
-          <p className="text-[11px] text-slate-400 font-medium italic">
+          <p className="text-xs text-ink-600 font-medium italic">
             This order is in a final state ({status}) and cannot be transitioned further.
           </p>
         )}

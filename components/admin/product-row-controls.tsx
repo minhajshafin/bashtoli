@@ -45,16 +45,17 @@ export function SmartStatusToggle({
       onClick={handleToggle}
       disabled={isPending}
       title={isActive ? 'Click to set as Draft' : 'Click to publish as Active'}
-      className={`group inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs font-bold transition-all border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+      className={`group inline-flex min-h-[36px] items-center gap-2 rounded-full px-3 py-1 font-mono text-[11px] font-bold transition-colors border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
         isActive
-          ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100/80 hover:border-emerald-300'
-          : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200/80 hover:border-slate-300'
+          ? 'bg-ink-950 text-paper-50 border-ink-950 hover:bg-ink-800'
+          : 'bg-paper-50 text-ink-700 border-ink-400 border-dashed hover:bg-paper-200 hover:text-ink-950'
       }`}
     >
       <span
         className={`h-1.5 w-1.5 rounded-full ${
-          isActive ? 'bg-emerald-500' : 'bg-slate-400'
+          isActive ? 'bg-paper-50' : 'bg-ink-500'
         }`}
+        aria-hidden="true"
       />
       <span>{isActive ? 'Published' : 'Draft'}</span>
     </button>
@@ -96,14 +97,15 @@ export function FeaturedToggle({
       onClick={handleToggle}
       disabled={isPending}
       title={isFeatured ? 'Featured product (click to unfeature)' : 'Mark as featured product'}
-      className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors border cursor-pointer ${
+      className={`inline-flex items-center justify-center min-h-[40px] min-w-[40px] rounded-xl transition-colors border cursor-pointer ${
         isFeatured
-          ? 'bg-amber-50 text-amber-500 border-amber-200 hover:bg-amber-100'
-          : 'bg-white text-slate-300 border-slate-200 hover:text-slate-500 hover:bg-slate-50'
+          ? 'bg-ink-950 text-paper-50 border-ink-950 hover:bg-ink-800'
+          : 'bg-paper-50 text-ink-400 border-paper-300 hover:text-ink-950 hover:border-ink-950'
       }`}
     >
       <Star
-        className={`h-4 w-4 ${isFeatured ? 'fill-amber-400 text-amber-500' : ''}`}
+        className={`h-4 w-4 ${isFeatured ? 'fill-paper-50 text-paper-50' : ''}`}
+        aria-hidden="true"
       />
     </button>
   )
@@ -144,12 +146,12 @@ export function DeleteProductButton({ id, name }: { id: string; name: string }) 
         onClick={handleDelete}
         title="Delete product"
         aria-label={`Delete ${name}`}
-        className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+        className="inline-flex items-center justify-center min-h-[40px] min-w-[40px] rounded-xl border border-transparent text-ink-500 hover:text-signal-danger hover:bg-signal-danger-bg hover:border-signal-danger-border transition-colors disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
       >
-        <Trash2 className="h-4 w-4" />
+        <Trash2 className="h-4 w-4" aria-hidden="true" />
       </button>
       {error && (
-        <p className="mt-1 text-[11px] text-rose-600 break-words max-w-[180px] ml-auto">
+        <p className="mt-1 text-[11px] text-signal-danger break-words max-w-[180px] ml-auto">
           {error}
         </p>
       )}

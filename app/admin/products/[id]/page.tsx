@@ -31,7 +31,10 @@ export default async function EditProductPage({ params }: PageProps) {
     detail = await fetchAdminProductDetail(id)
   } catch (err) {
     return (
-      <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700 max-w-7xl mx-auto">
+      <div
+        role="alert"
+        className="rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-6 text-sm font-medium text-signal-danger max-w-7xl mx-auto"
+      >
         Failed to load product data.{' '}
         {err instanceof Error ? err.message : 'Unknown error'}
       </div>
@@ -45,10 +48,11 @@ export default async function EditProductPage({ params }: PageProps) {
   return (
     <ProductForm mode="edit" product={product} categories={categories}>
       {/* Media & Image Studio */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-6">
+      <div className="rounded-2xl border border-paper-300 bg-paper-50 p-6 shadow-subtle space-y-6">
         <div>
-          <h2 className="text-base font-bold text-slate-900">Product Media & Gallery</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="admin-kicker text-ink-500 mb-1">Media Studio</p>
+          <h2 className="admin-section-title text-ink-950">Product Media &amp; Gallery</h2>
+          <p className="text-xs text-ink-600 mt-1">
             Manage product images, update alt descriptions, and upload high-resolution photos.
           </p>
         </div>

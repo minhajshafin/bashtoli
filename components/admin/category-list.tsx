@@ -7,36 +7,29 @@ import type { Database } from '@/lib/supabase/database.types'
 type CategoryRow = Database['public']['Tables']['categories']['Row']
 
 export type CategoryWithCount = CategoryRow & {
-  /** Embedded count from Supabase */
   products: { count: number }[]
 }
 
-/**
- * Category table — server component.
- * Renders the full list of categories with product counts,
- * edit links, and secure delete buttons.
- */
 export function CategoryList({
   categories,
   editingId,
 }: {
   categories: CategoryWithCount[]
-  /** The id of the category currently being edited (to highlight the row). */
   editingId?: string
 }) {
   if (categories.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center shadow-xs">
-        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 border border-slate-200">
-          <FolderTree className="h-6 w-6" />
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-ink-400/70 bg-paper-50 py-16 px-4 text-center shadow-subtle">
+        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-ink-950 text-paper-50">
+          <FolderTree className="h-6 w-6" aria-hidden="true" />
         </div>
-        <p className="text-base font-bold text-slate-800">No categories yet</p>
-        <p className="mt-1 text-xs text-slate-500 max-w-sm">
+        <p className="text-base font-bold text-ink-950">No categories yet</p>
+        <p className="mt-1 text-xs text-ink-600 max-w-sm">
           Create your first store category to start grouping and organizing your products.
         </p>
         <Link
           href="/admin/categories?action=new"
-          className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-indigo-700 shadow-xs cursor-pointer"
+          className="mt-5 inline-flex min-h-[44px] items-center rounded-xl bg-ink-950 px-5 py-2 text-xs font-bold text-paper-50 transition-colors hover:bg-ink-800 cursor-pointer"
         >
           Create Category
         </Link>
@@ -45,19 +38,27 @@ export function CategoryList({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-slate-600">
+    <div className="overflow-hidden rounded-2xl border border-paper-300 bg-paper-50 shadow-subtle">
+      <div
+        tabIndex={0}
+        role="region"
+        aria-labelledby="categories-table-caption"
+        className="admin-table-region focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-inset"
+      >
+        <table className="admin-responsive-table w-full text-sm text-ink-700">
+          <caption id="categories-table-caption" className="sr-only">
+            Product categories directory
+          </caption>
           <thead>
-            <tr className="border-b border-slate-200 bg-slate-50/70 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-              <th className="px-6 py-3.5">Name</th>
-              <th className="px-6 py-3.5">Slug</th>
-              <th className="px-6 py-3.5 text-center">Sort Order</th>
-              <th className="px-6 py-3.5 text-center">Products</th>
-              <th className="px-6 py-3.5 text-right">Actions</th>
+            <tr className="border-b border-paper-300 bg-paper-200/70 text-left font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-600">
+              <th scope="col" className="px-6 py-3.5">Name</th>
+              <th scope="col" className="px-6 py-3.5">Slug</th>
+              <th scope="col" className="px-6 py-3.5 text-center">Sort Order</th>
+              <th scope="col" className="px-6 py-3.5 text-center">Products</th>
+              <th scope="col" className="px-6 py-3.5 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-paper-200">
             {categories.map((cat) => {
               const productCount = cat.products[0]?.count ?? 0
               const isEditing = cat.id === editingId
@@ -65,57 +66,51 @@ export function CategoryList({
               return (
                 <tr
                   key={cat.id}
-                  className={[
-                    'transition-colors',
-                    isEditing ? 'bg-indigo-50/70' : 'hover:bg-slate-50/70',
-                  ].join(' ')}
+                  className={`transition-colors ${
+                    isEditing ? 'bg-paper-200' : 'hover:bg-paper-100/80'
+                  }`}
                 >
-                  {/* Name */}
-                  <td className="px-6 py-4 font-bold text-slate-900">
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 border border-slate-200 text-slate-500">
-                        <FolderTree className="h-4 w-4" />
+                  <th scope="row" className="px-6 py-4 font-bold text-ink-950 text-left">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-paper-200 border border-paper-300 text-ink-800">
+                        <FolderTree className="h-4 w-4" aria-hidden="true" />
                       </div>
                       <span>{cat.name}</span>
                     </div>
-                  </td>
+                  </th>
 
-                  {/* Slug */}
-                  <td className="px-6 py-4">
-                    <code className="rounded bg-slate-100 px-2 py-0.5 font-mono text-xs text-slate-700 border border-slate-200">
+                  <td data-label="Slug" className="px-6 py-4">
+                    <code className="rounded-lg bg-paper-200 px-2.5 py-1 font-mono text-xs text-ink-900 border border-paper-300">
                       {cat.slug}
                     </code>
                   </td>
 
-                  {/* Sort order */}
-                  <td className="px-6 py-4 text-center font-mono text-xs text-slate-500 font-semibold">
+                  <td data-label="Sort Order" className="px-6 py-4 text-center font-mono text-xs text-ink-700 font-bold">
                     {cat.sort_order}
                   </td>
 
-                  {/* Product count */}
-                  <td className="px-6 py-4 text-center">
+                  <td data-label="Products" className="px-6 py-4 text-center">
                     <span
-                      className={[
-                        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold border',
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[11px] font-bold border ${
                         productCount > 0
-                          ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                          : 'bg-slate-100 text-slate-500 border-slate-200',
-                      ].join(' ')}
+                          ? 'bg-ink-950 text-paper-50 border-ink-950'
+                          : 'bg-paper-100 text-ink-600 border-paper-300'
+                      }`}
                     >
                       {productCount} {productCount === 1 ? 'item' : 'items'}
                     </span>
                   </td>
 
-                  {/* Actions */}
-                  <td className="px-6 py-4 text-right">
+                  <td data-label="Actions" className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
                       <Link
                         id={`edit-category-${cat.id}`}
                         href={`/admin/categories?action=edit&id=${cat.id}`}
+                        aria-label={`Edit ${cat.name}`}
                         title="Edit category"
-                        className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors border border-transparent hover:border-indigo-100 cursor-pointer"
+                        className="inline-flex items-center justify-center min-h-[40px] min-w-[40px] rounded-xl text-ink-700 hover:text-paper-50 hover:bg-ink-950 transition-colors border border-transparent hover:border-ink-950 cursor-pointer"
                       >
-                        <Edit2 className="h-4 w-4" />
+                        <Edit2 className="h-4 w-4" aria-hidden="true" />
                       </Link>
                       <DeleteCategoryButton
                         id={cat.id}

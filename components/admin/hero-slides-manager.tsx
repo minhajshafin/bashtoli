@@ -39,7 +39,6 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
     setSlides(initialSlides)
   }
 
-  // Upload state
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [newBadgeText, setNewBadgeText] = useState('New Collection')
@@ -48,7 +47,6 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
   const [newSubtext, setNewSubtext] = useState('Now in store & online')
   const [newAltText, setNewAltText] = useState('')
 
-  // Editing state
   const [editingSlideId, setEditingSlideId] = useState<string | null>(null)
   const [editDraft, setEditDraft] = useState<HeroSlideEditDraft>({
     badgeText: '',
@@ -199,10 +197,13 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
   }
 
   return (
-    <div className="space-y-8">
+    <section className="space-y-6" aria-labelledby="hero-slides-heading">
       {dbError && (
-        <div className="rounded-xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-900 shadow-xs">
-          <p className="font-semibold text-amber-950">Database Setup Notice</p>
+        <div
+          role="alert"
+          className="rounded-2xl border border-signal-warning-border bg-signal-warning-bg p-5 text-sm text-signal-warning shadow-subtle"
+        >
+          <p className="font-bold">Database Setup Notice</p>
           <p className="mt-1">
             The <code>hero_slides</code> table needs to be created in Supabase. Please run migration{' '}
             <code>supabase/migrations/014_hero_slides.sql</code> in your Supabase SQL Editor.
@@ -212,32 +213,36 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
 
       {feedback && (
         <div
-          className={`rounded-xl border p-4 text-sm font-medium transition-all ${
+          role={feedback.type === 'error' ? 'alert' : 'status'}
+          className={`rounded-2xl border p-4 text-sm font-medium transition-colors ${
             feedback.type === 'success'
-              ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-              : 'border-rose-200 bg-rose-50 text-rose-900'
+              ? 'border-ink-800 bg-ink-950 text-paper-50'
+              : 'border-signal-danger-border bg-signal-danger-bg text-signal-danger'
           }`}
         >
           {feedback.message}
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-300 pb-5">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Hero Carousel Slides</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="admin-kicker text-ink-500 mb-1">Hero Stage</p>
+          <h2 id="hero-slides-heading" className="admin-section-title text-ink-950">
+            Hero Carousel Slides
+          </h2>
+          <p className="text-xs text-ink-600 mt-1">
             Manage images, promotional badges, and destination links shown in the homepage header slideshow.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <span
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-[11px] font-bold border ${
               slides.length >= HERO_SLIDE_MAX_COUNT
-                ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                : 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                ? 'bg-signal-warning-bg text-signal-warning border-signal-warning-border'
+                : 'bg-ink-950 text-paper-50 border-ink-950'
             }`}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-current" />
+            <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
             {slides.length} / {HERO_SLIDE_MAX_COUNT} Slides (Min: {HERO_SLIDE_MIN_COUNT})
           </span>
         </div>
@@ -278,6 +283,6 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
         onSubtextChange={setNewSubtext}
         onUploadFile={handleUpload}
       />
-    </div>
+    </section>
   )
 }

@@ -1,4 +1,12 @@
 import React from 'react'
+import {
+  Clock,
+  CheckCircle2,
+  Truck,
+  PackageCheck,
+  Navigation,
+  XCircle,
+} from 'lucide-react'
 
 export type OrderStatusType =
   | 'pending'
@@ -17,20 +25,46 @@ export const ORDER_STATUS_LABELS: Record<string, string> = {
   cancelled: 'Cancelled',
 }
 
-export function getLegacyOrderStatusClasses(status: string): string {
+function getStatusPresentation(status: string): {
+  classes: string
+  Icon: React.ComponentType<{ className?: string }>
+} {
   switch (status) {
-    case 'pending':
-      return 'bg-amber-50 text-amber-700 border-amber-200'
-    case 'confirmed':
-      return 'bg-blue-50 text-blue-700 border-blue-200'
-    case 'shipped':
-      return 'bg-indigo-50 text-indigo-700 border-indigo-200'
     case 'delivered':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      return {
+        classes: 'bg-ink-950 text-paper-50 border-ink-950',
+        Icon: PackageCheck,
+      }
+    case 'shipped':
+      return {
+        classes: 'bg-ink-800 text-paper-50 border-ink-800',
+        Icon: Truck,
+      }
+    case 'out_for_delivery':
+      return {
+        classes: 'bg-paper-200 text-ink-950 border-ink-400',
+        Icon: Navigation,
+      }
+    case 'confirmed':
+      return {
+        classes: 'bg-paper-200 text-ink-950 border-ink-400/80',
+        Icon: CheckCircle2,
+      }
+    case 'pending':
+      return {
+        classes: 'bg-paper-50 text-ink-800 border-ink-400 border-dashed',
+        Icon: Clock,
+      }
     case 'cancelled':
-      return 'bg-rose-50 text-rose-700 border-rose-200'
+      return {
+        classes: 'bg-signal-danger-bg text-signal-danger border-signal-danger-border',
+        Icon: XCircle,
+      }
     default:
-      return 'bg-slate-100 text-slate-700 border-slate-200'
+      return {
+        classes: 'bg-paper-100 text-ink-700 border-paper-300',
+        Icon: Clock,
+      }
   }
 }
 
@@ -41,11 +75,13 @@ export function OrderStatusBadge({
   status: string
   className?: string
 }) {
+  const { classes, Icon } = getStatusPresentation(status)
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold capitalize ${getLegacyOrderStatusClasses(status)} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-bold capitalize whitespace-nowrap ${classes} ${className}`}
     >
-      {status}
+      <Icon className="h-3 w-3 shrink-0" aria-hidden="true" />
+      <span>{status}</span>
     </span>
   )
 }

@@ -20,7 +20,6 @@ interface PageProps {
 
 /**
  * Admin Orders Dashboard route.
- * Server component loading a paginated page of orders with optional search and status filters.
  */
 export default async function AdminOrdersPage({ searchParams }: PageProps) {
   await connection()
@@ -33,11 +32,17 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Orders</h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Review, filter, and manage customer storefront orders.
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-5 border-b border-paper-300">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2.5">
+            <p className="admin-kicker text-ink-500">03 / Sales &amp; Fulfillment</p>
+            <span className="rounded-full bg-ink-950 px-2.5 py-0.5 font-mono text-[11px] font-bold text-paper-50">
+              {totalCount.toLocaleString()}
+            </span>
+          </div>
+          <h1 className="admin-page-title text-ink-950">Orders</h1>
+          <p className="text-sm text-ink-600">
+            Review, filter, and fulfill incoming cash-on-delivery orders.
           </p>
         </div>
       </div>
