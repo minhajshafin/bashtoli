@@ -14,6 +14,8 @@ import {
   Inbox,
 } from 'lucide-react'
 import type { AdminOrderSummary } from '@/lib/queries/orders'
+import { downloadOrdersCSV } from '@/lib/utils/order-csv'
+import { OrderStatusBadge } from '@/components/admin/order-status-badge'
 
 interface OrderListProps {
   orders: AdminOrderSummary[]
@@ -29,65 +31,6 @@ const STATUS_OPTIONS = [
   { label: 'Delivered', value: 'delivered' },
   { label: 'Cancelled', value: 'cancelled' },
 ]
-
-function getStatusBadgeStyle(status: string) {
-  switch (status) {
-    case 'pending':
-      return 'bg-amber-50 text-amber-700 border-amber-200'
-    case 'confirmed':
-      return 'bg-blue-50 text-blue-700 border-blue-200'
-    case 'shipped':
-      return 'bg-indigo-50 text-indigo-700 border-indigo-200'
-    case 'delivered':
-      return 'bg-emerald-50 text-emerald-700 border-emerald-200'
-    case 'cancelled':
-      return 'bg-rose-50 text-rose-700 border-rose-200'
-    default:
-      return 'bg-slate-100 text-slate-700 border-slate-200'
-  }
-}
-
-/** Generates and downloads a CSV file from the current page of orders. */
-function downloadCSV(orders: AdminOrderSummary[]) {
-  const escapeCell = (v: string | number) =>
-    `"${String(v).replace(/"/g, '""')}"`
-
-  const headers = [
-    'Order #',
-    'Date',
-    'Customer Name',
-    'Phone',
-    'Fulfillment',
-    'Items',
-    'Total (BDT)',
-    'Status',
-  ]
-
-  const rows = orders.map((o) =>
-    [
-      o.order_number,
-      new Date(o.created_at).toLocaleString('en-GB'),
-      o.customer_name,
-      o.phone,
-      o.fulfillment_type,
-      o.item_count,
-      o.total,
-      o.status,
-    ].map(escapeCell).join(','),
-  )
-
-  // UTF-8 BOM ensures Excel renders currency symbols correctly
-  const csv = '\uFEFF' + [headers.map(escapeCell).join(','), ...rows].join('\n')
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `bashtoli-orders-${new Date().toISOString().split('T')[0]}.csv`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
 
 export function OrderList({ orders, totalCount, pageSize }: OrderListProps) {
   const router = useRouter()
@@ -197,7 +140,7 @@ export function OrderList({ orders, totalCount, pageSize }: OrderListProps) {
           {/* CSV Export */}
           <button
             type="button"
-            onClick={() => downloadCSV(orders)}
+            onClick={() => downloadOrdersCSV(orders)}
             disabled={orders.length === 0}
             title="Export this page as CSV"
             className="h-9 px-3 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1.5 shadow-2xs cursor-pointer"
@@ -318,13 +261,7 @@ export function OrderList({ orders, totalCount, pageSize }: OrderListProps) {
 
                       {/* Status */}
                       <td className="px-6 py-4 text-center">
-                        <span
-                          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold capitalize ${getStatusBadgeStyle(
-                            o.status
-                          )}`}
-                        >
-                          {o.status}
-                        </span>
+                        <OrderStatusBadge status={o.status} />
                       </td>
 
                       {/* Action Link */}

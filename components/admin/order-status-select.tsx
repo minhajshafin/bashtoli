@@ -3,22 +3,14 @@
 import React, { useState, useTransition } from 'react'
 import { updateOrderStatusAction } from '@/lib/actions/order-status'
 import { useAdminConfirm } from '@/components/admin/admin-confirm-dialog'
+import { ORDER_STATUS_LABELS, type OrderStatusType } from '@/components/admin/order-status-badge'
 
 interface OrderStatusSelectProps {
   orderId: string
   currentStatus: string
 }
 
-type StatusType = 'pending' | 'confirmed' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled'
-
-const STATUS_LABELS: Record<StatusType, string> = {
-  pending: 'Pending Verification',
-  confirmed: 'Confirmed',
-  shipped: 'Shipped',
-  out_for_delivery: 'Out for Delivery',
-  delivered: 'Delivered',
-  cancelled: 'Cancelled',
-}
+type StatusType = OrderStatusType
 
 export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectProps) {
   const [status, setStatus] = useState<StatusType>(currentStatus as StatusType)
@@ -30,7 +22,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
   // Determines option list based on allowed workflow transitions
   const getAllowedOptions = (curr: StatusType): { value: StatusType; label: string }[] => {
     const list: { value: StatusType; label: string }[] = [
-      { value: curr, label: `${STATUS_LABELS[curr]} (Current)` },
+      { value: curr, label: `${ORDER_STATUS_LABELS[curr] || curr} (Current)` },
     ]
 
     if (curr === 'delivered' || curr === 'cancelled') {
@@ -39,21 +31,21 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
 
     // Cancellation is always allowed from active states
     const addCancel = () => {
-      list.push({ value: 'cancelled', label: STATUS_LABELS.cancelled })
+      list.push({ value: 'cancelled', label: ORDER_STATUS_LABELS.cancelled })
     }
 
     if (curr === 'pending') {
-      list.push({ value: 'confirmed', label: STATUS_LABELS.confirmed })
+      list.push({ value: 'confirmed', label: ORDER_STATUS_LABELS.confirmed })
       addCancel()
     } else if (curr === 'confirmed') {
-      list.push({ value: 'shipped', label: STATUS_LABELS.shipped })
+      list.push({ value: 'shipped', label: ORDER_STATUS_LABELS.shipped })
       addCancel()
     } else if (curr === 'shipped') {
-      list.push({ value: 'out_for_delivery', label: STATUS_LABELS.out_for_delivery })
-      list.push({ value: 'delivered', label: STATUS_LABELS.delivered })
+      list.push({ value: 'out_for_delivery', label: ORDER_STATUS_LABELS.out_for_delivery })
+      list.push({ value: 'delivered', label: ORDER_STATUS_LABELS.delivered })
       addCancel()
     } else if (curr === 'out_for_delivery') {
-      list.push({ value: 'delivered', label: STATUS_LABELS.delivered })
+      list.push({ value: 'delivered', label: ORDER_STATUS_LABELS.delivered })
     }
 
     return list

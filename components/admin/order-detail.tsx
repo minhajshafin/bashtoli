@@ -5,26 +5,10 @@ import Link from 'next/link'
 import type { AdminOrderDetail } from '@/lib/queries/orders'
 import { OrderStatusSelect } from '@/components/admin/order-status-select'
 import { OrderStatusHistory } from '@/components/admin/order-status-history'
+import { OrderStatusBadge } from '@/components/admin/order-status-badge'
 
 interface OrderDetailProps {
   detail: AdminOrderDetail
-}
-
-function getStatusColor(status: string) {
-  switch (status) {
-    case 'pending':
-      return 'text-amber-600 border-amber-200 bg-amber-50'
-    case 'confirmed':
-      return 'text-blue-600 border-blue-200 bg-blue-50'
-    case 'shipped':
-      return 'text-indigo-600 border-indigo-200 bg-indigo-50'
-    case 'delivered':
-      return 'text-emerald-600 border-emerald-200 bg-emerald-50'
-    case 'cancelled':
-      return 'text-rose-600 border-rose-200 bg-rose-50'
-    default:
-      return 'text-slate-600 border-slate-200 bg-slate-50'
-  }
 }
 
 export function OrderDetail({ detail }: OrderDetailProps) {
@@ -45,9 +29,7 @@ export function OrderDetail({ detail }: OrderDetailProps) {
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">{order.order_number}</h1>
-            <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-bold capitalize ${getStatusColor(order.status)}`}>
-              {order.status}
-            </span>
+            <OrderStatusBadge status={order.status} className="text-xs" />
           </div>
           <p className="text-xs text-slate-500 mt-1">Placed on {orderDateStr}</p>
         </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { ORDER_STATUS_LABELS } from '@/components/admin/order-status-badge'
 
 interface HistoryEntry {
   id: string
@@ -12,15 +13,6 @@ interface HistoryEntry {
 
 interface OrderStatusHistoryProps {
   history: HistoryEntry[]
-}
-
-const STATUS_LABELS: Record<string, string> = {
-  pending: 'Pending Verification',
-  confirmed: 'Confirmed',
-  shipped: 'Shipped',
-  out_for_delivery: 'Out for Delivery',
-  delivered: 'Delivered',
-  cancelled: 'Cancelled',
 }
 
 function getBulletColor(status: string) {
@@ -95,7 +87,7 @@ export function OrderStatusHistory({ history }: OrderStatusHistoryProps) {
                     <div className="flex-1 min-w-0 pt-1.5 flex justify-between space-x-4">
                       <div>
                         <p className="text-sm font-bold text-slate-800">
-                          {STATUS_LABELS[entry.status] || entry.status}{' '}
+                          {ORDER_STATUS_LABELS[entry.status] || entry.status}{' '}
                           <span className="text-xs font-normal text-slate-400">
                             by {entry.changed_by_name || 'System'}
                           </span>

@@ -2,12 +2,11 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { addProductImage } from '@/lib/actions/product-images'
-
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_SIZE_MB = 5
-const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
+import {
+  ADMIN_IMAGE_MAX_SIZE_MB,
+  uploadAdminImageFile,
+} from '@/lib/utils/admin-upload'
 
 export function ImageUploader({
   productId,
@@ -20,65 +19,26 @@ export function ImageUploader({
   const [error, setError] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
 
-  // Validate file types and size constraints in client-side JS
-  function validateFile(file: File): string | null {
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      return `Invalid file type "${file.name}". Only JPEG, PNG, and WebP images are allowed.`
-    }
-    if (file.size > MAX_SIZE_BYTES) {
-      return `File "${file.name}" is too large. Maximum allowed size is ${MAX_SIZE_MB} MB.`
-    }
-    return null
-  }
-
   async function uploadFile(file: File) {
-    const validationError = validateFile(file)
-    if (validationError) {
-      setError(validationError)
-      return
-    }
-
     setIsUploading(true)
     setError(null)
 
     try {
-      const supabase = createClient()
-      const fileExt = file.name.split('.').pop()
-      const cleanFileName = file.name
-        .replace(/[^a-zA-Z0-9]/g, '_')
-        .substring(0, 30)
-      const filePath = `${productId}/${Date.now()}_${cleanFileName}.${fileExt}`
+      const url = await uploadAdminImageFile({
+        folder: productId,
+        file,
+      })
 
-      // Upload file directly to Supabase storage bucket
-      const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        })
-
-      if (uploadError) {
-        throw new Error(uploadError.message)
-      }
-
-      // Get public URL
-      const { data: publicUrlData } = supabase.storage
-        .from('product-images')
-        .getPublicUrl(filePath)
-
-      const url = publicUrlData.publicUrl
-
-      // Register image URL in product_images database table via Server Action
       const dbResult = await addProductImage(productId, url)
 
       if (dbResult.error) {
         throw new Error(dbResult.error)
       }
 
-      // Refresh the server component tree so the gallery shows the new image (BUG-3)
       router.refresh()
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred during upload.'
+      const message =
+        err instanceof Error ? err.message : 'An unexpected error occurred during upload.'
       setError(message)
     } finally {
       setIsUploading(false)
@@ -88,7 +48,6 @@ export function ImageUploader({
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files)
-      // Process files sequentially
       for (const file of files) {
         await uploadFile(file)
       }
@@ -142,7 +101,6 @@ export function ImageUploader({
         </div>
       )}
 
-      {/* Drag & Drop Area */}
       <div
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
@@ -213,7 +171,7 @@ export function ImageUploader({
               <span className="text-indigo-600 hover:text-indigo-700">browse</span>
             </p>
             <p className="text-xs text-slate-400">
-              JPEG, PNG, WebP up to {MAX_SIZE_MB}MB
+              JPEG, PNG, WebP up to {ADMIN_IMAGE_MAX_SIZE_MB}MB
             </p>
           </div>
         )}
