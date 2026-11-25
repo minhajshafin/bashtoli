@@ -12,8 +12,8 @@ import {
   Store,
   Users,
   X,
-  ArrowUpRight,
 } from 'lucide-react'
+import { LogoutButton } from './logout-button'
 
 interface NavItem {
   label: string
@@ -195,17 +195,9 @@ function SidebarNavContent({
         ))}
       </nav>
 
-      {/* Footer Storefront Shortcut */}
+      {/* Footer Sign Out */}
       <div className="shrink-0 border-t border-adm-border p-3.5">
-        <Link
-          href="/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex min-h-[42px] items-center justify-between rounded-xl border border-adm-border bg-adm-surface-2/60 px-3.5 py-2 text-xs font-medium text-adm-fg-2 hover:bg-adm-surface-2 hover:text-adm-fg transition-colors"
-        >
-          <span>View Store</span>
-          <ArrowUpRight className="h-3.5 w-3.5 text-adm-muted" aria-hidden="true" />
-        </Link>
+        <LogoutButton />
       </div>
     </div>
   )

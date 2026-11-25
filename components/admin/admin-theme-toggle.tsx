@@ -118,7 +118,7 @@ export function AdminThemeToggle() {
       onClick={handleToggle}
       aria-label={label}
       title={label}
-      className="inline-flex min-h-[40px] min-w-[40px] items-center justify-center rounded-xl border border-adm-border bg-adm-surface text-adm-fg-2 hover:bg-adm-surface-2 hover:text-adm-fg transition-colors cursor-pointer"
+      className="inline-flex min-h-[38px] min-w-[38px] items-center justify-center rounded-xl border border-adm-border bg-adm-surface text-adm-fg-2 hover:bg-adm-surface-2 hover:text-adm-fg transition-colors cursor-pointer"
     >
       {renderedTheme === 'dark' ? (
         <Sun className="h-4 w-4 text-adm-warning" aria-hidden="true" />

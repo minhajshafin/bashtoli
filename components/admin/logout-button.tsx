@@ -5,19 +5,22 @@ import { LogOut } from 'lucide-react'
 import { logoutAction } from '@/lib/actions/auth'
 
 /**
- * Logout button — client component for submitting auth sign-out action.
+ * Logout button rendered in the sidebar footer for signing out of admin.
  */
 export function LogoutButton() {
   return (
-    <form action={logoutAction}>
+    <form action={logoutAction} className="w-full">
       <button
         id="admin-logout-btn"
         type="submit"
         title="Sign out"
-        className="group inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-adm-border bg-adm-surface px-3 py-1.5 text-xs font-medium text-adm-fg-2 hover:bg-adm-danger-bg hover:text-adm-danger hover:border-adm-danger-border transition-colors cursor-pointer"
+        className="group flex min-h-[42px] w-full items-center justify-between rounded-xl border border-adm-border bg-adm-surface-2/60 px-3.5 py-2 text-xs font-semibold text-adm-fg-2 hover:bg-adm-danger-bg hover:text-adm-danger hover:border-adm-danger-border transition-colors cursor-pointer"
       >
-        <LogOut className="h-3.5 w-3.5 text-adm-muted group-hover:text-adm-danger transition-colors" aria-hidden="true" />
-        <span className="hidden sm:inline">Sign out</span>
+        <span>Sign out</span>
+        <LogOut
+          className="h-3.5 w-3.5 text-adm-muted group-hover:text-adm-danger transition-colors"
+          aria-hidden="true"
+        />
       </button>
     </form>
   )

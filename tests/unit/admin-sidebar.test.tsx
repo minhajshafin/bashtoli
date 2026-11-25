@@ -9,6 +9,10 @@ vi.mock('next/navigation', () => ({
   usePathname: () => mockPathname,
 }))
 
+vi.mock('@/lib/actions/auth', () => ({
+  logoutAction: vi.fn(),
+}))
+
 function setViewportMatch(isDesktop: boolean) {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
