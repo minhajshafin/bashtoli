@@ -65,7 +65,7 @@ describe('app/api/auth/callback/route.ts', () => {
       expect(res.headers.get('location')).toBe('https://bashtoli.com/reset-password')
     })
 
-    it('redirects to /login if token_hash verification fails', async () => {
+    it('redirects to /login if token_hash verification fails for non-recovery flow', async () => {
       mockVerifyOtp.mockResolvedValue({
         error: { message: 'Token expired', status: 400 },
       })
@@ -76,6 +76,27 @@ describe('app/api/auth/callback/route.ts', () => {
 
       expect(res.status).toBe(307)
       expect(res.headers.get('location')).toContain('/login?error=')
+    })
+
+    it('redirects to /reset-password when recovery token_hash verification or query error occurs', async () => {
+      mockVerifyOtp.mockResolvedValue({
+        error: { message: 'Token expired', status: 400 },
+      })
+      const verifyReq = new Request(
+        'https://bashtoli.com/api/auth/callback?token_hash=expired_hash&type=recovery&redirectTo=/reset-password'
+      )
+      const verifyRes = await GET(verifyReq)
+
+      expect(verifyRes.status).toBe(307)
+      expect(verifyRes.headers.get('location')).toBe('https://bashtoli.com/reset-password')
+
+      const errReq = new Request(
+        'https://bashtoli.com/api/auth/callback?error=access_denied&error_description=Email+link+is+invalid&redirectTo=/reset-password'
+      )
+      const errRes = await GET(errReq)
+
+      expect(errRes.status).toBe(307)
+      expect(errRes.headers.get('location')).toBe('https://bashtoli.com/reset-password')
     })
 
     it('exchanges code for session and redirects to target on server when valid', async () => {
@@ -117,6 +138,8 @@ describe('app/api/auth/callback/route.ts', () => {
       const text = await res.text()
       expect(text).toContain('window.location.hash')
       expect(text).toContain('/reset-password')
+      expect(text).toContain("type === 'recovery'")
+      expect(text).toContain("credentials: 'same-origin'")
       expect(text).toContain('fetch(\'/api/auth/callback\'')
     })
   })
@@ -155,8 +178,8 @@ describe('app/api/auth/callback/route.ts', () => {
       expect(res.headers.get('set-cookie')).toContain('sb-auth-token')
     })
 
-    it('returns 400 if setSession returns an error', async () => {
-      mockSetSession.mockResolvedValue({
+    it('returns 400 if setSession returns an error or missing session', async () => {
+      mockSetSession.mockResolvedValueOnce({
         data: { session: null },
         error: { message: 'Invalid JWT token', status: 400 },
       })
@@ -172,6 +195,23 @@ describe('app/api/auth/callback/route.ts', () => {
       expect(res.status).toBe(400)
       const json = await res.json()
       expect(json.error).toBe('Invalid JWT token')
+
+      mockSetSession.mockResolvedValueOnce({
+        data: { session: null },
+        error: null,
+      })
+      const missingReq = new Request('https://bashtoli.com/api/auth/callback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_token: 'expired_token',
+          refresh_token: 'expired_refresh',
+        }),
+      })
+      const missingRes = await POST(missingReq)
+      expect(missingRes.status).toBe(400)
+      const missingJson = await missingRes.json()
+      expect(missingJson.error).toBe('Authentication session handshake failed.')
     })
   })
 })

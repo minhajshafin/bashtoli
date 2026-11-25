@@ -35,6 +35,18 @@ function createCallbackClient(
   )
 }
 
+function getCallbackFailureRedirect(
+  origin: string,
+  target: string,
+  type: EmailOtpType | null,
+  errorMessage: string
+): URL {
+  if (target === '/reset-password' || type === 'recovery') {
+    return new URL('/reset-password', origin)
+  }
+  return new URL(`/login?error=${encodeURIComponent(errorMessage)}`, origin)
+}
+
 /**
  * Generates an HTML response with an inline client script to inspect window.location.hash.
  * Used when Supabase redirects with hash fragment tokens (#access_token=...&refresh_token=...)
@@ -94,17 +106,26 @@ function renderClientHashBridge(target: string): NextResponse {
       var params = new URLSearchParams(hash);
       var accessToken = params.get('access_token');
       var refreshToken = params.get('refresh_token');
+      var type = params.get('type');
       var error = params.get('error_description') || params.get('error');
       var target = ${safeTargetJson};
+      var destination = (target === '/' && type === 'recovery') ? '/reset-password' : target;
+      var isRecovery = destination === '/reset-password' || type === 'recovery';
+      var failureUrl = isRecovery
+        ? '/reset-password'
+        : '/login?error=' + encodeURIComponent('Authentication session handshake failed.');
 
       if (error) {
-        window.location.replace('/login?error=' + encodeURIComponent(error));
+        window.location.replace(isRecovery
+          ? '/reset-password'
+          : '/login?error=' + encodeURIComponent(error));
         return;
       }
 
       if (accessToken && refreshToken) {
         fetch('/api/auth/callback', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             access_token: accessToken,
@@ -112,9 +133,9 @@ function renderClientHashBridge(target: string): NextResponse {
           })
         }).then(function(res) {
           if (res.ok) {
-            window.location.replace(target);
+            window.location.replace(destination);
           } else {
-            window.location.replace('/login?error=' + encodeURIComponent('Authentication session handshake failed.'));
+            window.location.replace(failureUrl);
           }
         }).catch(function() {
           window.location.replace('/login?error=' + encodeURIComponent('Network error during authentication.'));
@@ -123,7 +144,7 @@ function renderClientHashBridge(target: string): NextResponse {
       }
 
       // No hash fragment tokens present
-      window.location.replace('/login?error=' + encodeURIComponent('Authentication session handshake failed.'));
+      window.location.replace(failureUrl);
     })();
   </script>
 </body>
@@ -154,12 +175,9 @@ export async function GET(request: Request) {
   // Explicit URL query errors returned by Supabase
   const authError = searchParams.get('error_description') || searchParams.get('error')
   if (authError) {
-    console.error({
-      tag: 'auth:callback:paramError',
-      error: authError,
-    })
+    console.error('[auth:callback:paramError]', authError)
     return NextResponse.redirect(
-      new URL(`/login?error=${encodeURIComponent(authError)}`, origin)
+      getCallbackFailureRedirect(origin, target, type, authError)
     )
   }
 
@@ -178,13 +196,14 @@ export async function GET(request: Request) {
       return redirectResponse
     }
 
-    console.error({
-      tag: 'auth:callback:verifyOtp',
-      error: error.message,
-      status: error.status,
-    })
+    console.error('[auth:callback:verifyOtp]', error.message, error.status)
     return NextResponse.redirect(
-      new URL('/login?error=Authentication session handshake failed.', origin)
+      getCallbackFailureRedirect(
+        origin,
+        target,
+        type,
+        'Authentication session handshake failed.'
+      )
     )
   }
 
@@ -199,11 +218,7 @@ export async function GET(request: Request) {
       return redirectResponse
     }
 
-    console.error({
-      tag: 'auth:callback:exchangeCode',
-      error: error.message,
-      status: error.status,
-    })
+    console.error('[auth:callback:exchangeCode]', error.message, error.status)
     // If exchangeCode fails (e.g. cross-device code verifier missing), fallback to client bridge
     // in case hash tokens are available
     return renderClientHashBridge(target)
@@ -239,26 +254,29 @@ export async function POST(request: Request) {
     const response = NextResponse.json({ success: true })
     const supabase = createCallbackClient(cookieStore, response)
 
-    const { error } = await supabase.auth.setSession({
+    const { data, error } = await supabase.auth.setSession({
       access_token,
       refresh_token,
     })
 
-    if (error) {
-      console.error({
-        tag: 'auth:callback:setSession',
-        error: error.message,
-        status: error.status,
-      })
-      return NextResponse.json({ error: error.message }, { status: 400 })
+    if (error || !data?.session) {
+      console.error(
+        '[auth:callback:setSession]',
+        error?.message ?? 'Session missing after setSession',
+        error?.status ?? 400
+      )
+      return NextResponse.json(
+        { error: error?.message ?? 'Authentication session handshake failed.' },
+        { status: 400 }
+      )
     }
 
     return response
   } catch (err) {
-    console.error({
-      tag: 'auth:callback:postException',
-      error: err instanceof Error ? err.message : String(err),
-    })
+    console.error(
+      '[auth:callback:postException]',
+      err instanceof Error ? err.message : String(err)
+    )
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

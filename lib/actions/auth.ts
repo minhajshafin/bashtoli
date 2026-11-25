@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createImplicitAuthClient } from '@/lib/supabase/server'
 import {
   loginSchema,
   signupSchema,
@@ -230,7 +230,9 @@ export async function forgotPasswordAction(
     }
   }
 
-  const supabase = await createClient()
+  // Use an implicit-flow client (no PKCE code-verifier cookie) so reset links
+  // succeed across browsers/devices and when multiple reset emails are requested.
+  const supabase = createImplicitAuthClient()
 
   // Use NEXT_PUBLIC_APP_URL — do NOT derive the redirect base URL solely from
   // the Host header, which is client-controlled (Host Header Injection). (L-NEW-2)
@@ -316,6 +318,13 @@ export async function resetPasswordAction(
       return {
         error: mapAuthError(error),
       }
+    }
+
+    // Clear the temporary recovery session so "Go to Sign In" lands on /login
+    // rather than auto-redirecting with an active session cookie.
+    const { error: signOutError } = await supabase.auth.signOut()
+    if (signOutError) {
+      sanitizeActionError('auth:resetPassword:signOut', signOutError)
     }
 
     return {

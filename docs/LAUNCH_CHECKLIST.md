@@ -26,7 +26,7 @@ This checklist tracks the operational, infrastructure, security, and verificatio
     `<a href="{{ .SiteURL }}/api/auth/callback?token_hash={{ .TokenHash }}&type=recovery&redirectTo=/reset-password">Reset Password</a>`
 - [ ] **Site URL & Redirect URLs**:
   - Set **Site URL** to the production domain (e.g. `https://bashtoli.com`).
-  - Add production and preview redirect URLs under **Redirect URLs** (e.g. `https://bashtoli.com/api/auth/callback` and `https://*.vercel.app/api/auth/callback`).
+  - Add production and preview redirect URLs with wildcard query matching under **Redirect URLs** (e.g. `https://bashtoli.com/api/auth/callback**` and `https://*.vercel.app/api/auth/callback**`) so `?redirectTo=...` parameters are preserved.
 - [ ] **Leaked Password Protection**: Enable leaked-password protection (HaveIBeenPwned integration) under Supabase Auth security settings if supported by the project tier.
 - [ ] **Custom SMTP Configuration**:
   - Configure custom SMTP in Supabase Auth settings to send auth confirmation and password-reset emails through Resend SMTP.
@@ -59,7 +59,7 @@ Configure the following environment variables in Vercel under Project Settings -
 - [ ] `UPSTASH_REDIS_REST_TOKEN` (Production & Preview)
 - [ ] `RESEND_API_KEY` (Production & Preview)
 - [ ] `ADMIN_NOTIFICATION_EMAIL` (Production & Preview — destination for new order alerts)
-- [ ] `NEXT_PUBLIC_APP_URL` (Production & Preview — canonical base URL)
+- [ ] `NEXT_PUBLIC_APP_URL` (Production & Preview — canonical base URL; save as Vercel **Config**, not Secret, so it remains editable)
 
 ---
 

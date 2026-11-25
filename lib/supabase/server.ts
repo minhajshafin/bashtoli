@@ -58,6 +58,27 @@ export function createPublicClient() {
 }
 
 /**
+ * Creates a stateless Supabase client configured for implicit auth flows
+ * (e.g. password recovery emails) that does not set or depend on PKCE
+ * code-verifier cookies, so email links work across browsers, devices, and
+ * repeated requests.
+ */
+export function createImplicitAuthClient() {
+  return createSupabaseClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      auth: {
+        flowType: 'implicit',
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false,
+      },
+    },
+  )
+}
+
+/**
  * Creates a Supabase client that uses the SECRET key.
  * This client BYPASSES Row-Level Security entirely.
  *
