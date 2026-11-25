@@ -40,12 +40,8 @@ export default async function StaffManagementPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="pb-5 border-b border-paper-300 space-y-1.5">
-        <p className="admin-kicker text-ink-500">04 / Access Control · Admin Only</p>
-        <h1 className="admin-page-title text-ink-950">Staff Accounts</h1>
-        <p className="text-sm text-ink-600">
-          Review, promote, and manage store administrative dashboard privileges.
-        </p>
+      <div className="pb-5 border-b border-adm-border">
+        <h1 className="admin-page-title text-adm-fg">Staff Accounts</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-6">

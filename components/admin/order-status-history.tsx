@@ -18,38 +18,37 @@ interface OrderStatusHistoryProps {
 function getTimelineNodeClasses(status: string) {
   switch (status) {
     case 'delivered':
-      return 'bg-ink-950 text-paper-50 border-ink-950'
+      return 'bg-adm-success-bg text-adm-success border-adm-success-border'
     case 'cancelled':
-      return 'bg-signal-danger text-paper-50 border-signal-danger'
-    case 'shipped':
+      return 'bg-adm-danger-bg text-adm-danger border-adm-danger-border'
     case 'out_for_delivery':
+      return 'bg-adm-accent-tint text-adm-accent-text border-adm-accent-border'
+    case 'shipped':
     case 'confirmed':
-      return 'bg-ink-800 text-paper-50 border-ink-800'
+      return 'bg-adm-info-bg text-adm-info border-adm-info-border'
     default:
-      return 'bg-paper-200 text-ink-950 border-ink-400'
+      return 'bg-adm-warning-bg text-adm-warning border-adm-warning-border'
   }
 }
 
 export function OrderStatusHistory({ history }: OrderStatusHistoryProps) {
   if (history.length === 0) {
     return (
-      <div className="bg-paper-50 border border-paper-300 rounded-2xl p-5 shadow-subtle">
-        <h2 className="admin-kicker text-ink-500 mb-3">Status History Log</h2>
-        <p className="text-xs text-ink-600 italic">
-          No history log records exist for this order.
-        </p>
+      <div className="bg-adm-surface border border-adm-border rounded-2xl p-5 shadow-subtle">
+        <h2 className="text-sm font-semibold text-adm-fg mb-2">Status History</h2>
+        <p className="text-xs text-adm-muted">No status updates recorded.</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-paper-50 border border-paper-300 rounded-2xl p-5 shadow-subtle space-y-4">
-      <h2 className="admin-kicker text-ink-500 border-b border-paper-200 pb-2.5">
-        Status History Log
+    <div className="bg-adm-surface border border-adm-border rounded-2xl p-5 shadow-subtle space-y-4">
+      <h2 className="text-sm font-semibold text-adm-fg border-b border-adm-border pb-2.5">
+        Status History
       </h2>
 
       <div className="flow-root">
-        <ul className="-mb-7">
+        <ul className="-mb-6">
           {history.map((entry, idx) => {
             const dateStr = new Date(entry.changed_at).toLocaleString('en-US', {
               month: 'short',
@@ -60,10 +59,10 @@ export function OrderStatusHistory({ history }: OrderStatusHistoryProps) {
 
             return (
               <li key={entry.id}>
-                <div className="relative pb-7">
+                <div className="relative pb-6">
                   {idx !== history.length - 1 && (
                     <span
-                      className="absolute top-4 left-4 -ml-px h-full w-px bg-paper-300"
+                      className="absolute top-4 left-4 -ml-px h-full w-px bg-adm-border"
                       aria-hidden="true"
                     />
                   )}
@@ -71,12 +70,12 @@ export function OrderStatusHistory({ history }: OrderStatusHistoryProps) {
                   <div className="relative flex space-x-3">
                     <div>
                       <span
-                        className={`h-8 w-8 rounded-full border flex items-center justify-center ring-4 ring-paper-50 ${getTimelineNodeClasses(
+                        className={`h-8 w-8 rounded-full border flex items-center justify-center ring-4 ring-adm-surface ${getTimelineNodeClasses(
                           entry.status
                         )}`}
                       >
                         <svg
-                          className="h-4 w-4"
+                          className="h-3.5 w-3.5"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -90,14 +89,14 @@ export function OrderStatusHistory({ history }: OrderStatusHistoryProps) {
 
                     <div className="flex-1 min-w-0 pt-1 flex justify-between gap-3">
                       <div>
-                        <p className="text-sm font-bold text-ink-950">
+                        <p className="text-sm font-semibold text-adm-fg">
                           {ORDER_STATUS_LABELS[entry.status] || entry.status}
                         </p>
-                        <p className="text-xs text-ink-600">
+                        <p className="text-xs text-adm-muted">
                           by {entry.changed_by_name || 'System'}
                         </p>
                       </div>
-                      <div className="text-right font-mono text-[11px] whitespace-nowrap text-ink-500 font-semibold pt-0.5">
+                      <div className="text-right font-mono text-[11px] whitespace-nowrap text-adm-muted pt-0.5">
                         <time dateTime={entry.changed_at}>{dateStr}</time>
                       </div>
                     </div>

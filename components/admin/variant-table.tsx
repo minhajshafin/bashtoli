@@ -133,28 +133,22 @@ export function VariantTable({
   const hasChanges = Object.keys(changes).length > 0
 
   return (
-    <div className="rounded-2xl border border-paper-300 bg-paper-50 p-6 shadow-subtle">
+    <div className="rounded-2xl border border-adm-border bg-adm-surface p-6 shadow-subtle">
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="admin-kicker text-ink-500 mb-1">Inventory Matrix</p>
-          <h2 className="admin-section-title text-ink-950">SKU Variants</h2>
-          <p className="text-xs text-ink-600 mt-1">
-            Define pricing, inventory stock level, and SKUs per variant combination.
-          </p>
-        </div>
+        <h2 className="admin-section-title text-adm-fg">Variants</h2>
 
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => handleBulkToggle(true)}
-            className="min-h-[38px] rounded-xl border border-ink-400/70 bg-paper-50 px-3.5 py-1.5 text-xs font-bold text-ink-950 hover:bg-paper-200 transition-colors cursor-pointer"
+            className="min-h-[36px] rounded-xl border border-adm-border bg-adm-surface px-3.5 py-1.5 text-xs font-semibold text-adm-fg hover:bg-adm-surface-2 transition-colors cursor-pointer"
           >
             Publish All
           </button>
           <button
             type="button"
             onClick={() => handleBulkToggle(false)}
-            className="min-h-[38px] rounded-xl border border-ink-400/70 bg-paper-50 px-3.5 py-1.5 text-xs font-bold text-ink-950 hover:bg-paper-200 transition-colors cursor-pointer"
+            className="min-h-[36px] rounded-xl border border-adm-border bg-adm-surface px-3.5 py-1.5 text-xs font-semibold text-adm-fg hover:bg-adm-surface-2 transition-colors cursor-pointer"
           >
             Draft All
           </button>
@@ -164,7 +158,7 @@ export function VariantTable({
       {error && (
         <div
           role="alert"
-          className="mb-4 rounded-xl border border-signal-danger-border bg-signal-danger-bg px-4 py-3 text-sm font-medium text-signal-danger"
+          className="mb-4 rounded-xl border border-adm-danger-border bg-adm-danger-bg px-4 py-3 text-sm font-medium text-adm-danger"
         >
           {error}
         </div>
@@ -173,9 +167,9 @@ export function VariantTable({
       {success && (
         <div
           role="status"
-          className="mb-4 rounded-xl border border-ink-800 bg-ink-950 px-4 py-3 text-sm font-medium text-paper-50"
+          className="mb-4 rounded-xl border border-adm-success-border bg-adm-success-bg px-4 py-3 text-sm font-medium text-adm-success"
         >
-          Variants updated successfully!
+          Variants updated.
         </div>
       )}
 
@@ -183,14 +177,14 @@ export function VariantTable({
         tabIndex={0}
         role="region"
         aria-labelledby="variants-table-caption"
-        className="overflow-x-auto rounded-xl border border-paper-300 focus-visible:outline-2 focus-visible:outline-ink-950"
+        className="overflow-x-auto rounded-xl border border-adm-border"
       >
-        <table className="w-full text-sm text-ink-700">
+        <table className="w-full text-sm text-adm-fg-2">
           <caption id="variants-table-caption" className="sr-only">
             SKU variants pricing and inventory table
           </caption>
           <thead>
-            <tr className="border-b border-paper-300 bg-paper-200/70 text-left font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-600">
+            <tr className="border-b border-adm-border bg-adm-surface-2/70 text-left text-xs font-medium text-adm-muted">
               {optionKeys.map((key) => (
                 <th scope="col" key={key} className="px-4 py-3">
                   {key}
@@ -198,11 +192,11 @@ export function VariantTable({
               ))}
               <th scope="col" className="px-4 py-3">SKU</th>
               <th scope="col" className="px-4 py-3">Price (BDT)</th>
-              <th scope="col" className="px-4 py-3">Stock Level</th>
+              <th scope="col" className="px-4 py-3">Stock</th>
               <th scope="col" className="px-4 py-3 text-center">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-paper-200 bg-paper-50">
+          <tbody className="divide-y divide-adm-border bg-adm-surface">
             {variants.map((v) => (
               <VariantRow
                 key={v.id}
@@ -217,14 +211,14 @@ export function VariantTable({
         </table>
       </div>
 
-      <div className="mt-5 flex items-center justify-end border-t border-paper-200 pt-4">
+      <div className="mt-5 flex items-center justify-end border-t border-adm-border pt-4">
         <button
           type="button"
           onClick={handleSave}
           disabled={!hasChanges || isPending}
-          className="min-h-[44px] rounded-xl bg-ink-950 px-5 py-2.5 text-xs font-bold text-paper-50 hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-45 transition-colors cursor-pointer"
+          className="min-h-[42px] rounded-xl bg-adm-accent px-5 py-2 text-xs font-semibold text-adm-accent-fg hover:bg-adm-accent-hover disabled:cursor-not-allowed disabled:opacity-45 transition-colors cursor-pointer"
         >
-          {isPending ? 'Saving Changes...' : 'Save Variant Changes'}
+          {isPending ? 'Saving...' : 'Save Variant Changes'}
         </button>
       </div>
     </div>

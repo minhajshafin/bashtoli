@@ -33,7 +33,7 @@ export default async function EditProductPage({ params }: PageProps) {
     return (
       <div
         role="alert"
-        className="rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-6 text-sm font-medium text-signal-danger max-w-7xl mx-auto"
+        className="rounded-2xl border border-adm-danger-border bg-adm-danger-bg p-6 text-sm font-medium text-adm-danger max-w-7xl mx-auto"
       >
         Failed to load product data.{' '}
         {err instanceof Error ? err.message : 'Unknown error'}
@@ -47,20 +47,12 @@ export default async function EditProductPage({ params }: PageProps) {
 
   return (
     <ProductForm mode="edit" product={product} categories={categories}>
-      {/* Media & Image Studio */}
-      <div className="rounded-2xl border border-paper-300 bg-paper-50 p-6 shadow-subtle space-y-6">
-        <div>
-          <p className="admin-kicker text-ink-500 mb-1">Media Studio</p>
-          <h2 className="admin-section-title text-ink-950">Product Media &amp; Gallery</h2>
-          <p className="text-xs text-ink-600 mt-1">
-            Manage product images, update alt descriptions, and upload high-resolution photos.
-          </p>
-        </div>
+      <div className="rounded-2xl border border-adm-border bg-adm-surface p-6 shadow-subtle space-y-6">
+        <h2 className="admin-section-title text-adm-fg">Images</h2>
         <ImageGalleryAdmin images={images} />
         <ImageUploader productId={id} />
       </div>
 
-      {/* Options & Variants Inventory Studio */}
       <div className="space-y-6">
         <OptionManager productId={id} initialOptions={options} />
         <VariantTable productId={id} variants={variants} />

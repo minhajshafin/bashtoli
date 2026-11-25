@@ -85,18 +85,13 @@ export function ImageUploader({
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h3 className="text-sm font-bold text-ink-950">Upload Product Images</h3>
-        <p className="text-xs text-ink-600 mt-0.5">
-          Add photos of your product. Recommended: 1200×1200 WebP/JPEG, max {ADMIN_IMAGE_MAX_SIZE_MB} MB.
-        </p>
-      </div>
+    <div className="space-y-3">
+      <h3 className="text-xs font-semibold text-adm-fg-2">Upload Images</h3>
 
       {error && (
         <div
           role="alert"
-          className="rounded-xl border border-signal-danger-border bg-signal-danger-bg px-4 py-3 text-sm font-medium text-signal-danger"
+          className="rounded-xl border border-adm-danger-border bg-adm-danger-bg px-4 py-3 text-sm font-medium text-adm-danger"
         >
           {error}
         </div>
@@ -124,16 +119,16 @@ export function ImageUploader({
           type="button"
           disabled={isUploading}
           onClick={() => fileInputRef.current?.click()}
-          className={`w-full flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`w-full flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-7 text-center cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
             dragActive
-              ? 'border-ink-950 bg-paper-200/80'
-              : 'border-ink-400/80 bg-paper-100/60 hover:border-ink-950 hover:bg-paper-200/50'
+              ? 'border-adm-accent bg-adm-accent-tint/50'
+              : 'border-adm-input-border/70 bg-adm-surface-2/40 hover:border-adm-accent hover:bg-adm-surface-2/80'
           }`}
         >
           {isUploading ? (
             <div className="flex flex-col items-center justify-center gap-3">
               <svg
-                className="h-8 w-8 animate-spin text-ink-950"
+                className="h-7 w-7 animate-spin text-adm-accent"
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden="true"
@@ -152,20 +147,19 @@ export function ImageUploader({
                   d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                 />
               </svg>
-              <span className="text-sm font-semibold text-ink-900">
-                Uploading image, please wait...
+              <span className="text-sm font-medium text-adm-fg">
+                Uploading...
               </span>
             </div>
           ) : (
-            <div className="space-y-2.5">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-ink-950 text-paper-50">
+            <div className="space-y-2">
+              <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-adm-accent-tint border border-adm-accent-border text-adm-accent-text">
                 <Upload className="h-5 w-5" aria-hidden="true" />
               </div>
-              <p className="text-sm font-semibold text-ink-950">
-                Drag and drop your images here, or{' '}
-                <span className="underline underline-offset-4">browse files</span>
+              <p className="text-sm font-medium text-adm-fg">
+                Drop images or <span className="text-adm-accent-text underline underline-offset-4">browse</span>
               </p>
-              <p className="font-mono text-xs text-ink-600">
+              <p className="font-mono text-xs text-adm-muted">
                 JPEG, PNG, WebP up to {ADMIN_IMAGE_MAX_SIZE_MB}MB
               </p>
             </div>

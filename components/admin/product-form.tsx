@@ -277,7 +277,7 @@ export function ProductForm({
             {activeError && (
               <div
                 role="alert"
-                className="flex items-start gap-3 rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-4 text-sm text-signal-danger shadow-subtle"
+                className="flex items-start gap-3 rounded-2xl border border-adm-danger-border bg-adm-danger-bg p-4 text-sm text-adm-danger shadow-subtle"
               >
                 <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="space-y-1">

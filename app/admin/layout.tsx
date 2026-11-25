@@ -25,8 +25,8 @@ export const instant = false
 
 /**
  * Root layout for all /admin/* routes.
- * Scopes the modern black & white dual-tone design system and monospace data font
- * exclusively to the administrative studio.
+ * Scopes adaptive Light & Dark admin tokens and JetBrains Mono exclusively
+ * to /admin without altering storefront color schemes.
  */
 export default async function AdminLayout({
   children,
@@ -38,12 +38,12 @@ export default async function AdminLayout({
     <ToastProvider variant="admin">
       <AdminConfirmDialogProvider>
         <div
-          className={`admin-theme ${jetbrainsMono.variable} flex h-screen overflow-hidden bg-paper-100 text-ink-950 font-sans antialiased`}
+          className={`admin-theme ${jetbrainsMono.variable} flex h-screen overflow-hidden bg-adm-bg text-adm-fg font-sans antialiased`}
         >
           {/* Skip link for keyboard navigation */}
           <a
             href="#admin-main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[120] focus:rounded-xl focus:bg-ink-950 focus:px-4 focus:py-2.5 focus:text-xs focus:font-bold focus:text-paper-50 focus:shadow-elevation-3"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[120] focus:rounded-xl focus:bg-adm-accent focus:px-4 focus:py-2.5 focus:text-xs focus:font-semibold focus:text-adm-accent-fg focus:shadow-elevation-3"
           >
             Skip to main content
           </a>
@@ -58,7 +58,7 @@ export default async function AdminLayout({
               tabIndex={-1}
               className="flex-1 overflow-y-auto outline-none"
             >
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-7 sm:py-8">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
                 {children}
               </div>
             </main>

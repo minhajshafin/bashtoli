@@ -42,7 +42,7 @@ export default async function CategoriesPage({
     return (
       <div
         role="alert"
-        className="rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-6 text-sm font-medium text-signal-danger"
+        className="rounded-2xl border border-adm-danger-border bg-adm-danger-bg p-6 text-sm font-medium text-adm-danger"
       >
         Failed to load categories: {error.message}
       </div>
@@ -73,25 +73,19 @@ export default async function CategoriesPage({
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-paper-300">
-        <div className="space-y-1.5">
-          <p className="admin-kicker text-ink-500">02 / Catalog Taxonomy</p>
-          <div className="flex items-center gap-3">
-            <h1 className="admin-page-title text-ink-950">Categories</h1>
-            <span className="rounded-full bg-ink-950 px-2.5 py-0.5 font-mono text-xs font-bold text-paper-50">
-              {categories.length}
-            </span>
-          </div>
-          <p className="text-sm text-ink-600">
-            Organize products into curated store categories and display order.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-adm-border">
+        <div className="flex items-center gap-3">
+          <h1 className="admin-page-title text-adm-fg">Categories</h1>
+          <span className="rounded-full bg-adm-surface-2 border border-adm-border px-2.5 py-0.5 font-mono text-xs font-semibold text-adm-muted">
+            {categories.length}
+          </span>
         </div>
 
         {!showForm && (
           <Link
             id="new-category-btn"
             href="/admin/categories?action=new"
-            className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-ink-950 px-4 py-2 text-xs sm:text-sm font-bold text-paper-50 transition-colors hover:bg-ink-800 shadow-elevation-1 shrink-0"
+            className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl bg-adm-accent px-4 py-2 text-xs sm:text-sm font-semibold text-adm-accent-fg transition-colors hover:bg-adm-accent-hover shadow-elevation-1 shrink-0"
           >
             <Plus className="h-4 w-4" aria-hidden="true" />
             <span>New Category</span>

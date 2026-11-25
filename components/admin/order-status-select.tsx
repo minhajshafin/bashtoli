@@ -63,7 +63,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
       const confirmed = await confirm({
         title: 'Cancel this Order?',
         description:
-          'Are you sure you want to cancel this order? This will release the item reservation and restock all inventory quantities back into the catalog.',
+          'Cancelling this order restores its reserved quantities back into inventory.',
         confirmText: 'Cancel Order',
         cancelText: 'Keep Order',
         variant: 'danger',
@@ -89,13 +89,13 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
   const isFinalState = status === 'delivered' || status === 'cancelled'
 
   return (
-    <div className="bg-paper-50 border border-paper-300 rounded-2xl p-5 shadow-subtle space-y-4">
+    <div className="bg-adm-surface border border-adm-border rounded-2xl p-5 shadow-subtle space-y-3.5">
       <div className="flex justify-between items-center">
-        <h2 className="admin-kicker text-ink-500">Order Status Control</h2>
+        <h2 className="text-sm font-semibold text-adm-fg">Order Status</h2>
         {isPending && (
           <span className="flex h-2.5 w-2.5 relative" aria-label="Updating status">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ink-600 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-ink-950"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-adm-accent opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-adm-accent"></span>
           </span>
         )}
       </div>
@@ -104,16 +104,16 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
         <div>
           <label
             htmlFor="order-status-select-input"
-            className="block text-xs font-semibold text-ink-700 mb-1.5"
+            className="block text-xs font-medium text-adm-muted mb-1.5"
           >
-            Update Status Flow
+            Transition Status
           </label>
           <select
             id="order-status-select-input"
             value={status}
             onChange={handleStatusChange}
             disabled={isPending || isFinalState}
-            className="w-full min-h-[44px] px-3.5 rounded-xl border border-ink-400/80 bg-paper-50 text-sm font-semibold text-ink-950 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1 disabled:opacity-60 disabled:bg-paper-200 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full min-h-[44px] px-3.5 rounded-xl border border-adm-input-border bg-adm-surface text-sm font-medium text-adm-fg focus-visible:outline-2 focus-visible:outline-adm-accent focus-visible:outline-offset-1 disabled:opacity-60 disabled:bg-adm-surface-2 disabled:cursor-not-allowed cursor-pointer"
           >
             {allowedOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -126,7 +126,7 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
         {error && (
           <div
             role="alert"
-            className="flex items-start gap-2 rounded-xl bg-signal-danger-bg border border-signal-danger-border p-3 text-xs font-semibold text-signal-danger animate-shake"
+            className="flex items-start gap-2 rounded-xl bg-adm-danger-bg border border-adm-danger-border p-3 text-xs font-semibold text-adm-danger animate-shake"
           >
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
             <span>{error}</span>
@@ -136,16 +136,16 @@ export function OrderStatusSelect({ orderId, currentStatus }: OrderStatusSelectP
         {success && (
           <div
             role="status"
-            className="flex items-start gap-2 rounded-xl bg-ink-950 border border-ink-800 p-3 text-xs font-semibold text-paper-50"
+            className="flex items-start gap-2 rounded-xl bg-adm-success-bg border border-adm-success-border p-3 text-xs font-semibold text-adm-success"
           >
             <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
-            <span>Order status updated successfully!</span>
+            <span>Order status updated.</span>
           </div>
         )}
 
         {isFinalState && (
-          <p className="text-xs text-ink-600 font-medium italic">
-            This order is in a final state ({status}) and cannot be transitioned further.
+          <p className="text-xs text-adm-muted">
+            Order is {status} and cannot be changed further.
           </p>
         )}
       </div>

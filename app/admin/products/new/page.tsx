@@ -19,7 +19,7 @@ export default async function NewProductPage() {
     return (
       <div
         role="alert"
-        className="rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-6 text-sm font-medium text-signal-danger max-w-7xl mx-auto"
+        className="rounded-2xl border border-adm-danger-border bg-adm-danger-bg p-6 text-sm font-medium text-adm-danger max-w-7xl mx-auto"
       >
         Failed to load categories:{' '}
         {err instanceof Error ? err.message : 'Unknown error'}

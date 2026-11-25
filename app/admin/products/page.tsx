@@ -41,7 +41,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     return (
       <div
         role="alert"
-        className="rounded-2xl border border-signal-danger-border bg-signal-danger-bg p-6 text-sm font-medium text-signal-danger"
+        className="rounded-2xl border border-adm-danger-border bg-adm-danger-bg p-6 text-sm font-medium text-adm-danger"
       >
         Failed to load products:{' '}
         {err instanceof Error ? err.message : 'Unknown error'}
@@ -70,24 +70,18 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between pb-5 border-b border-paper-300">
-        <div className="space-y-1.5">
-          <p className="admin-kicker text-ink-500">02 / Catalog Ledger</p>
-          <div className="flex items-center gap-3">
-            <h1 className="admin-page-title text-ink-950">Products</h1>
-            <span className="rounded-full bg-ink-950 px-2.5 py-0.5 font-mono text-xs font-bold text-paper-50">
-              {safeTotal.toLocaleString()}
-            </span>
-          </div>
-          <p className="text-sm text-ink-600">
-            Manage store catalog, pricing, inventory status, and visibility.
-          </p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-5 border-b border-adm-border">
+        <div className="flex items-center gap-3">
+          <h1 className="admin-page-title text-adm-fg">Products</h1>
+          <span className="rounded-full bg-adm-surface-2 border border-adm-border px-2.5 py-0.5 font-mono text-xs font-semibold text-adm-muted">
+            {safeTotal.toLocaleString()}
+          </span>
         </div>
 
         <Link
           id="new-product-btn"
           href="/admin/products/new"
-          className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-ink-950 px-4 py-2 text-xs sm:text-sm font-bold text-paper-50 transition-colors hover:bg-ink-800 shadow-elevation-1 cursor-pointer shrink-0"
+          className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl bg-adm-accent px-4 py-2 text-xs sm:text-sm font-semibold text-adm-accent-fg transition-colors hover:bg-adm-accent-hover shadow-elevation-1 cursor-pointer shrink-0"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           <span>Add Product</span>
@@ -98,7 +92,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <nav
           aria-label="Product status filter"
-          className="flex items-center gap-1 p-1 bg-paper-200 rounded-xl border border-paper-300 shrink-0 overflow-x-auto"
+          className="flex items-center gap-1 p-1 bg-adm-surface-2 rounded-xl border border-adm-border shrink-0 overflow-x-auto"
         >
           {filterTabs.map((tab) => {
             const isActive = status === tab.value || (tab.value === 'all' && !status)
@@ -109,10 +103,10 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               <Link
                 key={tab.value}
                 href={`/admin/products?status=${tab.value}${tabSearch}&page=1`}
-                className={`inline-flex min-h-[38px] items-center justify-center px-3.5 py-1.5 text-xs font-bold rounded-lg transition-colors whitespace-nowrap ${
+                className={`inline-flex min-h-[36px] items-center justify-center px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
                   isActive
-                    ? 'bg-ink-950 text-paper-50 shadow-subtle'
-                    : 'text-ink-700 hover:text-ink-950 hover:bg-paper-50/70'
+                    ? 'bg-adm-surface text-adm-fg border border-adm-border shadow-subtle'
+                    : 'text-adm-muted hover:text-adm-fg'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
@@ -142,11 +136,11 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 type="search"
                 name="search"
                 defaultValue={search}
-                placeholder="Search products by name…"
-                className="w-full min-h-[44px] pl-10 pr-9 rounded-xl border border-ink-400/70 bg-paper-50 text-sm text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
+                placeholder="Search products…"
+                className="w-full min-h-[44px] pl-10 pr-9 rounded-xl border border-adm-input-border bg-adm-surface text-sm text-adm-fg placeholder:text-adm-muted focus-visible:outline-2 focus-visible:outline-adm-accent focus-visible:outline-offset-1"
               />
               <div
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-adm-muted pointer-events-none"
                 aria-hidden="true"
               >
                 <Search className="h-4 w-4" />
@@ -155,7 +149,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               {search.trim() && (
                 <Link
                   href={`/admin/products?status=${status}&page=1`}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 text-ink-500 hover:text-ink-950 rounded-lg"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 text-adm-muted hover:text-adm-fg rounded-lg"
                   aria-label="Clear search"
                   title="Clear search"
                 >
@@ -166,7 +160,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
             <button
               type="submit"
-              className="min-h-[44px] px-4 rounded-xl bg-ink-950 text-paper-50 text-xs font-bold hover:bg-ink-800 transition-colors cursor-pointer shrink-0"
+              className="min-h-[44px] px-4 rounded-xl bg-adm-accent text-adm-accent-fg text-xs font-semibold hover:bg-adm-accent-hover transition-colors cursor-pointer shrink-0"
             >
               Search
             </button>
@@ -174,19 +168,17 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         </search>
       </div>
 
-      {/* Product List Ledger */}
       <ProductList products={products} />
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-paper-300 pt-4">
-          <p className="font-mono text-xs text-ink-600">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-adm-border pt-4">
+          <p className="font-mono text-xs text-adm-muted">
             Showing{' '}
-            <span className="font-bold text-ink-950">
+            <span className="font-semibold text-adm-fg">
               {offset + 1}–{Math.min(offset + ADMIN_PRODUCTS_PAGE_SIZE, safeTotal)}
             </span>{' '}
             of{' '}
-            <span className="font-bold text-ink-950">
+            <span className="font-semibold text-adm-fg">
               {safeTotal.toLocaleString()}
             </span>{' '}
             products
@@ -196,32 +188,32 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             {parsedPage > 1 ? (
               <Link
                 href={pageUrl(parsedPage - 1)}
-                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-ink-400/70 bg-paper-50 px-4 text-xs font-bold text-ink-950 hover:bg-paper-200 transition-colors"
+                className="inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-adm-border bg-adm-surface px-4 text-xs font-semibold text-adm-fg hover:bg-adm-surface-2 transition-colors"
               >
                 <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
                 Previous
               </Link>
             ) : (
-              <span className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-paper-300 bg-paper-100 px-4 text-xs font-semibold text-ink-400 cursor-not-allowed select-none">
+              <span className="inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-adm-border bg-adm-surface-2/60 px-4 text-xs font-medium text-adm-muted cursor-not-allowed select-none">
                 <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
                 Previous
               </span>
             )}
 
-            <span className="font-mono text-xs font-bold text-ink-700 px-2">
+            <span className="font-mono text-xs font-semibold text-adm-muted px-2">
               {parsedPage} / {totalPages}
             </span>
 
             {parsedPage < totalPages ? (
               <Link
                 href={pageUrl(parsedPage + 1)}
-                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-ink-400/70 bg-paper-50 px-4 text-xs font-bold text-ink-950 hover:bg-paper-200 transition-colors"
+                className="inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-adm-border bg-adm-surface px-4 text-xs font-semibold text-adm-fg hover:bg-adm-surface-2 transition-colors"
               >
                 Next
                 <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
               </Link>
             ) : (
-              <span className="inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-paper-300 bg-paper-100 px-4 text-xs font-semibold text-ink-400 cursor-not-allowed select-none">
+              <span className="inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-adm-border bg-adm-surface-2/60 px-4 text-xs font-medium text-adm-muted cursor-not-allowed select-none">
                 Next
                 <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
               </span>

@@ -57,13 +57,13 @@ export function DeleteCategoryButton({
         disabled={isPending || hasProducts}
         title={tooltip}
         aria-label={`Delete ${name}`}
-        className="inline-flex items-center justify-center min-h-[40px] min-w-[40px] rounded-xl border border-transparent text-ink-500 hover:text-signal-danger hover:bg-signal-danger-bg hover:border-signal-danger-border transition-colors disabled:cursor-not-allowed disabled:opacity-30 cursor-pointer"
+        className="inline-flex items-center justify-center min-h-[40px] min-w-[40px] rounded-xl border border-transparent text-adm-muted hover:text-adm-danger hover:bg-adm-danger-bg hover:border-adm-danger-border transition-colors disabled:cursor-not-allowed disabled:opacity-30 cursor-pointer"
       >
         <Trash2 className="h-4 w-4" aria-hidden="true" />
       </button>
 
       {error && (
-        <p className="mt-1 text-[11px] text-signal-danger text-right max-w-[200px] ml-auto">
+        <p className="mt-1 text-[11px] text-adm-danger text-right max-w-[200px] ml-auto">
           {error}
         </p>
       )}

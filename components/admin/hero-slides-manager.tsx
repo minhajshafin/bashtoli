@@ -201,12 +201,12 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
       {dbError && (
         <div
           role="alert"
-          className="rounded-2xl border border-signal-warning-border bg-signal-warning-bg p-5 text-sm text-signal-warning shadow-subtle"
+          className="rounded-2xl border border-adm-warning-border bg-adm-warning-bg p-5 text-sm text-adm-warning shadow-subtle"
         >
-          <p className="font-bold">Database Setup Notice</p>
+          <p className="font-semibold">Database Setup Notice</p>
           <p className="mt-1">
-            The <code>hero_slides</code> table needs to be created in Supabase. Please run migration{' '}
-            <code>supabase/migrations/014_hero_slides.sql</code> in your Supabase SQL Editor.
+            The <code>hero_slides</code> table needs to be created in Supabase. Run migration{' '}
+            <code>supabase/migrations/014_hero_slides.sql</code>.
           </p>
         </div>
       )}
@@ -216,34 +216,27 @@ export function HeroSlidesManager({ initialSlides, dbError }: HeroSlidesManagerP
           role={feedback.type === 'error' ? 'alert' : 'status'}
           className={`rounded-2xl border p-4 text-sm font-medium transition-colors ${
             feedback.type === 'success'
-              ? 'border-ink-800 bg-ink-950 text-paper-50'
-              : 'border-signal-danger-border bg-signal-danger-bg text-signal-danger'
+              ? 'border-adm-success-border bg-adm-success-bg text-adm-success'
+              : 'border-adm-danger-border bg-adm-danger-bg text-adm-danger'
           }`}
         >
           {feedback.message}
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-300 pb-5">
-        <div>
-          <p className="admin-kicker text-ink-500 mb-1">Hero Stage</p>
-          <h2 id="hero-slides-heading" className="admin-section-title text-ink-950">
-            Hero Carousel Slides
-          </h2>
-          <p className="text-xs text-ink-600 mt-1">
-            Manage images, promotional badges, and destination links shown in the homepage header slideshow.
-          </p>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-adm-border pb-4">
+        <h2 id="hero-slides-heading" className="admin-section-title text-adm-fg">
+          Hero Slides
+        </h2>
         <div className="flex items-center gap-2 shrink-0">
           <span
-            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-[11px] font-bold border ${
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-xs font-semibold border ${
               slides.length >= HERO_SLIDE_MAX_COUNT
-                ? 'bg-signal-warning-bg text-signal-warning border-signal-warning-border'
-                : 'bg-ink-950 text-paper-50 border-ink-950'
+                ? 'bg-adm-warning-bg text-adm-warning border-adm-warning-border'
+                : 'bg-adm-info-bg text-adm-info border-adm-info-border'
             }`}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
-            {slides.length} / {HERO_SLIDE_MAX_COUNT} Slides (Min: {HERO_SLIDE_MIN_COUNT})
+            {slides.length} / {HERO_SLIDE_MAX_COUNT} Slides
           </span>
         </div>
       </div>

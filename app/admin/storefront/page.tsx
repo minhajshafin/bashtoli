@@ -18,14 +18,8 @@ export default async function AdminStorefrontPage() {
 
   return (
     <div className="space-y-10 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-paper-300">
-        <div className="space-y-1.5">
-          <p className="admin-kicker text-ink-500">04 / Visual Merchandising</p>
-          <h1 className="admin-page-title text-ink-950">Storefront Settings</h1>
-          <p className="text-sm text-ink-600">
-            Customize homepage content, hero carousel slides, promotional badges, and category collage slots.
-          </p>
-        </div>
+      <div className="pb-5 border-b border-adm-border">
+        <h1 className="admin-page-title text-adm-fg">Storefront Settings</h1>
       </div>
 
       <HeroSlidesManager initialSlides={slides} dbError={heroError} />

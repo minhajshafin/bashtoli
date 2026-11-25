@@ -171,7 +171,7 @@ export function CategoryCollageManager({
 
   return (
     <section
-      className="space-y-6 pt-8 border-t border-paper-300"
+      className="space-y-6 pt-8 border-t border-adm-border"
       aria-labelledby="category-collage-heading"
     >
       <input
@@ -184,26 +184,19 @@ export function CategoryCollageManager({
         onChange={handleImageFileChange}
       />
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-300 pb-5">
-        <div>
-          <p className="admin-kicker text-ink-500 mb-1">Bento Showcase</p>
-          <h2 id="category-collage-heading" className="admin-section-title text-ink-950">
-            Category Grid Collage
-          </h2>
-          <p className="text-xs text-ink-600 mt-1">
-            Select up to 7 categories to showcase in the asymmetric homepage collage. Slots #1 &amp; #3 are prominent tall vertical cards.
-          </p>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-adm-border pb-4">
+        <h2 id="category-collage-heading" className="admin-section-title text-adm-fg">
+          Category Collage
+        </h2>
         <div className="flex items-center gap-2 shrink-0">
           <span
-            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-[11px] font-bold border ${
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-xs font-semibold border ${
               featured.length >= MAX_FEATURED_CATEGORIES
-                ? 'bg-signal-warning-bg text-signal-warning border-signal-warning-border'
-                : 'bg-ink-950 text-paper-50 border-ink-950'
+                ? 'bg-adm-warning-bg text-adm-warning border-adm-warning-border'
+                : 'bg-adm-info-bg text-adm-info border-adm-info-border'
             }`}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
-            {featured.length} / {MAX_FEATURED_CATEGORIES} Slots Filled
+            {featured.length} / {MAX_FEATURED_CATEGORIES} Slots
           </span>
         </div>
       </div>
@@ -213,8 +206,8 @@ export function CategoryCollageManager({
           role={feedback.type === 'error' ? 'alert' : 'status'}
           className={`rounded-2xl border p-4 text-sm font-medium transition-colors ${
             feedback.type === 'success'
-              ? 'border-ink-800 bg-ink-950 text-paper-50'
-              : 'border-signal-danger-border bg-signal-danger-bg text-signal-danger'
+              ? 'border-adm-success-border bg-adm-success-bg text-adm-success'
+              : 'border-adm-danger-border bg-adm-danger-bg text-adm-danger'
           }`}
         >
           {feedback.message}
@@ -222,11 +215,13 @@ export function CategoryCollageManager({
       )}
 
       <div className="space-y-4">
-        <h3 className="admin-kicker text-ink-700">Current Collage Slots</h3>
+        <h3 className="text-xs font-semibold text-adm-muted uppercase tracking-wider">
+          Active Slots
+        </h3>
 
         {featured.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-ink-400/70 bg-paper-50 p-8 text-center text-xs text-ink-600">
-            No categories are currently featured on the homepage collage. Select categories from the list below to populate the 7 slots.
+          <div className="rounded-2xl border border-dashed border-adm-border bg-adm-surface p-8 text-center text-xs text-adm-muted">
+            No featured collage categories selected.
           </div>
         ) : (
           <div className="space-y-3">

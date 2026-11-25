@@ -57,17 +57,12 @@ export function CategoryForm({
   const submitLabel = mode === 'create' ? 'Create' : 'Save changes'
 
   return (
-    <div className="rounded-2xl border border-paper-300 bg-paper-50 p-6 shadow-elevation-1">
-      <div className="mb-5 flex items-center justify-between border-b border-paper-200 pb-4">
-        <div>
-          <p className="admin-kicker text-ink-500 mb-0.5">
-            {mode === 'create' ? 'Create' : 'Update'}
-          </p>
-          <h2 className="text-base font-bold text-ink-950">{title}</h2>
-        </div>
+    <div className="rounded-2xl border border-adm-border bg-adm-surface p-6 shadow-subtle">
+      <div className="mb-5 flex items-center justify-between border-b border-adm-border pb-4">
+        <h2 className="text-base font-semibold text-adm-fg">{title}</h2>
         <Link
           href="/admin/categories"
-          className="inline-flex min-h-[40px] min-w-[40px] items-center justify-center rounded-xl text-ink-500 hover:bg-paper-200 hover:text-ink-950 transition-colors"
+          className="inline-flex min-h-[40px] min-w-[40px] items-center justify-center rounded-xl text-adm-muted hover:bg-adm-surface-2 hover:text-adm-fg transition-colors"
           aria-label="Close form"
         >
           <X className="h-4 w-4" aria-hidden="true" />
@@ -77,7 +72,7 @@ export function CategoryForm({
       {state.error && (
         <div
           role="alert"
-          className="mb-4 rounded-xl border border-signal-danger-border bg-signal-danger-bg px-4 py-3 text-sm font-medium text-signal-danger"
+          className="mb-4 rounded-xl border border-adm-danger-border bg-adm-danger-bg px-4 py-3 text-sm font-medium text-adm-danger"
         >
           {state.error}
         </div>
@@ -97,9 +92,9 @@ export function CategoryForm({
         <div>
           <label
             htmlFor="category-name"
-            className="mb-1.5 block font-mono text-[11px] font-semibold uppercase tracking-wider text-ink-700"
+            className="mb-1.5 block text-xs font-semibold text-adm-fg-2"
           >
-            Name <span className="text-signal-danger">*</span>
+            Name <span className="text-adm-danger">*</span>
           </label>
           <input
             id="category-name"
@@ -110,10 +105,10 @@ export function CategoryForm({
             defaultValue={category?.name ?? ''}
             onChange={handleNameChange}
             placeholder="e.g. Fountain Pens"
-            className="block w-full min-h-[44px] rounded-xl border border-ink-400/80 bg-paper-50 px-3.5 py-2.5 text-sm text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
+            className="block w-full min-h-[44px] rounded-xl border border-adm-input-border bg-adm-surface px-3.5 py-2.5 text-sm text-adm-fg placeholder:text-adm-muted focus-visible:outline-2 focus-visible:outline-adm-accent focus-visible:outline-offset-1"
           />
           {state.fieldErrors?.name && (
-            <p className="mt-1 text-xs font-medium text-signal-danger">
+            <p className="mt-1 text-xs font-medium text-adm-danger">
               {state.fieldErrors.name[0]}
             </p>
           )}
@@ -122,9 +117,9 @@ export function CategoryForm({
         <div>
           <label
             htmlFor="category-slug"
-            className="mb-1.5 block font-mono text-[11px] font-semibold uppercase tracking-wider text-ink-700"
+            className="mb-1.5 block text-xs font-semibold text-adm-fg-2"
           >
-            Slug <span className="text-signal-danger">*</span>
+            Slug <span className="text-adm-danger">*</span>
           </label>
           <input
             id="category-slug"
@@ -135,13 +130,10 @@ export function CategoryForm({
             defaultValue={category?.slug ?? ''}
             onChange={handleSlugChange}
             placeholder="e.g. fountain-pens"
-            className="block w-full min-h-[44px] rounded-xl border border-ink-400/80 bg-paper-50 px-3.5 py-2.5 font-mono text-sm text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
+            className="block w-full min-h-[44px] rounded-xl border border-adm-input-border bg-adm-surface px-3.5 py-2.5 font-mono text-sm text-adm-fg placeholder:text-adm-muted focus-visible:outline-2 focus-visible:outline-adm-accent focus-visible:outline-offset-1"
           />
-          <p className="mt-1 text-xs text-ink-600">
-            Used in URLs. Auto-generated from name; editable.
-          </p>
           {state.fieldErrors?.slug && (
-            <p className="mt-1 text-xs font-medium text-signal-danger">
+            <p className="mt-1 text-xs font-medium text-adm-danger">
               {state.fieldErrors.slug[0]}
             </p>
           )}
@@ -150,7 +142,7 @@ export function CategoryForm({
         <div>
           <label
             htmlFor="category-sort-order"
-            className="mb-1.5 block font-mono text-[11px] font-semibold uppercase tracking-wider text-ink-700"
+            className="mb-1.5 block text-xs font-semibold text-adm-fg-2"
           >
             Sort order
           </label>
@@ -161,30 +153,27 @@ export function CategoryForm({
             min={0}
             max={9999}
             defaultValue={category?.sort_order ?? 0}
-            className="block w-28 min-h-[44px] rounded-xl border border-ink-400/80 bg-paper-50 px-3.5 py-2.5 font-mono text-sm font-bold text-ink-950 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1"
+            className="block w-28 min-h-[44px] rounded-xl border border-adm-input-border bg-adm-surface px-3.5 py-2.5 font-mono text-sm font-semibold text-adm-fg focus-visible:outline-2 focus-visible:outline-adm-accent focus-visible:outline-offset-1"
           />
-          <p className="mt-1 text-xs text-ink-600">
-            Lower numbers appear first. 0 = top.
-          </p>
           {state.fieldErrors?.sort_order && (
-            <p className="mt-1 text-xs font-medium text-signal-danger">
+            <p className="mt-1 text-xs font-medium text-adm-danger">
               {state.fieldErrors.sort_order[0]}
             </p>
           )}
         </div>
 
-        <div className="flex items-center gap-3 pt-2 border-t border-paper-200">
+        <div className="flex items-center gap-3 pt-2 border-t border-adm-border">
           <button
             id="category-form-submit"
             type="submit"
             disabled={isPending}
-            className="min-h-[44px] rounded-xl bg-ink-950 px-5 py-2 text-xs font-bold text-paper-50 transition-colors hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+            className="min-h-[42px] rounded-xl bg-adm-accent px-5 py-2 text-xs font-semibold text-adm-accent-fg transition-colors hover:bg-adm-accent-hover disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
           >
             {isPending ? 'Saving…' : submitLabel}
           </button>
           <Link
             href="/admin/categories"
-            className="inline-flex min-h-[44px] items-center px-3 text-xs font-bold text-ink-600 hover:text-ink-950 transition-colors"
+            className="inline-flex min-h-[42px] items-center px-3 text-xs font-medium text-adm-muted hover:text-adm-fg transition-colors"
           >
             Cancel
           </Link>

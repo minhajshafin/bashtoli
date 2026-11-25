@@ -18,20 +18,14 @@ export function PromoteUserForm() {
   }, [state.success])
 
   return (
-    <div className="bg-paper-50 border border-paper-300 rounded-2xl p-5 sm:p-6 shadow-subtle space-y-4">
-      <div>
-        <p className="admin-kicker text-ink-500 mb-0.5">Grant Access</p>
-        <h2 className="text-base font-bold text-ink-950">Add New Staff Member</h2>
-        <p className="text-xs text-ink-600 mt-0.5">
-          Promote an existing customer account to staff by entering their email address.
-        </p>
-      </div>
+    <div className="bg-adm-surface border border-adm-border rounded-2xl p-5 sm:p-6 shadow-subtle space-y-4">
+      <h2 className="text-sm font-semibold text-adm-fg">Add Staff Member</h2>
 
       <form ref={formRef} action={formAction} className="space-y-4">
         {state.error && (
           <div
             role="alert"
-            className="rounded-xl bg-signal-danger-bg border border-signal-danger-border p-3 text-xs font-semibold text-signal-danger animate-shake"
+            className="rounded-xl bg-adm-danger-bg border border-adm-danger-border p-3 text-xs font-semibold text-adm-danger animate-shake"
           >
             {state.error}
           </div>
@@ -40,9 +34,9 @@ export function PromoteUserForm() {
         {state.success && (
           <div
             role="status"
-            className="rounded-xl bg-ink-950 border border-ink-800 p-3 text-xs font-semibold text-paper-50"
+            className="rounded-xl bg-adm-success-bg border border-adm-success-border p-3 text-xs font-semibold text-adm-success"
           >
-            User has been promoted to staff successfully!
+            User promoted to staff.
           </div>
         )}
 
@@ -50,9 +44,9 @@ export function PromoteUserForm() {
           <div className="flex-1 space-y-1.5">
             <label
               htmlFor="email"
-              className="block font-mono text-[11px] font-semibold uppercase tracking-wider text-ink-700"
+              className="block text-xs font-medium text-adm-fg-2"
             >
-              Customer Email Address
+              Account Email
             </label>
             <input
               id="email"
@@ -61,11 +55,11 @@ export function PromoteUserForm() {
               required
               disabled={isPending}
               autoComplete="email"
-              placeholder="customer@example.com"
-              className="w-full min-h-[44px] px-3.5 rounded-xl border border-ink-400/80 bg-paper-50 text-sm text-ink-950 placeholder:text-ink-500 focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-offset-1 disabled:opacity-60"
+              placeholder="name@example.com"
+              className="w-full min-h-[44px] px-3.5 rounded-xl border border-adm-input-border bg-adm-surface text-sm text-adm-fg placeholder:text-adm-muted focus-visible:outline-2 focus-visible:outline-adm-accent focus-visible:outline-offset-1 disabled:opacity-60"
             />
             {state.fieldErrors?.email && (
-              <p className="text-xs text-signal-danger font-medium">
+              <p className="text-xs text-adm-danger font-medium">
                 {state.fieldErrors.email[0]}
               </p>
             )}
@@ -74,9 +68,9 @@ export function PromoteUserForm() {
           <button
             type="submit"
             disabled={isPending}
-            className="min-h-[44px] px-5 rounded-xl bg-ink-950 text-paper-50 text-xs font-bold hover:bg-ink-800 transition-colors disabled:opacity-65 cursor-pointer shrink-0"
+            className="min-h-[44px] px-5 rounded-xl bg-adm-accent text-adm-accent-fg text-xs font-semibold hover:bg-adm-accent-hover transition-colors disabled:opacity-65 cursor-pointer shrink-0"
           >
-            {isPending ? 'Promoting...' : 'Add Staff'}
+            {isPending ? 'Adding...' : 'Add Staff'}
           </button>
         </div>
       </form>

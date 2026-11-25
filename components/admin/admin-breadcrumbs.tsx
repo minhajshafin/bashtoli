@@ -8,11 +8,11 @@ import { ChevronRight, Home } from 'lucide-react'
 const ROUTE_LABELS: Record<string, string> = {
   admin: 'Dashboard',
   products: 'Products',
-  new: 'Add Product',
+  new: 'New Product',
   categories: 'Categories',
   orders: 'Orders',
   storefront: 'Storefront',
-  staff: 'Staff Accounts',
+  staff: 'Staff',
 }
 
 export function AdminBreadcrumbs() {
@@ -21,9 +21,9 @@ export function AdminBreadcrumbs() {
 
   if (segments.length <= 1) {
     return (
-      <div className="hidden sm:flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-ink-600 truncate">
-        <Home className="h-3.5 w-3.5 shrink-0 text-ink-500" aria-hidden="true" />
-        <span className="font-bold text-ink-950 truncate">Dashboard</span>
+      <div className="hidden sm:flex items-center gap-2 text-xs text-adm-muted truncate">
+        <Home className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        <span className="font-semibold text-adm-fg truncate">Dashboard</span>
       </div>
     )
   }
@@ -47,27 +47,27 @@ export function AdminBreadcrumbs() {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink-500"
+      className="hidden sm:flex items-center gap-1.5 text-xs text-adm-muted"
     >
       <Link
         href="/admin"
-        className="flex items-center gap-1.5 text-ink-500 hover:text-ink-950 transition-colors rounded px-1 py-0.5"
+        className="flex items-center gap-1.5 text-adm-muted hover:text-adm-fg transition-colors rounded px-1 py-0.5"
       >
         <Home className="h-3.5 w-3.5" aria-hidden="true" />
-        <span>Admin</span>
+        <span>Dashboard</span>
       </Link>
 
       {crumbs.slice(1).map((crumb, idx) => (
         <React.Fragment key={crumb.href + idx}>
-          <ChevronRight className="h-3 w-3 text-ink-400 shrink-0" aria-hidden="true" />
+          <ChevronRight className="h-3 w-3 text-adm-muted shrink-0" aria-hidden="true" />
           {crumb.isLast ? (
-            <span className="font-bold text-ink-950 truncate max-w-[160px]">
+            <span className="font-semibold text-adm-fg truncate max-w-[160px]">
               {crumb.label}
             </span>
           ) : (
             <Link
               href={crumb.href}
-              className="text-ink-500 hover:text-ink-950 transition-colors truncate max-w-[140px] rounded px-1 py-0.5"
+              className="text-adm-muted hover:text-adm-fg transition-colors truncate max-w-[140px] rounded px-1 py-0.5"
             >
               {crumb.label}
             </Link>

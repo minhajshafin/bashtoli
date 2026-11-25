@@ -52,34 +52,6 @@
   --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Monochrome Dual-Tone Admin Studio Tokens (Obsidian Ink & Alabaster Paper) */
-  --color-paper-50: #fcfbf9;
-  --color-paper-100: #f4f3ef;
-  --color-paper-200: #eae8e1;
-  --color-paper-300: #d8d5cc;
-  --color-paper-400: #b8b4a8;
-  --color-paper-500: #a3a098;
-
-  --color-ink-950: #0c0c0e;
-  --color-ink-900: #151518;
-  --color-ink-800: #202024;
-  --color-ink-700: #2e2e34;
-  --color-ink-600: #45454d;
-  --color-ink-500: #5c5c66;
-  --color-ink-400: #767680;
-
-  /* Restrained Architectural Signal Tokens (Errors, Destructive Actions, Critical Alerts) */
-  --color-signal-danger: #a62b21;
-  --color-signal-danger-hover: #881f17;
-  --color-signal-danger-bg: #faecea;
-  --color-signal-danger-border: #e5b4af;
-  --color-signal-warning: #8a5300;
-  --color-signal-warning-bg: #fbf3e4;
-  --color-signal-warning-border: #e3c896;
-  --color-signal-success: #175e3c;
-  --color-signal-success-bg: #ebf5ef;
-  --color-signal-success-border: #b5d9c4;
-
   /* Forest greens — Harmonized Stationery Moss */
   --color-forest-950: #0a160f;
   --color-forest-900: #102218;
@@ -267,6 +239,44 @@
   --animate-slide-in-left: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in: fadeIn 0.25s ease-out;
   --animate-fade-out: fadeOut 0.2s ease-in forwards;
+}
+
+@theme inline {
+  /* Admin Workspace Tokens (inlined directly so utilities resolve on .admin-theme) */
+  --color-adm-bg: var(--adm-bg);
+  --color-adm-surface: var(--adm-surface);
+  --color-adm-surface-2: var(--adm-surface-2);
+  --color-adm-border: var(--adm-border);
+  --color-adm-input-border: var(--adm-input-border);
+
+  --color-adm-fg: var(--adm-fg);
+  --color-adm-fg-2: var(--adm-fg-2);
+  --color-adm-muted: var(--adm-muted);
+
+  --color-adm-accent: var(--adm-accent);
+  --color-adm-accent-hover: var(--adm-accent-hover);
+  --color-adm-accent-fg: var(--adm-accent-fg);
+  --color-adm-accent-tint: var(--adm-accent-tint);
+  --color-adm-accent-border: var(--adm-accent-border);
+  --color-adm-accent-text: var(--adm-accent-text);
+
+  --color-adm-success: var(--adm-success);
+  --color-adm-success-bg: var(--adm-success-bg);
+  --color-adm-success-border: var(--adm-success-border);
+
+  --color-adm-warning: var(--adm-warning);
+  --color-adm-warning-bg: var(--adm-warning-bg);
+  --color-adm-warning-border: var(--adm-warning-border);
+
+  --color-adm-info: var(--adm-info);
+  --color-adm-info-bg: var(--adm-info-bg);
+  --color-adm-info-border: var(--adm-info-border);
+
+  --color-adm-danger: var(--adm-danger);
+  --color-adm-danger-hover: var(--adm-danger-hover);
+  --color-adm-danger-fg: var(--adm-danger-fg);
+  --color-adm-danger-bg: var(--adm-danger-bg);
+  --color-adm-danger-border: var(--adm-danger-border);
 }
 
 :root {
@@ -857,74 +867,237 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 /* ==========================================================================
-   Admin Studio: Modern Black & White Dual-Tone System
+   Admin Workspace: Crisp Slate + Bashtoli Emerald (Light & Dark Adaptive)
+   Scoped via .admin-theme and :has(.admin-theme) so the storefront stays light.
    ========================================================================== */
-.admin-theme {
-  --color-focus-ring: var(--color-ink-950);
-  --color-focus-ring-offset: var(--color-paper-50);
+:root:has(.admin-theme) {
+  color-scheme: light dark;
+}
+
+:root[data-admin-theme="light"]:has(.admin-theme) {
   color-scheme: light;
 }
 
+:root[data-admin-theme="dark"]:has(.admin-theme) {
+  color-scheme: dark;
+}
+
+.admin-theme {
+  color-scheme: light dark;
+
+  /* Light defaults (also serves as fallback when light-dark() is unsupported) */
+  --adm-bg: #f7f8f9;
+  --adm-surface: #fcfcfd;
+  --adm-surface-2: #f0f2f4;
+  --adm-border: #e2e5e9;
+  --adm-input-border: #8a929e;
+  --adm-fg: #111618;
+  --adm-fg-2: #3b434b;
+  --adm-muted: #57616c;
+
+  --adm-accent: #14533c;
+  --adm-accent-hover: #0f4230;
+  --adm-accent-fg: #fafdfb;
+  --adm-accent-tint: #e8f3ee;
+  --adm-accent-border: #b6dac9;
+  --adm-accent-text: #114b36;
+
+  --adm-success: #135e3b;
+  --adm-success-bg: #e9f6ef;
+  --adm-success-border: #b3e0c7;
+
+  --adm-warning: #854a00;
+  --adm-warning-bg: #fef4e2;
+  --adm-warning-border: #efd29b;
+
+  --adm-info: #15519b;
+  --adm-info-bg: #eaf2ff;
+  --adm-info-border: #b9d6fc;
+
+  --adm-danger: #ac2029;
+  --adm-danger-hover: #8f1820;
+  --adm-danger-fg: #fffafa;
+  --adm-danger-bg: #fdecec;
+  --adm-danger-border: #f3baba;
+
+  --adm-scroll-track: #f0f2f4;
+  --adm-scroll-thumb: #8a929e;
+  --adm-backdrop: rgba(16, 19, 21, 0.56);
+
+  --color-focus-ring: var(--adm-accent);
+  --color-focus-ring-offset: var(--adm-surface);
+  accent-color: var(--adm-accent);
+  scrollbar-color: var(--adm-scroll-thumb) var(--adm-scroll-track);
+}
+
+:root[data-admin-theme="light"] .admin-theme {
+  color-scheme: only light;
+}
+
+:root[data-admin-theme="dark"] .admin-theme {
+  color-scheme: only dark;
+}
+
+/* Native light-dark() adaptive tokens (Chrome 123+, Firefox 120+, Safari 17.5+) */
+@supports (color: light-dark(white, black)) {
+  .admin-theme {
+    --adm-bg: light-dark(#f7f8f9, #101315);
+    --adm-surface: light-dark(#fcfcfd, #171b1e);
+    --adm-surface-2: light-dark(#f0f2f4, #20262a);
+    --adm-border: light-dark(#e2e5e9, #2a3137);
+    --adm-input-border: light-dark(#8a929e, #6e7884);
+    --adm-fg: light-dark(#111618, #eef1f4);
+    --adm-fg-2: light-dark(#3b434b, #c2c9d1);
+    --adm-muted: light-dark(#57616c, #919ca7);
+
+    --adm-accent: light-dark(#14533c, #166849);
+    --adm-accent-hover: light-dark(#0f4230, #1a7854);
+    --adm-accent-fg: light-dark(#fafdfb, #f5faf8);
+    --adm-accent-tint: light-dark(#e8f3ee, #132920);
+    --adm-accent-border: light-dark(#b6dac9, #224d3b);
+    --adm-accent-text: light-dark(#114b36, #5fd09d);
+
+    --adm-success: light-dark(#135e3b, #5ed196);
+    --adm-success-bg: light-dark(#e9f6ef, #122a20);
+    --adm-success-border: light-dark(#b3e0c7, #23523d);
+
+    --adm-warning: light-dark(#854a00, #f3b94c);
+    --adm-warning-bg: light-dark(#fef4e2, #2b2111);
+    --adm-warning-border: light-dark(#efd29b, #594119);
+
+    --adm-info: light-dark(#15519b, #76b2ff);
+    --adm-info-bg: light-dark(#eaf2ff, #132338);
+    --adm-info-border: light-dark(#b9d6fc, #264673);
+
+    --adm-danger: light-dark(#ac2029, #f7878d);
+    --adm-danger-hover: light-dark(#8f1820, #d8434b);
+    --adm-danger-fg: light-dark(#fffafa, #fffafa);
+    --adm-danger-bg: light-dark(#fdecec, #301618);
+    --adm-danger-border: light-dark(#f3baba, #5f282c);
+
+    --adm-scroll-track: light-dark(#f0f2f4, #171b1e);
+    --adm-scroll-thumb: light-dark(#8a929e, #6e7884);
+    --adm-backdrop: light-dark(rgba(16, 19, 21, 0.48), rgba(4, 6, 8, 0.72));
+  }
+}
+
+/* Fallback for older engines lacking light-dark() */
+@supports not (color: light-dark(white, black)) {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-admin-theme="light"]) .admin-theme {
+      --adm-bg: #101315;
+      --adm-surface: #171b1e;
+      --adm-surface-2: #20262a;
+      --adm-border: #2a3137;
+      --adm-input-border: #6e7884;
+      --adm-fg: #eef1f4;
+      --adm-fg-2: #c2c9d1;
+      --adm-muted: #919ca7;
+      --adm-accent: #166849;
+      --adm-accent-hover: #1a7854;
+      --adm-accent-fg: #f5faf8;
+      --adm-accent-tint: #132920;
+      --adm-accent-border: #224d3b;
+      --adm-accent-text: #5fd09d;
+      --adm-success: #5ed196;
+      --adm-success-bg: #122a20;
+      --adm-success-border: #23523d;
+      --adm-warning: #f3b94c;
+      --adm-warning-bg: #2b2111;
+      --adm-warning-border: #594119;
+      --adm-info: #76b2ff;
+      --adm-info-bg: #132338;
+      --adm-info-border: #264673;
+      --adm-danger: #f7878d;
+      --adm-danger-hover: #d8434b;
+      --adm-danger-fg: #fffafa;
+      --adm-danger-bg: #301618;
+      --adm-danger-border: #5f282c;
+      --adm-scroll-track: #171b1e;
+      --adm-scroll-thumb: #6e7884;
+      --adm-backdrop: rgba(4, 6, 8, 0.72);
+    }
+  }
+
+  :root[data-admin-theme="dark"] .admin-theme {
+    --adm-bg: #101315;
+    --adm-surface: #171b1e;
+    --adm-surface-2: #20262a;
+    --adm-border: #2a3137;
+    --adm-input-border: #6e7884;
+    --adm-fg: #eef1f4;
+    --adm-fg-2: #c2c9d1;
+    --adm-muted: #919ca7;
+    --adm-accent: #166849;
+    --adm-accent-hover: #1a7854;
+    --adm-accent-fg: #f5faf8;
+    --adm-accent-tint: #132920;
+    --adm-accent-border: #224d3b;
+    --adm-accent-text: #5fd09d;
+    --adm-success: #5ed196;
+    --adm-success-bg: #122a20;
+    --adm-success-border: #23523d;
+    --adm-warning: #f3b94c;
+    --adm-warning-bg: #2b2111;
+    --adm-warning-border: #594119;
+    --adm-info: #76b2ff;
+    --adm-info-bg: #132338;
+    --adm-info-border: #264673;
+    --adm-danger: #f7878d;
+    --adm-danger-hover: #d8434b;
+    --adm-danger-fg: #fffafa;
+    --adm-danger-bg: #301618;
+    --adm-danger-border: #5f282c;
+    --adm-scroll-track: #171b1e;
+    --adm-scroll-thumb: #6e7884;
+    --adm-backdrop: rgba(4, 6, 8, 0.72);
+  }
+}
+
 .admin-theme ::selection {
-  background: var(--color-ink-950);
-  color: var(--color-paper-50);
+  background: var(--adm-accent);
+  color: var(--adm-accent-fg);
 }
 
-.admin-theme ::-webkit-scrollbar-thumb {
-  background: var(--color-ink-400);
-}
-.admin-theme ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink-600);
-}
-
-/* Fluid Typography Hierarchy for Admin Control Studio */
+/* Fluid Typography Hierarchy for Minimal Admin Workspace */
 .admin-page-title {
   font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(1.5rem, 1.8vw + 1rem, 2.25rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.375rem, 1.4vw + 0.95rem, 1.875rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
 .admin-section-title {
   font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
-  font-size: clamp(1.05rem, 0.7vw + 0.85rem, 1.25rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(1rem, 0.5vw + 0.85rem, 1.15rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
 .admin-metric-value {
   font-family: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(1.65rem, 1.8vw + 1rem, 2.3rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.5rem, 1.4vw + 0.95rem, 2rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
-.admin-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  line-height: 1.2;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.skeleton-shimmer-mono {
+.admin-skeleton {
   background: linear-gradient(
     90deg,
-    rgba(234, 232, 225, 0.7) 0%,
-    rgba(252, 251, 249, 0.98) 50%,
-    rgba(234, 232, 225, 0.7) 100%
+    var(--adm-surface-2) 0%,
+    var(--adm-surface) 50%,
+    var(--adm-surface-2) 100%
   );
   background-size: 200% 100%;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .skeleton-shimmer-mono {
+  .admin-skeleton {
     animation: skeletonShimmer 1.8s infinite cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
@@ -982,7 +1155,7 @@ dialog.admin-dialog::backdrop,
 dialog.admin-drawer-dialog::backdrop {
   overflow: hidden;
   overscroll-behavior: contain;
-  background-color: rgba(12, 12, 14, 0);
+  background-color: transparent;
   transition-property: background-color, display, overlay;
   transition-duration: 0.24s;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -991,13 +1164,13 @@ dialog.admin-drawer-dialog::backdrop {
 
 dialog.admin-dialog[open]:where(:not([data-closing]))::backdrop,
 dialog.admin-drawer-dialog[open]:where(:not([data-closing]))::backdrop {
-  background-color: rgba(12, 12, 14, 0.72);
+  background-color: var(--adm-backdrop);
 }
 
 @starting-style {
   dialog.admin-dialog[open]:where(:not([data-closing]))::backdrop,
   dialog.admin-drawer-dialog[open]:where(:not([data-closing]))::backdrop {
-    background-color: rgba(12, 12, 14, 0);
+    background-color: transparent;
   }
 }
 
@@ -1058,7 +1231,7 @@ dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
   }
 }
 
-/* Container-Aware Responsive Admin Ledger Tables */
+/* Container-Aware Responsive Admin Tables */
 .admin-table-region {
   container-type: inline-size;
   container-name: admin-table;
@@ -1079,7 +1252,7 @@ dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
 
   .admin-responsive-table tbody > tr {
     padding: 0.9rem 1rem;
-    border-bottom: 1px solid var(--color-paper-300);
+    border-bottom: 1px solid var(--adm-border);
   }
 
   .admin-responsive-table tbody > tr:last-child {
@@ -1091,7 +1264,7 @@ dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
     width: 100%;
     padding: 0 0 0.65rem 0;
     margin-bottom: 0.35rem;
-    border-bottom: 1px solid var(--color-paper-200);
+    border-bottom: 1px solid var(--adm-border);
     text-align: left;
   }
 
@@ -1110,9 +1283,9 @@ dialog.admin-drawer-dialog[open]:where(:not([data-closing])) {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--color-ink-500);
+    color: var(--adm-muted);
     text-align: left;
     flex-shrink: 0;
   }

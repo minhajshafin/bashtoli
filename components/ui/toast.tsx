@@ -17,7 +17,7 @@ const ToastContext = createContext<ToastContextType | null>(null)
 /**
  * Global Toast Alert Context Provider.
  * Supports `storefront` (forest/gold wax-seal capsules) and `admin`
- * (monochrome dual-tone obsidian/alabaster capsules).
+ * (adaptive light/dark surface capsules with semantic accents).
  */
 export function ToastProvider({
   children,
@@ -56,7 +56,7 @@ export function ToastProvider({
             onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
             className={`group relative flex items-center gap-2.5 sm:gap-3 pl-3.5 pr-2.5 sm:pr-3 py-2 sm:py-2.5 rounded-full shadow-2xl pointer-events-auto overflow-hidden animate-toast-enter cursor-pointer select-none max-w-full ${
               isAdmin
-                ? 'bg-ink-950 text-paper-50 border border-ink-700 ring-1 ring-paper-50/10'
+                ? 'bg-adm-surface text-adm-fg border border-adm-border shadow-elevation-3'
                 : 'bg-forest-950/98 text-cream-50 border border-gold-500/40 ring-1 ring-gold-400/15'
             }`}
             role="alert"
@@ -66,10 +66,10 @@ export function ToastProvider({
               className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border shadow-2xs ${
                 isAdmin
                   ? t.type === 'error'
-                    ? 'bg-signal-danger text-paper-50 border-signal-danger-border/40'
+                    ? 'bg-adm-danger-bg text-adm-danger border-adm-danger-border'
                     : t.type === 'info'
-                    ? 'bg-ink-800 text-paper-100 border-ink-600'
-                    : 'bg-paper-50 text-ink-950 border-paper-300'
+                    ? 'bg-adm-info-bg text-adm-info border-adm-info-border'
+                    : 'bg-adm-success-bg text-adm-success border-adm-success-border'
                   : t.type === 'error'
                   ? 'bg-terracotta-700 text-cream-50 border-terracotta-500/60 ring-1 ring-terracotta-400/30'
                   : t.type === 'info'
@@ -96,7 +96,7 @@ export function ToastProvider({
             <div className="min-w-0 pr-1">
               <p
                 className={`text-xs sm:text-[13px] font-sans font-medium tracking-tight leading-none truncate max-w-[260px] sm:max-w-xs ${
-                  isAdmin ? 'text-paper-50' : 'text-cream-50'
+                  isAdmin ? 'text-adm-fg' : 'text-cream-50'
                 }`}
               >
                 {t.message}
@@ -112,7 +112,7 @@ export function ToastProvider({
               }}
               className={`shrink-0 flex items-center justify-center h-5 w-5 rounded-full active:scale-90 transition-colors cursor-pointer ${
                 isAdmin
-                  ? 'text-paper-400 hover:text-paper-50 hover:bg-ink-800'
+                  ? 'text-adm-muted hover:text-adm-fg hover:bg-adm-surface-2'
                   : 'text-cream-400 hover:text-cream-100 hover:bg-forest-800/80'
               }`}
               aria-label="Dismiss alert"
@@ -125,17 +125,17 @@ export function ToastProvider({
             {/* Hairline Countdown Progress Bar */}
             <div
               className={`absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden rounded-full ${
-                isAdmin ? 'bg-ink-800' : 'bg-forest-800/60'
+                isAdmin ? 'bg-adm-surface-2' : 'bg-forest-800/60'
               }`}
             >
               <div
                 className={`h-full w-full animate-toast-countdown ${
                   isAdmin
                     ? t.type === 'error'
-                      ? 'bg-signal-danger-border'
+                      ? 'bg-adm-danger'
                       : t.type === 'info'
-                      ? 'bg-paper-400'
-                      : 'bg-paper-50'
+                      ? 'bg-adm-info'
+                      : 'bg-adm-success'
                     : t.type === 'error'
                     ? 'bg-terracotta-400'
                     : t.type === 'info'

@@ -44,17 +44,11 @@ export function StaffList({ staff, currentUserId }: StaffListProps) {
   }
 
   return (
-    <div className="bg-paper-50 border border-paper-300 rounded-2xl overflow-hidden shadow-subtle">
-      <div className="p-5 sm:p-6 border-b border-paper-300 bg-paper-200/60 flex flex-wrap justify-between items-center gap-3">
-        <div>
-          <p className="admin-kicker text-ink-500 mb-0.5">Authorized Directory</p>
-          <h2 className="text-base font-bold text-ink-950">Current Staff Members</h2>
-          <p className="text-xs text-ink-600 mt-0.5">
-            Active administrators and staff members with access to the store management dashboard.
-          </p>
-        </div>
-        <span className="rounded-full bg-ink-950 px-3 py-1 font-mono text-[11px] font-bold text-paper-50">
-          {staff.length} {staff.length === 1 ? 'Member' : 'Members'}
+    <div className="bg-adm-surface border border-adm-border rounded-2xl overflow-hidden shadow-subtle">
+      <div className="p-5 sm:px-6 border-b border-adm-border bg-adm-surface-2/60 flex flex-wrap justify-between items-center gap-3">
+        <h2 className="text-sm font-semibold text-adm-fg">Staff Directory</h2>
+        <span className="rounded-full bg-adm-surface border border-adm-border px-2.5 py-0.5 font-mono text-xs font-semibold text-adm-muted">
+          {staff.length}
         </span>
       </div>
 
@@ -63,7 +57,7 @@ export function StaffList({ staff, currentUserId }: StaffListProps) {
           {error && (
             <div
               role="alert"
-              className="rounded-xl bg-signal-danger-bg border border-signal-danger-border p-3 text-xs font-semibold text-signal-danger animate-shake"
+              className="rounded-xl bg-adm-danger-bg border border-adm-danger-border p-3 text-xs font-semibold text-adm-danger animate-shake"
             >
               {error}
             </div>
@@ -72,7 +66,7 @@ export function StaffList({ staff, currentUserId }: StaffListProps) {
           {successMessage && (
             <div
               role="status"
-              className="rounded-xl bg-ink-950 border border-ink-800 p-3 text-xs font-semibold text-paper-50"
+              className="rounded-xl bg-adm-success-bg border border-adm-success-border p-3 text-xs font-semibold text-adm-success"
             >
               {successMessage}
             </div>
@@ -84,57 +78,57 @@ export function StaffList({ staff, currentUserId }: StaffListProps) {
         tabIndex={0}
         role="region"
         aria-labelledby="staff-table-caption"
-        className="admin-table-region focus-visible:outline-2 focus-visible:outline-ink-950 focus-visible:outline-inset"
+        className="admin-table-region"
       >
         <table className="admin-responsive-table w-full border-collapse text-left text-sm">
           <caption id="staff-table-caption" className="sr-only">
             Authorized staff and administrator accounts
           </caption>
           <thead>
-            <tr className="border-b border-paper-300 bg-paper-200/40 text-ink-600 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
-              <th scope="col" className="px-6 py-3.5">Full Name</th>
-              <th scope="col" className="px-6 py-3.5">Email Address</th>
-              <th scope="col" className="px-6 py-3.5">Phone</th>
-              <th scope="col" className="px-6 py-3.5 text-center">Dashboard Role</th>
-              <th scope="col" className="px-6 py-3.5 text-right">Actions</th>
+            <tr className="border-b border-adm-border bg-adm-surface-2/50 text-adm-muted text-xs font-medium">
+              <th scope="col" className="px-6 py-3">Name</th>
+              <th scope="col" className="px-6 py-3">Email</th>
+              <th scope="col" className="px-6 py-3">Phone</th>
+              <th scope="col" className="px-6 py-3 text-center">Role</th>
+              <th scope="col" className="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-paper-200">
+          <tbody className="divide-y divide-adm-border">
             {staff.map((member) => {
               const isSelf = member.id === currentUserId
               const isAdminRole = member.role === 'admin'
               const cannotDemote = isSelf || isAdminRole
 
               return (
-                <tr key={member.id} className="hover:bg-paper-100/80 transition-colors">
-                  <th scope="row" className="px-6 py-4 font-bold text-ink-950 whitespace-nowrap text-left">
-                    <span>{member.full_name || 'Anonymous User'}</span>
+                <tr key={member.id} className="hover:bg-adm-surface-2/60 transition-colors">
+                  <th scope="row" className="px-6 py-3.5 font-semibold text-adm-fg whitespace-nowrap text-left">
+                    <span>{member.full_name || 'Unnamed User'}</span>
                     {isSelf && (
-                      <span className="ml-2 rounded-md bg-paper-200 border border-ink-400/70 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase text-ink-950">
+                      <span className="ml-2 rounded-md bg-adm-accent-tint border border-adm-accent-border px-1.5 py-0.5 text-[10px] font-semibold text-adm-accent-text">
                         You
                       </span>
                     )}
                   </th>
-                  <td data-label="Email" className="px-6 py-4 font-mono text-xs text-ink-700 whitespace-nowrap">
+                  <td data-label="Email" className="px-6 py-3.5 font-mono text-xs text-adm-fg-2 whitespace-nowrap">
                     {member.email || 'N/A'}
                   </td>
-                  <td data-label="Phone" className="px-6 py-4 font-mono text-xs text-ink-600 whitespace-nowrap">
+                  <td data-label="Phone" className="px-6 py-3.5 font-mono text-xs text-adm-muted whitespace-nowrap">
                     {member.phone || 'N/A'}
                   </td>
-                  <td data-label="Role" className="px-6 py-4 text-center">
+                  <td data-label="Role" className="px-6 py-3.5 text-center">
                     <span
-                      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-bold capitalize ${
+                      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold capitalize ${
                         isAdminRole
-                          ? 'bg-ink-950 text-paper-50 border-ink-950'
-                          : 'bg-paper-50 text-ink-800 border-ink-400 border-dashed'
+                          ? 'bg-adm-accent-tint text-adm-accent-text border-adm-accent-border'
+                          : 'bg-adm-info-bg text-adm-info border-adm-info-border'
                       }`}
                     >
                       {member.role}
                     </span>
                   </td>
-                  <td data-label="Actions" className="px-6 py-4 text-right whitespace-nowrap">
+                  <td data-label="Actions" className="px-6 py-3.5 text-right whitespace-nowrap">
                     {cannotDemote ? (
-                      <span className="font-mono text-xs text-ink-500 italic select-none">
+                      <span className="font-mono text-xs text-adm-muted select-none">
                         Locked
                       </span>
                     ) : (
@@ -143,9 +137,9 @@ export function StaffList({ staff, currentUserId }: StaffListProps) {
                         type="button"
                         onClick={() => handleDemote(member)}
                         disabled={isPending}
-                        className="inline-flex min-h-[38px] items-center justify-center rounded-xl bg-signal-danger-bg border border-signal-danger-border px-3.5 text-xs font-bold text-signal-danger hover:bg-signal-danger hover:text-paper-50 transition-colors disabled:opacity-50 cursor-pointer"
+                        className="inline-flex min-h-[36px] items-center justify-center rounded-xl bg-adm-danger-bg border border-adm-danger-border px-3.5 text-xs font-semibold text-adm-danger hover:bg-adm-danger hover:text-adm-danger-fg transition-colors disabled:opacity-50 cursor-pointer"
                       >
-                        Demote Member
+                        Demote
                       </button>
                     )}
                   </td>

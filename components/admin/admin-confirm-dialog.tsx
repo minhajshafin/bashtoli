@@ -14,8 +14,7 @@ const AdminConfirmDialogContext = createContext<AdminConfirmContextType | null>(
 
 /**
  * Admin confirmation dialog built on native `<dialog>` with `showModal()`.
- * Provides native top-layer modality, focus trapping, inert background,
- * Esc dismissal, and bounded light-dismiss with monochrome dual-tone styling.
+ * Provides top-layer modality, focus trapping, Esc dismissal, and light-dismiss.
  */
 export function AdminConfirmDialogProvider({
   children,
@@ -52,7 +51,6 @@ export function AdminConfirmDialogProvider({
   const variant = options.variant || 'default'
   const isDestructive = variant === 'danger' || variant === 'warning'
 
-  // Sync open state with native <dialog>.showModal() / .close()
   useEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
@@ -79,7 +77,6 @@ export function AdminConfirmDialogProvider({
     }
   }, [isOpen, isDestructive])
 
-  // Jsdom fallback for environments without native HTMLDialogElement.prototype.showModal
   useEffect(() => {
     if (!isOpen) return
     const hasNativeDialog =
@@ -98,7 +95,6 @@ export function AdminConfirmDialogProvider({
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [isOpen, handleCancel])
 
-  // Pointer light-dismiss fallback when closedby is unsupported (e.g. Safari)
   function isOutsideDialog(e: React.PointerEvent<HTMLDialogElement>, dialog: HTMLDialogElement) {
     const r = dialog.getBoundingClientRect()
     return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom
@@ -132,24 +128,11 @@ export function AdminConfirmDialogProvider({
         }}
       >
         {isOpen && (
-          <div className="relative w-full rounded-2xl border border-paper-300 bg-paper-50 p-6 text-ink-950 shadow-elevation-3 overflow-hidden">
-            {/* Top accent rule */}
-            <div
-              className={`absolute inset-x-0 top-0 h-[3px] ${
-                variant === 'danger'
-                  ? 'bg-signal-danger'
-                  : variant === 'warning'
-                  ? 'bg-signal-warning'
-                  : 'bg-ink-950'
-              }`}
-              aria-hidden="true"
-            />
-
-            {/* Close button */}
+          <div className="relative w-full rounded-2xl border border-adm-border bg-adm-surface p-6 text-adm-fg shadow-elevation-3 overflow-hidden">
             <button
               type="button"
               onClick={handleCancel}
-              className="absolute right-3 top-3 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl text-ink-500 hover:bg-paper-200 hover:text-ink-950 transition-colors cursor-pointer"
+              className="absolute right-3 top-3 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl text-adm-muted hover:bg-adm-surface-2 hover:text-adm-fg transition-colors cursor-pointer"
               aria-label="Close dialog"
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -157,12 +140,12 @@ export function AdminConfirmDialogProvider({
 
             <div className="flex items-start gap-4 mb-4 pr-10">
               <div
-                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
                   variant === 'danger'
-                    ? 'border-signal-danger-border bg-signal-danger-bg text-signal-danger'
+                    ? 'border-adm-danger-border bg-adm-danger-bg text-adm-danger'
                     : variant === 'warning'
-                    ? 'border-signal-warning-border bg-signal-warning-bg text-signal-warning'
-                    : 'border-ink-800 bg-ink-950 text-paper-50'
+                    ? 'border-adm-warning-border bg-adm-warning-bg text-adm-warning'
+                    : 'border-adm-accent-border bg-adm-accent-tint text-adm-accent-text'
                 }`}
               >
                 {variant === 'danger' ? (
@@ -175,23 +158,16 @@ export function AdminConfirmDialogProvider({
               </div>
 
               <div className="min-w-0 pt-0.5">
-                <p className="admin-kicker text-ink-500 mb-1">
-                  {variant === 'danger'
-                    ? 'Confirm Destructive Action'
-                    : variant === 'warning'
-                    ? 'Confirm Role Change'
-                    : 'Confirmation Required'}
-                </p>
                 <h2
                   id="admin-confirm-title"
-                  className="text-lg font-bold text-ink-950 leading-snug tracking-tight"
+                  className="text-base font-bold text-adm-fg leading-snug tracking-tight"
                 >
                   {options.title}
                 </h2>
                 {options.description && (
                   <p
                     id="admin-confirm-desc"
-                    className="mt-2 text-sm text-ink-600 leading-relaxed"
+                    className="mt-2 text-sm text-adm-muted leading-relaxed"
                   >
                     {options.description}
                   </p>
@@ -199,13 +175,13 @@ export function AdminConfirmDialogProvider({
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-4 border-t border-paper-300">
+            <div className="mt-6 flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-4 border-t border-adm-border">
               <button
                 ref={cancelButtonRef}
                 type="button"
                 autoFocus={isDestructive}
                 onClick={handleCancel}
-                className="w-full sm:w-auto min-h-[44px] rounded-xl border border-ink-400/70 bg-paper-50 px-5 py-2 text-xs font-semibold text-ink-900 hover:bg-paper-200 transition-colors cursor-pointer"
+                className="w-full sm:w-auto min-h-[44px] rounded-xl border border-adm-input-border/70 bg-adm-surface px-5 py-2 text-xs font-semibold text-adm-fg hover:bg-adm-surface-2 transition-colors cursor-pointer"
               >
                 {options.cancelText || 'Cancel'}
               </button>
@@ -215,10 +191,10 @@ export function AdminConfirmDialogProvider({
                 type="button"
                 autoFocus={!isDestructive}
                 onClick={handleConfirm}
-                className={`w-full sm:w-auto min-h-[44px] rounded-xl px-5 py-2 text-xs font-bold text-paper-50 transition-colors shadow-elevation-1 cursor-pointer ${
+                className={`w-full sm:w-auto min-h-[44px] rounded-xl px-5 py-2 text-xs font-semibold transition-colors shadow-elevation-1 cursor-pointer ${
                   variant === 'danger'
-                    ? 'bg-signal-danger hover:bg-signal-danger-hover'
-                    : 'bg-ink-950 hover:bg-ink-800'
+                    ? 'bg-adm-danger hover:bg-adm-danger-hover text-adm-danger-fg'
+                    : 'bg-adm-accent hover:bg-adm-accent-hover text-adm-accent-fg'
                 }`}
               >
                 {options.confirmText || 'Confirm'}

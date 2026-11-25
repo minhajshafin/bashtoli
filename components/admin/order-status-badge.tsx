@@ -32,37 +32,37 @@ function getStatusPresentation(status: string): {
   switch (status) {
     case 'delivered':
       return {
-        classes: 'bg-ink-950 text-paper-50 border-ink-950',
+        classes: 'bg-adm-success-bg text-adm-success border-adm-success-border',
         Icon: PackageCheck,
-      }
-    case 'shipped':
-      return {
-        classes: 'bg-ink-800 text-paper-50 border-ink-800',
-        Icon: Truck,
       }
     case 'out_for_delivery':
       return {
-        classes: 'bg-paper-200 text-ink-950 border-ink-400',
+        classes: 'bg-adm-accent-tint text-adm-accent-text border-adm-accent-border',
         Icon: Navigation,
+      }
+    case 'shipped':
+      return {
+        classes: 'bg-adm-info-bg text-adm-info border-adm-info-border',
+        Icon: Truck,
       }
     case 'confirmed':
       return {
-        classes: 'bg-paper-200 text-ink-950 border-ink-400/80',
+        classes: 'bg-adm-info-bg text-adm-info border-adm-info-border',
         Icon: CheckCircle2,
       }
     case 'pending':
       return {
-        classes: 'bg-paper-50 text-ink-800 border-ink-400 border-dashed',
+        classes: 'bg-adm-warning-bg text-adm-warning border-adm-warning-border',
         Icon: Clock,
       }
     case 'cancelled':
       return {
-        classes: 'bg-signal-danger-bg text-signal-danger border-signal-danger-border',
+        classes: 'bg-adm-danger-bg text-adm-danger border-adm-danger-border',
         Icon: XCircle,
       }
     default:
       return {
-        classes: 'bg-paper-100 text-ink-700 border-paper-300',
+        classes: 'bg-adm-surface-2 text-adm-muted border-adm-border',
         Icon: Clock,
       }
   }
@@ -78,10 +78,10 @@ export function OrderStatusBadge({
   const { classes, Icon } = getStatusPresentation(status)
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-bold capitalize whitespace-nowrap ${classes} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold tracking-tight whitespace-nowrap capitalize ${classes} ${className}`}
     >
       <Icon className="h-3 w-3 shrink-0" aria-hidden="true" />
-      <span>{status}</span>
+      <span>{status.replace(/_/g, ' ')}</span>
     </span>
   )
 }

@@ -1,46 +1,49 @@
-# Bashtoli Admin Panel Redesign — Modern Black & White Dual-Tone System
+# Bashtoli Admin Panel Redesign — Minimal Adaptive Light & Dark System
 
-This document records the design system, architectural choices, accessibility standards, and component modularization for the `/admin` Control Studio redesign.
-
----
-
-## 1. Visual Direction & Dual-Tone Architecture
-
-The administrative panel adopts a **Modern Black & White Dual-Tone Editorial** aesthetic ("Obsidian Ink & Alabaster Paper"), intentionally differentiated from the warm cream-and-forest storefront while preserving shared typography DNA.
-
-### Design Tokens (`app/globals.css`)
-All colors are defined under `@theme` in `app/globals.css` with zero inline hex literals in component TSX:
-
-| Token Group | Tokens | Role |
-|---|---|---|
-| **Paper (Light Surfaces)** | `paper-50` (`#fcfbf9`), `paper-100` (`#f4f3ef`), `paper-200` (`#eae8e1`), `paper-300` (`#d8d5cc`), `paper-400` (`#b8b4a8`), `paper-500` (`#a3a098`) | Workspace canvas, elevated cards, sunken table headers, hairline borders, muted dark-surface copy |
-| **Ink (Dark Surfaces & Text)** | `ink-950` (`#0c0c0e`), `ink-900` (`#151518`), `ink-800` (`#202024`), `ink-700` (`#2e2e34`), `ink-600` (`#45454d`), `ink-500` (`#5c5c66`), `ink-400` (`#767680`) | Obsidian sidebar monolith, inverted KPI anchor cards, inverted COD settlement ledger, primary buttons, body text, `>= 3:1` input boundaries |
-| **Restrained Signal Accents** | `signal-danger*`, `signal-warning*`, `signal-success*` | Reserved strictly for validation errors, cancelled orders, out-of-stock/low-stock alerts, and destructive confirmations |
-
-### Typography
-- **UI Sans**: `Plus Jakarta Sans` (`--font-sans`) with fluid `clamp()` hierarchy classes (`.admin-page-title`, `.admin-section-title`, `.admin-metric-value`).
-- **Monospace Data**: `JetBrains Mono` (`--font-jetbrains` loaded strictly inside `app/admin/layout.tsx`) for SKUs, order numbers, URL slugs, timestamps, tabular prices, and uppercase section kickers (`.admin-kicker`).
+This document records the design system, minimal UI copy principles, Light/Dark theme plumbing, accessibility architecture, and component modularization for `/admin`.
 
 ---
 
-## 2. Accessibility & Native Platform Architecture
+## 1. Visual Direction & Adaptive Theme
+
+The `/admin` workspace uses a **Minimal Crisp Slate + Bashtoli Emerald** palette supporting both **Light Mode** and **Dark Mode**, completely isolated from the public warm-cream storefront (`/` through `/account/*`).
+
+### Theme Scoping & Toggle Mechanics (`app/globals.css`, `app/admin/layout.tsx`, `components/admin/admin-theme-toggle.tsx`)
+- **Zero Storefront Leakage**: Adaptive `color-scheme` rules use `:root:has(.admin-theme)` so the public storefront stays fixed in its cream light palette regardless of OS preference or admin toggle state.
+- **FOUC Prevention**: A synchronous inline init script inside `app/admin/layout.tsx` applies `localStorage.getItem('bashtoli-admin-theme')` to `document.documentElement.dataset.adminTheme` before first paint.
+- **Two-State Toggle**: Follows OS `prefers-color-scheme` by default without pinning an override. Toggling writes `'light'` or `'dark'` to `localStorage` only when diverging from the OS preference, and clears storage when returning to match the OS preference. Multi-tab `storage` events stay synchronized.
+- **Native CSS `light-dark()` + Fallback**: Every `--adm-*` surface, border, text, accent, and status variable resolves dynamically via `light-dark(...)` (with `@supports not` fallbacks).
+
+### Palette Overview
+- **Light Mode**: Off-white canvas (`#f7f8f9`), clean elevated cards (`#fcfcfd`), subtle dividers (`#e2e5e9`), `>= 3:1` input borders (`#8a929e`), carbon text hierarchy (`#111618` / `#3b434b` / `#57616c`), and emerald primary actions (`#14533c`).
+- **Dark Mode**: Deep carbon canvas (`#101315`), lighter card surfaces (`#171b1e`), muted hairline borders (`#2a3137`), `>= 3:1` input borders (`#6e7884`), crisp slate text (`#eef1f4` / `#c2c9d1` / `#919ca7`), and balanced emerald accents (`#166849`).
+- **Semantic Status Colors**: Used strictly for functional signals across order states, inventory alerts, published/featured flags, and toast/validation feedback:
+  - Success (`adm-success*`), Warning (`adm-warning*`), Info (`adm-info*`), Danger (`adm-danger*`).
+
+---
+
+## 2. Minimal Copy & Information Hierarchy
+
+Decorative editorial branding (`"Studio"`, `"Admin Ledger"`, `"Monochrome Studio"`, `"COD Ops"`), numbered group/KPI codes (`"01 / ..."`, `"KPI 01"`), eyebrow labels above headings, and repetitive helper taglines were removed across all admin pages and cards. Headings and controls carry direct functional names only.
+
+---
+
+## 3. Accessibility & Native Platform Architecture
 
 - **Native `<dialog>` Modal & Mobile Drawer**:
-  - `components/admin/admin-confirm-dialog.tsx` rebuilt on native `<dialog>` using `showModal()`, `overscroll-behavior: contain`, `closedby="any"` + bounded pointer light-dismiss fallback, and safe-action autofocus (`Cancel` on `danger`/`warning` dialogs).
-  - `components/admin/sidebar.tsx` renders a desktop `<aside>` at `>= 768px` and a native `<dialog>` drawer via `showModal()` below `768px` using `matchMedia` (`useSyncExternalStore`) so `#admin-nav-*` IDs never duplicate in the DOM.
+  - `components/admin/admin-confirm-dialog.tsx` uses `<dialog>.showModal()`, `overscroll-behavior: contain`, `closedby="any"` + bounded pointer fallback, and safe-action autofocus on destructive prompts.
+  - `components/admin/sidebar.tsx` switches cleanly between a desktop `<aside>` (`>= 768px`) and a mobile `<dialog>` drawer (`< 768px`) using `useSyncExternalStore`, preventing duplicate `#admin-nav-*` DOM IDs.
 - **Container-Aware Responsive Tables (`.admin-table-region`, `.admin-responsive-table`)**:
-  - Tables wrap in `tabIndex={0}` `role="region"` containers with `<caption className="sr-only">`, `<th scope="col">`, and `<th scope="row">`.
-  - Below `640px` container width, `@container admin-table (width < 640px)` transforms rows into readable monochrome stacked cards with `data-label` prefixes, preventing horizontal page overflow at `360px` viewports.
+  - Below `640px` container width, `@container admin-table (width < 640px)` stacks table rows into responsive cards with `data-label` labels to maintain `0px` horizontal page overflow on `360px` screens.
 - **Touch Targets & Motion**:
-  - Primary interactive controls and form inputs enforce `min-h-[44px]` (and compact icon buttons `min-h-[40px] min-w-[40px]`).
-  - Animations use composite-safe properties only (`transform`, `opacity`) and respect `@media (prefers-reduced-motion: no-preference)`.
+  - Interactive buttons and controls meet accessible touch target minimums (`40px`–`44px`), and transitions animate `transform`/`opacity` only while honoring `prefers-reduced-motion`.
 
 ---
 
-## 3. Modularized Components & Shared Utilities
+## 4. Modularized Components & Shared Utilities
 
 Completed deferred refactors from `docs/open-items.md`:
 - **Product Studio (`Step 7`)**: Split `components/admin/product-form.tsx` into `product-studio-header.tsx`, `product-general-card.tsx`, and `product-sidebar-cards.tsx`; split `variant-table.tsx` into `variant-row.tsx`; split `product-list.tsx` controls into `product-row-controls.tsx`.
 - **Storefront CMS (`Step 8`)**: Split `components/admin/hero-slides-manager.tsx` into `hero-slide-card.tsx` and `hero-slide-create-form.tsx`; split `components/admin/category-collage-manager.tsx` into `collage-slot-card.tsx` and `collage-available-grid.tsx`.
-- **Orders & Shared Utilities**: Extracted `components/admin/order-status-badge.tsx`, `lib/utils/order-csv.ts`, and `lib/utils/admin-upload.ts` to eliminate duplicated status styles, CSV export logic, and storage upload helpers.
-- **Toast System**: Extended `components/ui/toast.tsx` with `variant="admin"` for monochrome obsidian toast capsules while leaving storefront toasts untouched.
+- **Orders & Shared Utilities**: Extracted `components/admin/order-status-badge.tsx`, `lib/utils/order-csv.ts`, and `lib/utils/admin-upload.ts`.
+- **Toast System**: Extended `components/ui/toast.tsx` with `variant="admin"` using adaptive theme tokens while keeping storefront toasts untouched.
